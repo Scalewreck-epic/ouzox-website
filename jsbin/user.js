@@ -1,6 +1,5 @@
 var webDomain = window.location.hostname; // Web host name
 var daysUntilExpire = 365; // One year
-console.log(webDomain);
 
 function createCookie() {
     var username = document.getElementById("username");
@@ -14,16 +13,17 @@ function createCookie() {
 }
 
 function getCookie() {
-    var username = document.getElementById("username");
-    var parts = value.split("; " + username.value + "=");
+    if (document.cookie != "") {
+        console.log("There is a cookie!");
 
-    if (parts.length == 2) {
-        var cookie = parts.pop().split(";").shift();
-        var domain = cookie.split(";").pop();
+        var str = document.cookie;
+        var prompt = "username="
+        var start = str.indexOf(prompt) + str.length(prompt);
+        var username = str.substring(start);
 
-        if (domain == "domain=" + webDomain) {
-            return cookie;
-        }
+        console.log(username);
+    } else {
+        console.log("There is no cookie.");
     }
 }
 
