@@ -8,7 +8,7 @@ function createCookie() {
     d.setTime(d.getTime() + (daysUntilExpire*24*60*60*1000));
 
     var expires = "expires=" + d.toUTCString();
-    var cookieUsername = "username=" + username
+    var cookieUsername = "username=" + username.value
 
     document.cookie = cookieUsername + "; " + expires + "; path=/; domain=" + webDomain + "; secure";
 }
