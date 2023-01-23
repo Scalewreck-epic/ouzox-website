@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<title>Econsole | Signup</title>
+		<link rel="icon" type="x-icon" href="Images/icon.png">
+		<link rel="stylesheet" href="style.css">
+		<link rel="preconnect" href="https://fonts.googleapis.com">
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		<link href="https://fonts.googleapis.com/css2?family=Secular+One&display=swap" rel="stylesheet">
+		<link href="https://fonts.googleapis.com/css2?family=Alata&display=swap" rel="stylesheet">
+	</head>
+	<body>
+		<style>
+			@import url('https://fonts.googleapis.com/css2?family=Secular+One&display=swap');
+			@import url('https://fonts.googleapis.com/css2?family=Alata&display=swap');
+		</style>
+		<a class="logo">
+			<ul class="header">
+				<img src="Images/icon.png" class="web-icon">
+				<h1 class="web-title">Econsole</h1>
+			</ul>
+		</a>
+		<div class="navbar">
+			<nav>
+				<ul><font size="6">
+					<li><a href="index.html">Home Page</a></li>
+					<li><a href="dashboard.html">Dashboard</a></li>
+					<li><a href="upload.html">Upload</a></li>
+					<li><a href="login.html">Login</a></li>
+					<li><a href="signup.html">Signup</a></li>
+					<li><a href="contact.html">Contact</a></li>
+				</ul></font>
+			</nav>
+		</div>
+		<form id="signup" onsubmit="event.preventDefault();" class="login-form">
+			<ul><font size="5">
+				<li>
+					<input type="text" class="upload-box" name="username" id="username" placeholder="Username" required>
+				</li>
+				<li>
+					<input type="text" class="upload-box" name="password" id="password" placeholder="Password" required>
+				</li>
+				<li>
+					<input type="text" class="upload-box" name="email" id="email" placeholder="Email (optional)">
+				</li>
+			</ul></font>
+			<br>
+			<button class="upload-button" id="upload-button" type="submit" onclick="createCookie()"><font size="5">Signup</font></button>
+		</form>
+		<br>
+		<p><font size="5">Already have an account?</font></p>
+		<a href="login.html"><font size="4">Login to your account!</font></a>
+		<div class="space"></div>
+		<footer class="footer">
+			<div class="footer-content">
+				<h1>Econsole</h1>
+				<a>Report Game</a>
+				<a>Contact</a>
+				<a>Terms of Service</a>
+				<a>Privacy Policy</a>
+			</div>
+			<div class="footer-divider"></div>
+			<div class="footer-copyright">
+				© 2023 ScalewreckTeam. All Rights Reserved
+			</div>
+		</footer>
+	</body>
+	<script src="jsbin/user.js"></script>
+</html>

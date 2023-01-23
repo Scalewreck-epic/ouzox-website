@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<title>Econsole | Upload Game</title>
+		<link rel="icon" type="x-icon" href="Images/icon.png">
+		<link rel="stylesheet" href="style.css">
+		<link rel="preconnect" href="https://fonts.googleapis.com">
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		<link href="https://fonts.googleapis.com/css2?family=Secular+One&display=swap" rel="stylesheet">
+		<link href="https://fonts.googleapis.com/css2?family=Alata&display=swap" rel="stylesheet">
+	</head>
+	<body>
+		<style>
+			@import url('https://fonts.googleapis.com/css2?family=Secular+One&display=swap');
+			@import url('https://fonts.googleapis.com/css2?family=Alata&display=swap');
+		</style>
+		<a class="logo">
+			<ul class="header">
+				<img src="Images/icon.png" class="web-icon">
+				<h1 class="web-title">Econsole</h1>
+			</ul>
+		</a>
+		<div class="navbar">
+			<nav>
+				<ul><font size="6">
+					<li><a href="index.html">Home Page</a></li>
+					<li><a href="dashboard.html">Dashboard</a></li>
+					<li><a href="upload.html">Upload</a></li>
+					<li><a href="login.html">Login</a></li>
+					<li><a href="signup.html">Signup</a></li>
+					<li><a href="contact.html">Contact</a></li>
+				</ul></font>
+			</nav>
+		</div>
+		<div class="container">
+			<form id="upload-game" class="upload-game-form">
+				<ul>
+					<li>
+						<label class="title-label">Download File:</label>
+						<input type="file" name="download-file" id="download-file" class="upload-box" accept=".exe, .zip" size="500000000" onchange="checkFileSize()" required/>
+					</li>
+					<li>
+						<label class="title-label">Thumbnail:</label>
+						<input type="file" name="thumbnail" id="thumbnail" class="upload-box" accept=".png, .jpg" size="500000000" onchange="checkFileSize()" required/>
+					</li>
+					<li>
+						<label class="title-label">Title:</label>
+						<input type="text" name="title" class="upload-title" id="title" placeholder="Keep it short." value="My new project!" autocorrect="on" maxlength="20"/>
+					</li>
+					<li>
+						<label class="title-label">Free:</label>
+						<input type="checkbox" class="checkbox" onchange="checkIsFree()" name="isfree" id="isfree" checked="true"/>
+					</li>
+					<li>
+						<label class="title-label">Price: $</label>
+						<input type="text" name="price" class="upload-title" onchange="checkPrice()" id="price" pattern="[0-9]*" placeholder="0" value="0"/>
+					</li>
+				</ul>
+				<br>
+				<button class="upload-button" id="upload-button" type="submit"><font size="5">Upload</font></button>
+			</form>
+			<p><font size="5">View your projects on your dashboard</font></p>
+			<a href="dashboard.html"><font size="4">View dashboard</font></a>
+		</div>
+		<div class="space"></div>
+		<footer class="footer">
+			<div class="footer-content">
+				<h1>Econsole</h1>
+				<a>Report Game</a>
+				<a>Contact</a>
+				<a>Terms of Service</a>
+				<a>Privacy Policy</a>
+			</div>
+			<div class="footer-divider"></div>
+			<div class="footer-copyright">© 2023 ScalewreckTeam. All Rights Reserved</div>
+		</footer>
+	</body>
+	<script src="jsbin/upload.js"></script>
+</html>

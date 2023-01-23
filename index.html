@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<title>Econsole | Market</title>
+		<link rel="icon" type="x-icon" href="Images/icon.png">
+		<link rel="stylesheet" href="style.css">
+		<link rel="preconnect" href="https://fonts.googleapis.com">
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		<link href="https://fonts.googleapis.com/css2?family=Secular+One&display=swap" rel="stylesheet">
+		<link href="https://fonts.googleapis.com/css2?family=Alata&display=swap" rel="stylesheet">
+	</head>
+	<body>
+		<style>
+			@import url('https://fonts.googleapis.com/css2?family=Secular+One&display=swap');
+			@import url('https://fonts.googleapis.com/css2?family=Alata&display=swap');
+		</style>
+		<a class="logo">
+			<ul class="header">
+				<img src="Images/icon.png" class="web-icon">
+				<h1 class="web-title">Econsole</h1>
+			</ul>
+		</a>
+		<div class="navbar">
+			<nav>
+				<ul><font size="6">
+					<li><a href="index.html">Home Page</a></li>
+					<li><a href="dashboard.html">Dashboard</a></li>
+					<li><a href="upload.html">Upload</a></li>
+					<li><a href="login.html">Login</a></li>
+					<li><a href="signup.html">Signup</a></li>
+					<li><a href="contact.html">Contact</a></li>
+				</ul></font>
+			</nav>
+		</div>
+		<div class="selections">
+			<form id="refresh-list">
+				<label class="title-label">Sort By:</label>
+				<br>
+				<select id="game-sort" class="game-sort">
+					<option value="sales">Bestselling</option>
+					<option value="recent">Most Recent</option>
+					<option value="price">Price</option>
+				</select>
+				<select id="list-sort" class="game-sort">
+					<option value="descending">Descending</option>
+					<option value="ascending">Ascending</option>
+				</select>
+				<select id="genre-sort" class="game-sort">
+					<option value="all">All Genres</option>
+					<option value="adventure">Adventure</option>
+					<option value="horror">Horror</option>
+					<option value="retro">Retro</option>
+					<option value="action">Action</option>
+					<option value="survival">Survival</option>
+					<option value="sci-fi">Sci-Fi</option>
+				</select>
+				<br>
+				<button class="upload-button" id="refresh-button" type="submit">Refresh</button>
+			</form>
+		</div>
+		<div class="market" id="market"></div>
+		<div class="errors" id="errors"></div>
+		<div class="space"></div>
+		<footer class="footer">
+			<div class="footer-content">
+				<h1>Econsole</h1>
+				<a>Report Game</a>
+				<a>Contact</a>
+				<a>Terms of Service</a>
+				<a>Privacy Policy</a>
+			</div>
+			<div class="footer-divider"></div>
+			<div class="footer-copyright">
+				© 2023 ScalewreckTeam. All Rights Reserved
+			</div>
+		</footer>
+	</body>
+	<script src="jsbin/data.js"></script>
+</html>
