@@ -19,7 +19,7 @@ function getCookie() {
 
         var str = document.cookie;
         var prompt = "username="
-        var start = str.indexOf(prompt) + str.length(prompt);
+        var start = str.indexOf(prompt) + prompt.length;
         var username = str.substring(start);
 
         console.log(username);
