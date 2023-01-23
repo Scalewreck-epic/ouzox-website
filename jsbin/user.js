@@ -1,5 +1,6 @@
 var webDomain = window.location.hostname; // Web host name
 var daysUntilExpire = 365; // One year
+getCookie();
 
 function createCookie() {
     var username = document.getElementById("username");
