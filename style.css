@@ -14,14 +14,11 @@ body{
 	outline: none;
 }
 
+
 .mail-link{
 	font-size: 20px;
 	font-family: 'Secular One', sans-serif;
 	text-shadow: 5px 5px 10px black;
-}
-
-.space{
-	padding: 380px 0 20px;
 }
 
 .navbar{
@@ -59,12 +56,23 @@ nav{
 	padding: 10px;
 }
 
+.content{
+	padding-top: 12px;
+	margin: 0 auto;
+}
+
 .footer{
-	background: #000;
-	color: #8a8a8a;
-	font-size: 14px;
-	padding: 60px 0 20px;
-	padding-top: 10px;
+	display: flex;
+	flex-direction: column;
+	min-height: 25vh;
+	margin-top: 450px;
+    bottom: 0;
+    width: 100%;
+    background-color: #000000;
+    text-align: center;
+    color: #64646a;
+    padding: 40px 0;
+	box-sizing: border-box;
 }
 
 .footer p{
@@ -77,10 +85,10 @@ nav{
 
 .footer-content{
 	display: flex;
-	justify-content: left;
-	align-items: left;
 	text-align: left;
 	margin: auto;
+	margin-top: 20px;
+	position: relative;
 	width: 62%;
 }
 
@@ -101,7 +109,7 @@ nav{
 	text-align: left;
 	margin: auto;
 	width: 62%;
-	padding-bottom: 50px;
+	position: relative;
 }
 
 .search-bar{
@@ -153,6 +161,13 @@ p{
 	box-shadow: 5px 5px 10px black;
 	width: 250px;
 	outline: none;
+}
+
+.date{
+	width: 125px;
+	height: 25px;
+	background: #00FFE1;
+	font-family: "Secular One", sans-serif;
 }
 
 .upload-title{
@@ -257,8 +272,25 @@ p{
 }
 
 .market{
-	display: grid;
+	width: 80%;
+	float: right;
+	min-height: 1px;
+	padding-left: 20px;
+	padding-right: 20px;
+	flex: 1;
 	grid-template-columns: repeat(auto-fit, minmax(285px, 285px));
+}
+
+.selections{
+	width: 15%;
+	float: left;
+	text-align: left;
+	border-color: #333;
+}
+
+.selections select{
+	margin-bottom: 5px;
+	width: 150px;
 }
 
 .developer-market{
@@ -272,7 +304,13 @@ p{
 }
 
 .errors{
+	width: 80%;
+	padding-left: 20px;
+	padding-bottom: 40px;
+	padding-right: 20px;
 	flex: 1;
+	float: right;
+	position: relative;
 	text-align: center;
 }
 
@@ -285,11 +323,9 @@ p{
 	background-color: #1F1F1F;
 }
 
-input[type="checkbox"] {
+.cl-checkbox{
 	width: 20px;
 	height: 20px;
-	border: 3px solid black;
-	background-color: #1F1F1F;
 }
 
 .login-form ul{
