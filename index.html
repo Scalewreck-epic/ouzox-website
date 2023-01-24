@@ -33,34 +33,36 @@
 				</ul></font>
 			</nav>
 		</div>
-		<div class="selections">
-			<form id="refresh-list">
-				<label class="title-label">Sort By:</label>
-				<br>
-				<select id="game-sort" class="game-sort">
-					<option value="sales">Bestselling</option>
-					<option value="recent">Most Recent</option>
-					<option value="price">Price</option>
-				</select>
-				<select id="list-sort" class="game-sort">
-					<option value="descending">Descending</option>
-					<option value="ascending">Ascending</option>
-				</select>
-				<select id="genre-sort" class="game-sort">
-					<option value="all">All Genres</option>
-					<option value="adventure">Adventure</option>
-					<option value="horror">Horror</option>
-					<option value="retro">Retro</option>
-					<option value="action">Action</option>
-					<option value="survival">Survival</option>
-					<option value="sci-fi">Sci-Fi</option>
-				</select>
-				<br>
-				<button class="upload-button" id="refresh-button" type="submit">Refresh</button>
-			</form>
+		<div class="content">
+			<div class="selections">
+				<form id="refresh-list">
+					<label class="title-label">Sort By:</label>
+					<br>
+					<select id="game-sort" class="game-sort">
+						<option value="sales">Bestselling</option>
+						<option value="recent">Most Recent</option>
+						<option value="price">Price</option>
+					</select>
+					<select id="list-sort" class="game-sort">
+						<option value="descending">Descending</option>
+						<option value="ascending">Ascending</option>
+					</select>
+					<select id="genre-sort" class="game-sort">
+						<option value="all">All Genres</option>
+						<option value="adventure">Adventure</option>
+						<option value="horror">Horror</option>
+						<option value="retro">Retro</option>
+						<option value="action">Action</option>
+						<option value="survival">Survival</option>
+						<option value="sci-fi">Sci-Fi</option>
+					</select>
+					<br>
+					<button class="upload-button" id="refresh-button" type="submit">Refresh</button>
+				</form>
+			</div>
+			<div class="market" id="market"></div>
+			<div class="errors" id="errors"></div>
 		</div>
-		<div class="market" id="market"></div>
-		<div class="errors" id="errors"></div>
 		<footer class="footer">
 			<div class="footer-content">
 				<h1>Econsole</h1>
