@@ -1,41 +1,52 @@
-var webDomain = window.location.hostname; // Web host name
-var daysUntilExpire = 365; // One year
+var webDomain = window.location.hostname;
+var endpoint = "https://v1.nocodeapi.com/scalewreck/ep/EEfUSWVHrbBXlpDl";
+var annualExpiration = 1;
 
-function createCookie() {
-    var username = document.getElementById("username");
-    var d = new Date();
-    d.setTime(d.getTime() + (daysUntilExpire*24*60*60*1000));
-
-    var expires = "expires=" + d.toUTCString();
-    var cookieUsername = "username=" + username.value
-
-    document.cookie = cookieUsername + "; " + expires + "; path=/; domain=" + webDomain + "; secure";
+function generateSessionId() {
+    return (Math.random() * 2^53).toString(16) + Date.now();
 }
 
-function getCookie(name) {
-    if (document.cookie != "") {
-        var value = "; " + document.cookie;
-        var parts = value.split("; " + name + "=");
-        var name = parts.pop().split(";").shift();
-    
-        if (parts.length == 2) {
-            console.log(name);
-            return name;
+function getSessionData() {
+    const cookies = document.cookie;
+    const cookieArray = cookies.split(";");
+
+    for (let i = 0; i < cookieArray.length; i++) {
+        const cookie = cookieArray[i];
+        const [name, value] = cookie.split("=");
+        if (name.trim() === "session_id") {
+            return value;
         }
-    } else {
-        console.log("There is no cookie.");
     }
+    return null;
 }
 
-function logout() {
-    var username = document.getElementById("username");
+function createSessionData() {
+    const username = document.getElementById("username").value;
+    const password = document.getElementById("password").value;
 
-    var d = new Date();
-    d.setTime(d.getTime() - (daysUntilExpire*24*60*60*1000));
+    var myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+    var requestOptions = {
+        method: "post",
+        headers: myHeaders,
+        body: JSON.stringify({ username, password }),
+        redirect: "follow",
+        
+    };
 
-    var expires = "expires=" + d.toUTCString();
-
-    document.cookie = "username=" + username.value + "; " + expires + "; path=/; domain=" + webDomain + "; secure";
+    fetch(endpoint, requestOptions)
+    .then(response => {
+        if (response.ok) {
+            return response.json();
+        } else {
+            console.warn("Failed to create session data");
+        }
+    })
+    .then(result => {
+        var sessionId = generateSessionId();
+        document.cookie = "session_id="+sessionId;
+    })
+    .catch(error => {
+        console.warn("Error trying to create session data:", error);
+    });
 }
-
-getCookie("username");
