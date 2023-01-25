@@ -40,24 +40,26 @@
 				<h1 class="web-title">Econsole</h1>
 			</ul>
 		</a>
-		<form id="signup" onsubmit="event.preventDefault();" class="login-form">
-			<ul><font size="5">
-				<li>
-					<input type="text" class="upload-box" name="username" id="username" placeholder="Username" required>
-				</li>
-				<li>
-					<input type="text" class="upload-box" name="password" id="password" placeholder="Password" required>
-				</li>
-				<li>
-					<input type="date" class="date" required>
-				</li>
-			</ul></font>
+		<div class="content">
+			<form id="signup" onsubmit="event.preventDefault();" class="login-form">
+				<ul><font size="5">
+					<li>
+						<input type="text" class="upload-box" name="username" id="username" placeholder="Username" required>
+					</li>
+					<li>
+						<input type="text" class="upload-box" name="password" id="password" placeholder="Password" required>
+					</li>
+					<li>
+						<input type="date" class="date" required>
+					</li>
+				</ul></font>
+				<br>
+				<button class="upload-button" id="upload-button" type="submit" onclick="createSessionData()"><font size="5">Signup</font></button>
+			</form>
 			<br>
-			<button class="upload-button" id="upload-button" type="submit" onclick="createSessionData()"><font size="5">Signup</font></button>
-		</form>
-		<br>
-		<p><font size="5">Already have an account?</font></p>
-		<a href="login.html"><font size="4">Login to your account!</font></a>
+			<p><font size="5">Already have an account?</font></p>
+			<a href="login.html"><font size="4">Login to your account!</font></a>
+		</div>
 		<footer class="footer">
 			<div class="footer-content">
 				<h1>Econsole</h1>
