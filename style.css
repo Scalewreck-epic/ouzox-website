@@ -78,22 +78,24 @@ nav{
 }
 
 .content{
-	padding-top: 12px;
+	padding-top: 50px;
+	padding-bottom: 500px;
 	margin: 0 auto;
 }
 
 .footer{
 	display: flex;
 	flex-direction: column;
-	min-height: 25vh;
-	margin-top: 450px;
-    bottom: 0;
-    width: 100%;
-    background-color: #000000;
     text-align: center;
-    color: #64646a;
-    padding: 40px 0;
 	box-sizing: border-box;
+    background-color: #000000;
+    color: #64646a;
+	flex-grow: 1;
+	min-height: 25vh;
+    bottom: 0;
+    padding: 40px 0;
+    width: 100%;
+	margin: 0 auto;
 }
 
 .footer p{
