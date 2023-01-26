@@ -1,4 +1,3 @@
-var webDomain = window.location.hostname;
 var endpoint = "https://v1.nocodeapi.com/scalewreck/ep/EEfUSWVHrbBXlpDl";
 var annualExpiration = 1;
 
