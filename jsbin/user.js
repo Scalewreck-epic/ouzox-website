@@ -63,7 +63,7 @@ function createSessionData() {
         var sessionId = generateSessionId();
         var expiration = calculateExpiration().toUTCString();
 
-        document.cookie = "session_id="+sessionId+"; expiration="+expiration+";";
+        document.cookie = "session_id="+sessionId+"; expires="+expiration+";";
     })
     .catch(error => {
         console.warn("Error trying to create session data:", error);
