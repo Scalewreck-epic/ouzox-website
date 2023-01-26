@@ -2,8 +2,27 @@ var webDomain = window.location.hostname;
 var endpoint = "https://v1.nocodeapi.com/scalewreck/ep/EEfUSWVHrbBXlpDl";
 var annualExpiration = 1;
 
+console.log(generateSessionId());
+
 function generateSessionId() {
-    return (Math.random() * 2^53).toString(16) + Date.now();
+    var session_characters = 2^53
+    var letters = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    var session_id = ""
+
+    for (let i = 0; i < session_characters; i++) {
+        var random_num = Math.floor(Math.random() * letters.length);
+        var random_letter = letters.charAt(random_num);
+        session_id += random_letter;
+    }
+
+    return session_id;
+}
+
+function calculateExpiration() {
+    var currentDate = new Date();
+    currentDate.setFullYear(currentDate.getFullYear() - annualExpiration);
+
+    return currentDate;
 }
 
 function getSessionData() {
@@ -44,7 +63,9 @@ function createSessionData() {
     })
     .then(result => {
         var sessionId = generateSessionId();
-        document.cookie = "session_id="+sessionId;
+        var expiration = calculateExpiration();
+
+        document.cookie = "session_id="+sessionId+"expiration="+expiration;
     })
     .catch(error => {
         console.warn("Error trying to create session data:", error);
