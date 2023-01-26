@@ -5,9 +5,9 @@ var annualExpiration = 1;
 console.log(generateSessionId());
 
 function generateSessionId() {
-    var session_characters = 2^53
+    var session_characters = 2^53;
     var letters = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
-    var session_id = ""
+    var session_id = "";
 
     for (let i = 0; i < session_characters; i++) {
         var random_num = Math.floor(Math.random() * letters.length);
@@ -50,7 +50,6 @@ function createSessionData() {
         headers: myHeaders,
         body: JSON.stringify({ username, password }),
         redirect: "follow",
-        
     };
 
     fetch(endpoint, requestOptions)
@@ -63,9 +62,9 @@ function createSessionData() {
     })
     .then(result => {
         var sessionId = generateSessionId();
-        var expiration = calculateExpiration();
+        var expiration = calculateExpiration().toUTCString();
 
-        document.cookie = "session_id="+sessionId+"expiration="+expiration;
+        document.cookie = "session_id="+sessionId+"; expiration="+expiration+";";
     })
     .catch(error => {
         console.warn("Error trying to create session data:", error);
