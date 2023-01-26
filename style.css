@@ -1,6 +1,8 @@
 body{
 	font-family: 'Alata', sans-serif;
-	background: #1F1F1F;
+	background: #242426;
+	margin: 0;
+	padding: 0;
 }
 
 .twitter-button{
@@ -21,34 +23,49 @@ body{
 	text-shadow: 5px 5px 10px black;
 }
 
+nav{
+	width: 100%;
+	display: block;
+	margin-bottom: 20px;
+	box-sizing: border-box;
+}
+
 .navbar{
-	padding-top: 0;
+	overflow: auto;
+	background-color: #2e2f32;
+	padding-top: 1px;
+	box-sizing: border-box;
 }
 
 .grid{
 	width: 100%;
 	margin: 0 auto;
+	box-sizing: border-box;
+	overflow: auto;
+	color: white;
 }
 
 .push-left{
-	padding-left: 3px;
 	float: left;
 	text-align: left;
 	vertical-align: top;
 }
 
 .push-right{
-	width: calc(100% - 600px);
-	padding-right: 3px;
 	float: right;
-	text-align: right;
+	text-align: center;
 	vertical-align: bottom;
 }
 
-.navbar a, .navbar p {
+.username {
+	margin: 28px 0 0 0;
+	margin-right: 50px;
+}
+
+.grid a, .grid div {
 	text-decoration: none;
 	font-size: 20px;
-	padding: 8px 5px;
+	padding: 0 5px;
 	font-weight: 500;
 }
 
@@ -79,8 +96,9 @@ nav{
 
 .content{
 	padding-top: 50px;
-	padding-bottom: 500px;
+	padding-bottom: 200px;
 	margin: 0 auto;
+	overflow: auto;
 }
 
 .footer{
@@ -88,7 +106,7 @@ nav{
 	flex-direction: column;
     text-align: center;
 	box-sizing: border-box;
-    background-color: #000000;
+    background-color: #19191c;
     color: #64646a;
 	flex-grow: 1;
 	min-height: 25vh;
@@ -128,7 +146,7 @@ nav{
 .footer-divider{
 	margin: 15px auto;
 	width: 62%;
-	border-bottom: #1F1F1F solid 1px;
+	border-bottom: #46464c solid 1px;
 }
 
 .footer-copyright{
