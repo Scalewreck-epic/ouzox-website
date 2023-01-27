@@ -27,7 +27,7 @@ function loadProducts(result, gamesortType, listsortType) {
     
             var productPrice = document.createElement("div");
             productPrice.className = "product-price";
-            productPrice.innerHTML = product.formatted_price + " " + product.currency.toUpperCase() + " ("+product.file_info.Size+")";
+            productPrice.innerHTML = product.formatted_price + " " + product.currency.toUpperCase() + "(" + product.file_info.size + ")";
     
             productImageDiv.appendChild(productImage);
             productDiv.appendChild(productImageDiv);
@@ -102,7 +102,7 @@ async function fetchProducts() {
         var myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
     
-        var url = "https://v1.nocodeapi.com/scalewreck/gumroad/SLUsqfRpvDVBeFHK/products";
+        var url = "https://v1.nocodeapi.com/scalewreck/gumroad/xZdMSxWrIzteMRRb/products";
         var requestOptions = {
             method: "get",
             headers: myHeaders,
