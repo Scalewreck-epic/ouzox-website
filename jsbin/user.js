@@ -19,7 +19,7 @@ function generateSessionId() {
 
 function calculateExpiration() {
     var currentDate = new Date();
-    currentDate.setFullYear(currentDate.getFullYear() - annualExpiration);
+    currentDate.setFullYear(currentDate.getFullYear() + annualExpiration);
 
     return currentDate;
 }
