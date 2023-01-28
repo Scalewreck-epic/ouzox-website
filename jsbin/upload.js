@@ -9,50 +9,38 @@ uploadGame.addEventListener("submit", function(event) {
     checkFileSize();
     checkPrice();
 
-    const downloadFile = document.getElementById("download-file");
-    const thumbnail = document.getElementById("thumbnail");
-    const price = document.getElementById("price");
-    const title = document.getElementById("title");
-    const isfree = document.getElementById("isfree");
-
-    const formData = new FormData();
-    formData.append("download-file", downloadFile.files[0]);
-    formData.append("thumbnail", thumbnail.files[0]);
-    formData.append("title", title.value);
-    formData.append("price", price.value);
-
-    formData.forEach(function(value, key) {
-        console.log(key + ": " + value);
-    });
+    const file_input = document.getElementById("download-file");
+    const thumbnail_input = document.getElementById("thumbnail");
+    const description_input = document.getElementById("description");
+    const price_input = document.getElementById("price");
+    const title_input = document.getElementById("title");
 
     // TO DO //
     var myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
 
-    var product_permalink = "" // TO DO //
-    var license_key = "" // TO DO //
-    var gumroad_upload_url = "https://v1.nocodeapi.com/scalewreck/gumroad/xZdMSxWrIzteMRRb/licenses/verify?product_permalink="+product_permalink+"&license_key="+license_key;
-    var endpoint_upload_url = "https://v1.nocodeapi.com/scalewreck/ep/EEfUSWVHrbBXlpDl"
+    var gumroad_upload_url = "https://v1.nocodeapi.com/scalewreck/gumroad/xZdMSxWrIzteMRRb/products";
+
+    var productData = {
+        name: title_input.value,
+        price: price_input.value,
+        description: description_input.value,
+        thumbnail: thumbnail_input.files[0],
+        file: {
+            data: file_input.files[0],
+        }
+    }
     
     var requestOptions = {
-        method: "post",
+        method: "POST",
         headers: myHeaders,
-        body: formData,
-        redirect: "follow",
+        body: JSON.stringify(productData),
     };
 
-    var fetch_url
-
-    if (isfree.checked) {
-        fetch_url = endpoint_upload_url;
-    } else {
-        fetch_url = gumroad_upload_url;
-    }
-
-    console.log(fetch_url);
-    fetch(fetch_url, requestOptions)
+    fetch(gumroad_upload_url, requestOptions)
     .then(response => {
         if (response.ok) {
+            error_label.innerHTML = "Successfully uploaded game!";
         } else {
             error_label.innerHTML = "An error occured trying to upload game.";
         }
