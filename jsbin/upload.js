@@ -2,6 +2,9 @@ const uploadGame = document.getElementById("upload-game");
 
 uploadGame.addEventListener("submit", function(event) {
     event.preventDefault();
+    
+    var error_label = document.getElementById("error-label");
+    error_label.innerHTML = "Uploading game.."
 
     checkFileSize();
     checkPrice();
@@ -10,6 +13,7 @@ uploadGame.addEventListener("submit", function(event) {
     const thumbnail = document.getElementById("thumbnail");
     const price = document.getElementById("price");
     const title = document.getElementById("title");
+    const isfree = document.getElementById("isfree");
 
     const formData = new FormData();
     formData.append("download-file", downloadFile.files[0]);
@@ -25,7 +29,11 @@ uploadGame.addEventListener("submit", function(event) {
     var myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
 
-    var url = ""
+    var product_permalink = "" // TO DO //
+    var license_key = "" // TO DO //
+    var gumroad_upload_url = "https://v1.nocodeapi.com/scalewreck/gumroad/xZdMSxWrIzteMRRb/licenses/verify?product_permalink="+product_permalink+"&license_key="+license_key;
+    var endpoint_upload_url = "https://v1.nocodeapi.com/scalewreck/ep/EEfUSWVHrbBXlpDl"
+    
     var requestOptions = {
         method: "post",
         headers: myHeaders,
@@ -33,15 +41,26 @@ uploadGame.addEventListener("submit", function(event) {
         redirect: "follow",
     };
 
-    fetch(url, requestOptions)
+    var fetch_url
+
+    if (isfree.checked) {
+        fetch_url = endpoint_upload_url;
+    } else {
+        fetch_url = gumroad_upload_url;
+    }
+
+    console.log(fetch_url);
+    fetch(fetch_url, requestOptions)
     .then(response => {
         if (response.ok) {
-            alert("File upload success");
         } else {
-            alert("File upload failed")
+            error_label.innerHTML = "An error occured trying to upload game.";
         }
     })
-      
+    .catch(error => {
+        console.warn(error);
+        error_label.innerHTML = "An error occured trying to upload game.";
+    })
 });
 
 function checkFileSize() {
@@ -81,7 +100,7 @@ function checkPrice() {
         }
     
         if (input.value > maxPrice) {
-            input.value = maxPrice
+            input.value = maxPrice;
         }
     } else {
         input.value = 0;
