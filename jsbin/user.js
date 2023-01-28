@@ -1,8 +1,6 @@
 var endpoint = "https://v1.nocodeapi.com/scalewreck/ep/EEfUSWVHrbBXlpDl";
 var annualExpiration = 1;
 
-console.log(document.cookie);
-
 function generateSessionId() {
     var session_characters = 2^53;
     var letters = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -25,6 +23,7 @@ function calculateExpiration() {
 }
 
 function getSessionData() {
+    const username = document.getElementById("username");
     const cookies = document.cookie;
     const cookieArray = cookies.split(";");
 
@@ -32,10 +31,9 @@ function getSessionData() {
         const cookie = cookieArray[i];
         const [name, value] = cookie.split("=");
         if (name.trim() === "session_id") {
-            return value;
+            username.innerHTML = value;
         }
     }
-    return null;
 }
 
 function createSessionData() {
@@ -69,3 +67,6 @@ function createSessionData() {
         console.warn("Error trying to create session data:", error);
     });
 }
+
+console.log(document.cookie);
+getSessionData();
