@@ -45,16 +45,16 @@
 				<form id="upload-game" class="upload-game-form">
 					<ul>
 						<li>
-							<label class="title-label">Download File:</label>
-							<input type="file" name="download-file" id="download-file" class="upload-box" accept=".exe, .zip" size="500000000" onchange="checkFileSize()" required/>
+							<label class="title-label">Title:</label>
+							<input type="text" name="title" class="upload-title" id="title" placeholder="Keep it short." value="My new project!" autocorrect="on" maxlength="20"/>
 						</li>
 						<li>
 							<label class="title-label">Thumbnail:</label>
 							<input type="file" name="thumbnail" id="thumbnail" class="upload-box" accept=".png, .jpg" size="500000000" onchange="checkFileSize()" required/>
 						</li>
 						<li>
-							<label class="title-label">Title:</label>
-							<input type="text" name="title" class="upload-title" id="title" placeholder="Keep it short." value="My new project!" autocorrect="on" maxlength="20"/>
+							<label class="title-label">Download File:</label>
+							<input type="file" name="download-file" id="download-file" class="upload-box" accept=".exe, .zip" size="500000000" onchange="checkFileSize()" required/>
 						</li>
 						<li>
 							<label class="title-label">Free:</label>
@@ -68,6 +68,7 @@
 					<br><label class="title-label">Description:</label>
 					<br><textarea rows="4" cols="50" wrap="hard" class="description" id="description"></textarea>
 					<br><button class="upload-button" id="upload-button" type="submit"><font size="5">Upload</font></button>
+					<br><div class="error-label" id="error-label"></div>
 				</form>
 				<p><font size="5">View your projects on your dashboard</font></p>
 				<a href="dashboard.html"><font size="4">View dashboard</font></a>
