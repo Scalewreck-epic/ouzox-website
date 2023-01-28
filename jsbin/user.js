@@ -1,7 +1,7 @@
 var endpoint = "https://v1.nocodeapi.com/scalewreck/ep/EEfUSWVHrbBXlpDl";
 var annualExpiration = 1;
 
-console.log(generateSessionId());
+console.log(document.cookie);
 
 function generateSessionId() {
     var session_characters = 2^53;
