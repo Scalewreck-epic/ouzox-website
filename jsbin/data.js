@@ -1,9 +1,7 @@
 var isFetching = false;
-var refreshTime = 3;
+var refreshTime = 5;
 
-function loadProducts(result, gamesortType, listsortType) {
-    var products = result.products;
-
+function loadProducts(products, gamesortType, listsortType) {
     for (let i = 0; i < products.length; i++) {
         var product = products[i];
         
@@ -98,57 +96,60 @@ function showError(errorMessage, errorCode, isOffline) {
 }
 
 async function fetchProducts() {
-    if (navigator.onLine) {
-        var myHeaders = new Headers();
-        myHeaders.append("Content-Type", "application/json");
-    
-        var url = "https://v1.nocodeapi.com/scalewreck/gumroad/xZdMSxWrIzteMRRb/products";
-        var requestOptions = {
-            method: "get",
-            headers: myHeaders,
-            redirect: "follow",
-        };
-    
-        var games = document.getElementById("market");
-        var errors = document.getElementById("errors");
-    
-        games.innerHTML = "";
-        errors.innerHTML = "";
-    
-        var loading = document.createElement("div");
-        loading.className = "loading-text";
-        loading.innerHTML = "Loading games..";
-        errors.appendChild(loading);
+    isFetching = true;
+    var myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
 
-        return fetch(url, requestOptions)
-        .then(response => response.text())
-        .then(result => {
-            loading.remove();
+    var products_api_url = "https://v1.nocodeapi.com/scalewreck/gumroad/xZdMSxWrIzteMRRb/products";
+    var requestOptions = {
+        method: "get",
+        headers: myHeaders,
+        redirect: "follow",
+    };
 
-            var data = JSON.parse(result);
-            console.log(data);
-            if (data.success == true) {
-                var gamesort = document.getElementById("game-sort");
-                var listsort = document.getElementById("list-sort");
-                var selectedGamesort = gamesort.options[gamesort.selectedIndex].value;
-                var selectedListsort = listsort.options[listsort.selectedIndex].value;
-    
-                console.log("Games on sale:" , data.products);
-                loadProducts(data, selectedGamesort, selectedListsort);
-            } else {
-                showError(data.info, data.code, false);
-            }
-        })
-        .catch(error => {
-            if (error.code) {
-                showError(error, error.code, false);
-            } else {
-                showError(error, "none", false);
-            }
-        });
-    } else {
-        showError("Current user is offline.", true)
-    }
+    var games = document.getElementById("market");
+    var errors = document.getElementById("errors");
+
+    games.innerHTML = "";
+    errors.innerHTML = "";
+
+    var loading = document.createElement("div");
+    loading.className = "loading-text";
+    loading.innerHTML = "Loading games..";
+    errors.appendChild(loading);
+
+    fetch(products_api_url, requestOptions)
+    .then(response => response.text())
+    .then(result => {
+        var data = JSON.parse(result);
+        console.log(data);
+
+        loading.remove();
+        if (data.success == true) {
+            var gamesort = document.getElementById("game-sort");
+            var listsort = document.getElementById("list-sort");
+            var selectedGamesort = gamesort.options[gamesort.selectedIndex].value;
+            var selectedListsort = listsort.options[listsort.selectedIndex].value;
+
+            console.log("Games on sale:" , data.products);
+            loadProducts(data.products, selectedGamesort, selectedListsort);
+        } else {
+            showError(data.info, data.code, false);
+        }
+    })
+    .catch(error => {
+        loading.remove();
+        if (error.code) {
+            showError(error, error.code, false);
+        } else {
+            showError(error, "none", false);
+        }
+    });
+
+    await countdown(refreshTime);
+
+    document.getElementById("refresh-button").innerHTML = "Refresh";
+    isFetching = false;
 }
 
 async function countdown(time) {
@@ -170,12 +171,6 @@ document.getElementById("refresh-list").addEventListener("submit", function(even
     event.preventDefault();
 
     if (!isFetching) {
-        isFetching = true;
-        fetchProducts().then(async () => {
-            await countdown(refreshTime);
-
-            document.getElementById("refresh-button").innerHTML = "Refresh";
-            isFetching = false;
-        })
+        fetchProducts();
     }
 })
