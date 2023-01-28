@@ -207,6 +207,12 @@ p{
 	outline: none;
 }
 
+.image-display{
+	width: 250px;
+	height: 250px;
+	box-shadow: 5px 5px 10px black;
+}
+
 .date{
 	width: 125px;
 	height: 25px;
@@ -251,6 +257,12 @@ p{
 	color: #00FFE1;
 }
 
+.error-label{
+	font-size: 20px;
+	font-family: 'Secular One', sans-serif;
+	color: red;
+}
+
 .upload-button{
 	font-size:20px;
 	font-family: 'Secular One', sans-serif;
@@ -260,6 +272,7 @@ p{
 	box-shadow: 5px 5px 10px black;
 	width: 100px;
 	outline: none;
+	cursor: pointer;
 }
 
 .dashboard-button{
