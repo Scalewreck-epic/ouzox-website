@@ -2,63 +2,79 @@ const uploadGame = document.getElementById("upload-game");
 
 uploadGame.addEventListener("submit", function(event) {
     event.preventDefault();
-    
     var error_label = document.getElementById("error-label");
-    error_label.innerHTML = "Uploading game.."
+
+    var game_file_warn = document.getElementById("game-file-warn");
+    var title_warn = document.getElementById("game-title-warn");
 
     checkFileSize();
     checkPrice();
+    checkTitleLength();
 
-    const file_input = document.getElementById("download-file");
-    const thumbnail_input = document.getElementById("thumbnail");
-    const description_input = document.getElementById("description");
-    const price_input = document.getElementById("price");
-    const title_input = document.getElementById("title");
+    if (game_file_warn.innerHTML == "") {
+        if (title_warn.innerHTML == "") {
+            error_label.innerHTML = "Uploading game.."
 
-    // TO DO //
-    var myHeaders = new Headers();
-    myHeaders.append("Content-Type", "application/json");
-
-    var gumroad_upload_url = "https://v1.nocodeapi.com/scalewreck/gumroad/xZdMSxWrIzteMRRb/products";
-
-    var productData = {
-        name: title_input.value,
-        price: price_input.value,
-        description: description_input.value,
-        thumbnail: thumbnail_input.files[0],
-        file: {
-            data: file_input.files[0],
-        }
-    }
-    
-    var requestOptions = {
-        method: "POST",
-        headers: myHeaders,
-        body: JSON.stringify(productData),
-    };
-
-    fetch(gumroad_upload_url, requestOptions)
-    .then(response => {
-        if (response.ok) {
-            error_label.innerHTML = "Successfully uploaded game!";
+            const file_input = document.getElementById("download-file");
+            const thumbnail_input = document.getElementById("thumbnail");
+            const description_input = document.getElementById("description");
+            const price_input = document.getElementById("price");
+            const title_input = document.getElementById("title");
+        
+            // TO DO //
+            var myHeaders = new Headers();
+            myHeaders.append("Content-Type", "application/json");
+        
+            var gumroad_upload_url = "https://v1.nocodeapi.com/scalewreck/gumroad/xZdMSxWrIzteMRRb/products";
+        
+            var productData = {
+                name: title_input.value,
+                price: price_input.value,
+                description: description_input.value,
+                thumbnail: thumbnail_input.files[0],
+                file: {
+                    data: file_input.files[0],
+                }
+            }
+            
+            var requestOptions = {
+                method: "POST",
+                headers: myHeaders,
+                body: JSON.stringify(productData),
+            };
+        
+            fetch(gumroad_upload_url, requestOptions)
+            .then(response => {
+                if (response.ok) {
+                    error_label.innerHTML = "Successfully uploaded game!";
+                } else {
+                    error_label.innerHTML = "An error occured trying to upload game.";
+                }
+            })
+            .catch(error => {
+                console.warn(error);
+                error_label.innerHTML = "An error occured trying to upload game.";
+            })
         } else {
-            error_label.innerHTML = "An error occured trying to upload game.";
+            error_label.innerHTML = "Incomplete form.";
         }
-    })
-    .catch(error => {
-        console.warn(error);
-        error_label.innerHTML = "An error occured trying to upload game.";
-    })
+    } else {
+        error_label.innerHTML = "Incomplete form.";
+    }
 });
 
 function checkFileSize() {
     var input = document.getElementById("download-file");
+    var warn = document.getElementById("game-file-warn");
+
     var file = input.files[0];
     var maxFileSize = 250000000; // 250MB in bytes
 
     if (file.size > maxFileSize) {
-        alert("File is too large. Select a file under 250MB");
+        warn.innerHTML = "File size too large. Select a file under 250MB";
         input.value = "";
+    } else {
+        warn.innerHTML = "";
     }
 }
 
@@ -70,6 +86,19 @@ function checkIsFree() {
         checkPrice();
     } else {
         input.value = 0;
+    }
+}
+
+function checkTitleLength() {
+    var title = document.getElementById("title");
+    var title_warn = document.getElementById("game-title-warn");
+
+    if (title.value.length > 20) {
+        title_warn.innerHTML = "Title must be below 20 characters.";
+    } else if (title.value.length < 3) {
+        title_warn.innerHTML = "Title must be above 3 characters.";
+    } else {
+        title_warn.innerHTML = "";
     }
 }
 
