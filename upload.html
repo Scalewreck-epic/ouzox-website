@@ -46,15 +46,17 @@
 					<ul>
 						<li>
 							<label class="title-label">Title:</label>
-							<input type="text" name="title" class="upload-title" id="title" placeholder="Keep it short." value="My new project!" autocorrect="on" maxlength="20"/>
+							<input type="text" name="title" class="upload-title" id="title" placeholder="Game Title." value="My new project!" onchange="checkTitleLength()" autocorrect="on" maxlength="20" minlength="3"/>
+							<div class="error-label" id="game-title-warn"></div>
 						</li>
 						<li>
 							<label class="title-label">Thumbnail:</label>
-							<input type="file" name="thumbnail" id="thumbnail" class="upload-box" accept=".png, .jpg" size="500000000" onchange="checkFileSize()" required/>
+							<input type="file" name="thumbnail" id="thumbnail" class="upload-box" accept=".png, .jpg" required/>
 						</li>
 						<li>
 							<label class="title-label">Download File:</label>
-							<input type="file" name="download-file" id="download-file" class="upload-box" accept=".exe, .zip" size="500000000" onchange="checkFileSize()" required/>
+							<input type="file" name="download-file" id="download-file" class="upload-box" accept=".exe, .zip" onchange="checkFileSize()" required/>
+							<div class="error-label" id="game-file-warn"></div>
 						</li>
 						<li>
 							<label class="title-label">Free:</label>
