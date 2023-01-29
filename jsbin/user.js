@@ -23,7 +23,6 @@ function calculateExpiration() {
 }
 
 function getSessionData() {
-    const username = document.getElementById("username");
     const cookies = document.cookie;
     const cookieArray = cookies.split(";");
 
@@ -31,21 +30,32 @@ function getSessionData() {
         const cookie = cookieArray[i];
         const [name, value] = cookie.split("=");
         if (name.trim() === "session_id") {
-            username.innerHTML = value;
+            return value;
         }
     }
+
+    return "u53rn4m3";
+}
+
+function implementUsername() {
+    const username = document.getElementById("username");
+
+    // REDO //
+    // Fetch the username saved into the storage files then display the username instead of the session ID.
+    username.innerHTML = getSessionData();
 }
 
 function createSessionData() {
     const username = document.getElementById("username").value;
     const password = document.getElementById("password").value;
+    const session_id = generateSessionId();
 
     var myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
     var requestOptions = {
-        method: "post",
+        method: "POST",
         headers: myHeaders,
-        body: JSON.stringify({ username, password }),
+        body: JSON.stringify({ username, password, session_id }),
         redirect: "follow",
     };
 
@@ -58,10 +68,8 @@ function createSessionData() {
         }
     })
     .then(result => {
-        var sessionId = generateSessionId();
         var expiration = calculateExpiration().toUTCString();
-
-        document.cookie = "session_id="+sessionId+"; expires="+expiration+";";
+        document.cookie = "session_id="+session_id+"; expires="+expiration+";";
     })
     .catch(error => {
         console.warn("Error trying to create session data:", error);
@@ -69,4 +77,4 @@ function createSessionData() {
 }
 
 console.log(document.cookie);
-getSessionData();
+implementUsername();
