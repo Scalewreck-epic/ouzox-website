@@ -51,9 +51,6 @@ function implementUsername() {
         console.log("Username was not found.");
     }
 
-    // REDO //
-    // Fetch the username saved into the storage files then display the username instead of the session ID.
-
     username.innerHTML = data.Value;
 }
 
