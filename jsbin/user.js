@@ -51,7 +51,6 @@ function implementUsername() {
         console.log("Username was not found.");
     }
 
-    console.log(data)
     username.innerHTML = data.Data;
 }
 
