@@ -31,7 +31,7 @@ function getCookieData(trim) {
         const [name, value] = cookie.split("=");
         if (name.trim() === trim) {
             return {
-                "Data": value,
+                "Data": value.toString(),
                 "Valid": true,
             };
         }
