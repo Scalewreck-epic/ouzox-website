@@ -21,7 +21,6 @@ uploadGame.addEventListener("submit", function(event) {
             const price_input = document.getElementById("price");
             const title_input = document.getElementById("title");
         
-            // TO DO //
             var myHeaders = new Headers();
             myHeaders.append("Content-Type", "application/json");
         
@@ -29,12 +28,13 @@ uploadGame.addEventListener("submit", function(event) {
         
             var productData = {
                 name: title_input.value,
+                type: "Digital product",
                 price: price_input.value,
                 description: description_input.value,
-                thumbnail: thumbnail_input.files[0],
-                file: {
-                    data: file_input.files[0],
-                }
+                url: "econsole.gumroad.com/I/"+title_input.value,
+                image_url: thumbnail_input.files[0],
+                file: file_input.files[0],
+                requires_email: false,
             }
             
             var requestOptions = {
@@ -107,7 +107,7 @@ function checkPrice() {
     var isfree = document.getElementById("isfree");
 
     var minPrice = 1;
-    var maxPrice = 250;
+    var maxPrice = 5000;
 
     input.value = input.value.replace(/[^0-9]/g, "");
 
