@@ -42,7 +42,7 @@ function loadProducts(products, gamesortType, listsortType) {
                 var newDataNumber = productDiv.getAttribute("data-number");
                 newDataNumber = -newDataNumber;
                 productDiv.setAttribute("data-number", newDataNumber);
-            } else {
+            } else if (listsortType == "descending") {
                 var newDataNumber = productDiv.getAttribute("data-number");
                 newDataNumber = Math.abs(newDataNumber);
                 productDiv.setAttribute("data-number", newDataNumber);
@@ -66,7 +66,7 @@ function loadProducts(products, gamesortType, listsortType) {
     })
 }
 
-function showError(errorMessage, errorCode, isOffline) {
+function showError(errorMessage, errorCode) {
     console.warn(errorMessage);
     var error = document.createElement("div");
     error.className = "error";
@@ -84,13 +84,8 @@ function showError(errorMessage, errorCode, isOffline) {
     errorCaption.className = "product-price";
     error.appendChild(errorCaption);
 
-    if (isOffline) {
-        errorMessage.innerHTML = "This is an online website, but you appear to be offline.";
-        errorCaption.innerHTML = "Please check back when you are online.";
-    } else {
-        errorMessage.innerHTML = "Our store is currently offline for maintanence and upgrades.";
-        errorCaption.innerHTML = "Please check back soon! Error code: " + errorCode;
-    }
+    errorMessage.innerHTML = "Currently, our store is closed for maintenance and upgrades.";
+    errorCaption.innerHTML = "Check back soon! Error code: " + errorCode;
 
     document.getElementById("errors").appendChild(error);
 }
@@ -102,7 +97,7 @@ async function fetchProducts() {
 
     var products_api_url = "https://v1.nocodeapi.com/scalewreck/gumroad/xZdMSxWrIzteMRRb/products";
     var requestOptions = {
-        method: "get",
+        method: "GET",
         headers: myHeaders,
         redirect: "follow",
     };
