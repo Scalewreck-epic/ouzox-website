@@ -31,14 +31,14 @@ function getCookieData(trim) {
         const [name, value] = cookie.split("=");
         if (name.trim() === trim) {
             return {
-                "Value": value,
+                "Data": value,
                 "Valid": true,
             };
         }
     }
 
     return {
-        "Value": "no username",
+        "Data": "no username",
         "Valid": false,
     };
 }
@@ -51,7 +51,8 @@ function implementUsername() {
         console.log("Username was not found.");
     }
 
-    username.innerHTML = data.Value;
+    console.log(data)
+    username.innerHTML = data.Data;
 }
 
 function createSessionData() {
