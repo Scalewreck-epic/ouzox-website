@@ -58,9 +58,12 @@ function createSessionData() {
     var data = getCookieData("session_id");
 
     if (!data.Valid) {
-        const username = document.getElementById("username").value;
-        const password = document.getElementById("password").value;
+        const username_input = document.getElementById("username").value;
+        const password_input = document.getElementById("password").value;
         const session_id = generateSessionId();
+
+        var username = username_input.toString();
+        var password = password_input.toString();
 
         var myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
@@ -81,6 +84,7 @@ function createSessionData() {
         })
         .then(result => {
             var expiration = calculateExpiration().toUTCString();
+
             document.cookie = "username="+username+"; expires="+expiration+";";
             document.cookie = "session_id="+session_id+"; expires="+expiration+";";
         })
