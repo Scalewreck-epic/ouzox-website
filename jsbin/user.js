@@ -58,8 +58,8 @@ function createSessionData() {
     var data = getCookieData("session_id");
 
     if (!data.Valid) {
-        const username_input = document.getElementById("username").value;
-        const password_input = document.getElementById("password").value;
+        const username_input = document.getElementById("username_input").value;
+        const password_input = document.getElementById("password_input").value;
         const session_id = generateSessionId();
 
         var username = username_input.toString();
