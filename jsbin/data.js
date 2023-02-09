@@ -1,23 +1,48 @@
+var products_api_url = "https://x8ki-letl-twmt.n7.xano.io/api:iwAsZq4E:v1/products";
+var product_prices_url = "https://x8ki-letl-twmt.n7.xano.io/api:tFdG2Vz-:v1/prices/"; // + product id
+
 var isFetching = false;
 var refreshTime = 5;
+
+function getProductPrice(product_id) {
+    // ACTIVATE STRIPE ACCOUNT
+    var myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+
+    var requestOptions = {
+        method: "GET",
+        headers: myHeaders,
+        redirect: "follow",
+    };
+
+    fetch((product_prices_url + product_id), requestOptions)
+    .then(response => response.text())
+    .then(result => {
+        var result_parse = JSON.parse(result);
+        console.log(result_parse);
+    })
+    .catch(error => {
+        console.warn("There was an error trying to get the price of a product: " , error);
+    });
+}
 
 function loadProducts(products, gamesortType, listsortType) {
     for (let i = 0; i < products.length; i++) {
         var product = products[i];
+        //var price = getProductPrice(product.id);
         
-        if (product.published) {
-            var productDiv = document.createElement("a");
+        if (product.active) {
+            var productDiv = document.createElement("div");
             productDiv.className = "game";
 
-            productDiv.setAttribute("href", product.short_url);
-            productDiv.target = "_blank";
-            
             var productImage = document.createElement("img");
-            productImage.className = "product-image"
-            productImage.setAttribute("src", product.thumbnail_url);
+            productImage.className = "product-image";
+            productImage.setAttribute("src", product.images[0]);
     
-            var productImageDiv = document.createElement("div");
-            productImageDiv.className = "product-image";
+            var productImageHolder = document.createElement("a");
+
+            productImageHolder.setAttribute("href", product.url);
+            productImageHolder.target = "_blank";
     
             var productTitle = document.createElement("div");
             productTitle.className = "product-title";
@@ -25,10 +50,10 @@ function loadProducts(products, gamesortType, listsortType) {
     
             var productPrice = document.createElement("div");
             productPrice.className = "product-price";
-            productPrice.innerHTML = product.formatted_price + " " + product.currency.toUpperCase() + "(" + product.file_info.size + ")";
-    
-            productImageDiv.appendChild(productImage);
-            productDiv.appendChild(productImageDiv);
+            productPrice.innerHTML = product.id;
+
+            productImageHolder.appendChild(productImage);
+            productDiv.appendChild(productImageHolder);
             productDiv.appendChild(productTitle);
             productDiv.appendChild(productPrice);
 
@@ -36,18 +61,31 @@ function loadProducts(products, gamesortType, listsortType) {
                 productDiv.setAttribute("data-number", product.sales_count);
             } else if (gamesortType == "price") {
                 productDiv.setAttribute("data-number", product.price);
+            } else if (gamesortType == "newest") {
+                productDiv.setAttribute("data-number", product.created);
+            } else if (gamesortType == "uptodate") {
+                productDiv.setAttribute("data-number", product.updated);
             }
     
             if (listsortType == "ascending") {
                 var newDataNumber = productDiv.getAttribute("data-number");
-                newDataNumber = -newDataNumber;
+
+                if (newDataNumber > 0) {
+                    newDataNumber = -newDataNumber;
+                }
+
                 productDiv.setAttribute("data-number", newDataNumber);
             } else if (listsortType == "descending") {
                 var newDataNumber = productDiv.getAttribute("data-number");
-                newDataNumber = Math.abs(newDataNumber);
+
+                if (newDataNumber < 0) {
+                    newDataNumber = Math.abs(newDataNumber);
+                }
+
                 productDiv.setAttribute("data-number", newDataNumber);
             }
 
+            console.log(productDiv.getAttribute("data-number"));
             document.getElementById("market").appendChild(productDiv);
         }
     }
@@ -66,27 +104,27 @@ function loadProducts(products, gamesortType, listsortType) {
     })
 }
 
-function showError(errorMessage, errorCode) {
-    console.warn(errorMessage);
+function showError(errorMessage) {
+    console.warn("There was an error trying to get products: " , errorMessage);
     var error = document.createElement("div");
     error.className = "error";
 
     var errorImg = document.createElement("img");
     errorImg.setAttribute("src", "Images/error.png");
     errorImg.className = "errorImg";
-    error.appendChild(errorImg);
 
     var errorMessage = document.createElement("div");
     errorMessage.className = "product-title";
-    error.appendChild(errorMessage);
 
     var errorCaption = document.createElement("div");
     errorCaption.className = "product-price";
+
+    errorMessage.innerHTML = "An error occured.";
+    errorCaption.innerHTML = "We apologize for any inconvenience. Please try again later.";
+
+    error.appendChild(errorImg);
+    error.appendChild(errorMessage);
     error.appendChild(errorCaption);
-
-    errorMessage.innerHTML = "Currently, our store is closed for maintenance and upgrades.";
-    errorCaption.innerHTML = "Check back soon! Error code: " + errorCode;
-
     document.getElementById("errors").appendChild(error);
 }
 
@@ -95,7 +133,6 @@ async function fetchProducts() {
     var myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
 
-    var products_api_url = "https://v1.nocodeapi.com/scalewreck/gumroad/xZdMSxWrIzteMRRb/products";
     var requestOptions = {
         method: "GET",
         headers: myHeaders,
@@ -108,37 +145,21 @@ async function fetchProducts() {
     games.innerHTML = "";
     errors.innerHTML = "";
 
-    var loading = document.createElement("div");
-    loading.className = "loading-text";
-    loading.innerHTML = "Loading games..";
-    errors.appendChild(loading);
-
     fetch(products_api_url, requestOptions)
     .then(response => response.text())
     .then(result => {
-        var data = JSON.parse(result);
-        console.log(data);
+        var result_parse = JSON.parse(result);
+        console.log(result_parse);
 
-        loading.remove();
-        if (data.success == true) {
-            var gamesort = document.getElementById("game-sort");
-            var listsort = document.getElementById("list-sort");
-            var selectedGamesort = gamesort.options[gamesort.selectedIndex].value;
-            var selectedListsort = listsort.options[listsort.selectedIndex].value;
+        var gamesort = document.getElementById("game-sort");
+        var listsort = document.getElementById("list-sort");
+        var selectedGamesort = gamesort.options[gamesort.selectedIndex].value;
+        var selectedListsort = listsort.options[listsort.selectedIndex].value;
 
-            console.log("Games on sale:" , data.products);
-            loadProducts(data.products, selectedGamesort, selectedListsort);
-        } else {
-            showError(data.info, data.code, false);
-        }
+        loadProducts(result_parse.data, selectedGamesort, selectedListsort);
     })
     .catch(error => {
-        loading.remove();
-        if (error.code) {
-            showError(error, error.code, false);
-        } else {
-            showError(error, "none", false);
-        }
+        showError(error, false);
     });
 
     await countdown(refreshTime);
