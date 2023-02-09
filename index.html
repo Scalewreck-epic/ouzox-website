@@ -3,7 +3,7 @@
 	<head>
 		<meta charset="UTF-8">
 		<title>Econsole | Market</title>
-		<link rel="icon" type="image/x-icon" href="Images/icon.png"/>
+		<link rel="icon" type="x-icon" href="Images/icon.png"/>
 		<link rel="stylesheet" href="style.css"/>
 		<link rel="preconnect" href="https://fonts.googleapis.com"/>
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
@@ -19,6 +19,9 @@
 			<div class="navbar">
 				<div class="grid">
 					<div class="push-left">
+						<a href="index.html">
+							<img src="Images/icon.png" class="web-icon">
+						</a>
 						<ul><font size="6">
 							<a href="index.html">Home Page</a>
 							<a href="dashboard.html">Dashboard</a>
@@ -34,12 +37,6 @@
 				</div>
 			</div>
 		</nav>
-		<a class="logo">
-			<ul class="header">
-				<img src="Images/icon.png" class="web-icon">
-				<h1 class="web-title">Econsole</h1>
-			</ul>
-		</a>
 		<div class="content">
 			<div class="selections">
 				<form id="refresh-list">
@@ -47,7 +44,8 @@
 					<br>
 					<select id="game-sort" class="game-sort">
 						<option value="sales">Bestselling</option>
-						<option value="recent">Most Recent</option>
+						<option value="newest">Newest</option>
+						<option value="uptodate">Up to date</option>
 						<option value="price">Price</option>
 					</select>
 					<select id="list-sort" class="game-sort">
