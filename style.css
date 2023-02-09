@@ -7,7 +7,7 @@ body{
 
 .twitter-button{
 	font-size: 40px;
-	font-family: "Secular One", sans-serif;
+	font-family: 'Secular One', sans-serif;
 	background: #00FFE1;
 	color: #000;
 	border-radius: 8px;
@@ -15,7 +15,6 @@ body{
 	width: 200px;
 	outline: none;
 }
-
 
 .mail-link{
 	font-size: 20px;
@@ -31,6 +30,7 @@ nav{
 }
 
 .navbar{
+	height: 85px;
 	overflow: auto;
 	background-color: #2e2f32;
 	padding-top: 1px;
@@ -39,37 +39,54 @@ nav{
 
 .grid{
 	width: 100%;
+	height: 100%;
 	margin: 0 auto;
 	box-sizing: border-box;
 	overflow: auto;
 	color: white;
+	overflow-x: hidden;
+	overflow-y: hidden;
 }
 
 .push-left{
+	height: 100%;
 	float: left;
 	text-align: left;
 	vertical-align: top;
 }
 
+.push-left ul{
+	padding: 0;
+	margin: 0;
+	vertical-align: middle;
+}
+
 .push-right{
+	height: 100%;
 	float: right;
 	text-align: center;
-	vertical-align: bottom;
+	vertical-align: top;
+}
+
+.web-icon{
+	width: 70px;
+	height: 70px;
+	padding-top: 8px;
+	vertical-align: middle;
 }
 
 .username {
-	margin: 28px 0 0 0;
-	margin-right: 50px;
+	position: relative;
+	top: 30%;
 }
 
 .grid a, .grid div {
 	text-decoration: none;
 	font-size: 20px;
 	padding: 0 5px;
-	font-weight: 500;
 }
 
-.navbar a:hover {
+.push-left ul a:hover {
 	text-decoration: underline;
 }
 
@@ -113,7 +130,7 @@ nav{
     bottom: 0;
     padding: 40px 0;
     width: 100%;
-	margin: 0 auto;
+	margin-top: 150px;
 }
 
 .footer p{
@@ -179,17 +196,6 @@ p{
 .header{
 	display: flex;
 	padding: 2px;
-}
-
-.web-title{
-	font-size: 50px;
-	font-family: 'Secular One', sans-serif;
-	color: #00FFE1;
-	text-shadow: 5px 5px 10px black;
-}
-
-.web-icon{
-	width: 125px;
 }
 
 .upload-game-form ul{
@@ -313,6 +319,10 @@ p{
 	font-family: 'Secular One', sans-serif;
 	outline: #000;
 	color: #FFF;
+	width: auto;
+	float: left;
+	overflow: hidden;
+	word-break: break-all;
 }
 
 .product-price{
@@ -320,19 +330,23 @@ p{
 	font-family: 'Secular One', sans-serif;
 	outline: #000;
 	color: #FFF;
+	width: auto;
+	float: left;
+	overflow: hidden;
+	word-break: break-all;
 }
 
 .product-image{
-	width: 250px;
-	height: 250px;
-	border-radius: 25px;
-	box-shadow: 0 10px 20px black;
+	width: 200px;
+	height: 200px;
+	border-radius: 15px;
+	box-shadow: 0 5px 10px black;
 }
 
-.loading-text{
-	font-size: 50px;
-	font-family: 'Secular One', sans-serif;
-	color: #FFF;
+.game{
+	float: left;
+	width: 200px;
+	height: auto;
 }
 
 .desc{
@@ -369,7 +383,7 @@ p{
 }
 
 .market, .errors{
-	width: calc(100% - 166px);
+	width: calc(100% - 185px);
 	float: right;
 	position: relative;
 	flex: 1;
@@ -377,7 +391,9 @@ p{
 }
 
 .market {
+	display: grid;
 	grid-template-columns: repeat(auto-fit, minmax(285px, 285px));
+	padding-left: 20px;
 }
 
 .errors{
