@@ -5,17 +5,6 @@ body{
 	padding: 0;
 }
 
-.twitter-button{
-	font-size: 40px;
-	font-family: 'Secular One', sans-serif;
-	background: #00FFE1;
-	color: #000;
-	border-radius: 8px;
-	box-shadow: 5px 5px 10px black;
-	width: 200px;
-	outline: none;
-}
-
 .mail-link{
 	font-size: 20px;
 	font-family: 'Secular One', sans-serif;
@@ -73,6 +62,11 @@ nav{
 	height: 70px;
 	padding-top: 8px;
 	vertical-align: middle;
+}
+
+.web-thumbnail{
+	width: 660px;
+	height: 170px;
 }
 
 .username {
@@ -206,10 +200,12 @@ p{
 .upload-box{
 	font-size:16px;
 	font-family: 'Secular One', sans-serif;
-	background: #00FFE1;
-	border-radius: 50px;
+	background: #464646;
+	color: #FFFFFF;
+	border-radius: 100px;
 	box-shadow: 5px 5px 10px black;
 	width: 250px;
+	margin-bottom: 5px;
 	outline: none;
 }
 
@@ -217,23 +213,6 @@ p{
 	width: 250px;
 	height: 250px;
 	box-shadow: 5px 5px 10px black;
-}
-
-.date{
-	width: 125px;
-	height: 25px;
-	background: #00FFE1;
-	font-family: "Secular One", sans-serif;
-}
-
-.upload-title{
-	font-size:16px;
-	font-family: 'Secular One', sans-serif;
-	background: #00FFE1;
-	border-radius: 50px;
-	box-shadow: 5px 5px 10px black;
-	width: 250px;
-	outline: none;
 }
 
 .description{
@@ -269,16 +248,29 @@ p{
 	color: red;
 }
 
-.upload-button{
+.upload-button, .login-button, .twitter-button{
 	font-size:20px;
 	font-family: 'Secular One', sans-serif;
 	background:#00FFE1;
 	color: #000;
 	border-radius: 8px;
+	margin: 15px;
 	box-shadow: 5px 5px 10px black;
-	width: 100px;
 	outline: none;
 	cursor: pointer;
+}
+
+.twitter-button{
+	width: 200px;
+	font-size: 40px;
+}
+
+.upload-button{
+	width: 100px;
+}
+
+.login-button{
+	width: 250px;
 }
 
 .dashboard-button{
@@ -405,7 +397,23 @@ p{
 	height: 20px;
 }
 
+.login-form{
+	width: 100%;
+	text-align: center;
+	margin-bottom: 150px;
+}
+
 .login-form ul{
 	display: inline-block;
 	list-style-type: none;
+	margin: auto;
+	padding: 0;
+}
+
+.xtra-login{
+	color: #FFFFFF;
+}
+
+.xtra-login a{
+	color: #00FFE1;
 }
