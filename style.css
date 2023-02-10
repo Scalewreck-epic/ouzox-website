@@ -113,12 +113,29 @@ nav{
 	overflow: auto;
 }
 
-.middle-title{
-	font-size: 35px;
+.middle-text, .middle-title, .middle-link-text{
 	text-align: center;
 	font-family: 'Secular One', sans-serif;
 	margin: auto;
 	color: #FFFFFF;
+	margin-top: 15px;
+}
+
+.middle-title{
+	font-size: 50px;
+}
+
+.middle-text{
+	font-size: 20px;
+}
+
+.middle-link-text a{
+	font-size: 25px;
+	color: #00FFE1;
+}
+
+.middle-link-text a:hover{
+	text-decoration: underline;
 }
 
 .footer{
@@ -390,6 +407,23 @@ p{
 .errorImg{
 	width: 250px;
 	height: 250px;
+}
+
+.error-title, .error-caption{
+	font-family: 'Secular One', sans-serif;
+	outline: #000;
+	color: #FFF;
+	width: auto;
+	overflow: hidden;
+	word-break: break-all;
+}
+
+.error-title{
+	font-size: 25px;
+}
+
+.error-caption{
+	font-size: 20px;
 }
 
 .market, .errors{
