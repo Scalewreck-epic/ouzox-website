@@ -6,9 +6,10 @@ body{
 }
 
 .mail-link{
-	font-size: 20px;
+	font-size: 25px;
 	font-family: 'Secular One', sans-serif;
 	text-shadow: 5px 5px 10px black;
+	text-decoration: underline;
 }
 
 nav{
@@ -112,6 +113,14 @@ nav{
 	overflow: auto;
 }
 
+.middle-title{
+	font-size: 35px;
+	text-align: center;
+	font-family: 'Secular One', sans-serif;
+	margin: auto;
+	color: #FFFFFF;
+}
+
 .footer{
 	display: flex;
 	flex-direction: column;
@@ -160,6 +169,12 @@ nav{
 	border-bottom: #46464c solid 1px;
 }
 
+.divider{
+	margin: 15px auto;
+	width: 95%;
+	border-bottom: #FFFFFF solid 2px;
+}
+
 .footer-copyright{
 	text-align: left;
 	margin: auto;
@@ -195,6 +210,8 @@ p{
 .upload-game-form ul{
 	display: inline-block;
 	list-style-type: none;
+	margin: auto;
+	padding: 25px;
 }
 
 .upload-box{
@@ -221,7 +238,7 @@ p{
 	background: black;
 	color: white;
 	border-radius: 10px;
-	margin-left: 20px;
+	margin-left: 25px;
 	height: 350px;
 	width: 500px;
 	outline: none;
@@ -239,7 +256,7 @@ p{
 .title-label{
 	font-size: 25px;
 	font-family: 'Secular One', sans-serif;
-	color: #00FFE1;
+	color: #FFF;
 }
 
 .error-label{
@@ -344,6 +361,7 @@ p{
 .desc{
 	font-family: 'Secular One', sans-serif;
 	color: #FFF;
+	margin-left: 20px;
 }
 
 .selections{
