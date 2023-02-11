@@ -114,10 +114,10 @@ function showError(errorMessage) {
     errorImg.className = "errorImg";
 
     var errorMessage = document.createElement("div");
-    errorMessage.className = "product-title";
+    errorMessage.className = "error-title";
 
     var errorCaption = document.createElement("div");
-    errorCaption.className = "product-price";
+    errorCaption.className = "error-caption";
 
     errorMessage.innerHTML = "An error occured.";
     errorCaption.innerHTML = "We apologize for any inconvenience. Please try again later.";
