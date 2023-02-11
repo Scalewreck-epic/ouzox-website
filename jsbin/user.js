@@ -41,7 +41,7 @@ function implementUsername() {
     var upload_btn = document.getElementById("upload-btn");
 
     if (data.Valid) {
-        var url = "https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv:v1/auth/me";
+        var url = "https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv:v1/user/" + data.Data;
 
         login_btn.remove();
         signup_btn.remove();
@@ -51,9 +51,6 @@ function implementUsername() {
         var requestOptions = {
             method: "GET",
             headers: myHeaders,
-            body: JSON.stringify({
-                "id": data.Data,
-            }),
         }
 
         fetch(url, requestOptions)
