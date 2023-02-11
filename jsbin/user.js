@@ -58,6 +58,10 @@ function implementUsername() {
         .then(result => {
             var result_parse = JSON.parse(result);
             console.log(result_parse);
+
+            if (result_parse.name) {
+                username.innerHTML = result_parse.name;
+            }
         })
     } else {
         dashboard_btn.remove();
