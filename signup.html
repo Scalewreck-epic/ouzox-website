@@ -46,6 +46,9 @@
 						<input type="text" class="upload-box" name="username" id="username_input" placeholder="Username" maxlength="20" minlength="3" required>
 					</li>
 					<li>
+						<input type="email" class="upload-box" name="email" id="email_input" placeholder="Email (example@email.com)" required>
+					</li>
+					<li>
 						<input type="password" class="upload-box" name="password" id="password_input" placeholder="Password" required>
 					</li>
 					<li>
@@ -54,6 +57,8 @@
 				</ul></font>
 				<br>
 				<button class="login-button" id="upload-button" type="submit" onclick="createSessionData()"><font size="5">Signup</font></button>
+				<br>
+				<br><div class="error-label" id="error-label"></div>
 				<br>
 				<div class="xtra-login"><font size="5">Already have an account? <a href="login.html">Login now!</a></font></div>
 			</form>
