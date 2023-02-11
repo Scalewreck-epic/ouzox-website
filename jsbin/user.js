@@ -35,8 +35,14 @@ function implementUsername() {
     var username = document.getElementById("username");
     var data = getCookieData("account_id");
 
+    var login_btn = document.getElementById("login-btn");
+    var signup_btn = document.getElementById("signup-btn");
+
     if (data.Valid) {
         var url = "https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv:v1/auth/me";
+
+        login_btn.remove();
+        signup_btn.remove();
     
         var myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
@@ -57,6 +63,13 @@ function implementUsername() {
     } else {
         username.innerHTML = "?";
     }
+}
+
+function createCookieData(authToken, id) {
+    var expiration = calculateExpiration().toUTCString();
+
+    document.cookie = "session_id="+authToken+"; expires="+expiration+";";
+    document.cookie = "account_id="+id+"; expires="+expiration+";";
 }
 
 function createSessionData() {
@@ -93,10 +106,8 @@ function createSessionData() {
             console.log(result_parse);
 
             if (result_parse.authToken) {
-                var expiration = calculateExpiration().toUTCString();
-
-                document.cookie = "session_id="+result_parse.authToken+"; expires="+expiration+";";
-                document.cookie = "account_id="+result_parse.id+"; expires="+expiration+";";
+                createCookieData(result_parse.authToken, result.userId);
+                error_label.innerHTML = "Successfully created account!";
             } else {
                 error_label.innerHTML = result_parse.message;
             }
@@ -108,7 +119,43 @@ function createSessionData() {
 }
 
 function getSessionData() {
-    // get session data.
+    var data = getCookieData("session_id");
+
+    if (!data.Valid) {
+        const username_input = document.getElementById("username_login").value;
+        const password_input = document.getElementById("password_login").value;
+
+        var username = username_input.toString();
+        var password = password_input.toString();
+
+        var myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/json");
+        var requestOptions = {
+            method: "POST",
+            headers: myHeaders,
+            body: JSON.stringify({
+                "username": username,
+                "password": password,
+            }),
+        };
+
+        var error_label = document.getElementById("error-label");
+        error_label.innerHTML = "Logging you in...";
+
+        fetch(login_endpoint, requestOptions)
+        .then(response => response.text())
+        .then(result => {
+            var result_parse = JSON.parse(result);
+            console.log(result_parse);
+
+            if (result_parse.authToken) {
+                createCookieData(result_parse.authToken, result.userId);
+                error_label.innerHTML = "Successfully logged in!";
+            } else {
+                error_label.innerHTML = result_parse.message;
+            }
+        })
+    }
 }
 
 console.log(document.cookie);
