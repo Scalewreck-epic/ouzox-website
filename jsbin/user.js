@@ -1,19 +1,7 @@
-var endpoint = "https://v1.nocodeapi.com/scalewreck/ep/EEfUSWVHrbBXlpDl";
+var signup_endpoint = "https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv:v1/auth/signup";
+var login_endpoint = "https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv:v1/auth/login";
+
 var annualExpiration = 1;
-
-function generateSessionId() {
-    var session_characters = 2^53;
-    var letters = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
-    var session_id = "";
-
-    for (let i = 0; i < session_characters; i++) {
-        var random_num = Math.floor(Math.random() * letters.length);
-        var random_letter = letters.charAt(random_num);
-        session_id += random_letter;
-    }
-
-    return session_id;
-}
 
 function calculateExpiration() {
     var currentDate = new Date();
@@ -38,20 +26,37 @@ function getCookieData(trim) {
     }
 
     return {
-        "Data": "no username",
+        "Data": "no data.",
         "Valid": false,
     };
 }
 
 function implementUsername() {
-    const username = document.getElementById("username");
-    var data = getCookieData("username");
+    var username = document.getElementById("username");
+    var data = getCookieData("account_id");
 
-    if (!data.Valid) {
-        console.log("Username was not found.");
+    if (data.Valid) {
+        var url = "https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv:v1/auth/me";
+    
+        var myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/json");
+        var requestOptions = {
+            method: "GET",
+            headers: myHeaders,
+            body: JSON.stringify({
+                "id": data.Data,
+            }),
+        }
+
+        fetch(url, requestOptions)
+        .then(response => response.text())
+        .then(result => {
+            var result_parse = JSON.parse(result);
+            console.log(result_parse);
+        })
+    } else {
+        username.innerHTML = "?";
     }
-
-    username.innerHTML = data.Data;
 }
 
 function createSessionData() {
@@ -59,39 +64,51 @@ function createSessionData() {
 
     if (!data.Valid) {
         const username_input = document.getElementById("username_input").value;
+        const email_input = document.getElementById("email_input").value;
         const password_input = document.getElementById("password_input").value;
-        const session_id = generateSessionId();
 
         var username = username_input.toString();
         var password = password_input.toString();
+        var email = email_input.toString();
 
         var myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
         var requestOptions = {
             method: "POST",
             headers: myHeaders,
-            body: JSON.stringify({ username, password, session_id }),
-            redirect: "follow",
+            body: JSON.stringify({
+                "name": username,
+                "email": email,
+                "password": password,
+            }),
         };
 
-        fetch(endpoint, requestOptions)
-        .then(response => {
-            if (response.ok) {
-                return response.json();
-            } else {
-                console.warn("Failed to create session data");
-            }
-        })
-        .then(result => {
-            var expiration = calculateExpiration().toUTCString();
+        var error_label = document.getElementById("error-label");
+        error_label.innerHTML = "Creating account...";
 
-            document.cookie = "username="+username+"; expires="+expiration+";";
-            document.cookie = "session_id="+session_id+"; expires="+expiration+";";
+        fetch(signup_endpoint, requestOptions)
+        .then(response => response.text())
+        .then(result => {
+            var result_parse = JSON.parse(result);
+            console.log(result_parse);
+
+            if (result_parse.authToken) {
+                var expiration = calculateExpiration().toUTCString();
+
+                document.cookie = "session_id="+result_parse.authToken+"; expires="+expiration+";";
+                document.cookie = "account_id="+result_parse.id+"; expires="+expiration+";";
+            } else {
+                error_label.innerHTML = result_parse.message;
+            }
         })
         .catch(error => {
             console.warn("Error trying to create session data:", error);
         });
     }
+}
+
+function getSessionData() {
+    // get session data.
 }
 
 console.log(document.cookie);
