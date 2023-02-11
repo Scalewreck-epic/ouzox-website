@@ -26,8 +26,8 @@
 							<a href="index.html">Home Page</a>
 							<a href="dashboard.html">Dashboard</a>
 							<a href="upload.html">Upload</a>
-							<a href="login.html">Login</a>
-							<a href="signup.html">Signup</a>
+							<a href="login.html" id="login-btn">Login</a>
+							<a href="signup.html" id="signup-btn">Signup</a>
 							<a href="contact.html">Contact</a>
 						</ul></font>
 					</div>
@@ -38,7 +38,7 @@
 			</div>
 		</nav>
 		<div class="content">
-			<form id="signup" onsubmit="event.preventDefault();" class="login-form">
+			<form id="signup" onsubmit="event.preventDefault(); createSessionData();" class="login-form">
 				<img src="Images/baner.png" class="web-thumbnail">
 				<br>
 				<ul><font size="5">
@@ -51,12 +51,9 @@
 					<li>
 						<input type="password" class="upload-box" name="password" id="password_input" placeholder="Password" required>
 					</li>
-					<li>
-						<input type="date" class="upload-box" id="birthdate_input" required>
-					</li>
 				</ul></font>
 				<br>
-				<button class="login-button" id="upload-button" type="submit" onclick="createSessionData()"><font size="5">Signup</font></button>
+				<button class="login-button" id="upload-button" type="submit"><font size="5">Signup</font></button>
 				<br>
 				<br><div class="error-label" id="error-label"></div>
 				<br>
