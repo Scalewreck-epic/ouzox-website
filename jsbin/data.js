@@ -85,7 +85,6 @@ function loadProducts(products, gamesortType, listsortType) {
                 productDiv.setAttribute("data-number", newDataNumber);
             }
 
-            console.log(productDiv.getAttribute("data-number"));
             document.getElementById("market").appendChild(productDiv);
         }
     }
