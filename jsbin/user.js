@@ -106,7 +106,7 @@ function createSessionData() {
             console.log(result_parse);
 
             if (result_parse.authToken) {
-                createCookieData(result_parse.authToken, result.userId);
+                createCookieData(result_parse.authToken, result_parse.userId);
                 error_label.innerHTML = "Successfully created account!";
             } else {
                 error_label.innerHTML = result_parse.message;
@@ -149,7 +149,7 @@ function getSessionData() {
             console.log(result_parse);
 
             if (result_parse.authToken) {
-                createCookieData(result_parse.authToken, result.userId);
+                createCookieData(result_parse.authToken, result_parse.userId);
                 error_label.innerHTML = "Successfully logged in!";
             } else {
                 error_label.innerHTML = result_parse.message;
