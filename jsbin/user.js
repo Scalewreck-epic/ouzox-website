@@ -37,6 +37,8 @@ function implementUsername() {
 
     var login_btn = document.getElementById("login-btn");
     var signup_btn = document.getElementById("signup-btn");
+    var dashboard_btn = document.getElementById("dashboard-btn");
+    var upload_btn = document.getElementById("upload-btn");
 
     if (data.Valid) {
         var url = "https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv:v1/auth/me";
@@ -61,7 +63,9 @@ function implementUsername() {
             console.log(result_parse);
         })
     } else {
-        username.innerHTML = "?";
+        dashboard_btn.remove();
+        upload_btn.remove();
+        username.innerHTML = "";
     }
 }
 
