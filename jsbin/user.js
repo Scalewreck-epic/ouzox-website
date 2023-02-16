@@ -1,11 +1,18 @@
-var signup_endpoint = "https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv:v1/auth/signup";
-var login_endpoint = "https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv:v1/auth/login";
+const signup_endpoint = "https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv:v1/auth/signup";
+const login_endpoint = "https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv:v1/auth/login";
+const edit_endpoint = "https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv:v1/user/edit/"; // + user id
+const remove_endpoint = "https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv:v1/user/remove/" // + user id
 
-var annualExpiration = 1;
+const annualExpiration = 1;
 
-function calculateExpiration() {
+function calculateExpiration(past) {
     var currentDate = new Date();
-    currentDate.setFullYear(currentDate.getFullYear() + annualExpiration);
+
+    if (past == true) {
+        currentDate.setFullYear(currentDate.getFullYear() - annualExpiration);
+    } else {
+        currentDate.setFullYear(currentDate.getFullYear() + annualExpiration);
+    }
 
     return currentDate;
 }
@@ -57,7 +64,7 @@ function implementUsername() {
         .then(response => response.text())
         .then(result => {
             var result_parse = JSON.parse(result);
-            console.log(result_parse);
+            console.log("User info:" , result_parse);
 
             if (result_parse.name) {
                 username.innerHTML = result_parse.name;
@@ -71,10 +78,20 @@ function implementUsername() {
 }
 
 function createCookieData(authToken, id) {
-    var expiration = calculateExpiration().toUTCString();
+    const expiration = calculateExpiration(false).toUTCString();
 
     document.cookie = "session_id="+authToken+"; expires="+expiration+";";
     document.cookie = "account_id="+id+"; expires="+expiration+";";
+}
+
+function clearCookieData() {
+    const expiration = calculateExpiration(true).toUTCString();
+    const cookies = document.cookie.split(";");
+
+    cookies.forEach(function(cookie) {
+        const name = cookie.split("=")[0].trim();
+        document.cookie = name + "=; expires="+expiration+";"
+    })
 }
 
 function createSessionData() {
@@ -108,7 +125,7 @@ function createSessionData() {
         .then(response => response.text())
         .then(result => {
             var result_parse = JSON.parse(result);
-            console.log(result_parse);
+            console.log("Signup result:" , result_parse);
 
             if (result_parse.authToken) {
                 createCookieData(result_parse.authToken, result_parse.userId);
@@ -151,14 +168,79 @@ function getSessionData() {
         .then(response => response.text())
         .then(result => {
             var result_parse = JSON.parse(result);
-            console.log(result_parse);
+            console.log("Login info:" , result_parse);
 
             if (result_parse.authToken) {
-                createCookieData(result_parse.authToken, result_parse.userId);
                 error_label.innerHTML = "Successfully logged in!";
+                createCookieData(result_parse.authToken, result_parse.userId);
+                window.location.assign("index.html");
             } else {
                 error_label.innerHTML = result_parse.message;
             }
+        })
+    }
+}
+
+function changeSessionData() {
+    var data = getCookieData("account_id");
+
+    if (data.Valid) {
+        const new_email = document.getElementById("email_input").value;
+        const new_password = document.getElementById("password_input").value;
+
+        var myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/json");
+        var requestOptions = {
+            method: "POST",
+            headers: myHeaders,
+            body: JSON.stringify({
+                "user_id": data.Data,
+                "email": new_email,
+                "password": new_password,
+            }),
+        };
+
+        var error_label = document.getElementById("error-label");
+        error_label.innerHTML = "Changing settings...";
+
+        fetch(edit_endpoint, requestOptions)
+        .then(response => response.text())
+        .then(result => {
+            var result_parse = JSON.parse(result);
+            console.log("Settings info:" , result_parse);
+
+            if (result_parse.authToken) {
+                error_label.innerHTML = "Successfully changed settings!";
+            } else {
+                error_label.innerHTML = result_parse.message;
+            }
+        })
+    }
+}
+
+function deleteSessionData() {
+    var data = getCookieData("account_id");
+
+    if (data.Valid) {
+
+        var myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/json");
+        var requestOptions = {
+            method: "POST",
+            headers: myHeaders,
+            body: JSON.stringify({
+                "user_id": data.Data,
+            }),
+        };
+
+        var error_label = document.getElementById("error-label");
+        error_label.innerHTML = "Deleting account...";
+
+        fetch(remove_endpoint, requestOptions)
+        .then(response => response.text())
+        .then(() => {
+            clearCookieData();
+            window.location.assign("signup.html");
         })
     }
 }
