@@ -223,7 +223,6 @@ function deleteSessionData() {
     var data = getCookieData("account_id");
 
     if (data.Valid) {
-
         var myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
         var requestOptions = {
@@ -243,6 +242,24 @@ function deleteSessionData() {
             clearCookieData();
             window.location.assign("signup.html");
         })
+    }
+}
+
+function logout() {
+    var data = getCookieData("session_id");
+
+    if (data.Valid) {
+        clearCookieData();
+    }
+
+    window.location.assign("login.html");
+}
+
+function redirectSettings() {
+    var data = getCookieData("session_id");
+
+    if (data.Valid) {
+        window.location.assign("settings.html");
     }
 }
 
