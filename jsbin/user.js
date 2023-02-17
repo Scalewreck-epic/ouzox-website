@@ -2,6 +2,7 @@ const signup_endpoint = "https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv:v1/auth/
 const login_endpoint = "https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv:v1/auth/login";
 const edit_endpoint = "https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv:v1/user/edit/"; // + user id
 const remove_endpoint = "https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv:v1/user/remove/" // + user id
+const getsingle_endpoint = "https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv:v1/user/" // + user id
 
 const annualExpiration = 1;
 
@@ -48,7 +49,7 @@ function implementUsername() {
     var upload_btn = document.getElementById("upload-btn");
 
     if (data.Valid) {
-        var url = "https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv:v1/user/" + data.Data;
+        var url = getsingle_endpoint + data.Data;
 
         login_btn.remove();
         signup_btn.remove();
@@ -203,7 +204,7 @@ function changeSessionData() {
         var error_label = document.getElementById("error-label");
         error_label.innerHTML = "Changing settings...";
 
-        fetch(edit_endpoint, requestOptions)
+        fetch((edit_endpoint + data.Data), requestOptions)
         .then(response => response.text())
         .then(result => {
             var result_parse = JSON.parse(result);
@@ -236,7 +237,7 @@ function deleteSessionData() {
         var error_label = document.getElementById("error-label");
         error_label.innerHTML = "Deleting account...";
 
-        fetch(remove_endpoint, requestOptions)
+        fetch((remove_endpoint + data.Data), requestOptions)
         .then(response => response.text())
         .then(() => {
             clearCookieData();
