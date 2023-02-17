@@ -32,7 +32,7 @@
 						</ul></font>
 					</div>
 					<div class="push-right">
-						<div class="username" id="username">username</div>
+						<div class="username" id="username" onclick="redirectSettings()">username</div>
 					</div>
 				</div>
 			</div>
@@ -52,11 +52,11 @@
 				</ul></font>
 				<br>
 				<button class="login-button" id="save-password" type="submit"><font size="5">Save</font></button>
-				<br>
 				<div class="footer-divider"></div>
-				<button class="login-button" id="remove-profile" type="submit"><font size="5">Delete Account</font></button>
-				<p class="desc">You won't be able to recover account.</p>
-				<br>
+				<ul>
+					<button class="login-button" id="remove-profile"><font size="5">Delete Account</font></button>
+					<button class="login-button" id="logout-profile" onclick="logout()"><font size="5">Logout</font></button>
+				</ul>
 				<br><div class="error-label" id="error-label"></div>
 			</div>
 		</div>
