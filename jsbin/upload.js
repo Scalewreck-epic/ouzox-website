@@ -35,12 +35,13 @@ uploadGame.addEventListener("submit", function(event) {
                 image_url: thumbnail_input.files[0],
                 file: file_input.files[0],
                 requires_email: false,
-            }
+            };
             
             var requestOptions = {
                 method: "POST",
                 headers: myHeaders,
                 body: JSON.stringify(productData),
+                redirect: "follow",
             };
         
             fetch(gumroad_upload_url, requestOptions)
