@@ -73,6 +73,7 @@ nav{
 .username {
 	position: relative;
 	top: 30%;
+	cursor: pointer;
 }
 
 .grid a, .grid div {
@@ -282,7 +283,7 @@ p{
 	color: red;
 }
 
-.upload-button, .login-button, .twitter-button{
+.upload-button, .login-button, .twitter-button, .load-button{
 	font-size:20px;
 	font-family: 'Secular One', sans-serif;
 	background:#00FFE1;
@@ -305,6 +306,10 @@ p{
 
 .login-button{
 	width: 250px;
+}
+
+.load-button-div{
+	text-align: center;
 }
 
 .dashboard-button{
@@ -449,13 +454,13 @@ p{
 	height: 20px;
 }
 
-.login-form{
+.login-form, .settings{
 	width: 100%;
 	text-align: center;
 	margin-bottom: 150px;
 }
 
-.login-form ul{
+.login-form ul, .settings ul{
 	display: inline-block;
 	list-style-type: none;
 	margin: auto;
