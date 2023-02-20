@@ -190,10 +190,10 @@ function changeSessionData(headers, endpoint) {
     .then(result => {
         var result_parse = JSON.parse(result);
 
-        if (result_parse.authToken) {
-            error_label.innerHTML = "Successfully changed settings!";
-        } else {
+        if (result_parse.message) {
             error_label.innerHTML = result_parse.message;
+        } else {
+            error_label.innerHTML = "Successfully changed settings!";
         }
     })
 }
