@@ -39,19 +39,30 @@
 		</nav>
 		<div class="content">
 			<div class="settings">
-				<p class="middle-title">Settings</p>
-				<p class="desc">If you aren't changing email or password, keep it as it was originally.</p>
+				<p class="middle-title">Change Email</p>
 				<div class="footer-divider"></div>
 				<ul><font size="5">
 					<li>
 						<input type="email" class="upload-box" name="email" id="email_input" placeholder="New Email">
 					</li>
 					<li>
-						<input type="text" class="upload-box" name="password" id="password_input" placeholder="New Password">
+						<input type="email" class="upload-box" name="email" id="old_email_input" placeholder="Old Email">
 					</li>
 				</ul></font>
 				<br>
-				<button class="login-button" id="save-password" type="submit"><font size="5">Save</font></button>
+				<button class="login-button" id="save-email" type="submit" onclick="changeEmailData()"><font size="5">Save Email</font></button>
+				<p class="middle-title">Change Password</p>
+				<div class="footer-divider"></div>
+				<ul><font size="5">
+					<li>
+						<input type="text" class="upload-box" name="password" id="password_input" placeholder="New Password">
+					</li>
+					<li>
+						<input type="text" class="upload-box" name="password" id="old_password_input" placeholder="Old Password">
+					</li>
+				</ul></font>
+				<br>
+				<button class="login-button" id="save-password" type="submit" onclick="changePasswordData()"><font size="5">Save Password</font></button>
 				<div class="footer-divider"></div>
 				<ul>
 					<button class="login-button" id="remove-profile"><font size="5">Delete Account</font></button>
