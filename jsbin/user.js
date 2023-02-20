@@ -1,6 +1,5 @@
 const signup_endpoint = "https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv:v1/auth/signup";
 const login_endpoint = "https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv:v1/auth/login";
-const edit_endpoint = "https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv:v1/user/edit/"; // + user id
 const remove_endpoint = "https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv:v1/user/remove/" // + user id
 const getsingle_endpoint = "https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv:v1/user/" // + user id
 
@@ -182,12 +181,29 @@ function getSessionData() {
     }
 }
 
-function changeSessionData() {
+function changeSessionData(headers, endpoint) {
+    var error_label = document.getElementById("error-label");
+    error_label.innerHTML = "Changing settings...";
+
+    fetch(endpoint, headers)
+    .then(response => response.text())
+    .then(result => {
+        var result_parse = JSON.parse(result);
+
+        if (result_parse.authToken) {
+            error_label.innerHTML = "Successfully changed settings!";
+        } else {
+            error_label.innerHTML = result_parse.message;
+        }
+    })
+}
+
+function changeEmailData() {
     var data = getCookieData("account_id");
 
     if (data.Valid) {
         const new_email = document.getElementById("email_input").value;
-        const new_password = document.getElementById("password_input").value;
+        const old_email = document.getElementById("old_email_input").value;
 
         var myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
@@ -196,26 +212,35 @@ function changeSessionData() {
             headers: myHeaders,
             body: JSON.stringify({
                 "user_id": data.Data,
-                "email": new_email,
-                "password": new_password,
+                "old_email": old_email,
+                "new_email": new_email,
             }),
         };
 
-        var error_label = document.getElementById("error-label");
-        error_label.innerHTML = "Changing settings...";
+        changeSessionData(requestOptions, ("https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv:v1/user/edit_email/" + data.Data));
+    }
+}
 
-        fetch((edit_endpoint + data.Data), requestOptions)
-        .then(response => response.text())
-        .then(result => {
-            var result_parse = JSON.parse(result);
-            console.log("Settings info:" , result_parse);
+function changePasswordData() {
+    var data = getCookieData("account_id");
 
-            if (result_parse.authToken) {
-                error_label.innerHTML = "Successfully changed settings!";
-            } else {
-                error_label.innerHTML = result_parse.message;
-            }
-        })
+    if (data.Valid) {
+        const new_password = document.getElementById("password_input").value;
+        const old_password = document.getElementById("old_password_input").value;
+
+        var myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/json");
+        var requestOptions = {
+            method: "POST",
+            headers: myHeaders,
+            body: JSON.stringify({
+                "user_id": data.Data,
+                "old_password": old_password,
+                "new_password": new_password,
+            }),
+        };
+        
+        changeSessionData(requestOptions, ("https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv:v1/user/edit_pass/" + data.Data));
     }
 }
 
