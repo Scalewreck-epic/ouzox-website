@@ -4,3 +4,6 @@ We've added advanced search options because we know it can be challenging to fin
 
 
 The goal of Econsole is to provide the best experience for both users and game developers. We are always interested in ways to improve the platform and welcome community feedback.
+
+Read the Econsole documentation:
+https://econsole-games.gitbook.io/econsole-docs/
