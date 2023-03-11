@@ -287,10 +287,10 @@ p{
 	font-size:20px;
 	font-family: 'Secular One', sans-serif;
 	background:#00FFE1;
-	color: #000;
+	color: black;
 	border-radius: 8px;
 	margin: 15px;
-	box-shadow: 5px 5px 10px black;
+	box-shadow: 0px 5px 10px black;
 	outline: none;
 	cursor: pointer;
 }
@@ -318,7 +318,7 @@ p{
 	background: #00FFE1;
 	color: #000;
 	border-radius: 8px;
-	box-shadow: 5px 5px 10px black;
+	box-shadow: 0px 5px 10px black;
 	width: 100px;
 	outline: none;
 }
@@ -329,7 +329,7 @@ p{
 	background: #00FFE1;
 	color: #000;
 	border-radius: 8px;
-	box-shadow: 5px 5px 10px black;
+	box-shadow: 0px 5px 10px black;
 	width: 250px;
 	outline: none;
 }
@@ -340,7 +340,7 @@ p{
 	background: #00FFE1;
 	color: #000;
 	border-radius: 8px;
-	box-shadow: 5px 5px 10px black;
+	box-shadow: 0px 5px 10px black;
 	width: 100px;
 	outline: none;
 }
@@ -371,7 +371,7 @@ p{
 	width: 200px;
 	height: 200px;
 	border-radius: 15px;
-	box-shadow: 0 5px 10px black;
+	box-shadow: 0px 5px 10px black;
 }
 
 .game{
@@ -396,7 +396,7 @@ p{
 .game-sort{
 	text-align: center;
 	font-size: 20px;
-	border: 2px solid black;
+	border: 3px solid black;
 	font-weight: bold;
 	color: #FFF;
 	background-color: #1F1F1F;
