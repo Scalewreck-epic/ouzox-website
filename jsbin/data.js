@@ -28,7 +28,7 @@ function getGamePrice(game_id) {
     });
 }
 
-function loadGames(games, gamesortType, listsortType) {
+function loadGames(games, gameSortType, listSortType) {
     totalPages = Math.ceil(games.length / 20);
 
     for (let i = (currentPage-1)*20; i < currentPage*20 && i < games.length; i++) {
@@ -61,17 +61,17 @@ function loadGames(games, gamesortType, listsortType) {
             gamesDiv.appendChild(gameTitle);
             gamesDiv.appendChild(gamePrice);
 
-            if (gamesortType == "sales") {
+            if (gameSortType == "sales") {
                 gamesDiv.setAttribute("data-number", game.sales_count);
-            } else if (gamesortType == "price") {
+            } else if (gameSortType == "price") {
                 gamesDiv.setAttribute("data-number", game.price);
-            } else if (gamesortType == "newest") {
+            } else if (gameSortType == "newest") {
                 gamesDiv.setAttribute("data-number", game.created);
-            } else if (gamesortType == "uptodate") {
+            } else if (gameSortType == "upToDate") {
                 gamesDiv.setAttribute("data-number", game.updated);
             }
     
-            if (listsortType == "ascending") {
+            if (listSortType == "ascending") {
                 var newDataNumber = gamesDiv.getAttribute("data-number");
 
                 if (newDataNumber > 0) {
@@ -79,7 +79,7 @@ function loadGames(games, gamesortType, listsortType) {
                 }
 
                 gamesDiv.setAttribute("data-number", newDataNumber);
-            } else if (listsortType == "descending") {
+            } else if (listSortType == "descending") {
                 var newDataNumber = gamesDiv.getAttribute("data-number");
 
                 if (newDataNumber < 0) {
@@ -122,7 +122,7 @@ function showError(errorMessage) {
     var errorCaption = document.createElement("div");
     errorCaption.className = "error-caption";
 
-    errorMessage.innerHTML = "An error occured.";
+    errorMessage.innerHTML = "An error occurred.";
     errorCaption.innerHTML = "We apologize for any inconvenience. Please try again later.";
 
     error.appendChild(errorImg);
@@ -146,12 +146,12 @@ function fetchGamesRequest() {
     .then(result => {
         var result_parse = JSON.parse(result);
 
-        var gamesort = document.getElementById("game-sort");
-        var listsort = document.getElementById("list-sort");
-        var selectedGamesort = gamesort.options[gamesort.selectedIndex].value;
-        var selectedListsort = listsort.options[listsort.selectedIndex].value;
+        var gameSort = document.getElementById("game-sort");
+        var listSort = document.getElementById("list-sort");
+        var selectedGameSort = gameSort.options[gameSort.selectedIndex].value;
+        var selectedListSort = listSort.options[listSort.selectedIndex].value;
 
-        loadGames(result_parse.data, selectedGamesort, selectedListsort);
+        loadGames(result_parse.data, selectedGameSort, selectedListSort);
     })
     .catch(error => {
         showError(error, false);
@@ -203,6 +203,7 @@ document.getElementById("generate-button").addEventListener("click", function() 
       document.getElementById("generate-button").disabled = true;
     } else {
       currentPage++;
+      errors.innerHTML = "";
       fetchGamesRequest();
     }
   });
