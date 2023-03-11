@@ -1,6 +1,5 @@
 const signup_endpoint = "https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv:v1/auth/signup";
 const login_endpoint = "https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv:v1/auth/login";
-const remove_endpoint = "https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv:v1/user/remove/" // + user id
 const getsingle_endpoint = "https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv:v1/user/" // + user id
 
 const annualExpiration = 1;
@@ -241,32 +240,6 @@ function changePasswordData() {
         };
         
         changeSessionData(requestOptions, ("https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv:v1/user/edit_pass/" + data.Data));
-    }
-}
-
-function deleteSessionData() {
-    var data = getCookieData("account_id");
-
-    if (data.Valid) {
-        var myHeaders = new Headers();
-        myHeaders.append("Content-Type", "application/json");
-        var requestOptions = {
-            method: "POST",
-            headers: myHeaders,
-            body: JSON.stringify({
-                "user_id": data.Data,
-            }),
-        };
-
-        var error_label = document.getElementById("error-label");
-        error_label.innerHTML = "Deleting account...";
-
-        fetch((remove_endpoint + data.Data), requestOptions)
-        .then(response => response.text())
-        .then(() => {
-            clearCookieData();
-            window.location.assign("signup.html");
-        })
     }
 }
 
