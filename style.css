@@ -82,10 +82,6 @@ nav{
 	padding: 0 5px;
 }
 
-.push-left ul a:hover {
-	text-decoration: underline;
-}
-
 nav{
 	flex: 1;
 	text-align: left;
@@ -135,10 +131,6 @@ nav{
 	color: #00FFE1;
 }
 
-.middle-link-text a:hover{
-	text-decoration: underline;
-}
-
 .footer{
 	display: flex;
 	flex-direction: column;
@@ -179,6 +171,10 @@ nav{
 	font-weight: 700;
 	color: #8a8a8a;
 	font-size: large;
+}
+
+a:hover{
+	text-decoration: underline;
 }
 
 .footer-divider{
@@ -281,6 +277,15 @@ p{
 	font-size: 20px;
 	font-family: 'Secular One', sans-serif;
 	color: red;
+}
+
+.acceptance-label{
+	font-size: 20px;
+	color: #FFF;
+}
+
+.acceptance-label a{
+	color: #00FFE1;
 }
 
 .upload-button, .login-button, .twitter-button, .load-button{
