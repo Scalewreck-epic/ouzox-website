@@ -67,6 +67,11 @@ function implementUsername() {
 
             if (result_parse.name) {
                 username.innerHTML = result_parse.name;
+            } else if (result_parse.message) {
+                if (result_parse.message = "Not Found") {
+                    clearCookieData();
+                    window.location.assign("login.html");
+                }
             }
         })
     } else {
