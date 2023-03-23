@@ -1,13 +1,18 @@
 # Econsole
-Econsole is a game platform that aims to provide the best experience for both users and game developers. The platform makes it simpler to upload and manage games on the website, giving developers more control. Every developer using the Econsole platform has an equal chance of being compensated for their dedication.
+Welcome to Econsole, a platform for game developers to publish their games for free.
+
+Our platform provides a range of games for players to discover and play.
 
 ## Features
-- Simple game upload and management
-- Advanced search options for precise game discovery
-- Continuous improvement based on community feedback
+- Free game publishing for developers
+- A wide variety of games for players to discover and play
 
-## Documentation
-Read the [Econsole documentation](https://econsole-games.gitbook.io/econsole-docs/) to learn more about the platform and its features.
+## Getting Started
+To start playing games on Econsole, simply visit our website and browse through our selection of games.
 
-## Contribution
-Econsole welcomes community feedback and contributions. Feel free to submit an issue or a pull request on our [GitHub repository](https://github.com/Scalewreck-epic/econsole-website).
+To publish your own game, create an account and upload your game files.
+
+## Support
+If you encounter any issues or have any questions, please contact our support team at scalewreck@protonmail.com.
+
+For more information on how to use Econsole, please refer to our [documentation](https://econsole-games.gitbook.io/econsole-docs/)
