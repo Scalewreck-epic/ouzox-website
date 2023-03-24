@@ -93,18 +93,24 @@ function loadGames(games, gameSortType, listSortType) {
         }
     }
 
-    var games = document.getElementById("market").querySelectorAll("game");
+    var games = document.getElementById("market").querySelectorAll(".game");
     var gamesArray = Array.from(games);
-
+    
     gamesArray.sort(function(a, b) {
-        var a = parseInt(a.dataset.number);
-        var b = parseInt(b.dataset.number);
-        return a - b;
-    })
-
+        var aNumber = parseInt(a.dataset.number);
+        var bNumber = parseInt(b.dataset.number);
+        var result = aNumber - bNumber;
+        if (listSortType == "descending") {
+            result = -result;
+        }
+        return result;
+    });
+    
+    var market = document.querySelector("#market");
     gamesArray.forEach(function(game) {
-        document.querySelector("market").appendChild(game);
-    })
+        market.appendChild(game);
+    });
+    
 }
 
 function showError(errorMessage) {
