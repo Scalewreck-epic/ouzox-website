@@ -137,7 +137,7 @@ function showError(errorMessage) {
     document.getElementById("errors").appendChild(error);
 }
 
-function fetchGamesRequest() {
+async function fetchGamesRequest() {
     var myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
 
@@ -147,21 +147,31 @@ function fetchGamesRequest() {
         redirect: "follow",
     };
 
-    fetch(games_list_api, requestOptions)
-    .then(response => response.text())
-    .then(result => {
-        var result_parse = JSON.parse(result);
+    var loadingGif = document.createElement("img");
+    loadingGif.setAttribute("src", "Images/loading.gif");
+    loadingGif.className = "loadingGif";
 
-        var gameSort = document.getElementById("game-sort");
-        var listSort = document.getElementById("list-sort");
-        var selectedGameSort = gameSort.options[gameSort.selectedIndex].value;
-        var selectedListSort = listSort.options[listSort.selectedIndex].value;
+    document.getElementById("errors").appendChild(loadingGif);
 
-        loadGames(result_parse.data, selectedGameSort, selectedListSort);
-    })
-    .catch(error => {
-        showError(error, false);
-    });
+    async function fetchData() {
+        try {
+            const response = await fetch(games_list_api, requestOptions);
+            const result = await response.text();
+            const result_parse = JSON.parse(result);
+            
+            const gameSort = document.getElementById("game-sort");
+            const listSort = document.getElementById("list-sort");
+            const selectedGameSort = gameSort.options[gameSort.selectedIndex].value;
+            const selectedListSort = listSort.options[listSort.selectedIndex].value;
+            
+            loadGames(result_parse.data, selectedGameSort, selectedListSort);
+        } catch (error) {
+            showError(error, false);
+        }
+    }
+
+    await fetchData();
+    loadingGif.remove();
 }
 
 async function fetchGames() {
