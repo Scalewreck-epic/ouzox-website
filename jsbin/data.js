@@ -70,24 +70,6 @@ function loadGames(games, gameSortType, listSortType) {
             } else if (gameSortType == "upToDate") {
                 gamesDiv.setAttribute("data-number", game.updated);
             }
-    
-            if (listSortType == "ascending") {
-                var newDataNumber = gamesDiv.getAttribute("data-number");
-
-                if (newDataNumber > 0) {
-                    newDataNumber = -newDataNumber;
-                }
-
-                gamesDiv.setAttribute("data-number", newDataNumber);
-            } else if (listSortType == "descending") {
-                var newDataNumber = gamesDiv.getAttribute("data-number");
-
-                if (newDataNumber < 0) {
-                    newDataNumber = Math.abs(newDataNumber);
-                }
-
-                gamesDiv.setAttribute("data-number", newDataNumber);
-            }
 
             document.getElementById("market").appendChild(gamesDiv);
         }
