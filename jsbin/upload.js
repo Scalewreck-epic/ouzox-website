@@ -1,4 +1,45 @@
+const filter_api_url = "https://x8ki-letl-twmt.n7.xano.io/api:oyF_ptYd/filter"
+
 const uploadGame = document.getElementById("upload-game");
+
+function filter(text) {
+    var myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+
+    var requestOptions = {
+        method: "POST",
+        headers: myHeaders,
+        body: JSON.stringify({
+            "text": text,
+        })
+    }
+
+    return fetch(filter_api_url, requestOptions)
+        .then(response => response.text())
+        .then(result => {
+            var result_parse = JSON.parse(result);
+
+            var request_response = result_parse.response;
+            var new_result = request_response.result;
+            var inner_response = new_result.response;
+
+            if (inner_response.categories) {
+                for (let i = 0; i < inner_response.categories.length; i++) {
+                    const category = inner_response.categories[i];
+                    const label = category.label;
+                    const label_topic = label.substring(0, label.indexOf(">"));
+                    const label_reason = label.substring(label.indexOf(">") + 1);
+
+                    if (label_topic == "Sensitive Topics") {
+                        return label_reason;
+                    }
+                }
+            }
+
+            return "No reason";
+        })
+}
+
 
 uploadGame.addEventListener("submit", function(event) {
     event.preventDefault();
@@ -20,42 +61,19 @@ uploadGame.addEventListener("submit", function(event) {
             const description_input = document.getElementById("description");
             const price_input = document.getElementById("price");
             const title_input = document.getElementById("title");
-        
-            var myHeaders = new Headers();
-            myHeaders.append("Content-Type", "application/json");
-        
-            var gumroad_upload_url = "https://v1.nocodeapi.com/scalewreck/gumroad/xZdMSxWrIzteMRRb/products";
-        
-            var productData = {
-                name: title_input.value,
-                type: "Digital product",
-                price: price_input.value,
-                description: description_input.value,
-                url: "econsole.gumroad.com/I/"+title_input.value,
-                image_url: thumbnail_input.files[0],
-                file: file_input.files[0],
-                requires_email: false,
-            };
-            
-            var requestOptions = {
-                method: "POST",
-                headers: myHeaders,
-                body: JSON.stringify(productData),
-                redirect: "follow",
-            };
-        
-            fetch(gumroad_upload_url, requestOptions)
-            .then(response => {
-                if (response.ok) {
-                    error_label.innerHTML = "Successfully uploaded game!";
+
+            function handleFilterResult(result) {
+                if (result == "No reason") {
+                    // continue upload process
                 } else {
-                    error_label.innerHTML = "An error occured trying to upload game.";
+                    console.warn("Cannot continue upload process because text includes "+result);
+                    error_label.innerHTML = "Not accepted because of "+result;
+                    return;
                 }
-            })
-            .catch(error => {
-                console.warn(error);
-                error_label.innerHTML = "An error occured trying to upload game.";
-            })
+            }
+            
+            filter(title_input.value).then(handleFilterResult);
+            filter(description_input.value).then(handleFilterResult);
         } else {
             error_label.innerHTML = "Incomplete form.";
         }
