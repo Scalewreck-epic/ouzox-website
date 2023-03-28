@@ -19,11 +19,11 @@ function filter(text) {
         .then(result => {
             var result_parse = JSON.parse(result);
 
-            var request_response = result_parse.response;
-            var new_result = request_response.result;
-            var inner_response = new_result.response;
+            var response = result_parse.response;
+            var response_result = response.result;
+            var result_response = response_result.response;
 
-            if (inner_response.categories) {
+            if (result_response.categories) {
                 for (let i = 0; i < inner_response.categories.length; i++) {
                     const category = inner_response.categories[i];
                     const label = category.label;
@@ -47,36 +47,33 @@ uploadGame.addEventListener("submit", function(event) {
 
     var game_file_warn = document.getElementById("game-file-warn");
     var title_warn = document.getElementById("game-title-warn");
+    var desc_warn = document.getElementById("desc-warn");
 
     checkFileSize();
     checkPrice();
     checkTitleLength();
 
-    if (game_file_warn.innerHTML == "") {
-        if (title_warn.innerHTML == "") {
-            error_label.innerHTML = "Uploading game.."
+    if (game_file_warn.innerHTML == "" || title_warn.innerHTML == "" || desc_warn.innerHTML == "") {
+        error_label.innerHTML = "Uploading game.."
 
-            const file_input = document.getElementById("download-file");
-            const thumbnail_input = document.getElementById("thumbnail");
-            const description_input = document.getElementById("description");
-            const price_input = document.getElementById("price");
-            const title_input = document.getElementById("title");
+        const file_input = document.getElementById("download-file");
+        const thumbnail_input = document.getElementById("thumbnail");
+        const description_input = document.getElementById("description");
+        const price_input = document.getElementById("price");
+        const title_input = document.getElementById("title");
 
-            function handleFilterResult(result) {
-                if (result == "No reason") {
-                    // continue upload process
-                } else {
-                    console.warn("Cannot continue upload process because text includes "+result);
-                    error_label.innerHTML = "Not accepted because of "+result;
-                    return;
-                }
+        function handleFilterResult(result) {
+            if (result == "No reason") {
+                // continue upload process
+            } else {
+                console.warn("Cannot continue upload process because text includes "+result);
+                error_label.innerHTML = "Not accepted because of "+result;
+                return;
             }
-            
-            filter(title_input.value).then(handleFilterResult);
-            filter(description_input.value).then(handleFilterResult);
-        } else {
-            error_label.innerHTML = "Incomplete form.";
         }
+        
+        filter(title_input.value).then(handleFilterResult);
+        filter(description_input.value).then(handleFilterResult);
     } else {
         error_label.innerHTML = "Incomplete form.";
     }
@@ -121,6 +118,19 @@ function checkTitleLength() {
     }
 }
 
+function checkDescriptionLength() {
+    var desc = document.getElementById("description");
+    var desc_warn = document.getElementById("desc-warn");
+
+    if (desc.value.length > 1000) {
+        desc_warn.innerHTML = "Description too long.";
+    } else if (desc.value.length < 15) {
+        desc_warn.innerHTML = "Description too short.";
+    } else {
+        desc_warn.innerHTML = "";
+    }
+}
+
 function checkPrice() {
     var input = document.getElementById("price");
     var isfree = document.getElementById("isfree");
@@ -142,3 +152,6 @@ function checkPrice() {
         input.value = 0;
     }
 }
+
+checkDescriptionLength();
+checkTitleLength();
