@@ -64,7 +64,8 @@
 						</li>
 					</ul>
 					<br><label class="title-label">Description:</label>
-					<br><textarea rows="4" cols="50" wrap="hard" class="description" id="description"></textarea>
+					<br><textarea rows="4" cols="50" wrap="hard" class="description" id="description" autocapitalize="on" autocomplete="on" autocorrect="on" onchange="checkDescriptionLength()"></textarea>
+					<div class="error-label" id="desc-warn"></div>
 					<br><button class="upload-button" id="upload-button" type="submit"><font size="5">Upload</font></button>
 					<br><div class="error-label" id="error-label"></div>
 				</form>
