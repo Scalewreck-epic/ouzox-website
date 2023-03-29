@@ -24,8 +24,8 @@ function filter(text) {
             var result_response = response_result.response;
 
             if (result_response.categories) {
-                for (let i = 0; i < inner_response.categories.length; i++) {
-                    const category = inner_response.categories[i];
+                for (let i = 0; i < result_response.categories.length; i++) {
+                    const category = result_response.categories[i];
                     const label = category.label;
                     const label_topic = label.substring(0, label.indexOf(">"));
                     const label_reason = label.substring(label.indexOf(">") + 1);
