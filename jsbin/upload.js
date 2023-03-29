@@ -65,19 +65,23 @@ uploadGame.addEventListener("submit", function(event) {
             if (result == "No reason") {
                 console.log(label+" accepted through filter.");
             } else {
-                console.warn("Cannot continue upload process because text includes "+result);
+                console.warn("Cannot continue upload process because text includes" , result);
                 error_label.innerHTML = label+" not accepted because of "+result;
                 throw new Error("Upload process cancelled.");
             }
         }
         
-        filter(title_input.value).then(result => {
-            handleFilterResult(result, "Title");
-            filter(description_input.value).then(result => {
-                handleFilterResult(result, "Description");
-                // rest of the code for the upload process
+        try {
+            filter(title_input.value).then(result => {
+                handleFilterResult(result, "Title");
+                filter(description_input.value).then(result => {
+                    handleFilterResult(result, "Description");
+                    // rest of the code for the upload process
+                });
             });
-        });
+        } catch(error) {
+            console.warn("There was an error trying to handle text filter: " , error);
+        }
     } else {
         error_label.innerHTML = "Incomplete form.";
     }
