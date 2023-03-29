@@ -379,6 +379,10 @@ p{
 	box-shadow: 0px 5px 10px black;
 }
 
+.product-image:hover{
+	transform: rotate(10deg);
+}
+
 .game{
 	float: left;
 	width: 200px;
