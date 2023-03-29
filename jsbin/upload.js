@@ -40,7 +40,6 @@ function filter(text) {
         })
 }
 
-
 uploadGame.addEventListener("submit", function(event) {
     event.preventDefault();
     var error_label = document.getElementById("error-label");
@@ -62,18 +61,23 @@ uploadGame.addEventListener("submit", function(event) {
         const price_input = document.getElementById("price");
         const title_input = document.getElementById("title");
 
-        function handleFilterResult(result) {
+        function handleFilterResult(result, label) {
             if (result == "No reason") {
-                // continue upload process
+                console.log(label+" accepted through filter.");
             } else {
                 console.warn("Cannot continue upload process because text includes "+result);
-                error_label.innerHTML = "Not accepted because of "+result;
-                return;
+                error_label.innerHTML = label+" not accepted because of "+result;
+                throw new Error("Upload process cancelled.");
             }
         }
         
-        filter(title_input.value).then(handleFilterResult);
-        filter(description_input.value).then(handleFilterResult);
+        filter(title_input.value).then(result => {
+            handleFilterResult(result, "Title");
+            filter(description_input.value).then(result => {
+                handleFilterResult(result, "Description");
+                // rest of the code for the upload process
+            });
+        });
     } else {
         error_label.innerHTML = "Incomplete form.";
     }
