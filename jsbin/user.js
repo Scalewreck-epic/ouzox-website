@@ -39,7 +39,7 @@ function getCookieData(trim) {
 
 function implementUsername() {
     var username = document.getElementById("username");
-    var data = getCookieData("account_id");
+    var data = getCookieData("session_id");
 
     var login_btn = document.getElementById("login-btn");
     var signup_btn = document.getElementById("signup-btn");
@@ -203,7 +203,7 @@ function changeSessionData(headers, endpoint) {
 }
 
 function changeEmailData() {
-    var data = getCookieData("account_id");
+    var data = getCookieData("session_id");
 
     if (data.Valid) {
         const new_email = document.getElementById("email_input").value;
@@ -215,7 +215,7 @@ function changeEmailData() {
             method: "POST",
             headers: myHeaders,
             body: JSON.stringify({
-                "user_id": data.Data,
+                "session_id": data.Data,
                 "old_email": old_email,
                 "new_email": new_email,
             }),
@@ -226,7 +226,7 @@ function changeEmailData() {
 }
 
 function changePasswordData() {
-    var data = getCookieData("account_id");
+    var data = getCookieData("session_id");
 
     if (data.Valid) {
         const new_password = document.getElementById("password_input").value;
@@ -238,7 +238,7 @@ function changePasswordData() {
             method: "POST",
             headers: myHeaders,
             body: JSON.stringify({
-                "user_id": data.Data,
+                "session_id": data.Data,
                 "old_password": old_password,
                 "new_password": new_password,
             }),
