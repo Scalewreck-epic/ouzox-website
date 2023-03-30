@@ -173,8 +173,11 @@ nav{
 	font-size: large;
 }
 
-a:hover{
-	text-decoration: underline;
+a:not(:has(img)):hover{
+	text-decoration: none;
+	border-bottom: 2px solid #00FFE1;
+	color: #00FFE1;
+	transition: border-bottom 0.2s ease-in-out, color 0.2s ease-in-out;
 }
 
 .footer-divider{
@@ -233,11 +236,18 @@ p{
 	font-family: 'Secular One', sans-serif;
 	background: #464646;
 	color: #FFFFFF;
-	border-radius: 100px;
+	border-radius: 50px;
 	box-shadow: 5px 5px 10px black;
 	width: 250px;
 	margin-bottom: 5px;
 	outline: none;
+	padding: 0;
+	transition: background-color 0.3s, box-shadow 0.3s;
+}
+
+.upload-box:hover{
+	background-color: #555555;
+	box-shadow: 5px 5px 15px black;
 }
 
 .image-display{
@@ -257,6 +267,7 @@ p{
 	width: 500px;
 	outline: none;
 }
+
 
 .checkbox{
 	background: #00FFE1;
@@ -288,16 +299,76 @@ p{
 	color: #00FFE1;
 }
 
-.upload-button, .login-button, .twitter-button, .load-button{
-	font-size:20px;
-	font-family: 'Secular One', sans-serif;
-	background:#00FFE1;
-	color: black;
-	border-radius: 8px;
-	margin: 15px;
-	box-shadow: 0px 5px 10px black;
-	outline: none;
-	cursor: pointer;
+/* Default button style */
+.upload-button,
+.login-button,
+.twitter-button,
+.load-button {
+  font-size: 20px;
+  font-family: 'Secular One', sans-serif;
+  background: #00FFE1;
+  color: black;
+  border-radius: 8px;
+  margin: 15px;
+  box-shadow: 0px 5px 10px black;
+  outline: none;
+  cursor: pointer;
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.twitter-button:hover {
+	background: #1DA1F2;
+	color: white;
+	transition: background 0.2s ease-in-out, color 0.2s ease-in-out;
+  }
+
+.upload-button:hover,
+.login-button:hover,
+.twitter-button:hover,
+.load-button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0px 8px 15px black;
+}
+
+.upload-button:focus,
+.login-button:focus,
+.twitter-button:focus,
+.load-button:focus {
+  outline: none;
+  box-shadow: 0px 0px 0px 2px #00FFE1, 0px 5px 10px black;
+}
+
+.upload-button:active,
+.login-button:active,
+.twitter-button:active,
+.load-button:active {
+  transform: translateY(0px);
+  box-shadow: 0px 3px 5px black;
+}
+
+.upload-button:disabled,
+.login-button:disabled,
+.twitter-button:disabled,
+.load-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  box-shadow: 0px 5px 10px black;
+}
+
+.load-button:disabled:hover::after {
+	content: "You've reached the end.";
+	display: block;
+	position: absolute;
+	top: -25px;
+	left: 100%;
+	padding: 5px;
+	background-color: black;
+	color: white;
+	border-radius: 5px;
+	font-size: 12px;
+	white-space: nowrap;
+	z-index: 9999;
+	cursor: default;
 }
 
 .twitter-button{
@@ -379,8 +450,17 @@ p{
 	box-shadow: 0px 5px 10px black;
 }
 
-.product-image:hover{
+.product-image, .web-icon {
+	transition: transform 0.3s ease-in-out;
+}
+  
+.product-image:hover, .web-icon:hover {
 	transform: rotate(10deg);
+}
+  
+.product-image:hover, .web-icon:hover,
+.product-image:focus, .web-icon:focus {
+	outline: none;
 }
 
 .game{
@@ -456,11 +536,6 @@ p{
 
 .errors{
 	text-align: center;
-}
-
-.cl-checkbox{
-	width: 20px;
-	height: 20px;
 }
 
 .login-form, .settings{
