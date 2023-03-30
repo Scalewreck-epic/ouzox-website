@@ -81,11 +81,10 @@ function implementUsername() {
     }
 }
 
-function createCookieData(authToken, id) {
+function createCookieData(authToken) {
     const expiration = calculateExpiration(false).toUTCString();
 
     document.cookie = "session_id="+authToken+"; expires="+expiration+";";
-    document.cookie = "account_id="+id+"; expires="+expiration+";";
 }
 
 function clearCookieData() {
@@ -132,7 +131,7 @@ function createSessionData() {
             console.log("Signup result:" , result_parse);
 
             if (result_parse.authToken) {
-                createCookieData(result_parse.authToken, result_parse.userId);
+                createCookieData(result_parse.authToken);
                 error_label.innerHTML = "Successfully created account!";
             } else {
                 error_label.innerHTML = result_parse.message;
@@ -176,7 +175,7 @@ function getSessionData() {
 
             if (result_parse.authToken) {
                 error_label.innerHTML = "Successfully logged in!";
-                createCookieData(result_parse.authToken, result_parse.userId);
+                createCookieData(result_parse.authToken);
                 window.location.assign("index.html");
             } else {
                 error_label.innerHTML = result_parse.message;
