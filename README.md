@@ -1,5 +1,6 @@
 # Econsole
 Welcome to Econsole, a platform for game developers to publish their games for free.
+Our website is not finished just yet, we're still working on it.
 
 Our platform provides a range of games for players to discover and play.
 
