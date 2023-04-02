@@ -1,4 +1,5 @@
-const filter_api_url = "https://x8ki-letl-twmt.n7.xano.io/api:oyF_ptYd/filter"
+const filter_api_url = "https://x8ki-letl-twmt.n7.xano.io/api:oyF_ptYd/filter";
+const image_filter_api_url = "https://x8ki-letl-twmt.n7.xano.io/api:oyF_ptYd/image_filter";
 
 const uploadGame = document.getElementById("upload-game");
 
@@ -39,6 +40,7 @@ function filter(text) {
             return "No reason";
         })
 }
+  
 
 uploadGame.addEventListener("submit", function(event) {
     event.preventDefault();
@@ -63,7 +65,7 @@ uploadGame.addEventListener("submit", function(event) {
 
         function handleFilterResult(result, label) {
             if (result == "No reason") {
-                console.log(label+" accepted through filter.");
+                console.log(label , "accepted through filter.");
             } else {
                 console.warn("Cannot continue upload process because text includes" , result);
                 error_label.innerHTML = label+" not accepted because of "+result;
@@ -76,7 +78,6 @@ uploadGame.addEventListener("submit", function(event) {
                 handleFilterResult(result, "Title");
                 filter(description_input.value).then(result => {
                     handleFilterResult(result, "Description");
-                    // rest of the code for the upload process
                 });
             });
         } catch(error) {
@@ -87,15 +88,30 @@ uploadGame.addEventListener("submit", function(event) {
     }
 });
 
-function checkFileSize() {
-    var input = document.getElementById("download-file");
-    var warn = document.getElementById("game-file-warn");
+function checkThumbnail() {
+    const input = document.getElementById("thumbnail");
+    const previewImage = document.getElementById("previewImage");
 
-    var file = input.files[0];
-    var maxFileSize = 250000000; // 250MB in bytes
+    const reader = new FileReader();
+    const file = input.files[0];
+
+    reader.addEventListener("load", function() {
+        const imageUrl = reader.result;
+        previewImage.src = imageUrl;
+    })
+
+    reader.readAsDataURL(file);
+}
+
+function checkFileSize() {
+    const input = document.getElementById("download-file");
+    const warn = document.getElementById("game-file-warn");
+
+    const file = input.files[0];
+    const maxFileSize = 1000000000; // 1GB in bytes
 
     if (file.size > maxFileSize) {
-        warn.innerHTML = "File size too large. Select a file under 250MB";
+        warn.innerHTML = "File size too large. Select a file under 1GB";
         input.value = "";
     } else {
         warn.innerHTML = "";
@@ -103,8 +119,8 @@ function checkFileSize() {
 }
 
 function checkIsFree() {
-    var isfree = document.getElementById("isfree");
-    var input = document.getElementById("price");
+    const isfree = document.getElementById("isfree");
+    const input = document.getElementById("price");
 
     if (!isfree.checked) {
         checkPrice();
@@ -114,8 +130,8 @@ function checkIsFree() {
 }
 
 function checkTitleLength() {
-    var title = document.getElementById("title");
-    var title_warn = document.getElementById("game-title-warn");
+    const title = document.getElementById("title");
+    const title_warn = document.getElementById("game-title-warn");
 
     if (title.value.length > 20) {
         title_warn.innerHTML = "Title must be below 20 characters.";
@@ -127,8 +143,8 @@ function checkTitleLength() {
 }
 
 function checkDescriptionLength() {
-    var desc = document.getElementById("description");
-    var desc_warn = document.getElementById("desc-warn");
+    const desc = document.getElementById("description");
+    const desc_warn = document.getElementById("desc-warn");
 
     if (desc.value.length > 1000) {
         desc_warn.innerHTML = "Description too long.";
@@ -140,11 +156,11 @@ function checkDescriptionLength() {
 }
 
 function checkPrice() {
-    var input = document.getElementById("price");
-    var isfree = document.getElementById("isfree");
+    const input = document.getElementById("price");
+    const isfree = document.getElementById("isfree");
 
-    var minPrice = 1;
-    var maxPrice = 5000;
+    const minPrice = 1;
+    const maxPrice = 5000;
 
     input.value = input.value.replace(/[^0-9]/g, "");
 
