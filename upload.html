@@ -47,7 +47,7 @@
 						</li>
 						<li>
 							<label class="title-label">Thumbnail:</label>
-							<input type="file" name="thumbnail" id="thumbnail" class="upload-box" accept="image/jpeg, image/png" required/>
+							<input type="file" name="thumbnail" id="thumbnail" class="upload-box" accept="image/jpeg, image/png" onchange="checkThumbnail()" required/>
 						</li>
 						<li>
 							<label class="title-label">Download File:</label>
@@ -63,6 +63,7 @@
 							<input type="text" name="price" class="upload-box" onchange="checkPrice()" id="price" pattern="[0-9]*" placeholder="0" value="0"/>
 						</li>
 					</ul>
+					<img id="previewImage" class="product-image"/>
 					<br><label class="title-label">Description:</label>
 					<br><textarea rows="4" cols="50" wrap="hard" class="description" id="description" autocapitalize="on" autocomplete="on" autocorrect="on" onchange="checkDescriptionLength()"></textarea>
 					<div class="error-label" id="desc-warn"></div>
