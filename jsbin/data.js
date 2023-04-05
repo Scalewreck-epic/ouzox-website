@@ -28,6 +28,16 @@ function getGamePrice(game_id) {
     });
 }
 
+function calculateDiffDays(timestamp) {
+    var createdTimestamp = new Date(timestamp * 1000);
+    var currentDate = new Date();
+
+    var createdTimeDiff = Math.abs(currentDate.getTime() - createdTimestamp.getTime());
+    var createdDiffDays = Math.ceil(createdTimeDiff / (1000 * 3600 * 24));
+
+    return createdDiffDays;
+}
+
 function loadGames(games, gameSortType, listSortType) {
     totalPages = Math.ceil(games.length / 20);
 
@@ -55,6 +65,23 @@ function loadGames(games, gameSortType, listSortType) {
             var gamePrice = document.createElement("div");
             gamePrice.className = "product-price";
             gamePrice.innerHTML = game.id; // change to price
+
+            var diffDaysCreated = calculateDiffDays(game.created);
+            var diffDaysUpdated = calculateDiffDays(game.updated);
+
+            if (diffDaysCreated <= 7) {
+                var createdLabel = document.createElement("span");
+                createdLabel.className = "new-label";
+                createdLabel.innerHTML = "New";
+                createdLabel.setAttribute("data-days", diffDaysCreated);
+                gamesDiv.appendChild(createdLabel);
+            } else if (diffDaysUpdated <= 7) {
+                var updatedLabel = document.createElement("span");
+                updatedLabel.className = "updated-label";
+                updatedLabel.innerHTML = "Updated";
+                updatedLabel.setAttribute("data-days", diffDaysUpdated);
+                gamesDiv.appendChild(updatedLabel);
+            }
 
             gameImageHolder.appendChild(gameImage);
             gamesDiv.appendChild(gameImageHolder);
