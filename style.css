@@ -371,6 +371,26 @@ p{
 	cursor: default;
 }
 
+.new-label {
+	display: inline-block;
+	padding: 2px 6px;
+	font-size: 12px;
+	font-weight: bold;
+	color: #fff;
+	background-color: #007bff;
+	border-radius: 3px;
+}
+
+.updated-label {
+	display: inline-block;
+	padding: 2px 6px;
+	font-size: 12px;
+	font-weight: bold;
+	color: #fff;
+	background-color: #6c757d;
+	border-radius: 3px;
+}
+
 .twitter-button{
 	width: 200px;
 	font-size: 40px;
@@ -443,24 +463,69 @@ p{
 	word-break: break-all;
 }
 
-.product-image{
+.web-icon {
+	transition: transform 0.2s ease-in-out;
+}
+
+.web-icon:hover {
+	transform: scale(1.1);
+}
+
+.product-image {
+	position: relative;
 	width: 200px;
 	height: 200px;
 	border-radius: 15px;
 	box-shadow: 0px 5px 10px black;
+	transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+	transform-style: preserve-3d;
 }
-
-.product-image, .web-icon{
-	transition: transform 0.3s ease-in-out;
+	
+.product-image::before {
+	content: '';
+	position: absolute;
+	top: -5px;
+	left: -5px;
+	right: -5px;
+	bottom: -5px;
+	background-color: rgba(0, 0, 0, 0.4);
+	opacity: 0;
+	transition: opacity 0.3s ease-in-out;
 }
-  
-.product-image:hover, .web-icon:hover{
-	transform: rotate(10deg);
+	
+.product-image:hover::before{
+	opacity: 1;
 }
-  
-.product-image:hover, .web-icon:hover,
-.product-image:focus, .web-icon:focus {
-	outline: none;
+	
+.product-image:hover{
+	transform: translate3d(0, -10px, 0) rotateX(30deg) rotateY(-10deg);
+}
+	
+.product-image:hover .product-info {
+	transform: translate3d(0, 10px, 0);
+	opacity: 1;
+}
+	
+.product-info {
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	padding: 20px;
+	background-color: #fff;
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+	opacity: 0;
+	transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+	
+.product-info h3 {
+	margin: 0;
+	font-size: 18px;
+}
+	
+.product-info p {
+	margin: 10px 0 0;
+	font-size: 14px;
 }
 
 .game{
