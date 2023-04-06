@@ -467,65 +467,17 @@ p{
 	transition: transform 0.2s ease-in-out;
 }
 
-.web-icon:hover {
-	transform: scale(1.1);
-}
-
 .product-image {
 	position: relative;
 	width: 200px;
 	height: 200px;
 	border-radius: 15px;
 	box-shadow: 0px 5px 10px black;
-	transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-	transform-style: preserve-3d;
+	transition: transform 0.2s ease-in-out;
 }
-	
-.product-image::before {
-	content: '';
-	position: absolute;
-	top: -5px;
-	left: -5px;
-	right: -5px;
-	bottom: -5px;
-	background-color: rgba(0, 0, 0, 0.4);
-	opacity: 0;
-	transition: opacity 0.3s ease-in-out;
-}
-	
-.product-image:hover::before{
-	opacity: 1;
-}
-	
-.product-image:hover{
-	transform: translate3d(0, -10px, 0) rotateX(30deg) rotateY(-10deg);
-}
-	
-.product-image:hover .product-info {
-	transform: translate3d(0, 10px, 0);
-	opacity: 1;
-}
-	
-.product-info {
-	position: absolute;
-	bottom: 0;
-	left: 0;
-	right: 0;
-	padding: 20px;
-	background-color: #fff;
-	box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-	opacity: 0;
-	transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-}
-	
-.product-info h3 {
-	margin: 0;
-	font-size: 18px;
-}
-	
-.product-info p {
-	margin: 10px 0 0;
-	font-size: 14px;
+
+.web-icon:hover, .product-image:hover {
+	transform: scale(1.1);
 }
 
 .game{
@@ -540,21 +492,21 @@ p{
 	margin-left: 20px;
 }
 
-.selections{
+.selections {
 	width: 160px;
 	float: left;
 	text-align: center;
 	border-right: 2px solid black;
 }
-
-.game-sort{
+  
+.game-sort {
+	margin: 0 auto 10px;
 	text-align: center;
 	font-size: 20px;
-	border: 3px solid black;
 	font-weight: bold;
 	color: #FFF;
 	background-color: #1F1F1F;
-	margin-bottom: 10px;
+	border: 3px solid black;
 	width: 150px;
 }
 
