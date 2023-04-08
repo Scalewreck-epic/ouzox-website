@@ -42,7 +42,7 @@
 					<ul>
 						<li>
 							<label class="title-label">Title:</label>
-							<input type="text" name="title" class="upload-box" id="title" placeholder="Game Title." value="My new project!" onchange="checkTitleLength()" autocorrect="on" maxlength="20" minlength="3"/>
+							<input type="text" name="title" class="text-box" id="title" placeholder="Game Title." value="My new project!" onchange="checkTitleLength()" autocorrect="on" maxlength="20" minlength="3"/>
 							<div class="error-label" id="game-title-warn"></div>
 						</li>
 						<li>
@@ -56,11 +56,14 @@
 						</li>
 						<li>
 							<label class="title-label">Free:</label>
-							<input type="checkbox" class="cl-checkbox" onchange="checkIsFree()" name="isfree" id="isfree"/>
+							<label class="cl-checkbox">
+								<input type="checkbox" name="example" value="1" onchange="checkIsFree()" name="isfree" id="isfree">
+								<span class="cl-checkbox-box"></span>
+							  </label>
 						</li>
 						<li>
-							<label class="title-label" id="price-label">Price:</label>
-							<input type="text" name="price" class="upload-box" onchange="checkPrice()" id="price" pattern="[0-9]*" placeholder="0" value="0"/>
+							<label class="title-label" id="price-label">Price ($):</label>
+							<input type="text" name="price" class="text-box" onchange="checkPrice()" id="price" pattern="[0-9]*" placeholder="0" value="0"/>
 						</li>
 						<li>
 							<label class="title-label">Currency:</label>
