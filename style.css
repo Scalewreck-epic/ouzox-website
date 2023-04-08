@@ -231,23 +231,111 @@ p{
 	padding: 25px;
 }
 
-.upload-box{
-	font-size:16px;
+.upload-box {
+	position: relative;
+	display: inline-block;
+	font-size: 16px;
+	border-radius: 5px;
 	font-family: 'Secular One', sans-serif;
-	background: #464646;
-	color: #FFFFFF;
-	border-radius: 50px;
-	box-shadow: 5px 5px 10px black;
-	width: 250px;
-	margin-bottom: 5px;
-	outline: none;
-	padding: 0;
-	transition: background-color 0.3s, box-shadow 0.3s;
+	color: #fff;
+	background-color: #292929;
+	cursor: pointer;
+	transition: background-color 0.3s ease-in-out;
+}
+  
+.upload-box:before {
+	content: "";
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	width: 20px;
+	height: 20px;
+	background-size: cover;
+}
+  
+.upload-box:hover {
+	background-color: #4b4b4b;
 }
 
-.upload-box:hover{
-	background-color: #555555;
-	box-shadow: 5px 5px 15px black;
+.upload-box:active {
+	background-color: #4b4b4b;
+}
+  
+.upload-box input[type="file"] {
+	position: absolute;
+	top: 0;
+	left: 0;
+	opacity: 0;
+	cursor: pointer;
+}
+
+.text-box {
+	position: relative;
+	display: inline-block;
+	font-size: 16px;
+	font-family: 'Secular One', sans-serif;
+	color: #fff;
+	background-color: #292929;
+	border-radius: 5px;
+	cursor: text;
+	transition: background-color 0.3s ease-in-out;
+  }
+  
+.text-box:before {
+	content: "";
+	position: absolute;
+	top: 50%;
+	left: 20px;
+	transform: translateY(-50%);
+	width: 20px;
+	height: 20px;
+	background-size: cover;
+}
+
+.text-box:hover {
+	background-color: #4b4b4b;
+}
+
+.text-box:focus-within {
+	background-color: #4b4b4b;
+}
+  
+.text-box input[type="text"] {
+	position: absolute;
+	top: 0;
+	left: 0;
+	opacity: 0;
+	cursor: text;
+}
+
+.cl-checkbox input[type="checkbox"] {
+	position: absolute;
+	opacity: 0;
+	cursor: pointer;
+  }
+  
+.cl-checkbox .cl-checkbox-box {
+	display: inline-block;
+	position: relative;
+	width: 16px;
+	height: 16px;
+	margin-right: 10px;
+	border: 1px solid #ccc;
+	border-radius: 3px;
+	background-color: #fff;
+}
+
+.cl-checkbox input[type="checkbox"]:checked + .cl-checkbox-box::after {
+	content: "";
+	position: absolute;
+	left: 4px;
+	top: 1px;
+	width: 5px;
+	height: 9px;
+	border: solid #000000;
+	border-width: 0 2px 2px 0;
+	transform: rotate(45deg);
 }
 
 .image-display{
@@ -452,16 +540,16 @@ p{
 	word-break: break-all;
 }
 
-.product-price{
+.product-price {
 	font-size: 20px;
 	font-family: 'Secular One', sans-serif;
-	outline: #000;
 	color: #FFF;
 	width: auto;
 	float: left;
 	overflow: hidden;
 	word-break: break-all;
-}
+	outline: none;
+}  
 
 .web-icon, .product-image {
 	transition: transform 0.2s ease-in-out;
