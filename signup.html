@@ -2,7 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="UTF-8">
-		<title>Econsole | Signup</title>
+		<title>Econsole | Settings</title>
 		<link rel="icon" type="x-icon" href="Images/icon.png">
 		<link rel="stylesheet" href="style.css">
 		<link rel="preconnect" href="https://fonts.googleapis.com">
@@ -37,31 +37,37 @@
 			</div>
 		</nav>
 		<div class="content">
-			<form id="signup" onsubmit="event.preventDefault(); createSessionData();" class="login-form">
-				<img src="Images/baner.png" class="web-thumbnail">
-				<br>
+			<div class="settings">
+				<p class="middle-title">Change Email</p>
+				<div class="footer-divider"></div>
 				<ul><font size="5">
 					<li>
-						<input type="text" class="upload-box" name="username" id="username_input" placeholder="Username" maxlength="20" minlength="3" required>
+						<input type="email" class="text-box" name="email" id="email_input" placeholder="New Email">
 					</li>
 					<li>
-						<input type="email" class="upload-box" name="email" id="email_input" placeholder="Email (example@email.com)" required>
-					</li>
-					<li>
-						<input type="password" class="upload-box" name="password" id="password_input" placeholder="Password" required>
-					</li>
-					<li>
-						<label class="acceptance-label">By creating an account, you agree to the <a href="https://econsole-games.gitbook.io/econsole-docs/terms-of-service" target="_blank">Terms of Service</a> and the <a href="https://econsole-games.gitbook.io/econsole-docs/privacy-policy" target="_blank">Privacy Policy</a></label>
-						<input type="checkbox" class="cl-checkbox" name="acceptance" required/>
+						<input type="email" class="text-box" name="email" id="old_email_input" placeholder="Old Email">
 					</li>
 				</ul></font>
 				<br>
-				<button class="login-button" id="upload-button" type="submit"><font size="5">Signup</font></button>
+				<button class="login-button" id="save-email" type="submit" onclick="changeEmailData()"><font size="5">Save Email</font></button>
+				<p class="middle-title">Change Password</p>
+				<div class="footer-divider"></div>
+				<ul><font size="5">
+					<li>
+						<input type="text" class="text-box" name="password" id="password_input" placeholder="New Password">
+					</li>
+					<li>
+						<input type="text" class="text-box" name="password" id="old_password_input" placeholder="Old Password">
+					</li>
+				</ul></font>
 				<br>
+				<button class="login-button" id="save-password" type="submit" onclick="changePasswordData()"><font size="5">Save Password</font></button>
+				<div class="footer-divider"></div>
+				<ul>
+					<button class="login-button" id="logout-profile" onclick="logout()"><font size="5">Logout</font></button>
+				</ul>
 				<br><div class="error-label" id="error-label"></div>
-				<br>
-				<div class="xtra-login"><font size="5">Already have an account? <a href="login.html">Login now!</a></font></div>
-			</form>
+			</div>
 		</div>
 		<footer class="footer">
 			<div class="footer-content">
