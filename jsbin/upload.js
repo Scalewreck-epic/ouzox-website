@@ -108,14 +108,23 @@ function checkFileSize() {
     const warn = document.getElementById("game-file-warn");
 
     const file = input.files[0];
-    const maxFileSize = 1000000000; // 1GB in bytes
+    const maxFileSize = 20000000000; // 20GB in bytes
 
     if (file.size > maxFileSize) {
-        warn.innerHTML = "File size too large. Select a file under 1GB";
+        warn.innerHTML = "File size too large. Select a file under 20GB";
         input.value = "";
     } else {
         warn.innerHTML = "";
     }
+}
+
+function updatePriceLabel() {
+    const currencySort = document.getElementById("currency-sort");
+    const priceLabel = document.getElementById("price-label");
+
+    const currencyOption = currencySort.options[currencySort.selectedIndex];
+    const currencySymbol = currencyOption.textContent.match(/\((.*)\)/)[1];
+    priceLabel.innerHTML = "Price (" + currencySymbol + "):";
 }
 
 function checkIsFree() {
@@ -177,5 +186,9 @@ function checkPrice() {
     }
 }
 
+const currencySort = document.getElementById("currency-sort");
+currencySort.addEventListener("change", updatePriceLabel);
+
 checkDescriptionLength();
 checkTitleLength();
+checkIsFree();
