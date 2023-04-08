@@ -59,8 +59,23 @@
 							<input type="checkbox" class="cl-checkbox" onchange="checkIsFree()" name="isfree" id="isfree"/>
 						</li>
 						<li>
-							<label class="title-label">Price:</label>
+							<label class="title-label" id="price-label">Price:</label>
 							<input type="text" name="price" class="upload-box" onchange="checkPrice()" id="price" pattern="[0-9]*" placeholder="0" value="0"/>
+						</li>
+						<li>
+							<label class="title-label">Currency:</label>
+							<select class="game-sort" id="currency-sort">
+								<option value="sales">USD ($)</option>
+								<option value="sales">EUR (€)</option>
+								<option value="sales">JPY (¥)</option>
+								<option value="sales">GBP (£)</option>
+								<option value="sales">CNY (¥)</option>
+								<option value="sales">CHF (CHF)</option>
+								<option value="sales">CAD ($)</option>
+								<option value="sales">AUD ($)</option>
+								<option value="sales">NZD ($)</option>
+								<option value="sales">KRW (₩)</option>
+							</select>
 						</li>
 					</ul>
 					<img id="previewImage" class="product-image"/>
