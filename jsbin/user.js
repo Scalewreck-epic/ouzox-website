@@ -47,7 +47,7 @@ function implementUsername() {
     var upload_btn = document.getElementById("upload-btn");
 
     if (data.Valid) {
-        var url = getsingle_endpoint + data.Data;
+        const url = getsingle_endpoint + data.Data;
 
         login_btn.remove();
         signup_btn.remove();
@@ -78,6 +78,33 @@ function implementUsername() {
         dashboard_btn.remove();
         upload_btn.remove();
         username.innerHTML = "";
+    }
+}
+
+function setStats() {
+    if (data.Valid) {
+        const url = getsingle_endpoint + data.Data;
+
+        var myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/json");
+        var requestOptions = {
+            method: "GET",
+            headers: myHeaders,
+        }
+
+        fetch(url, requestOptions)
+        .then(response => response.text())
+        .then(result => {
+            var result_parse = JSON.parse(result);
+
+            if (result_parse.email && result_parse.created_at) {
+                const email_stat = document.getElementById("email-stat");
+                const join_date = document.getElementById("creation-stat");
+
+                email_stat.innerHTML = "Email: ".charAt.result_parse.email;
+                join_date.innerHTML = "Join Date: ".charAt.result_parse.join_date;
+            }
+        })
     }
 }
 
@@ -206,7 +233,6 @@ function changeEmailData() {
 
     if (data.Valid) {
         const new_email = document.getElementById("email_input").value;
-        const old_email = document.getElementById("old_email_input").value;
 
         var myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
@@ -215,7 +241,6 @@ function changeEmailData() {
             headers: myHeaders,
             body: JSON.stringify({
                 "session_id": data.Data,
-                "old_email": old_email,
                 "new_email": new_email,
             }),
         };
