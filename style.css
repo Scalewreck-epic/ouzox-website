@@ -224,6 +224,10 @@ p{
 	padding: 2px;
 }
 
+.stat{
+	margin: 15px;
+}
+
 .loadingGif{
 	width: 200px;
 	aspect-ratio: 1;
