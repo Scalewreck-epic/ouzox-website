@@ -284,9 +284,9 @@ function logout() {
 
 function redirectSettings() {
     var data = getCookieData("session_id");
-
     if (data.Valid) {
         window.location.assign("settings.html");
+        setStats();
     }
 }
 
