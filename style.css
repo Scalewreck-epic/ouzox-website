@@ -224,6 +224,11 @@ p{
 	padding: 2px;
 }
 
+.loadingGif{
+	width: 200px;
+	aspect-ratio: 1;
+}
+
 .upload-game-form ul{
 	display: inline-block;
 	list-style-type: none;
