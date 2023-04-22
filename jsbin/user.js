@@ -16,6 +16,16 @@ function calculateExpiration(past) {
     return currentDate;
 }
 
+function calculateDiffDays(timestamp) {
+    var createdTimestamp = new Date(timestamp * 1000);
+    var currentDate = new Date();
+
+    var createdTimeDiff = Math.abs(currentDate.getTime() - createdTimestamp.getTime());
+    var createdDiffDays = Math.ceil(createdTimeDiff / (1000 * 3600 * 24));
+
+    return createdDiffDays;
+}
+
 function getCookieData(trim) {
     const cookies = document.cookie;
     const cookieArray = cookies.split(";");
@@ -82,30 +92,31 @@ function implementUsername() {
 }
 
 function setStats() {
-    if (data.Valid) {
-        const url = getsingle_endpoint + data.Data;
+    const url = getsingle_endpoint + data.Data;
 
-        var myHeaders = new Headers();
-        myHeaders.append("Content-Type", "application/json");
-        var requestOptions = {
-            method: "GET",
-            headers: myHeaders,
-        }
-
-        fetch(url, requestOptions)
-        .then(response => response.text())
-        .then(result => {
-            var result_parse = JSON.parse(result);
-
-            if (result_parse.email && result_parse.created_at) {
-                const email_stat = document.getElementById("email-stat");
-                const join_date = document.getElementById("creation-stat");
-
-                email_stat.innerHTML = "Email: ".charAt.result_parse.email;
-                join_date.innerHTML = "Join Date: ".charAt.result_parse.join_date;
-            }
-        })
+    var myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+    var requestOptions = {
+        method: "GET",
+        headers: myHeaders,
     }
+
+    fetch(url, requestOptions)
+    .then(response => response.text())
+    .then(result => {
+        var result_parse = JSON.parse(result);
+
+        console.log(result_parse.email, result_parse.created_at);
+        if (result_parse.email && result_parse.created_at) {
+            const email_stat = document.getElementById("email-stat");
+            const join_time = document.getElementById("creation-stat");
+
+            var join_date = calculateDiffDays(join_time);
+
+            email_stat.innerHTML = "Email: ".charAt.result_parse.email;
+            join_date.innerHTML = "Join Date: ".charAt.result_parse.join_date;
+        }
+    })
 }
 
 function createCookieData(authToken) {
