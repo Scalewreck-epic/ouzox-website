@@ -56,6 +56,10 @@ function implementUsername() {
     var dashboard_btn = document.getElementById("dashboard-btn");
     var upload_btn = document.getElementById("upload-btn");
 
+    if (window.location == "settings.html") {
+        setStats();
+    }
+
     if (data.Valid) {
         const url = getsingle_endpoint + data.Data;
 
@@ -297,7 +301,6 @@ function redirectSettings() {
     var data = getCookieData("session_id");
     if (data.Valid) {
         window.location.assign("settings.html");
-        setStats();
     }
 }
 
