@@ -56,10 +56,6 @@ function implementUsername() {
     var dashboard_btn = document.getElementById("dashboard-btn");
     var upload_btn = document.getElementById("upload-btn");
 
-    if (window.location == "settings.html") {
-        setStats();
-    }
-
     if (data.Valid) {
         const url = getsingle_endpoint + data.Data;
 
@@ -79,6 +75,10 @@ function implementUsername() {
             var result_parse = JSON.parse(result);
             console.log("User info:" , result_parse);
 
+            if (window.location.pathname == "/settings.html") {
+                setStats();
+            }
+
             if (result_parse.name) {
                 username.innerHTML = result_parse.name;
             } else if (result_parse.message) {
@@ -96,6 +96,7 @@ function implementUsername() {
 }
 
 function setStats() {
+    var data = getCookieData("session_id");
     const url = getsingle_endpoint + data.Data;
 
     var myHeaders = new Headers();
@@ -110,7 +111,6 @@ function setStats() {
     .then(result => {
         var result_parse = JSON.parse(result);
 
-        console.log(result_parse.email, result_parse.created_at);
         if (result_parse.email && result_parse.created_at) {
             const email_stat = document.getElementById("email-stat");
             const join_time = document.getElementById("creation-stat");
