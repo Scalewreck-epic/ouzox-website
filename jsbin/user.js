@@ -117,8 +117,8 @@ function setStats() {
 
             var join_date = calculateDiffDays(join_time);
 
-            email_stat.innerHTML = "Email: ".charAt.result_parse.email;
-            join_date.innerHTML = "Join Date: ".charAt.result_parse.join_date;
+            email_stat.innerHTML = "Email: "+result_parse.email;
+            join_date.innerHTML = "Join Date: "+join_date;
         }
     })
 }
