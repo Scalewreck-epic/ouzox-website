@@ -293,6 +293,6 @@ function redirectSettings() {
 console.log(document.cookie);
 implementUsername();
 
-if (window.location.pathname == "/settings.html") {
+if (window.location.pathname.includes("/settings.html")) {
     setStats();
 }
