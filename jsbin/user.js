@@ -65,10 +65,6 @@ function implementUsername() {
             var result_parse = JSON.parse(result);
             console.log("User info:" , result_parse);
 
-            if (window.location.pathname == "/settings.html") {
-                setStats();
-            }
-
             if (result_parse.name) {
                 username.innerHTML = result_parse.name;
             } else if (result_parse.message) {
@@ -296,3 +292,7 @@ function redirectSettings() {
 
 console.log(document.cookie);
 implementUsername();
+
+if (window.location.pathname == "/settings.html") {
+    setStats();
+}
