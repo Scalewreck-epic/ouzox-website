@@ -16,16 +16,6 @@ function calculateExpiration(past) {
     return currentDate;
 }
 
-function calculateDiffDays(timestamp) {
-    var createdTimestamp = new Date(timestamp * 1000);
-    var currentDate = new Date();
-
-    var createdTimeDiff = Math.abs(currentDate.getTime() - createdTimestamp.getTime());
-    var createdDiffDays = Math.ceil(createdTimeDiff / (1000 * 3600 * 24));
-
-    return createdDiffDays;
-}
-
 function getCookieData(trim) {
     const cookies = document.cookie;
     const cookieArray = cookies.split(";");
@@ -115,7 +105,7 @@ function setStats() {
             const email_stat = document.getElementById("email-stat");
             const join_time = document.getElementById("creation-stat");
 
-            var join_date = calculateDiffDays(result_parse.created_at);
+            var join_date = new Date(result_parse.created_at).toUTCString();
 
             email_stat.innerHTML = "Email: "+result_parse.email;
             join_time.innerHTML = "Join Date: "+join_date;
