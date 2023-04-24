@@ -100,11 +100,18 @@ function setStats() {
         if (result_parse.email && result_parse.created_at) {
             const email_stat = document.getElementById("email-stat");
             const join_time = document.getElementById("creation-stat");
-
-            var join_date = new Date(result_parse.created_at).toUTCString();
-
-            email_stat.innerHTML = "Email: "+result_parse.email;
-            join_time.innerHTML = "Join Date: "+join_date;
+        
+            const rfcDate = new Date(result_parse.created_at).toUTCString();
+            const dateObj = new Date(Date.parse(rfcDate));
+            const formattedDate = dateObj.toLocaleDateString("en-US", {
+                year: "2-digit",
+                month: "2-digit",
+                day: "2-digit"
+            });
+        
+            email_stat.innerHTML = "Email: " + result_parse.email;
+            join_time.innerHTML = "Join Date: " + formattedDate;
+        
         }
     })
 }
