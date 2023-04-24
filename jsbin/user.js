@@ -115,10 +115,10 @@ function setStats() {
             const email_stat = document.getElementById("email-stat");
             const join_time = document.getElementById("creation-stat");
 
-            var join_date = calculateDiffDays(join_time);
+            var join_date = calculateDiffDays(result_parse.created_at);
 
             email_stat.innerHTML = "Email: "+result_parse.email;
-            join_date.innerHTML = "Join Date: "+join_date;
+            join_time.innerHTML = "Join Date: "+join_date;
         }
     })
 }
