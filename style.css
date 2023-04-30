@@ -550,15 +550,19 @@ p{
 }
 
 .product-price {
-	font-size: 20px;
+	font-size: 15px;
 	font-family: 'Secular One', sans-serif;
-	color: #FFF;
+	color: #fff;
 	width: auto;
-	float: left;
+	float: right;
 	overflow: hidden;
 	word-break: break-all;
 	outline: none;
-}  
+	background-color: #6c757d;
+	border-radius: 3px;
+	padding: 2px 4px;
+	font-weight: bold;
+	}
 
 .web-icon, .product-image {
 	transition: transform 0.2s ease-in-out;
