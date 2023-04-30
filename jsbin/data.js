@@ -1,31 +1,20 @@
 const games_list_api = "https://x8ki-letl-twmt.n7.xano.io/api:iwAsZq4E:v1/products";
-const games_prices_url = "https://x8ki-letl-twmt.n7.xano.io/api:tFdG2Vz-:v1/prices/"; // + game id
+const games_prices_url = "https://x8ki-letl-twmt.n7.xano.io/api:tFdG2Vz-/prices";
 
 var totalPages
 var isFetching = false;
 const refreshTime = 5;
 let currentPage = 1;
 
+var prices = []
+
 function getGamePrice(game_id) {
-    // ACTIVATE STRIPE ACCOUNT
-    var myHeaders = new Headers();
-    myHeaders.append("Content-Type", "application/json");
-
-    var requestOptions = {
-        method: "GET",
-        headers: myHeaders,
-        redirect: "follow",
-    };
-
-    fetch((games_prices_url + game_id), requestOptions)
-    .then(response => response.text())
-    .then(result => {
-        var result_parse = JSON.parse(result);
-        console.log(result_parse);
-    })
-    .catch(error => {
-        console.warn("There was an error trying to get the price of a game: " , error);
-    });
+    console.log(game_id);
+    const result = prices.find(item => item.product === game_id);
+    if (result) {
+        return { price: result.unit_amount, currency: result.currency };
+    }
+        
 }
 
 function calculateDiffDays(timestamp) {
@@ -43,8 +32,10 @@ function loadGames(games, gameSortType, listSortType) {
 
     for (let i = (currentPage-1)*20; i < currentPage*20 && i < games.length; i++) {
         var game = games[i];
-        //var price = getGamePrice(game.id);
-        
+        var game_price = getGamePrice((game.id).toString());
+        var price = game_price.price / 100;
+        var currency = game_price.currency;
+
         if (game.active) {
             var gamesDiv = document.createElement("div");
             gamesDiv.className = "game";
@@ -64,7 +55,7 @@ function loadGames(games, gameSortType, listSortType) {
     
             var gamePrice = document.createElement("div");
             gamePrice.className = "product-price";
-            gamePrice.innerHTML = game.id; // change to price
+            gamePrice.innerHTML = price+currency.toUpperCase();
 
             var diffDaysCreated = calculateDiffDays(game.created);
             var diffDaysUpdated = calculateDiffDays(game.updated);
@@ -87,12 +78,8 @@ function loadGames(games, gameSortType, listSortType) {
             gamesDiv.appendChild(gameImageHolder);
             gamesDiv.appendChild(gameTitle);
             gamesDiv.appendChild(gamePrice);
-
-            if (gameSortType == "sales") {
-                gamesDiv.setAttribute("data-number", game.sales_count);
-            } else if (gameSortType == "price") {
-                gamesDiv.setAttribute("data-number", game.price);
-            } else if (gameSortType == "newest") {
+            
+            if (gameSortType == "newest") {
                 gamesDiv.setAttribute("data-number", game.created);
             } else if (gameSortType == "upToDate") {
                 gamesDiv.setAttribute("data-number", game.updated);
@@ -119,22 +106,21 @@ function loadGames(games, gameSortType, listSortType) {
     gamesArray.forEach(function(game) {
         market.appendChild(game);
     });
-    
 }
 
-function showError(errorMessage) {
-    console.warn("There was an error trying to get games: " , errorMessage);
-    var error = document.createElement("div");
+function showError(err) {
+    console.warn("There was an error trying to get games: " , err);
+    const error = document.createElement("div");
     error.className = "error";
 
-    var errorImg = document.createElement("img");
+    const errorImg = document.createElement("img");
     errorImg.setAttribute("src", "Images/error.png");
     errorImg.className = "errorImg";
 
-    var errorMessage = document.createElement("div");
+    const errorMessage = document.createElement("div");
     errorMessage.className = "error-title";
 
-    var errorCaption = document.createElement("div");
+    const errorCaption = document.createElement("div");
     errorCaption.className = "error-caption";
 
     errorMessage.innerHTML = "An error occurred.";
@@ -162,6 +148,18 @@ async function fetchGamesRequest() {
 
     document.getElementById("errors").appendChild(loadingGif);
 
+    async function setPrices() {
+        try {
+            const response = await fetch(games_prices_url, requestOptions);
+            const result = await response.text();
+            const result_parse = JSON.parse(result);
+
+            prices = result_parse.data;
+        } catch (error) {
+            showError(error, false);
+        }
+    }
+
     async function fetchData() {
         try {
             const response = await fetch(games_list_api, requestOptions);
@@ -179,6 +177,7 @@ async function fetchGamesRequest() {
         }
     }
 
+    await setPrices();
     await fetchData();
     loadingGif.remove();
 }
@@ -225,11 +224,10 @@ document.getElementById("refresh-list").addEventListener("submit", function(even
 
 document.getElementById("generate-button").addEventListener("click", function() {
     if (currentPage >= totalPages) {
-      document.getElementById("generate-button").disabled = true;
+        document.getElementById("generate-button").disabled = true;
     } else {
-      currentPage++;
-      errors.innerHTML = "";
-      fetchGamesRequest();
+        currentPage++;
+        errors.innerHTML = "";
+        fetchGamesRequest();
     }
-  });
-  
+});
