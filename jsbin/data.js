@@ -83,6 +83,8 @@ function loadGames(games, gameSortType, listSortType) {
                 gamesDiv.setAttribute("data-number", game.created);
             } else if (gameSortType == "upToDate") {
                 gamesDiv.setAttribute("data-number", game.updated);
+            } else if (gameSortType == "price") {
+                gamesDiv.setAttribute("data-number", price);
             }
 
             document.getElementById("market").appendChild(gamesDiv);
