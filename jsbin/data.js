@@ -33,61 +33,64 @@ function loadGames(games, gameSortType, listSortType) {
     for (let i = (currentPage-1)*20; i < currentPage*20 && i < games.length; i++) {
         var game = games[i];
         var game_price = getGamePrice((game.id).toString());
-        var price = game_price.price / 100;
-        var currency = game_price.currency;
 
-        if (game.active) {
-            var gamesDiv = document.createElement("div");
-            gamesDiv.className = "game";
+        if (game_price) {
+            var price = game_price.price / 100;
+            var currency = game_price.currency;
 
-            var gameImage = document.createElement("img");
-            gameImage.className = "product-image";
-            gameImage.setAttribute("src", game.images[0]);
-    
-            var gameImageHolder = document.createElement("a");
+            if (game.active) {
+                var gamesDiv = document.createElement("div");
+                gamesDiv.className = "game";
 
-            gameImageHolder.setAttribute("href", game.url);
-            gameImageHolder.target = "_blank";
-    
-            var gameTitle = document.createElement("div");
-            gameTitle.className = "product-title";
-            gameTitle.innerHTML = game.name;
-    
-            var gamePrice = document.createElement("div");
-            gamePrice.className = "product-price";
-            gamePrice.innerHTML = price+currency.toUpperCase();
+                var gameImage = document.createElement("img");
+                gameImage.className = "product-image";
+                gameImage.setAttribute("src", game.images[0]);
+        
+                var gameImageHolder = document.createElement("a");
 
-            var diffDaysCreated = calculateDiffDays(game.created);
-            var diffDaysUpdated = calculateDiffDays(game.updated);
+                gameImageHolder.setAttribute("href", game.url);
+                gameImageHolder.target = "_blank";
+        
+                var gameTitle = document.createElement("div");
+                gameTitle.className = "product-title";
+                gameTitle.innerHTML = game.name;
+        
+                var gamePrice = document.createElement("div");
+                gamePrice.className = "product-price";
+                gamePrice.innerHTML = price+currency.toUpperCase();
 
-            if (diffDaysCreated <= 7) {
-                var createdLabel = document.createElement("span");
-                createdLabel.className = "new-label";
-                createdLabel.innerHTML = "New";
-                createdLabel.setAttribute("data-days", diffDaysCreated);
-                gamesDiv.appendChild(createdLabel);
-            } else if (diffDaysUpdated <= 7) {
-                var updatedLabel = document.createElement("span");
-                updatedLabel.className = "updated-label";
-                updatedLabel.innerHTML = "Updated";
-                updatedLabel.setAttribute("data-days", diffDaysUpdated);
-                gamesDiv.appendChild(updatedLabel);
+                var diffDaysCreated = calculateDiffDays(game.created);
+                var diffDaysUpdated = calculateDiffDays(game.updated);
+
+                if (diffDaysCreated <= 7) {
+                    var createdLabel = document.createElement("span");
+                    createdLabel.className = "new-label";
+                    createdLabel.innerHTML = "New";
+                    createdLabel.setAttribute("data-days", diffDaysCreated);
+                    gamesDiv.appendChild(createdLabel);
+                } else if (diffDaysUpdated <= 7) {
+                    var updatedLabel = document.createElement("span");
+                    updatedLabel.className = "updated-label";
+                    updatedLabel.innerHTML = "Updated";
+                    updatedLabel.setAttribute("data-days", diffDaysUpdated);
+                    gamesDiv.appendChild(updatedLabel);
+                }
+
+                gameImageHolder.appendChild(gameImage);
+                gamesDiv.appendChild(gameImageHolder);
+                gamesDiv.appendChild(gameTitle);
+                gamesDiv.appendChild(gamePrice);
+                
+                if (gameSortType == "newest") {
+                    gamesDiv.setAttribute("data-number", game.created);
+                } else if (gameSortType == "upToDate") {
+                    gamesDiv.setAttribute("data-number", game.updated);
+                } else if (gameSortType == "price") {
+                    gamesDiv.setAttribute("data-number", price);
+                }
+
+                document.getElementById("market").appendChild(gamesDiv);
             }
-
-            gameImageHolder.appendChild(gameImage);
-            gamesDiv.appendChild(gameImageHolder);
-            gamesDiv.appendChild(gameTitle);
-            gamesDiv.appendChild(gamePrice);
-            
-            if (gameSortType == "newest") {
-                gamesDiv.setAttribute("data-number", game.created);
-            } else if (gameSortType == "upToDate") {
-                gamesDiv.setAttribute("data-number", game.updated);
-            } else if (gameSortType == "price") {
-                gamesDiv.setAttribute("data-number", price);
-            }
-
-            document.getElementById("market").appendChild(gamesDiv);
         }
     }
 
