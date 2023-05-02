@@ -58,7 +58,7 @@ uploadGame.addEventListener("submit", async function(event) {
     checkPrice();
     checkTitleLength();
 
-    if (game_file_warn.innerHTML == "" || title_warn.innerHTML == "" || desc_warn.innerHTML == "") {
+    if (desc_warn.innerText == "" && title_warn.innerText == "" && game_file_warn.innerText == "") {
         error_label.innerHTML = "Uploading game.."
 
         const file_input = document.getElementById("download-file");
@@ -83,6 +83,21 @@ uploadGame.addEventListener("submit", async function(event) {
         myHeaders.append("Content-Type", "application/json");
 
         const currency = currency_input.options[currency_input.selectedIndex].value;
+        
+        const image = thumbnail_input.files[0];
+
+        async function readImage() {
+            return new Promise((resolve, reject) => {
+              const reader = new FileReader();
+              reader.onload = () => {
+                resolve(reader.result);
+              };
+              reader.onerror = reject;
+              reader.readAsDataURL(image);
+            });
+        }
+          
+        //const url = await readImage();
 
         var uploadRequestOptions = {
             method: "POST",
@@ -185,21 +200,21 @@ uploadGame.addEventListener("submit", async function(event) {
             const descriptionResult = await filter(description_input.value);
             const isDescriptionValid = handleFilterResult(descriptionResult, "Description");
         
-            // Check if both title and description are accepted before uploading the product
             if (isTitleValid && isDescriptionValid) {
                 const result = await uploadProduct();
-                if (result) {
+
+                if (result && result.id) {
                     await setProductPrice(result.id);
                     console.log("Product uploaded successfully!");
                 } else {
                     error_label.innerHTML = "There was an error trying to upload game.";
                 }
-            } else {
-                error_label.innerHTML = "Incomplete form.";
             }
         } catch(error) {
             console.warn("There was an error trying to handle text filter: " , error);
         }
+    } else {
+        error_label.innerHTML = "Incomplete form.";
     }
 });
 
