@@ -3,6 +3,8 @@ const image_filter_api_url = "https://x8ki-letl-twmt.n7.xano.io/api:oyF_ptYd/ima
 
 const upload_product_api_url = "https://x8ki-letl-twmt.n7.xano.io/api:iwAsZq4E/products";
 const set_product_price_url = "https://x8ki-letl-twmt.n7.xano.io/api:tFdG2Vz-/prices";
+const upload_image_api_url = "https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv/images";
+const get_secret = "https://x8ki-letl-twmt.n7.xano.io/api:iwAsZq4E/image/getsecret";
 
 const uploadGame = document.getElementById("upload-game");
 
@@ -79,25 +81,31 @@ uploadGame.addEventListener("submit", async function(event) {
             }
         }
 
-        var myHeaders = new Headers();
+        const currency = currency_input.options[currency_input.selectedIndex].value;
+
+        const myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
 
-        const currency = currency_input.options[currency_input.selectedIndex].value;
-        
-        const image = thumbnail_input.files[0];
-
-        async function readImage() {
-            return new Promise((resolve, reject) => {
-              const reader = new FileReader();
-              reader.onload = () => {
-                resolve(reader.result);
-              };
-              reader.onerror = reject;
-              reader.readAsDataURL(image);
+        async function generateFileURL() {
+            const file = thumbnail_input.files[0];
+            const reader = new FileReader();
+          
+            let url;
+          
+            await new Promise((resolve, reject) => {
+              reader.addEventListener("load", () => {
+                url = reader.result;
+                console.log(url);
+                resolve();
+              });
+          
+              reader.readAsDataURL(file);
             });
+          
+            return url;
         }
           
-        //const url = await readImage();
+        const url = await generateFileURL();
 
         var uploadRequestOptions = {
             method: "POST",
@@ -114,7 +122,7 @@ uploadGame.addEventListener("submit", async function(event) {
                     "attributes": [],
                     "caption": null,
                     "deactivate_on": [],
-                    "images": [],
+                    "images": [url],
                     "package_dimensions": {
                       "height": null,
                       "length": null,
@@ -140,7 +148,7 @@ uploadGame.addEventListener("submit", async function(event) {
             } catch (error) {
                 warn("There was an error trying to upload a product: "+error);
             }
-        }
+        };
 
         async function setProductPrice(product_id) {
             var priceRequestOptions = {
@@ -180,7 +188,7 @@ uploadGame.addEventListener("submit", async function(event) {
                         "metadata": null
                     }
                 })
-            }
+            };
 
             try {
                 const response = await fetch(set_product_price_url, priceRequestOptions);
@@ -191,7 +199,7 @@ uploadGame.addEventListener("submit", async function(event) {
             } catch (error) {
                 warn("There was an error trying to set price: "+error);
             }
-        }
+        };
 
         try {
             const titleResult = await filter(title_input.value);
@@ -206,16 +214,17 @@ uploadGame.addEventListener("submit", async function(event) {
                 if (result && result.id) {
                     await setProductPrice(result.id);
                     console.log("Product uploaded successfully!");
+                    error_label.innerHTML = "Successfully published game!";
                 } else {
                     error_label.innerHTML = "There was an error trying to upload game.";
                 }
             }
         } catch(error) {
             console.warn("There was an error trying to handle text filter: " , error);
-        }
+        };
     } else {
         error_label.innerHTML = "Incomplete form.";
-    }
+    };
 });
 
 function checkThumbnail() {
@@ -238,10 +247,10 @@ function checkFileSize() {
     const warn = document.getElementById("game-file-warn");
 
     const file = input.files[0];
-    const maxFileSize = 20000000000; // 20GB in bytes
+    const maxFileSize = 100000000; // 100MB in bytes
 
     if (file.size > maxFileSize) {
-        warn.innerHTML = "File size too large. Select a file under 20GB";
+        warn.innerHTML = "File size too large. Select a file under 100MB";
         input.value = "";
     } else {
         warn.innerHTML = "";
