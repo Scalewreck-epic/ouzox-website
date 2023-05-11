@@ -1,20 +1,19 @@
 const games_list_api = "https://x8ki-letl-twmt.n7.xano.io/api:iwAsZq4E:v1/products";
 const games_prices_url = "https://x8ki-letl-twmt.n7.xano.io/api:tFdG2Vz-/prices";
 
-var totalPages
-var isFetching = false;
 const refreshTime = 5;
-let currentPage = 1;
+const gamesPerPage = 20;
+var isFetching = false;
+let currentPage = 0;
+let totalPages = 0;
 
 var prices = []
 
 function getGamePrice(game_id) {
-    console.log(game_id);
     const result = prices.find(item => item.product === game_id);
     if (result) {
         return { price: result.unit_amount, currency: result.currency };
     }
-        
 }
 
 function calculateDiffDays(timestamp) {
@@ -28,17 +27,20 @@ function calculateDiffDays(timestamp) {
 }
 
 function loadGames(games, gameSortType, listSortType) {
-    totalPages = Math.ceil(games.length / 20);
+    totalPages = games.length;
 
-    for (let i = (currentPage-1)*20; i < currentPage*20 && i < games.length; i++) {
+    for (let i = currentPage; i < currentPage + gamesPerPage && i < games.length; i++) {
         var game = games[i];
-        var game_price = getGamePrice((game.id).toString());
 
-        if (game_price) {
-            var price = game_price.price / 100;
-            var currency = game_price.currency;
+        if (game && game.active) {
+            var game_price = getGamePrice((game.id).toString());
 
-            if (game.active) {
+            if (game_price) {
+                currentPage += 1
+
+                var price = game_price.price / 100;
+                var currency = game_price.currency;
+
                 var gamesDiv = document.createElement("div");
                 gamesDiv.className = "game";
 
@@ -57,7 +59,7 @@ function loadGames(games, gameSortType, listSortType) {
         
                 var gamePrice = document.createElement("div");
                 gamePrice.className = "product-price";
-                gamePrice.innerHTML = price+currency.toUpperCase();
+                gamePrice.innerHTML = price+" "+currency.toUpperCase();
 
                 var diffDaysCreated = calculateDiffDays(game.created);
                 var diffDaysUpdated = calculateDiffDays(game.updated);
@@ -65,13 +67,13 @@ function loadGames(games, gameSortType, listSortType) {
                 if (diffDaysCreated <= 7) {
                     var createdLabel = document.createElement("span");
                     createdLabel.className = "new-label";
-                    createdLabel.innerHTML = "New";
+                    createdLabel.innerHTML = "NEW";
                     createdLabel.setAttribute("data-days", diffDaysCreated);
                     gamesDiv.appendChild(createdLabel);
                 } else if (diffDaysUpdated <= 7) {
                     var updatedLabel = document.createElement("span");
                     updatedLabel.className = "updated-label";
-                    updatedLabel.innerHTML = "Updated";
+                    updatedLabel.innerHTML = "UPDATED";
                     updatedLabel.setAttribute("data-days", diffDaysUpdated);
                     gamesDiv.appendChild(updatedLabel);
                 }
@@ -176,6 +178,7 @@ async function fetchGamesRequest() {
             const selectedGameSort = gameSort.options[gameSort.selectedIndex].value;
             const selectedListSort = listSort.options[listSort.selectedIndex].value;
             
+            console.log(result_parse.data);
             loadGames(result_parse.data, selectedGameSort, selectedListSort);
         } catch (error) {
             showError(error, false);
