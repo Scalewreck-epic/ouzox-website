@@ -178,7 +178,6 @@ async function fetchGamesRequest() {
             const selectedGameSort = gameSort.options[gameSort.selectedIndex].value;
             const selectedListSort = listSort.options[listSort.selectedIndex].value;
             
-            console.log(result_parse.data);
             loadGames(result_parse.data, selectedGameSort, selectedListSort);
         } catch (error) {
             showError(error, false);
@@ -199,6 +198,8 @@ async function fetchGames() {
     games.innerHTML = "";
     errors.innerHTML = "";
 
+    currentPage = 0;
+    totalPages = 0;
     fetchGamesRequest();
 
     await countdown(refreshTime);
@@ -234,7 +235,6 @@ document.getElementById("generate-button").addEventListener("click", function() 
     if (currentPage >= totalPages) {
         document.getElementById("generate-button").disabled = true;
     } else {
-        currentPage++;
         errors.innerHTML = "";
         fetchGamesRequest();
     }
