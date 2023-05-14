@@ -309,7 +309,7 @@ p{
 .text-box:focus-within {
 	background-color: #4b4b4b;
 }
-  
+
 .text-box input[type="text"] {
 	position: absolute;
 	top: 0;
@@ -321,15 +321,17 @@ p{
 .cl-checkbox input[type="checkbox"] {
 	position: absolute;
 	opacity: 0;
+}
+
+.cl-checkbox-box:hover{
 	cursor: pointer;
-  }
-  
+}
+
 .cl-checkbox .cl-checkbox-box {
 	display: inline-block;
 	position: relative;
 	width: 16px;
 	height: 16px;
-	margin-right: 10px;
 	border: 1px solid #ccc;
 	border-radius: 3px;
 	background-color: #fff;
