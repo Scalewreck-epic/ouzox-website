@@ -69,6 +69,7 @@ uploadGame.addEventListener("submit", async function(event) {
         const price_input = document.getElementById("price");
         const currency_input = document.getElementById("currency-sort");
         const title_input = document.getElementById("title");
+        const uploader_name = document.getElementById("username");
 
         function handleFilterResult(result, label) {
             if (result == "No reason") {
@@ -119,7 +120,9 @@ uploadGame.addEventListener("submit", async function(event) {
                             "name": title_input.value,
                             "active": null,
                             "description": description_input.value,
-                            "metadata": null,
+                            "metadata": {
+                                "developer_name": uploader_name.innerHTML,
+                            },
                             "type": null,
                             "attributes": [],
                             "caption": null,
