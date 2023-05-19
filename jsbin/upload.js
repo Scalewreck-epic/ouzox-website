@@ -4,7 +4,6 @@ const image_filter_api_url = "https://x8ki-letl-twmt.n7.xano.io/api:oyF_ptYd/ima
 const upload_product_api_url = "https://x8ki-letl-twmt.n7.xano.io/api:iwAsZq4E/products";
 const set_product_price_url = "https://x8ki-letl-twmt.n7.xano.io/api:tFdG2Vz-/prices";
 const upload_image_api_url = "https://x8ki-letl-twmt.n7.xano.io/api:4A2Ya61A/storage/image";
-const remove_image_api_url = "https://x8ki-letl-twmt.n7.xano.io/api:4A2Ya61A/storage/remove_image";
 
 const uploadGame = document.getElementById("upload-game");
 
@@ -61,8 +60,6 @@ uploadGame.addEventListener("submit", async function(event) {
     checkTitleLength();
 
     if (desc_warn.innerText == "" && title_warn.innerText == "" && game_file_warn.innerText == "") {
-        error_label.innerHTML = "Uploading game.."
-
         const file_input = document.getElementById("download-file");
         const thumbnail_input = document.getElementById("thumbnail");
         const description_input = document.getElementById("description");
@@ -214,35 +211,42 @@ uploadGame.addEventListener("submit", async function(event) {
                 const result_parse = JSON.parse(result);
     
                 console.log(result_parse);
+                return result_parse;
             } catch (error) {
                 warn("There was an error trying to set price: "+error);
             }
         };
 
         try {
+            error_label.innerHTML = "Checking title..."
             const titleResult = await filter(title_input.value);
             const isTitleValid = handleFilterResult(titleResult, "Title");
         
+            error_label.innerHTML = "Checking description..."
             const descriptionResult = await filter(description_input.value);
             const isDescriptionValid = handleFilterResult(descriptionResult, "Description");
         
             if (isTitleValid && isDescriptionValid) {
+                error_label.innerHTML = "Uploading image..."
                 const image_metadata = await uploadImage();
 
                 if (image_metadata) {
+                    error_label.innerHTML = "Creating game page..."
                     const result = await uploadProduct(image_metadata.image.image);
 
                     if (result && result.id) {
-                        await setProductPrice(result.id);
-                        console.log("Product uploaded successfully!");
-                        error_label.innerHTML = "Successfully published game!";
+                        error_label.innerHTML = "Setting price..."
+                        const price = await setProductPrice(result.id);
+                        if (price && price.active) {
+                            console.log("Product uploaded successfully!");
+                            error_label.innerHTML = "Successfully published game!";
+                        }
                     }
-                } else {
-                    error_label.innerHTML = "There was an error trying to upload game.";
                 }
             }
         } catch(error) {
-            console.warn("There was an error trying to handle text filter: " , error);
+            console.warn("There was an error trying to publish game: " , error);
+            error_label.innerHTML = "There was an error trying to upload game.";
         };
     } else {
         error_label.innerHTML = "Incomplete form.";
@@ -294,10 +298,10 @@ function checkTitleLength() {
     const title = document.getElementById("title");
     const title_warn = document.getElementById("game-title-warn");
 
-    if (title.value.length > 20) {
-        title_warn.innerHTML = "Title must be below 20 characters.";
-    } else if (title.value.length < 3) {
-        title_warn.innerHTML = "Title must be above 3 characters.";
+    if (title.value.length > 200) {
+        title_warn.innerHTML = "Title must be below 200 characters.";
+    } else if (title.value.length < 1) {
+        title_warn.innerHTML = "Title must be above 0 characters.";
     } else {
         title_warn.innerHTML = "";
     }
@@ -308,9 +312,9 @@ function checkDescriptionLength() {
     const desc_warn = document.getElementById("desc-warn");
 
     if (desc.value.length > 1000) {
-        desc_warn.innerHTML = "Description too long.";
-    } else if (desc.value.length < 15) {
-        desc_warn.innerHTML = "Description too short.";
+        desc_warn.innerHTML = "Description is too long.";
+    } else if (desc.value.length < 1) {
+        desc_warn.innerHTML = "Description is too short.";
     } else {
         desc_warn.innerHTML = "";
     }
