@@ -59,12 +59,40 @@ function createGamePage(game, gameSortType, game_price) {
         createdLabel.innerHTML = "NEW";
         createdLabel.setAttribute("data-days", diffDaysCreated);
         gamesDiv.appendChild(createdLabel);
+
+        createdLabel.addEventListener("mouseenter", function() {
+            if (diffDaysUpdated > 1) {
+                updatedLabel.innerHTML = `${diffDaysCreated} DAYS AGO`;
+            } else if (diffDaysUpdated == 1) {
+                updatedLabel.innerHTML = `1 DAY AGO`;
+            } else {
+                updatedLabel.innerHTML = `TODAY`;
+            }
+        })
+
+        createdLabel.addEventListener("mouseleave", function() {
+            updatedLabel.innerHTML = "NEW";
+        })
     } else if (diffDaysUpdated <= 7) {
         var updatedLabel = document.createElement("span");
         updatedLabel.className = "updated-label";
         updatedLabel.innerHTML = "UPDATED";
         updatedLabel.setAttribute("data-days", diffDaysUpdated);
         gamesDiv.appendChild(updatedLabel);
+
+        updatedLabel.addEventListener("mouseenter", function() {
+            if (diffDaysUpdated > 1) {
+                updatedLabel.innerHTML = `${diffDaysUpdated} DAYS AGO`;
+            } else if (diffDaysUpdated == 1) {
+                updatedLabel.innerHTML = `1 DAY AGO`;
+            } else {
+                updatedLabel.innerHTML = `TODAY`;
+            }
+        })
+
+        updatedLabel.addEventListener("mouseleave", function() {
+            updatedLabel.innerHTML = "UPDATED";
+        })
     }
 
     gameImageHolder.appendChild(gameImage);
