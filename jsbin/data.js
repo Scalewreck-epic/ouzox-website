@@ -5,16 +5,16 @@ const refreshTime = 5;
 const gamesPerPage = 20;
 var isFetching = false;
 let currentPage = 0;
-let totalPages = 0;
 
-var prices = []
+var prices = [];
+var games = [];
 
 function getGamePrice(game_id) {
     const result = prices.find(item => item.product === game_id);
     if (result) {
         return { price: result.unit_amount, currency: result.currency };
-    }
-}
+    };
+};
 
 function calculateDiffDays(timestamp) {
     var createdTimestamp = new Date(timestamp * 1000);
@@ -24,9 +24,9 @@ function calculateDiffDays(timestamp) {
     var createdDiffDays = Math.ceil(createdTimeDiff / (1000 * 3600 * 24));
 
     return createdDiffDays;
-}
+};
 
-function createGamePage(game, gameSortType, game_price) {
+function createGamePage(game, game_price) {
     var price = game_price.price / 100;
     var currency = game_price.currency;
 
@@ -66,13 +66,13 @@ function createGamePage(game, gameSortType, game_price) {
             } else if (diffDaysUpdated == 1) {
                 updatedLabel.innerHTML = `1 DAY AGO`;
             } else {
-                updatedLabel.innerHTML = `TODAY`;
-            }
-        })
+                updatedLabel.innerHTML = "TODAY";
+            };
+        });
 
         createdLabel.addEventListener("mouseleave", function() {
             updatedLabel.innerHTML = "NEW";
-        })
+        });
     } else if (diffDaysUpdated <= 7) {
         var updatedLabel = document.createElement("span");
         updatedLabel.className = "updated-label";
@@ -86,7 +86,7 @@ function createGamePage(game, gameSortType, game_price) {
             } else if (diffDaysUpdated == 1) {
                 updatedLabel.innerHTML = `1 DAY AGO`;
             } else {
-                updatedLabel.innerHTML = `TODAY`;
+                updatedLabel.innerHTML = "TODAY";
             }
         })
 
@@ -99,20 +99,30 @@ function createGamePage(game, gameSortType, game_price) {
     gamesDiv.appendChild(gameImageHolder);
     gamesDiv.appendChild(gameTitle);
     gamesDiv.appendChild(gamePrice);
-    
-    if (gameSortType == "newest") {
-        gamesDiv.setAttribute("data-number", game.created);
-    } else if (gameSortType == "upToDate") {
-        gamesDiv.setAttribute("data-number", game.updated);
-    } else if (gameSortType == "price") {
-        gamesDiv.setAttribute("data-number", price);
-    }
 
     document.getElementById("market").appendChild(gamesDiv);
-}
+};
 
-function loadGames(games, gameSortType, listSortType) {
-    totalPages = games.length;
+function loadGames(gameSortType, listSortType) {
+    if (gameSortType == "newest") {
+        if (listSortType == "descending") {
+            games.sort((a, b) => (a.created > b.created) ? -1 : 1);
+        } else {
+            games.sort((a, b) => (a.created > b.created) ? 1 : -1);
+        }
+    } else if (gameSortType == "upToDate") {
+        if (listSortType == "descending") {
+            games.sort((a, b) => (a.updated > b.updated) ? -1 : 1);
+        } else {
+            games.sort((a, b) => (a.updated > b.updated) ? 1 : -1);
+        };
+    } else if (gameSortType == "price") {
+        if (listSortType == "descending") {
+            games.sort((a, b) => ((getGamePrice((a.id).toString()).price / 100) > (getGamePrice((b.id).toString()).price / 100)) ? -1 : 1);
+        } else {
+            games.sort((a, b) => ((getGamePrice((a.id).toString()).price / 100) > (getGamePrice((b.id).toString()).price / 100)) ? 1 : -1);
+        }
+    }
 
     for (let i = currentPage; i < currentPage + gamesPerPage && i < games.length; i++) {
         var game = games[i];
@@ -121,30 +131,12 @@ function loadGames(games, gameSortType, listSortType) {
             var game_price = getGamePrice((game.id).toString());
 
             if (game_price) {
-                currentPage += 1
-                createGamePage(game, gameSortType, game_price);
-            }
-        }
-    }
-
-    var games = document.getElementById("market").querySelectorAll(".game");
-    var gamesArray = Array.from(games);
-    
-    gamesArray.sort(function(a, b) {
-        var aNumber = parseInt(a.dataset.number);
-        var bNumber = parseInt(b.dataset.number);
-        var result = aNumber - bNumber;
-        if (listSortType == "descending") {
-            result = -result;
-        }
-        return result;
-    });
-    
-    var market = document.querySelector("#market");
-    gamesArray.forEach(function(game) {
-        market.appendChild(game);
-    });
-}
+                currentPage += 1;
+                createGamePage(game, game_price);
+            };
+        };
+    };
+};
 
 function showError(err) {
     console.warn("There was an error trying to get games: " , err);
@@ -162,13 +154,13 @@ function showError(err) {
     errorCaption.className = "error-caption";
 
     errorMessage.innerHTML = "An error occurred.";
-    errorCaption.innerHTML = "We apologize for any inconvenience. Please try again later.";
+    errorCaption.innerHTML = "Game loading error. Please try again later.";
 
     error.appendChild(errorImg);
     error.appendChild(errorMessage);
     error.appendChild(errorCaption);
     document.getElementById("errors").appendChild(error);
-}
+};
 
 async function fetchGamesRequest() {
     var myHeaders = new Headers();
@@ -193,10 +185,11 @@ async function fetchGamesRequest() {
             const result_parse = JSON.parse(result);
 
             prices = result_parse.data;
+            prices.sort((a, b) => (a.unit_amount > b.unit_amount) ? 1 : -1);
         } catch (error) {
             showError(error, false);
-        }
-    }
+        };
+    };
 
     async function fetchData() {
         try {
@@ -208,17 +201,19 @@ async function fetchGamesRequest() {
             const listSort = document.getElementById("list-sort");
             const selectedGameSort = gameSort.options[gameSort.selectedIndex].value;
             const selectedListSort = listSort.options[listSort.selectedIndex].value;
+
+            games = result_parse.data;
             
-            loadGames(result_parse.data, selectedGameSort, selectedListSort);
+            loadGames(selectedGameSort, selectedListSort);
         } catch (error) {
             showError(error, false);
-        }
-    }
+        };
+    };
 
     await setPrices();
     await fetchData();
     loadingGif.remove();
-}
+};
 
 async function countdown(time) {
     return new Promise(resolve => {
@@ -229,22 +224,21 @@ async function countdown(time) {
                 resolve();
             } else {
                 time--;
-            }
+            };
         }, 1000);
-    })
-}
+    });
+};
 
 async function fetchGames() {
     isFetching = true;
 
-    var games = document.getElementById("market");
+    var market = document.getElementById("market");
     var errors = document.getElementById("errors");
 
-    games.innerHTML = "";
+    market.innerHTML = "";
     errors.innerHTML = "";
 
     currentPage = 0;
-    totalPages = 0;
     prices = [];
     fetchGamesRequest();
 
@@ -252,18 +246,18 @@ async function fetchGames() {
 
     document.getElementById("refresh-button").innerHTML = "Refresh";
     isFetching = false;
-}
+};
 
 document.getElementById("refresh-list").addEventListener("submit", function(event) {
     event.preventDefault();
 
     if (!isFetching) {
         fetchGames();
-    }
-})
+    };
+});
 
 document.getElementById("generate-button").addEventListener("click", function() {
-    if (currentPage >= totalPages) {
+    if (currentPage >= games.length) {
         document.getElementById("generate-button").disabled = true;
     } else {
         errors.innerHTML = "";
@@ -271,4 +265,6 @@ document.getElementById("generate-button").addEventListener("click", function() 
     }
 });
 
-fetchGames();
+if (window.location.pathname.includes("/index.html")) {
+    fetchGames();
+};
