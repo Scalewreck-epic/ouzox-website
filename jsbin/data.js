@@ -62,11 +62,11 @@ function createGamePage(game, game_price) {
 
         createdLabel.addEventListener("mouseenter", function() {
             if (diffDaysUpdated > 1) {
-                updatedLabel.innerHTML = `${diffDaysCreated} DAYS AGO`;
+                createdLabel.innerHTML = `${diffDaysCreated} DAYS AGO`;
             } else if (diffDaysUpdated == 1) {
-                updatedLabel.innerHTML = `1 DAY AGO`;
+                createdLabel.innerHTML = `1 DAY AGO`;
             } else {
-                updatedLabel.innerHTML = "TODAY";
+                createdLabel.innerHTML = "TODAY";
             };
         });
 
