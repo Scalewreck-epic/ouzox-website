@@ -103,7 +103,7 @@ function createGamePage(game, game_price) {
     document.getElementById("market").appendChild(gamesDiv);
 };
 
-function loadGames(gameSortType, listSortType) {
+function sortGames(gameSortType, listSortType) {
     if (gameSortType == "newest") {
         if (listSortType == "descending") {
             games.sort((a, b) => (a.created > b.created) ? -1 : 1);
@@ -123,7 +123,9 @@ function loadGames(gameSortType, listSortType) {
             games.sort((a, b) => ((getGamePrice((a.id).toString()).price / 100) > (getGamePrice((b.id).toString()).price / 100)) ? 1 : -1);
         }
     }
+}
 
+function loadGames() {
     for (let i = currentPage; i < currentPage + gamesPerPage && i < games.length; i++) {
         var game = games[i];
 
@@ -137,6 +139,23 @@ function loadGames(gameSortType, listSortType) {
         };
     };
 };
+
+function loadDashboard() {
+    const username = document.getElementById("username");
+
+    for (let i = currentPage; i < currentPage + gamesPerPage && i < games.length; i++) {
+        var game = games[i];
+
+        if (game && game.active && game.metadata.developer_name == username.innerHTML) {
+            var game_price = getGamePrice((game.id).toString());
+
+            if (game_price) {
+                currentPage += 1;
+                createGamePage(game, game_price);
+            };
+        };
+    };
+}
 
 function showError(err) {
     console.warn("There was an error trying to get games: " , err);
@@ -162,7 +181,7 @@ function showError(err) {
     document.getElementById("errors").appendChild(error);
 };
 
-async function fetchGamesRequest() {
+async function fetchGamesRequest(isDashboard) {
     var myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
 
@@ -204,7 +223,14 @@ async function fetchGamesRequest() {
 
             games = result_parse.data;
             
-            loadGames(selectedGameSort, selectedListSort);
+            console.log(games);
+            sortGames(selectedGameSort, selectedListSort);
+
+            if (isDashboard) {
+                loadDashboard();
+            } else {
+                loadGames();
+            };
         } catch (error) {
             showError(error, false);
         };
@@ -229,7 +255,7 @@ async function countdown(time) {
     });
 };
 
-async function fetchGames() {
+async function fetchGames(isDashboard) {
     isFetching = true;
 
     var market = document.getElementById("market");
@@ -240,7 +266,7 @@ async function fetchGames() {
 
     currentPage = 0;
     prices = [];
-    fetchGamesRequest();
+    fetchGamesRequest(isDashboard);
 
     await countdown(refreshTime);
 
@@ -252,7 +278,7 @@ document.getElementById("refresh-list").addEventListener("submit", function(even
     event.preventDefault();
 
     if (!isFetching) {
-        fetchGames();
+        fetchGames(false);
     };
 });
 
@@ -261,10 +287,12 @@ document.getElementById("generate-button").addEventListener("click", function() 
         document.getElementById("generate-button").disabled = true;
     } else {
         errors.innerHTML = "";
-        fetchGamesRequest();
+        fetchGamesRequest(false);
     }
 });
 
 if (window.location.pathname.includes("/index.html")) {
-    fetchGames();
+    fetchGames(false);
+} else if (window.location.pathname.includes("/dashboard.html")) {
+    fetchGames(true)
 };
