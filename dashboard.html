@@ -37,15 +37,40 @@
 			</div>
 		</nav>
 		<div class="content">
-			<div class="developer-market">
-				<!--Game Start-->
-				<div class="game">
-					<div class="product-image"><img src="Images/error.png" class="product-image" alt="GAME IMAGE"></div>
-					<div class="product-price">$1 USD (0MB)</div>
-					<a class="download-button" href="dashboard.html">Edit</a>
-					<a class="download-button" href="dashboard.html">Delete</a>
-				</div>
-				<!--Game End-->
+			<div class="selections">
+				<form id="refresh-list">
+					<label class="title-label">Sort By:</label>
+					<br>
+					<select id="game-sort" class="game-sort">
+						<option value="newest">Newest</option>
+						<option value="upToDate">Updated</option>
+						<option value="price">Price</option>
+					</select>
+					<select id="list-sort" class="game-sort">
+						<option value="descending">Descending</option>
+						<option value="ascending">Ascending</option>
+					</select>
+					<select id="genre-sort" class="game-sort">
+						<option value="all">All Genres</option>
+						<option value="interactive">Interactive</option>
+						<option value="simulation">Simulation</option>
+						<option value="adventure">Adventure</option>
+						<option value="horror">Horror</option>
+						<option value="retro">Retro</option>
+						<option value="action">Action</option>
+						<option value="survival">Survival</option>
+						<option value="sci-fi">Sci-Fi</option>
+					</select>
+					<br>
+					<button class="upload-button" id="refresh-button" type="submit">Refresh</button>
+				</form>
+			</div>
+			<div class="market" id="market"></div>
+			<div class="errors" id="errors"></div>
+			<div class="load-button-div">
+				<button class="load-button" id="generate-button">Load more games</button>
+				<br><label class="acceptance-label">Follow Econsole on <a href="https://twitter.com/scalewrecktweak">Twitter</a></label>
+				<br><label class="acceptance-label">Create a new <a href="/upload.html">project</a></label>
 			</div>
 		</div>
 		<footer class="footer">
@@ -64,4 +89,5 @@
 		</footer>
 	</body>
 	<script src="jsbin/user.js"></script>
+	<script src="jsbin/data.js"></script>
 </html>
