@@ -274,11 +274,19 @@ async function fetchGames(isDashboard) {
     isFetching = false;
 };
 
+function isPathDashboard() {
+    if (window.location.pathname.includes("/dashboard.html")) {
+        return true;
+    };
+
+    return false;
+}
+
 document.getElementById("refresh-list").addEventListener("submit", function(event) {
     event.preventDefault();
 
     if (!isFetching) {
-        fetchGames(false);
+        fetchGames(isPathDashboard());
     };
 });
 
@@ -287,12 +295,8 @@ document.getElementById("generate-button").addEventListener("click", function() 
         document.getElementById("generate-button").disabled = true;
     } else {
         errors.innerHTML = "";
-        fetchGamesRequest(false);
+        fetchGamesRequest(isPathDashboard());
     }
 });
 
-if (window.location.pathname.includes("/index.html")) {
-    fetchGames(false);
-} else if (window.location.pathname.includes("/dashboard.html")) {
-    fetchGames(true)
-};
+fetchGames(isPathDashboard());
