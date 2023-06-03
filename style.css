@@ -402,6 +402,7 @@ p{
 .upload-button,
 .login-button,
 .twitter-button,
+.delete-button,
 .load-button {
   font-size: 20px;
   font-family: 'Secular One', sans-serif;
@@ -415,6 +416,10 @@ p{
   transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
 }
 
+.delete-button {
+	margin: 0;
+}
+
 .twitter-button:hover {
 	background: #1DA1F2;
 	color: white;
@@ -424,6 +429,7 @@ p{
 .upload-button:hover,
 .login-button:hover,
 .twitter-button:hover,
+.delete-button:hover,
 .load-button:hover {
   transform: translateY(-3px);
   box-shadow: 0px 8px 15px black;
@@ -432,6 +438,7 @@ p{
 .upload-button:focus,
 .login-button:focus,
 .twitter-button:focus,
+.delete-button:focus,
 .load-button:focus {
   outline: none;
   box-shadow: 0px 0px 0px 2px #00FFE1, 0px 5px 10px black;
@@ -440,6 +447,7 @@ p{
 .upload-button:active,
 .login-button:active,
 .twitter-button:active,
+.delete-button:active,
 .load-button:active {
   transform: translateY(0px);
   box-shadow: 0px 3px 5px black;
