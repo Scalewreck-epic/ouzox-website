@@ -159,26 +159,29 @@ function loadDashboard() {
 
 function showError(err) {
     console.warn("There was an error trying to get games: " , err);
-    const error = document.createElement("div");
-    error.className = "error";
 
-    const errorImg = document.createElement("img");
-    errorImg.setAttribute("src", "Images/error.png");
-    errorImg.className = "errorImg";
-
-    const errorMessage = document.createElement("div");
-    errorMessage.className = "error-title";
-
-    const errorCaption = document.createElement("div");
-    errorCaption.className = "error-caption";
-
-    errorMessage.innerHTML = "An error occurred.";
-    errorCaption.innerHTML = "Game loading error. Please try again later.";
-
-    error.appendChild(errorImg);
-    error.appendChild(errorMessage);
-    error.appendChild(errorCaption);
-    document.getElementById("errors").appendChild(error);
+    if (document.getElementById("errors").innerHTML == "") {
+        const error = document.createElement("div");
+        error.className = "error";
+    
+        const errorImg = document.createElement("img");
+        errorImg.setAttribute("src", "Images/error.png");
+        errorImg.className = "errorImg";
+    
+        const errorMessage = document.createElement("div");
+        errorMessage.className = "error-title";
+    
+        const errorCaption = document.createElement("div");
+        errorCaption.className = "error-caption";
+    
+        errorMessage.innerHTML = "An error occurred.";
+        errorCaption.innerHTML = "Game loading error. Please try again later.";
+    
+        error.appendChild(errorImg);
+        error.appendChild(errorMessage);
+        error.appendChild(errorCaption);
+        document.getElementById("errors").appendChild(error);
+    }
 };
 
 async function fetchGamesRequest(isDashboard) {
