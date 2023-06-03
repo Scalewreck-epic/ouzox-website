@@ -26,7 +26,7 @@ function calculateDiffDays(timestamp) {
     return createdDiffDays;
 };
 
-function createGamePage(game, game_price) {
+function createGamePage(game, game_price, editable) {
     var price = game_price.price / 100;
     var currency = game_price.currency;
 
@@ -92,13 +92,28 @@ function createGamePage(game, game_price) {
 
         updatedLabel.addEventListener("mouseleave", function() {
             updatedLabel.innerHTML = "UPDATED";
-        })
-    }
+        });
+    };
 
     gameImageHolder.appendChild(gameImage);
     gamesDiv.appendChild(gameImageHolder);
     gamesDiv.appendChild(gameTitle);
     gamesDiv.appendChild(gamePrice);
+
+    if (editable) {
+        gameTitle.contentEditable = true;
+        gamePrice.contentEditable = true;
+
+        var deleteButton = document.createElement("button");
+        deleteButton.className = "delete-button";
+        deleteButton.innerHTML = "DELETE";
+        gamesDiv.appendChild(deleteButton);
+
+        var commitChangesButton = document.createElement("button");
+        commitChangesButton.className = "delete-button";
+        commitChangesButton.innerHTML = "COMMIT CHANGES";
+        gamesDiv.appendChild(commitChangesButton);
+    }
 
     document.getElementById("market").appendChild(gamesDiv);
 };
@@ -134,7 +149,7 @@ function loadGames() {
 
             if (game_price) {
                 currentPage += 1;
-                createGamePage(game, game_price);
+                createGamePage(game, game_price, false);
             };
         };
     };
@@ -151,7 +166,7 @@ function loadDashboard() {
 
             if (game_price) {
                 currentPage += 1;
-                createGamePage(game, game_price);
+                createGamePage(game, game_price, true);
             };
         };
     };
