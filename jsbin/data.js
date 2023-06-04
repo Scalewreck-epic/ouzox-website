@@ -275,10 +275,16 @@ function getCookieData(trim) {
 async function verifyUser() {
     var data = getCookieData("session_id");
 
+    var get_user_options = {
+        method: "GET",
+        headers: myHeaders,
+        redirect: "follow",
+    }
+
     if (data.Valid) {
         async function get_user() {
             try {
-                const response = await fetch(get_user_url + data.Data, update_product_options);
+                const response = await fetch(get_user_url + data.Data, get_user_options);
                 const result = await response.text();
                 const result_parse = JSON.parse(result);
     
@@ -312,7 +318,7 @@ function loadGames() {
 function loadDashboard() {
     const username = verifyUser()
 
-    if (username) {
+    if (username != "") {
         for (let i = currentPage; i < currentPage + gamesPerPage && i < games.length; i++) {
             var game = games[i];
     
