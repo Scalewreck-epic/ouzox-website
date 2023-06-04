@@ -318,8 +318,8 @@ function loadGames() {
     };
 };
 
-function loadDashboard() {
-    const username = verifyUser()
+async function loadDashboard() {
+    const username = await verifyUser();
 
     if (username != "") {
         for (let i = currentPage; i < currentPage + gamesPerPage && i < games.length; i++) {
