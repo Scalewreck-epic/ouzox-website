@@ -275,6 +275,9 @@ function getCookieData(trim) {
 async function verifyUser() {
     var data = getCookieData("session_id");
 
+    var myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+
     var get_user_options = {
         method: "GET",
         headers: myHeaders,
