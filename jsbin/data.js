@@ -189,7 +189,7 @@ function createGamePage(game, game_price, editable) {
         });
 
         commitChangesButton.addEventListener("click", async function() {
-            const filterText = filter(gameTitle.innerHTML);
+            const filterText = await filter(gameTitle.innerHTML);
 
             if (filterText == "No reason") {
                 var update_product_options = {
