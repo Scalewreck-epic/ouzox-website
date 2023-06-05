@@ -390,12 +390,21 @@ p{
 }
 
 .acceptance-label{
+	display: inline-block;
 	font-size: 20px;
 	color: #FFF;
+	margin: 5px;
 }
 
 .acceptance-label a{
 	color: #00FFE1;
+}
+
+.encourage-label{
+	display: inline-block;
+	font-size: 35px;
+	color: #FFF;
+	margin: 5px;
 }
 
 /* Default button style */
