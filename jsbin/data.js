@@ -321,7 +321,7 @@ function loadGames() {
 async function loadDashboard() {
     const username = await verifyUser();
 
-    if (username != "") {
+    if (username != undefined) {
         for (let i = currentPage; i < currentPage + gamesPerPage && i < games.length; i++) {
             var game = games[i];
     
@@ -335,6 +335,32 @@ async function loadDashboard() {
                 };
             };
         };
+    }
+
+    const market = document.getElementById("market");
+    const errors = document.getElementById("errors");
+
+    if (market.innerHTML == "") {
+        document.getElementById("generate-button").remove();
+        document.getElementById("twitter-plug").remove();
+
+        const encourage = document.createElement("label");
+        encourage.innerHTML = "You're a developer? Upload your first game!";
+        encourage.className = "encourage-label";
+
+        const brk = document.createElement("br");
+
+        const otherletter = document.createElement("label");
+        const link = document.createElement("a");
+        link.href = "index.html";
+        link.innerHTML = "Nah, just want to download games.";
+        otherletter.className = "acceptance-label";
+
+        otherletter.appendChild(link);
+        
+        errors.appendChild(encourage);
+        errors.appendChild(brk);
+        errors.appendChild(otherletter);
     }
 }
 
