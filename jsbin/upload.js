@@ -232,15 +232,21 @@ uploadGame.addEventListener("submit", async function(event) {
 
                 if (image_metadata) {
                     error_label.innerHTML = "Creating game page..."
-                    const result = await uploadProduct(image_metadata.image.image);
 
-                    if (result && result.id) {
-                        error_label.innerHTML = "Setting price..."
-                        const price = await setProductPrice(result.id);
-                        if (price && price.active) {
-                            console.log("Product uploaded successfully!");
-                            error_label.innerHTML = "Successfully published game!";
+                    if (price_input.value > 0) {
+                        const result = await uploadProduct(image_metadata.image.image);
+
+                        if (result && result.id) {
+                            error_label.innerHTML = "Setting price..."
+                            const price = await setProductPrice(result.id);
+                            if (price && price.active) {
+                                console.log("Product uploaded successfully!");
+                                error_label.innerHTML = "Successfully published game!";
+                            }
                         }
+                    } else {
+                        error_label.innerHTML = "Free games are not able to be put onto the platform just yet.";
+                        // Handle uploading game when user sets price to free.
                     }
                 }
             }
@@ -273,10 +279,10 @@ function checkFileSize() {
     const warn = document.getElementById("game-file-warn");
 
     const file = input.files[0];
-    const maxFileSize = 1000000000; // 1GB in bytes
+    const maxFileSize = 5000000000; // 5GB in bytes
 
     if (file.size > maxFileSize) {
-        warn.innerHTML = "File size too large. Select a file under 1GB";
+        warn.innerHTML = "File size too large. Select a file under 5GB";
         input.value = "";
     } else {
         warn.innerHTML = "";
