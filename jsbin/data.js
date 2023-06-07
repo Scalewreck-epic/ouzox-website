@@ -344,10 +344,10 @@ async function loadDashboard() {
                     currentPage += 1;
 
                     if (genre == "all") {
-                        createGamePage(game, game_price, false);
+                        createGamePage(game, game_price, true);
                     } else {
                         if (game.metadata.genre == genre) {
-                            createGamePage(game, game_price, false);
+                            createGamePage(game, game_price, true);
                         }
                     }
                 };
