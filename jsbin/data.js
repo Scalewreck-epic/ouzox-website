@@ -316,7 +316,7 @@ function loadGames() {
             if (game_price) {
                 currentPage += 1;
 
-                if (genre == "All Genres") {
+                if (genre == "all") {
                     createGamePage(game, game_price, false);
                 } else {
                     if (game.metadata.genre == genre) {
@@ -343,7 +343,7 @@ async function loadDashboard() {
                 if (game_price) {
                     currentPage += 1;
 
-                    if (genre == "All Genres") {
+                    if (genre == "all") {
                         createGamePage(game, game_price, false);
                     } else {
                         if (game.metadata.genre == genre) {
