@@ -304,6 +304,9 @@ async function verifyUser() {
 }
 
 function loadGames() {
+    const genre_input = document.getElementById("genre-sort");
+    const genre = genre_input.options[genre_input.selectedIndex].value;
+
     for (let i = currentPage; i < currentPage + gamesPerPage && i < games.length; i++) {
         var game = games[i];
 
@@ -312,7 +315,14 @@ function loadGames() {
 
             if (game_price) {
                 currentPage += 1;
-                createGamePage(game, game_price, false);
+
+                if (genre == "All Genres") {
+                    createGamePage(game, game_price, false);
+                } else {
+                    if (game.metadata.genre == genre) {
+                        createGamePage(game, game_price, false);
+                    }
+                }
             };
         };
     };
@@ -322,6 +332,8 @@ async function loadDashboard() {
     const username = await verifyUser();
 
     if (username != undefined) {
+        const genre_input = document.getElementById("genre-sort");
+        const genre = genre_input.options[genre_input.selectedIndex].value;
         for (let i = currentPage; i < currentPage + gamesPerPage && i < games.length; i++) {
             var game = games[i];
     
@@ -330,8 +342,14 @@ async function loadDashboard() {
     
                 if (game_price) {
                     currentPage += 1;
-                    console.log(game_price);
-                    createGamePage(game, game_price, true);
+
+                    if (genre == "All Genres") {
+                        createGamePage(game, game_price, false);
+                    } else {
+                        if (game.metadata.genre == genre) {
+                            createGamePage(game, game_price, false);
+                        }
+                    }
                 };
             };
         };
