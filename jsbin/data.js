@@ -91,6 +91,10 @@ function createGamePage(game, game_price, editable) {
     gameTitle.className = "product-title";
     gameTitle.innerHTML = game.name;
 
+    var gameSummary = document.createElement("div");
+    gameSummary.className = "product-summary";
+    gameSummary.innerHTML = game.metadata.summary;
+
     var gamePrice = document.createElement("div");
     gamePrice.className = "product-price";
     gamePrice.innerHTML = price+" "+currency.toUpperCase();
@@ -116,7 +120,7 @@ function createGamePage(game, game_price, editable) {
         });
 
         createdLabel.addEventListener("mouseleave", function() {
-            updatedLabel.innerHTML = "NEW";
+            createdLabel.innerHTML = "NEW";
         });
     } else if (diffDaysUpdated <= 7) {
         var updatedLabel = document.createElement("span");
@@ -142,6 +146,7 @@ function createGamePage(game, game_price, editable) {
 
     gameImageHolder.appendChild(gameImage);
     gamesDiv.appendChild(gameImageHolder);
+    gamesDiv.appendChild(gameSummary);
     gamesDiv.appendChild(gameTitle);
     gamesDiv.appendChild(gamePrice);
 
