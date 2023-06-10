@@ -568,6 +568,17 @@ p{
 	word-break: break-all;
 }
 
+.product-summary {
+	font-size: 10px;
+	font-family: 'Secular One', sans-serif;
+	outline: #000;
+	color: #FFF;
+	width: auto;
+	float: left;
+	overflow: hidden;
+	word-break: break-all;
+}
+
 .product-price {
 	font-size: 15px;
 	font-family: 'Secular One', sans-serif;
