@@ -46,6 +46,11 @@
 							<div class="error-label" id="game-title-warn"></div>
 						</li>
 						<li>
+							<label class="title-label">Summary:</label>
+							<input type="text" name="title" class="text-box" id="title" placeholder="Game Summary." value="What's best about your project?" onchange="checkSummaryLength()" autocorrect="on" maxlength="35" minlength="3"/>
+							<div class="error-label" id="game-summary-warn"></div>
+						</li>
+						<li>
 							<label class="title-label">Thumbnail:</label>
 							<input type="file" name="thumbnail" id="thumbnail" class="upload-box" accept="image/jpeg, image/png" onchange="checkThumbnail()" required/>
 						</li>
