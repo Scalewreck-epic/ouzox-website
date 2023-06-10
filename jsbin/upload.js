@@ -67,6 +67,7 @@ uploadGame.addEventListener("submit", async function(event) {
         const currency_input = document.getElementById("currency-sort");
         const genre_input = document.getElementById("genre-sort");
         const title_input = document.getElementById("title");
+        const summary_input = document.getElementById("summary");
         const uploader_name = document.getElementById("username");
 
         function handleFilterResult(result, label) {
@@ -122,6 +123,7 @@ uploadGame.addEventListener("submit", async function(event) {
                             "description": description_input.value,
                             "metadata": {
                                 "developer_name": uploader_name.innerHTML,
+                                "summary": summary_input.value,
                                 "genre": genre,
                             },
                             "type": null,
@@ -308,12 +310,25 @@ function checkTitleLength() {
     const title = document.getElementById("title");
     const title_warn = document.getElementById("game-title-warn");
 
-    if (title.value.length > 200) {
-        title_warn.innerHTML = "Title must be below 200 characters.";
+    if (title.value.length > 20) {
+        title_warn.innerHTML = "Title must be below 20 characters.";
     } else if (title.value.length < 1) {
         title_warn.innerHTML = "Title must be above 0 characters.";
     } else {
         title_warn.innerHTML = "";
+    }
+}
+
+function checkSummaryLength() {
+    const summary = document.getElementById("summary");
+    const summary_warn = document.getElementById("summary-title-warn");
+
+    if (summary.value.length > 35) {
+        summary_warn.innerHTML = "Summary must be below 35 characters.";
+    } else if (summary.value.length < 1) {
+        summary_warn.innerHTML = "Summary must be above 0 characters.";
+    } else {
+        summary_warn.innerHTML = "";
     }
 }
 
