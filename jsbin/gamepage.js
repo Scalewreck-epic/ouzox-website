@@ -26,7 +26,7 @@ async function retrieveGameData(gameId) {
         } catch (error) {
             console.error(error);
         };
-    }
+    };
 
     const rawGameData = await getGameData();
 
@@ -36,7 +36,7 @@ async function retrieveGameData(gameId) {
         year: "2-digit",
         month: "2-digit",
         day: "2-digit"
-    })
+    });
 
     const updatedTimestampMs = rawGameData.updated * 1000;
     const updatedDate = new Date(updatedTimestampMs);
@@ -44,7 +44,7 @@ async function retrieveGameData(gameId) {
         year: "2-digit",
         month: "2-digit",
         day: "2-digit"
-    })
+    });
 
     const gameData = {
         "name": rawGameData.name,
@@ -52,6 +52,7 @@ async function retrieveGameData(gameId) {
         "developer_name": rawGameData.metadata.developer_name,
         "genre": rawGameData.metadata.genre,
         "summary": rawGameData.metadata.summary,
+        "icon": rawGameData.images[0],
         "created": createdFormattedDate,
         "updated": updatedFormattedDate,
     }
@@ -67,6 +68,7 @@ const gameHandler = async (gameId) => {
     document.getElementById("game-description").innerHTML = gameData.description;
     document.getElementById("created").innerHTML = "Created: "+gameData.created;
     document.getElementById("updated").innerHTML = "Updated: "+gameData.updated;
+    document.getElementById("icon").setAttribute("href", gameData.icon);
 
     // metadata
     document.getElementById("game-developer-name").innerHTML = "By: "+gameData.developer_name;
