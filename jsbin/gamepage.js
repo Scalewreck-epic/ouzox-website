@@ -187,7 +187,7 @@ const gameHandler = async (gameId) => {
         // send user to the stripe payment session
     });
 
-    if (getUsername() == gameData.developer_name) {
+    if (getUsername().name == gameData.developer_name) {
         game_title.contentEditable = true;
         game_desc.contentEditable = true;
         game_summary.contentEditable = true;
