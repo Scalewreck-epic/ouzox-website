@@ -66,6 +66,7 @@ uploadGame.addEventListener("submit", async function(event) {
         const price_input = document.getElementById("price");
         const currency_input = document.getElementById("currency-sort");
         const genre_input = document.getElementById("genre-sort");
+        const art_input = document.getElementById("art-sort");
         const title_input = document.getElementById("title");
         const summary_input = document.getElementById("summary");
         const uploader_name = document.getElementById("username");
@@ -83,6 +84,7 @@ uploadGame.addEventListener("submit", async function(event) {
 
         const currency = currency_input.options[currency_input.selectedIndex].value;
         const genre = genre_input.options[genre_input.selectedIndex].value;
+        const artstyle = art_input.options[art_input.selectedIndex].value;
 
         const image = thumbnail_input.files[0];
         const reader = new FileReader();
@@ -125,6 +127,7 @@ uploadGame.addEventListener("submit", async function(event) {
                                 "developer_name": uploader_name.innerHTML,
                                 "summary": summary_input.value,
                                 "genre": genre,
+                                "artstyle": artstyle,
                             },
                             "type": null,
                             "attributes": [],
