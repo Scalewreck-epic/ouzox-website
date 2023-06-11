@@ -475,9 +475,7 @@ function isPathDashboard() {
     return false;
 }
 
-document.getElementById("refresh-list").addEventListener("submit", function(event) {
-    event.preventDefault();
-
+document.getElementById("refresh-button").addEventListener("click", function() {
     if (!isFetching) {
         fetchGames(isPathDashboard());
     };
