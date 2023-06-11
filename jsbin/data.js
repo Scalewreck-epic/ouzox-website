@@ -156,10 +156,6 @@ function createGamePage(game, game_price, editable) {
         deleteButton.className = "delete-button";
         deleteButton.innerHTML = "DELETE";
 
-        var commitChangesButton = document.createElement("button");
-        commitChangesButton.className = "delete-button";
-        commitChangesButton.innerHTML = "COMMIT CHANGES";
-
         var myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
 
@@ -192,42 +188,7 @@ function createGamePage(game, game_price, editable) {
             gamesDiv.remove();
         });
 
-        commitChangesButton.addEventListener("click", async function() {
-            const filterText = await filter(gameTitle.innerHTML);
-
-            if (filterText == "No reason") {
-                var update_product_options = {
-                    method: "POST",
-                    headers: myHeaders,
-                    redirect: "follow",
-                    body: JSON.stringify({
-                        "product": {
-                          "name": gameTitle.innerHTML,
-                        },
-                        "id": game.id,
-                    })
-                }
-    
-                async function update_product() {
-                    try {
-                        const response = await fetch(update_product_url + game.id, update_product_options);
-                        const result = await response.text();
-                        const result_parse = JSON.parse(result);
-        
-                        console.log(result_parse);
-                    } catch (error) {
-                        showError(error, false);
-                    };
-                };
-    
-                await update_product();
-            } else {
-                gameTitle.innerHTML = filterText;
-            }
-        })
-
         gamesDiv.appendChild(deleteButton);
-        gamesDiv.appendChild(commitChangesButton);
     }
 
     document.getElementById("market").appendChild(gamesDiv);
