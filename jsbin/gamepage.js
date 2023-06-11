@@ -24,7 +24,8 @@ async function retrieveGameData(gameId) {
             console.log(result_parse);
             return result_parse;
         } catch (error) {
-            console.error(error);
+            console.warn(error);
+            window.location.assign("404.html");
         };
     };
 
@@ -76,4 +77,9 @@ const gameHandler = async (gameId) => {
     document.getElementById("game-summary").innerHTML = gameData.summary;
 }
 
-gameHandler(gameId);
+if (gameId != null) {
+    gameHandler(gameId);
+} else {
+    console.warn("There is no game id.");
+    window.location.assign("404.html");
+}
