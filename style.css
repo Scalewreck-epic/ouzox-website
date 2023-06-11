@@ -15,7 +15,6 @@ body{
 nav{
 	width: 100%;
 	display: block;
-	margin-bottom: 20px;
 	box-sizing: border-box;
 }
 
@@ -438,6 +437,7 @@ p{
 .upload-button:hover,
 .login-button:hover,
 .twitter-button:hover,
+.game-download-button:hover,
 .delete-button:hover,
 .load-button:hover {
   transform: translateY(-3px);
@@ -457,6 +457,7 @@ p{
 .login-button:active,
 .twitter-button:active,
 .delete-button:active,
+.game-download-button:active
 .load-button:active {
   transform: translateY(0px);
   box-shadow: 0px 3px 5px black;
@@ -465,6 +466,7 @@ p{
 .upload-button:disabled,
 .login-button:disabled,
 .twitter-button:disabled,
+.game-download-button:disabled
 .load-button:disabled {
   opacity: 0.5;
   cursor: not-allowed;
@@ -605,6 +607,99 @@ p{
 	border-radius: 15px;
 	box-shadow: 0px 5px 10px black;
 	object-fit: cover;
+}
+
+.game-column {
+	display: block;
+	max-width: 960px;
+	min-height: 812px;
+	width: auto;
+	margin: 0 auto;
+	background-color: #000;
+}
+
+.game-download {
+	margin: 20px;
+}
+
+.game-download-button {
+	display: inline-block;
+	padding: 5px 10px;
+	font-size: 18px;
+	margin-right: 10px;
+	font-family: 'Secular One', sans-serif;
+	background-color: #4CAF50;
+	color: white;
+	text-decoration: none;
+	border-radius: 4px;
+	cursor: pointer;
+	transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.game-download-button:focus {
+	outline: none;
+	box-shadow: 0px 0px 0px 2px #4CAF50, 0px 5px 10px black;
+}
+
+.game-price {
+	display: inline-block;
+	font-size: 19px;
+	font-family: 'Secular One', sans-serif;
+	opacity: .5;
+	color: white;
+}
+
+.game-description {
+	display: block;
+	font-size: 18px;
+	font-family: 'Secular One', sans-serif;
+	margin-top: 0px;
+	margin-bottom: 32px;
+	margin-left: 35px;
+	color: #FFF;
+}
+
+.game-title-column {
+	margin-bottom: 32px;
+	margin-left: 80px;
+}
+
+.game-developer-name {
+	display: block;
+	font-size: 20px;
+	font-family: 'Secular One', sans-serif;
+	color: #FFF;
+}
+
+.game-summary {
+	display: block;
+	font-size: 14px;
+	font-family: 'Secular One', sans-serif;
+	color: #FFF;
+	opacity: .5;
+}
+
+.game-title {
+	display: block;
+	font-size: 50px;
+	font-family: 'Secular One', sans-serif;
+	margin-top: 0px;
+	color: #FFF;
+}
+
+.game-stat{
+	width: 11%;
+	text-align: center;
+	display: inline-block;
+}
+
+.game-updated {
+	display: inline-block;
+	margin: 20px;
+	font-size: 15px;
+	font-family: 'Secular One', sans-serif;
+	color: white;
+	opacity: .5;
 }
 
 .web-icon:hover, .product-image:hover {
