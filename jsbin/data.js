@@ -84,7 +84,7 @@ function createGamePage(game, game_price, editable) {
 
     var gameImageHolder = document.createElement("a");
 
-    gameImageHolder.setAttribute("href", game.url);
+    gameImageHolder.setAttribute("href", `game.html?id=${game.id}`);
     gameImageHolder.target = "_blank";
 
     var gameTitle = document.createElement("div");
