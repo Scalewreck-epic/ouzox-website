@@ -4,8 +4,6 @@ const urlParams = new URLSearchParams(window.location.search);
 const gameId = urlParams.get("id");
 
 async function retrieveGameData(gameId) {
-    // handle retrieving game data from database
-    // return gameData (include title, description, price, metadata)
     var myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
 
@@ -53,6 +51,7 @@ async function retrieveGameData(gameId) {
         "developer_name": rawGameData.metadata.developer_name,
         "genre": rawGameData.metadata.genre,
         "summary": rawGameData.metadata.summary,
+        "artstyle": rawGameData.metadata.artstyle,
         "icon": rawGameData.images[0],
         "created": createdFormattedDate,
         "updated": updatedFormattedDate,
@@ -75,6 +74,7 @@ const gameHandler = async (gameId) => {
     document.getElementById("game-developer-name").innerHTML = "By: "+gameData.developer_name;
     document.getElementById("game-genre").innerHTML = "Genre: "+gameData.genre;
     document.getElementById("game-summary").innerHTML = gameData.summary;
+    document.getElementById("game-art").innerHTML = "Style: "+gameData.artstyle;
 }
 
 if (gameId != null) {
