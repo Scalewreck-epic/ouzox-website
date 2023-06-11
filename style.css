@@ -696,10 +696,19 @@ p{
 .game-updated {
 	display: inline-block;
 	margin: 20px;
+	margin-top: 0;
 	font-size: 15px;
 	font-family: 'Secular One', sans-serif;
 	color: white;
 	opacity: .5;
+}
+
+.game-updated-title{
+	display: inline-block;
+	font-size: 15px;
+	margin: 0;
+	font-family: 'Secular One', sans-serif;
+	color: white;
 }
 
 .web-icon:hover, .product-image:hover {
