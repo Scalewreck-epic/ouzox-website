@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<title>Econsole | Market</title>
+		<link rel="icon" type="x-icon" href="Images/icon.png"/>
+		<link rel="stylesheet" href="style.css"/>
+		<link rel="preconnect" href="https://fonts.googleapis.com"/>
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+		<link href="https://fonts.googleapis.com/css2?family=Secular+One&display=swap" rel="stylesheet"/>
+		<link href="https://fonts.googleapis.com/css2?family=Alata&display=swap" rel="stylesheet"/>
+	</head>
+	<body>
+		<style>
+			@import url('https://fonts.googleapis.com/css2?family=Secular+One&display=swap');
+			@import url('https://fonts.googleapis.com/css2?family=Alata&display=swap');
+		</style>
+		<nav>
+			<div class="navbar">
+				<div class="grid">
+					<div class="push-left">
+						<a href="index.html">
+							<img src="Images/icon.png" class="web-icon">
+						</a>
+						<ul><font size="6">
+							<a href="dashboard.html" id="dashboard-btn">Dashboard</a>
+							<a href="upload.html" id="upload-btn">Upload</a>
+							<a href="login.html" id="login-btn">Login</a>
+							<a href="signup.html" id="signup-btn">Signup</a>
+							<a href="contact.html" id="contact-btn">Contact</a>
+						</ul></font>
+					</div>
+					<div class="push-right">
+						<div class="username" id="username" onclick="redirectSettings()">username</div>
+					</div>
+				</div>
+			</div>
+		</nav>
+		<div class="game-column">
+			<div class="game-title-column">
+				<div class="game-title" id="game-title">Test Title</div>
+				<div class="game-developer-name" id="game-developer-name">By Test Name</div>
+				<div class="game-summary" id="game-summary">Test Summary</div>
+			</div>
+			<div class="game-download">
+				<button class="game-download-button">Download Now</button>
+			</div>
+			<p class="game-description" id="game-description">Test Description</p>
+			<div class="divider"></div>
+			<div class="game-stat">
+				<p class="game-updated" id="updated">Updated: 0/00/00</p>
+			</div>
+			<div class="game-stat">
+				<p class="game-updated" id="created">Created: 0/00/00</p>
+			</div>
+			<div class="game-stat">
+				<p class="game-updated" id="game-genre">Genre: none</p>
+			</div>
+		</div>
+	</body>
+	<script src="jsbin/user.js"></script>
+	<script src="jsbin/gamepage.js"></script>
+</html>
