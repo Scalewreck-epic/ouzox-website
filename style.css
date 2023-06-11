@@ -636,6 +636,18 @@ p{
 	transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
 }
 
+.game-download-input {
+	font-size: 18px;
+	border-radius: 4px;
+	margin-right: 10px;
+	border: 1px solid #4CAF50;
+	transition: border-color 0.2s ease-in-out;
+}
+.game-download-button:focus {
+	outline: none;
+	border-color: #4CAF50;
+}
+
 .game-download-button:focus {
 	outline: none;
 	box-shadow: 0px 0px 0px 2px #4CAF50, 0px 5px 10px black;
@@ -646,7 +658,6 @@ p{
 	font-size: 19px;
 	font-family: 'Secular One', sans-serif;
 	opacity: .5;
-	color: white;
 }
 
 .game-description {
@@ -656,26 +667,25 @@ p{
 	margin-top: 0px;
 	margin-bottom: 32px;
 	margin-left: 35px;
-	color: #FFF;
+	color: white;
 }
 
 .game-title-column {
 	margin-bottom: 32px;
 	margin-left: 80px;
+	color: white;
 }
 
 .game-developer-name {
 	display: block;
 	font-size: 20px;
 	font-family: 'Secular One', sans-serif;
-	color: #FFF;
 }
 
 .game-summary {
 	display: block;
 	font-size: 14px;
 	font-family: 'Secular One', sans-serif;
-	color: #FFF;
 	opacity: .5;
 }
 
@@ -684,31 +694,31 @@ p{
 	font-size: 50px;
 	font-family: 'Secular One', sans-serif;
 	margin-top: 0px;
-	color: #FFF;
 }
 
 .game-stat{
 	width: 11%;
 	text-align: center;
 	display: inline-block;
+	color: white;
 }
 
 .game-updated {
-	display: inline-block;
-	margin: 20px;
+	width: 100%;
+	display: block;
+	margin: 0;
 	margin-top: 0;
 	font-size: 15px;
 	font-family: 'Secular One', sans-serif;
-	color: white;
 	opacity: .5;
 }
 
 .game-updated-title{
-	display: inline-block;
+	width: 100%;
+	display: block;
 	font-size: 15px;
 	margin: 0;
 	font-family: 'Secular One', sans-serif;
-	color: white;
 }
 
 .web-icon:hover, .product-image:hover {
