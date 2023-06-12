@@ -4,7 +4,6 @@ const games_prices_url = "https://x8ki-letl-twmt.n7.xano.io/api:tFdG2Vz-/prices"
 const update_product_url = "https://x8ki-letl-twmt.n7.xano.io/api:iwAsZq4E/products/"; // + product id
 
 const get_user_url = "https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv/user/"; // + session id
-const filter_api_url = "https://x8ki-letl-twmt.n7.xano.io/api:oyF_ptYd/filter";
 
 const refreshTime = 5;
 const gamesPerPage = 20;
@@ -30,46 +29,6 @@ function calculateDiffDays(timestamp) {
 
     return createdDiffDays;
 };
-
-async function filter(text) {
-    var myHeaders = new Headers();
-    myHeaders.append("Content-Type", "application/json");
-
-    var requestOptions = {
-        method: "POST",
-        headers: myHeaders,
-        body: JSON.stringify({
-            "text": text,
-        })
-    }
-
-    try {
-        const response = await fetch(filter_api_url, requestOptions);
-        const result = await response.text();
-
-        var result_parse = JSON.parse(result);
-        var response_result = result_parse.response.result;
-        var result_response = response_result.response;
-
-        if (result_response.categories) {
-            for (let i = 0; i < result_response.categories.length; i++) {
-                const category = result_response.categories[i];
-                const label = category.label;
-                const label_topic = label.substring(0, label.indexOf(">"));
-                const label_reason = label.substring(label.indexOf(">") + 1);
-
-                if (label_topic == "Sensitive Topics") {
-                    return label_reason;
-                }
-            }
-        }
-
-        return "No reason";
-    } catch (error) {
-        console.warn("There was an error trying to fetch text filter: " , error);
-        return "No reason";
-    }
-}
 
 function createGamePage(game, game_price, editable) {
     var price = game_price.price / 100;
@@ -223,10 +182,20 @@ function getCookieData(trim) {
     for (let i = 0; i < cookieArray.length; i++) {
         const cookie = cookieArray[i];
         const [name, value] = cookie.split("=");
-        if (name.trim() === trim) {
+
+        const cookieName = name.trim();
+
+        if (cookieName === trim) {
+            const isSecure = cookie.includes('Secure');
+            const isHttpOnly = cookie.includes('HttpOnly');
+
+            const sameSite = cookie.split('SameSite=')[1]?.split(';')[0];
+
+            const isValid = isSecure && isHttpOnly && (sameSite === 'Strict' || sameSite === 'Lax');
+
             return {
                 "Data": value.toString(),
-                "Valid": true,
+                "Valid": isValid,
             };
         }
     }
@@ -235,7 +204,7 @@ function getCookieData(trim) {
         "Data": "no data.",
         "Valid": false,
     };
-}
+};
 
 async function verifyUser() {
     var data = getCookieData("session_id");
