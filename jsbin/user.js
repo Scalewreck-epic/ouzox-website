@@ -23,10 +23,20 @@ function getCookieData(trim) {
     for (let i = 0; i < cookieArray.length; i++) {
         const cookie = cookieArray[i];
         const [name, value] = cookie.split("=");
-        if (name.trim() === trim) {
+
+        const cookieName = name.trim();
+
+        if (cookieName === trim) {
+            const isSecure = cookie.includes('Secure');
+            const isHttpOnly = cookie.includes('HttpOnly');
+
+            const sameSite = cookie.split('SameSite=')[1]?.split(';')[0];
+
+            const isValid = isSecure && isHttpOnly && (sameSite === 'Strict' || sameSite === 'Lax');
+
             return {
                 "Data": value.toString(),
-                "Valid": true,
+                "Valid": isValid,
             };
         }
     }
@@ -35,7 +45,7 @@ function getCookieData(trim) {
         "Data": "no data.",
         "Valid": false,
     };
-}
+};
 
 function implementUsername() {
     var username = document.getElementById("username");
@@ -118,8 +128,7 @@ function setStats() {
 
 function createCookieData(authToken) {
     const expiration = calculateExpiration(false).toUTCString();
-
-    document.cookie = "session_id="+authToken+"; expires="+expiration+";";
+    document.cookie = "session_id="+authToken+"; expires="+expiration+"; Secure; HttpOnly; SameSite=Strict";
 }
 
 function clearCookieData() {
