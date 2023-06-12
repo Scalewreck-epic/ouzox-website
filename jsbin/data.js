@@ -31,37 +31,39 @@ function calculateDiffDays(timestamp) {
 };
 
 function createGamePage(game, game_price, editable) {
-    var price = game_price.price / 100;
-    var currency = game_price.currency;
+    const price = game_price.price / 100;
+    const currency = game_price.currency;
 
-    var gamesDiv = document.createElement("div");
+    const gamesDiv = document.createElement("div");
     gamesDiv.className = "game";
 
-    var gameImage = document.createElement("img");
+    const gameImage = document.createElement("img");
     gameImage.className = "product-image";
     gameImage.setAttribute("src", game.images[0]);
 
-    var gameImageHolder = document.createElement("a");
+    const gameImageHolder = document.createElement("a");
 
-    gameImageHolder.setAttribute("href", `game.html?id=${game.id}`);
+    const gameId = (game.id).replace(/^prod_/, "");
 
-    var gameTitle = document.createElement("div");
+    gameImageHolder.setAttribute("href", `game.html?j=${gameId}`);
+
+    const gameTitle = document.createElement("div");
     gameTitle.className = "product-title";
     gameTitle.innerHTML = game.name;
 
-    var gameSummary = document.createElement("div");
+    const gameSummary = document.createElement("div");
     gameSummary.className = "product-summary";
     gameSummary.innerHTML = game.metadata.summary;
 
-    var gamePrice = document.createElement("div");
+    const gamePrice = document.createElement("div");
     gamePrice.className = "product-price";
     gamePrice.innerHTML = price+" "+currency.toUpperCase();
 
-    var diffDaysCreated = calculateDiffDays(game.created);
-    var diffDaysUpdated = calculateDiffDays(game.updated);
+    const diffDaysCreated = calculateDiffDays(game.created);
+    const diffDaysUpdated = calculateDiffDays(game.updated);
 
     if (diffDaysCreated <= 7) {
-        var createdLabel = document.createElement("span");
+        const createdLabel = document.createElement("span");
         createdLabel.className = "new-label";
         createdLabel.innerHTML = "NEW";
         createdLabel.setAttribute("data-days", diffDaysCreated);
@@ -81,7 +83,7 @@ function createGamePage(game, game_price, editable) {
             createdLabel.innerHTML = "NEW";
         });
     } else if (diffDaysUpdated <= 7) {
-        var updatedLabel = document.createElement("span");
+        const updatedLabel = document.createElement("span");
         updatedLabel.className = "updated-label";
         updatedLabel.innerHTML = "UPDATED";
         updatedLabel.setAttribute("data-days", diffDaysUpdated);
@@ -111,15 +113,15 @@ function createGamePage(game, game_price, editable) {
     if (editable) {
         gameTitle.contentEditable = true;
 
-        var deleteButton = document.createElement("button");
+        const deleteButton = document.createElement("button");
         deleteButton.className = "delete-button";
         deleteButton.innerHTML = "DELETE";
 
-        var myHeaders = new Headers();
+        const myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
 
         deleteButton.addEventListener("click", async function() {
-            var deactivate_product_options = {
+            const deactivate_product_options = {
                 method: "POST",
                 headers: myHeaders,
                 redirect: "follow",
