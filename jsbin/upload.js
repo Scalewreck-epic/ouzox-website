@@ -4,7 +4,7 @@ const upload_image_api_url = "https://x8ki-letl-twmt.n7.xano.io/api:4A2Ya61A/sto
 
 const uploadGame = document.getElementById("upload-game");
 
-import {filter} from "./moderation";
+import {filter} from "./moderation.js";
 
 uploadGame.addEventListener("submit", async function(event) {
     event.preventDefault();
