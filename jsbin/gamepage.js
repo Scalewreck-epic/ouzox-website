@@ -3,10 +3,10 @@ const get_user_url = "https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv/user/"; // 
 
 const update_product_url = "https://x8ki-letl-twmt.n7.xano.io/api:iwAsZq4E/products/"; // + product id
 
-const urlParams = new URLSearchParams(window.location.search);
-const gameId = urlParams.get("id");
+import {filter} from "./moderation.js";
 
-import {filter} from "./moderation";
+const urlParams = new URLSearchParams(window.location.search);
+const gameId = urlParams.get("j");
 
 function getCookieData(trim) {
     const cookies = document.cookie;
@@ -333,7 +333,7 @@ const gameHandler = async (gameId) => {
 }
 
 if (gameId != null) {
-    gameHandler(gameId);
+    gameHandler("prod_"+gameId);
 } else {
     console.warn("There is no game id.");
     window.location.assign("404.html");
