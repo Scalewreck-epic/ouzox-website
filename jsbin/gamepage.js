@@ -224,7 +224,9 @@ const gameHandler = async (gameId) => {
         // send user to the stripe payment session
     });
 
-    if (await getUsername().name == gameData.developer_name) {
+    const user = await getUsername();
+
+    if (user.name == gameData.developer_name) {
         game_title.contentEditable = true;
         game_desc.contentEditable = true;
         game_summary.contentEditable = true;
@@ -324,7 +326,7 @@ const gameHandler = async (gameId) => {
                     }
         
                     async function update_product() {
-                        if (await getUsername().name == gameData.developer_name) {
+                        if (user.name == gameData.developer_name) {
                             try {
                                 const response = await fetch(update_product_url + game.id, update_product_options);
                                 const result = await response.text();
