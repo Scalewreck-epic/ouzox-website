@@ -87,7 +87,6 @@ async function getUsername() {
                 const result = await response.text();
                 const result_parse = JSON.parse(result);
     
-                console.log(result_parse);
                 return result_parse;
             } catch (error) {
                 showError(error, false);
@@ -225,7 +224,7 @@ const gameHandler = async (gameId) => {
         // send user to the stripe payment session
     });
 
-    if (getUsername().name == gameData.developer_name) {
+    if (await getUsername().name == gameData.developer_name) {
         game_title.contentEditable = true;
         game_desc.contentEditable = true;
         game_summary.contentEditable = true;
@@ -325,13 +324,12 @@ const gameHandler = async (gameId) => {
                     }
         
                     async function update_product() {
-                        if (getUsername() == gameData.developer_name) {
+                        if (await getUsername().name == gameData.developer_name) {
                             try {
                                 const response = await fetch(update_product_url + game.id, update_product_options);
                                 const result = await response.text();
                                 const result_parse = JSON.parse(result);
                 
-                                console.log(result_parse);
                                 commitChangesButton.innerHTML = "Success";
                             } catch (error) {
                                 commitChangesButton.innerHTML = "An error occured";
