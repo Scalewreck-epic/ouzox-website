@@ -140,8 +140,6 @@ function createGamePage(game, game_price, editable) {
                     const response = await fetch(update_product_url + game.id, deactivate_product_options);
                     const result = await response.text();
                     const result_parse = JSON.parse(result);
-    
-                    console.log(result_parse);
                 } catch (error) {
                     showError(error, false);
                 };
@@ -179,6 +177,19 @@ function sortGames(gameSortType, listSortType) {
     }
 }
 
+function removePrivateGames() {
+    for (let i = 0; i < games.length; i++) {
+        const game = games[i];
+
+        if (game.active) {
+            continue;
+        } else {
+            let index = games.indexOf(game);
+            games.splice(index, 1);
+        }
+    }
+}
+
 async function verifyUser() {
     var data = getCookie("session_id");
 
@@ -197,8 +208,6 @@ async function verifyUser() {
                 const response = await fetch(get_user_url + data.Data, get_user_options);
                 const result = await response.text();
                 const result_parse = JSON.parse(result);
-    
-                console.log(result_parse);
                 return result_parse;
             } catch (error) {
                 showError(error, false);
@@ -357,8 +366,7 @@ async function fetchGamesRequest(isDashboard) {
             const selectedListSort = listSort.options[listSort.selectedIndex].value;
 
             games = result_parse.data;
-            
-            console.log(games);
+            removePrivateGames();
             sortGames(selectedGameSort, selectedListSort);
 
             if (isDashboard) {
