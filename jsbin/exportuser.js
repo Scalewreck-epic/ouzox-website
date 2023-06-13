@@ -2,6 +2,23 @@ const get_user_url = "https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv/user/"; // 
 const change_user_email_url = "https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv:v1/user/edit_email/"; // + session id
 const change_user_password_url = "https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv:v1/user/edit_pass/"; // + session id
 
+function changeSessionData(headers, endpoint) {
+    var error_label = document.getElementById("error-label");
+    error_label.innerHTML = "Changing settings...";
+
+    fetch(endpoint, headers)
+    .then(response => response.text())
+    .then(result => {
+        var result_parse = JSON.parse(result);
+
+        if (result_parse.message) {
+            error_label.innerHTML = result_parse.message;
+        } else {
+            error_label.innerHTML = "Successfully changed settings!";
+        }
+    })
+}
+
 export async function getCookie(trim) {
     const cookies = document.cookie;
     const cookieArray = cookies.split(";");
