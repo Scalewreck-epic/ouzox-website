@@ -19,27 +19,29 @@ function changeSessionData(headers, endpoint) {
     })
 }
 
-export async function getCookie(trim) {
+export async function getCookie(wanted) {
     const cookies = document.cookie;
     const cookieArray = cookies.split(";");
 
-    for (let i = 0; i < cookieArray.length; i++) {
-        const cookie = cookieArray[i];
-        const [name, value] = cookie.split("=");
-
-        const cookieName = name.trim();
-
-        if (cookieName === trim) {
-            return {
-                "Data": value.toString(),
-                "Valid": true,
+    if (cookies == "") {
+        for (let i = 0; i < cookieArray.length; i++) {
+            const cookie = cookieArray[i];
+            const [name, value] = cookie.split("=");
+    
+            const cookieName = name.trim();
+    
+            if (cookieName === wanted) {
+                return {
+                    "Data": value.toString(),
+                    "Valid": true,
+                };
             };
-        }
-    }
-
-    return {
-        "Data": "no data.",
-        "Valid": false,
+        };
+    } else {
+        return {
+            "Data": "no data.",
+            "Valid": false,
+        };
     };
 };
 
