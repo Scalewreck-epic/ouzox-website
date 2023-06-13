@@ -1,6 +1,6 @@
 const get_user_url = "https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv/user/"; // + session id
 
-export function getCookie(trim) {
+export async function getCookie(trim) {
     const cookies = document.cookie;
     const cookieArray = cookies.split(";");
 
