@@ -2,9 +2,9 @@ const signup_endpoint = "https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv:v1/auth/
 const login_endpoint = "https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv:v1/auth/login";
 const getsingle_endpoint = "https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv/user/" // + user session
 
-const annualExpiration = 1;
+import { getCookie } from "./exportuser.js";
 
-import { getCookie } from "./exportuser";
+const annualExpiration = 1;
 
 function calculateExpiration(past) {
     var currentDate = new Date();
@@ -275,7 +275,6 @@ function redirectSettings() {
     }
 }
 
-console.log(document.cookie);
 implementUsername();
 
 if (window.location.pathname.includes("/settings.html")) {
