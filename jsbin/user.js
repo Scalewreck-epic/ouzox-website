@@ -202,20 +202,18 @@ function logout() {
 
     if (data.Valid) {
         clearCookieData();
-    }
+    };
 
     window.location.assign("login.html");
-}
+};
 
-function redirectSettings() {
+implementUsername();
+document.getElementById("username").addEventListener("click", function() {
     var data = getCookie("session_id");
     if (data.Valid) {
         window.location.assign("settings.html");
-    }
-}
-
-implementUsername();
-document.getElementById("username").onclick = redirectSettings();
+    };
+});
 
 if (window.location.pathname.includes("/settings")) {
     const email_button = document.getElementById("save-email");
