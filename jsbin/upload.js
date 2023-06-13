@@ -4,6 +4,7 @@ const upload_image_api_url = "https://x8ki-letl-twmt.n7.xano.io/api:4A2Ya61A/sto
 
 const uploadGame = document.getElementById("upload-game");
 
+import { getUser } from "./exportuser.js";
 import {filter} from "./moderation.js";
 
 uploadGame.addEventListener("submit", async function(event) {
@@ -28,7 +29,9 @@ uploadGame.addEventListener("submit", async function(event) {
         const art_input = document.getElementById("art-sort");
         const title_input = document.getElementById("title");
         const summary_input = document.getElementById("summary");
-        const uploader_name = document.getElementById("username");
+
+        const uploader = await getUser();
+        const uploader_name = uploader.name;
 
         function handleFilterResult(result, label) {
             if (result == "No reason") {
