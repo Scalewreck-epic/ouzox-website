@@ -19,7 +19,7 @@ function changeSessionData(headers, endpoint) {
     })
 }
 
-export async function getCookie(wanted) {
+export function getCookie(wanted) {
     const cookies = document.cookie;
     const cookieArray = cookies.split(";");
 
