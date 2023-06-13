@@ -222,9 +222,15 @@ if (window.location.pathname.includes("/settings")) {
 
     setStats();
 
-    email_button.addEventListener("click", changeEmailData());
-    password_button.addEventListener("click", changePasswordData());
-    logout_button.addEventListener("click", logout());
+    email_button.addEventListener("click", function() {
+        changeEmailData();
+    });
+    password_button.addEventListener("click", function() {
+        changePasswordData();
+    });
+    logout_button.addEventListener("click", function() {
+        logout();
+    });
 } else if (window.location.pathname.includes("/login")) {
     const login_form = document.getElementById("login-form");
 
