@@ -23,7 +23,7 @@ export async function getCookie(wanted) {
     const cookies = document.cookie;
     const cookieArray = cookies.split(";");
 
-    if (cookies == "") {
+    if (cookies != "") {
         for (let i = 0; i < cookieArray.length; i++) {
             const cookie = cookieArray[i];
             const [name, value] = cookie.split("=");
