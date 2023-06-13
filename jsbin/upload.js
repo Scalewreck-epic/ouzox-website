@@ -15,9 +15,10 @@ uploadGame.addEventListener("submit", async function(event) {
     var title_warn = document.getElementById("game-title-warn");
     var desc_warn = document.getElementById("desc-warn");
 
+    checkThumbnail();
     checkFileSize();
     checkPrice();
-    checkTitleLength();
+    checkPrice();
 
     if (desc_warn.innerText == "" && title_warn.innerText == "" && game_file_warn.innerText == "") {
         const file_input = document.getElementById("download-file");
@@ -189,32 +190,32 @@ uploadGame.addEventListener("submit", async function(event) {
         };
 
         try {
-            error_label.innerHTML = "Checking title..."
+            error_label.innerHTML = "Checking title...";
             const titleResult = await filter(title_input.value);
             const isTitleValid = handleFilterResult(titleResult, "Title");
         
-            error_label.innerHTML = "Checking description..."
+            error_label.innerHTML = "Checking description...";
             const descriptionResult = await filter(description_input.value);
             const isDescriptionValid = handleFilterResult(descriptionResult, "Description");
         
             if (isTitleValid && isDescriptionValid) {
-                error_label.innerHTML = "Uploading image..."
+                error_label.innerHTML = "Uploading image...";
                 const image_metadata = await uploadImage();
 
                 if (image_metadata) {
-                    error_label.innerHTML = "Creating game page..."
+                    error_label.innerHTML = "Creating game page...";
 
                     if (price_input.value > 0) {
                         const result = await uploadProduct(image_metadata.image.image);
 
                         if (result && result.id) {
-                            error_label.innerHTML = "Setting price..."
+                            error_label.innerHTML = "Setting price...";
                             const price = await setProductPrice(result.id);
                             if (price && price.active) {
                                 console.log("Product uploaded successfully!");
                                 error_label.innerHTML = "Successfully published game!";
-                            }
-                        }
+                            };
+                        };
                     } else {
                         error_label.innerHTML = "Free games are not able to be put onto the platform just yet.";
                         // Handle uploading game when user sets price to free.
@@ -253,7 +254,7 @@ function checkFileSize() {
     const maxFileSize = 5000000000; // 5GB in bytes
 
     if (file.size > maxFileSize) {
-        warn.innerHTML = "File size too large. Select a file under 5GB";
+        warn.innerHTML = `File size too large. Select a file under ${maxFileSize / 1000000000}GB`;
         input.value = "";
     } else {
         warn.innerHTML = "";
@@ -268,45 +269,6 @@ function checkIsFree() {
         checkPrice();
     } else {
         input.value = 0;
-    }
-}
-
-function checkTitleLength() {
-    const title = document.getElementById("title");
-    const title_warn = document.getElementById("game-title-warn");
-
-    if (title.value.length > 20) {
-        title_warn.innerHTML = "Title must be below 20 characters.";
-    } else if (title.value.length < 1) {
-        title_warn.innerHTML = "Title must be above 0 characters.";
-    } else {
-        title_warn.innerHTML = "";
-    }
-}
-
-function checkSummaryLength() {
-    const summary = document.getElementById("summary");
-    const summary_warn = document.getElementById("summary-title-warn");
-
-    if (summary.value.length > 35) {
-        summary_warn.innerHTML = "Summary must be below 35 characters.";
-    } else if (summary.value.length < 1) {
-        summary_warn.innerHTML = "Summary must be above 0 characters.";
-    } else {
-        summary_warn.innerHTML = "";
-    }
-}
-
-function checkDescriptionLength() {
-    const desc = document.getElementById("description");
-    const desc_warn = document.getElementById("desc-warn");
-
-    if (desc.value.length > 1000) {
-        desc_warn.innerHTML = "Description is too long.";
-    } else if (desc.value.length < 1) {
-        desc_warn.innerHTML = "Description is too short.";
-    } else {
-        desc_warn.innerHTML = "";
     }
 }
 
@@ -332,8 +294,20 @@ function checkPrice() {
     }
 }
 
-const currencySort = document.getElementById("currency-sort");
+const game_thumbnail = document.getElementById("thumbnail");
+const game_price = document.getElementById("price");
+const game_isfree = document.getElementById("isfree");
 
-checkDescriptionLength();
-checkTitleLength();
 checkIsFree();
+
+game_thumbnail.onchange = function() {
+    checkThumbnail();
+};
+
+game_price.onchange = function() {
+    checkPrice();
+};
+
+game_isfree.onchange = function() {
+    checkIsFree();
+};
