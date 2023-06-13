@@ -27,13 +27,9 @@ function getCookieData(trim) {
         const cookieName = name.trim();
 
         if (cookieName === trim) {
-            const isSecure = cookie.includes('Secure');
-            const isHttpOnly = cookie.includes('HttpOnly');
-            const isValid = isSecure && isHttpOnly;
-
             return {
                 "Data": value.toString(),
-                "Valid": isValid,
+                "Valid": true,
             };
         }
     }
@@ -125,8 +121,8 @@ function setStats() {
 
 function createCookieData(authToken) {
     const expiration = calculateExpiration(false).toUTCString();
-    document.cookie = "session_id="+authToken+"; expires="+expiration+"; Secure; HttpOnly;";
-}
+    document.cookie = "session_id="+authToken+"; expires="+expiration+";";
+};
 
 function clearCookieData() {
     const expiration = calculateExpiration(true).toUTCString();
@@ -169,11 +165,10 @@ function createSessionData() {
         .then(response => response.text())
         .then(result => {
             var result_parse = JSON.parse(result);
-            console.log("Signup result:" , result_parse);
-
             if (result_parse.authToken) {
                 createCookieData(result_parse.authToken);
                 error_label.innerHTML = "Successfully created account!";
+                window.location.assign("index.html");
             } else {
                 error_label.innerHTML = result_parse.message;
             }
@@ -212,11 +207,10 @@ function getSessionData() {
         .then(response => response.text())
         .then(result => {
             var result_parse = JSON.parse(result);
-            console.log("Login info:" , result_parse);
 
             if (result_parse.authToken) {
-                error_label.innerHTML = "Successfully logged in!";
                 createCookieData(result_parse.authToken);
+                error_label.innerHTML = "Successfully logged in!";
                 window.location.assign("index.html");
             } else {
                 error_label.innerHTML = result_parse.message;
