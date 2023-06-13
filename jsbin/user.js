@@ -4,6 +4,8 @@ const getsingle_endpoint = "https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv/user/
 
 const annualExpiration = 1;
 
+import { getCookie } from "./exportuser";
+
 function calculateExpiration(past) {
     var currentDate = new Date();
 
@@ -16,33 +18,9 @@ function calculateExpiration(past) {
     return currentDate;
 }
 
-function getCookieData(trim) {
-    const cookies = document.cookie;
-    const cookieArray = cookies.split(";");
-
-    for (let i = 0; i < cookieArray.length; i++) {
-        const cookie = cookieArray[i];
-        const [name, value] = cookie.split("=");
-
-        const cookieName = name.trim();
-
-        if (cookieName === trim) {
-            return {
-                "Data": value.toString(),
-                "Valid": true,
-            };
-        }
-    }
-
-    return {
-        "Data": "no data.",
-        "Valid": false,
-    };
-};
-
 function implementUsername() {
     var username = document.getElementById("username");
-    var data = getCookieData("session_id");
+    var data = getCookie("session_id");
 
     var login_btn = document.getElementById("login-btn");
     var signup_btn = document.getElementById("signup-btn");
@@ -85,7 +63,7 @@ function implementUsername() {
 }
 
 function setStats() {
-    var data = getCookieData("session_id");
+    var data = getCookie("session_id");
     const url = getsingle_endpoint + data.Data;
 
     var myHeaders = new Headers();
@@ -135,7 +113,7 @@ function clearCookieData() {
 }
 
 function createSessionData() {
-    var data = getCookieData("session_id");
+    var data = getCookie("session_id");
 
     if (!data.Valid) {
         const username_input = document.getElementById("username_input").value;
@@ -180,7 +158,7 @@ function createSessionData() {
 }
 
 function getSessionData() {
-    var data = getCookieData("session_id");
+    var data = getCookie("session_id");
 
     if (!data.Valid) {
         const username_input = document.getElementById("username_login").value;
@@ -237,7 +215,7 @@ function changeSessionData(headers, endpoint) {
 }
 
 function changeEmailData() {
-    var data = getCookieData("session_id");
+    var data = getCookie("session_id");
 
     if (data.Valid) {
         const new_email = document.getElementById("email_input").value;
@@ -258,7 +236,7 @@ function changeEmailData() {
 }
 
 function changePasswordData() {
-    var data = getCookieData("session_id");
+    var data = getCookie("session_id");
 
     if (data.Valid) {
         const new_password = document.getElementById("password_input").value;
@@ -281,7 +259,7 @@ function changePasswordData() {
 }
 
 function logout() {
-    var data = getCookieData("session_id");
+    var data = getCookie("session_id");
 
     if (data.Valid) {
         clearCookieData();
@@ -291,7 +269,7 @@ function logout() {
 }
 
 function redirectSettings() {
-    var data = getCookieData("session_id");
+    var data = getCookie("session_id");
     if (data.Valid) {
         window.location.assign("settings.html");
     }
