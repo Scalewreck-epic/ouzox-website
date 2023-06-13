@@ -2,9 +2,9 @@ const signup_endpoint = "https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv:v1/auth/
 const login_endpoint = "https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv:v1/auth/login";
 const getsingle_endpoint = "https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv/user/" // + user session
 
-import { getCookie, changeEmailData, changePasswordData } from "./exportuser.js";
-
 const annualExpiration = 1;
+
+import { getCookie, changeEmailData, changePasswordData } from "./exportuser.js";
 
 function calculateExpiration(past) {
     var currentDate = new Date();
@@ -197,23 +197,6 @@ function getSessionData() {
     }
 }
 
-function changeSessionData(headers, endpoint) {
-    var error_label = document.getElementById("error-label");
-    error_label.innerHTML = "Changing settings...";
-
-    fetch(endpoint, headers)
-    .then(response => response.text())
-    .then(result => {
-        var result_parse = JSON.parse(result);
-
-        if (result_parse.message) {
-            error_label.innerHTML = result_parse.message;
-        } else {
-            error_label.innerHTML = "Successfully changed settings!";
-        }
-    })
-}
-
 function logout() {
     var data = getCookie("session_id");
 
@@ -232,7 +215,38 @@ function redirectSettings() {
 }
 
 implementUsername();
+document.getElementById("username").onclick = redirectSettings();
 
-if (window.location.pathname.includes("/settings.html")) {
+if (window.location.pathname.includes("/settings")) {
+    const email_button = document.getElementById("save-email");
+    const password_button = document.getElementById("save-password");
+    const logout_button = document.getElementById("logout-profile");
+
     setStats();
-}
+
+    email_button.onclick = function() {
+        changeEmailData();
+    };
+
+    password_button.onclick = function() {
+        changePasswordData();
+    };
+
+    logout_button.onclick = function() {
+        logout();
+    };
+} else if (window.location.pathname.includes("/login")) {
+    const login_form = document.getElementById("login-form");
+
+    login_form.onsubmit = function(event) {
+        event.preventDefault();
+        getSessionData();
+    };
+} else if (window.location.pathname.includes("/login")) {
+    const signup_form = document.getElementById("signup-form");
+
+    signup_form.onsubmit = function(event) {
+        event.preventDefault();
+        createSessionData();
+    };
+};
