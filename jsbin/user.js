@@ -29,10 +29,7 @@ function getCookieData(trim) {
         if (cookieName === trim) {
             const isSecure = cookie.includes('Secure');
             const isHttpOnly = cookie.includes('HttpOnly');
-
-            const sameSite = cookie.split('SameSite=')[1]?.split(';')[0];
-
-            const isValid = isSecure && isHttpOnly && (sameSite === 'Strict' || sameSite === 'Lax');
+            const isValid = isSecure && isHttpOnly;
 
             return {
                 "Data": value.toString(),
@@ -128,7 +125,7 @@ function setStats() {
 
 function createCookieData(authToken) {
     const expiration = calculateExpiration(false).toUTCString();
-    document.cookie = "session_id="+authToken+"; expires="+expiration+"; Secure; HttpOnly; SameSite=Strict";
+    document.cookie = "session_id="+authToken+"; expires="+expiration+"; Secure; HttpOnly;";
 }
 
 function clearCookieData() {
