@@ -25,7 +25,7 @@ export function getCookie(trim) {
 };
 
 export async function getUser() {
-    var data = getCookieData("session_id");
+    var data = getCookie("session_id");
 
     var myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
