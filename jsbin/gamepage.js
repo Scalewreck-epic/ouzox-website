@@ -19,13 +19,9 @@ function getCookieData(trim) {
         const cookieName = name.trim();
 
         if (cookieName === trim) {
-            const isSecure = cookie.includes('Secure');
-            const isHttpOnly = cookie.includes('HttpOnly');
-            const isValid = isSecure && isHttpOnly;
-
             return {
                 "Data": value.toString(),
-                "Valid": isValid,
+                "Valid": true,
             };
         }
     }
