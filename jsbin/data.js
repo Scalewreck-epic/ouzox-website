@@ -5,7 +5,7 @@ const update_product_url = "https://x8ki-letl-twmt.n7.xano.io/api:iwAsZq4E/produ
 
 const get_user_url = "https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv/user/"; // + session id
 
-import {getCookie} from "./exportuser";
+import {getCookie} from "./exportuser.js";
 
 const refreshTime = 5;
 const gamesPerPage = 20;
