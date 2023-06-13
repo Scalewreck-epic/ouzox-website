@@ -5,6 +5,8 @@ const update_product_url = "https://x8ki-letl-twmt.n7.xano.io/api:iwAsZq4E/produ
 
 const get_user_url = "https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv/user/"; // + session id
 
+import {getCookie} from "./exportuser";
+
 const refreshTime = 5;
 const gamesPerPage = 20;
 var isFetching = false;
@@ -177,32 +179,8 @@ function sortGames(gameSortType, listSortType) {
     }
 }
 
-function getCookieData(trim) {
-    const cookies = document.cookie;
-    const cookieArray = cookies.split(";");
-
-    for (let i = 0; i < cookieArray.length; i++) {
-        const cookie = cookieArray[i];
-        const [name, value] = cookie.split("=");
-
-        const cookieName = name.trim();
-
-        if (cookieName === trim) {
-            return {
-                "Data": value.toString(),
-                "Valid": true,
-            };
-        }
-    }
-
-    return {
-        "Data": "no data.",
-        "Valid": false,
-    };
-};
-
 async function verifyUser() {
-    var data = getCookieData("session_id");
+    var data = getCookie("session_id");
 
     var myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
