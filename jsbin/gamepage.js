@@ -210,7 +210,10 @@ const gameHandler = async (gameId) => {
                 const titleFilter = await filter(game_title.innerHTML);
                 const descFilter = await filter(game_desc.innerHTML);
                 
-                if (titleFilter == "No reason" && descFilter == "No Reason") {
+                if (titleFilter == "No reason" && descFilter == "No reason") {
+                    const myHeaders = new Headers();
+                    myHeaders.append("Content-Type", "application/json");
+
                     var update_product_options = {
                         method: "POST",
                         headers: myHeaders,
@@ -237,10 +240,7 @@ const gameHandler = async (gameId) => {
                     async function update_product() {
                         if (user.name == gameData.developer_name) {
                             try {
-                                const response = await fetch(update_product_url + game.id, update_product_options);
-                                const result = await response.text();
-                                const result_parse = JSON.parse(result);
-                
+                                await fetch(update_product_url + game.id, update_product_options);
                                 commitChangesButton.innerHTML = "Success";
                             } catch (error) {
                                 commitChangesButton.innerHTML = "An error occured";
@@ -256,11 +256,12 @@ const gameHandler = async (gameId) => {
                 } else {
                     if (titleFilter != "No reason") {
                         game_title.innerHTML = titleFilter;
-                    }
+                    };
     
                     if (descFilter != "No reason") {
                         game_desc.innerHTML = descFilter;
-                    }
+                    };
+                    commitChangesButton.innerHTML = "Cannot upload";
                 }
                 isLoading = false;
             }
