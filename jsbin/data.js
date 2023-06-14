@@ -420,7 +420,11 @@ async function fetchGamesRequest(isDashboard) {
 
             games = result_parse.data;
             removePrivateGames();
-            removeIrrelevantGames();
+
+            if (urlParams != null) {
+                removeIrrelevantGames();
+            };
+            
             sortGames(selectedGameSort, selectedListSort);
 
             if (isDashboard) {
