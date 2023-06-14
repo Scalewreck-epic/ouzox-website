@@ -292,7 +292,6 @@ function checkPrice() {
 const game_thumbnail = document.getElementById("thumbnail");
 const game_price = document.getElementById("price");
 const game_isfree = document.getElementById("isfree");
-const description_input = document.getElementById("description");
 
 checkIsFree();
 
@@ -307,7 +306,3 @@ game_price.onchange = function() {
 game_isfree.onchange = function() {
     checkIsFree();
 };
-
-description_input.addEventListener("input", function() {
-    description_input.innerHTML = description_input.value;
-});
