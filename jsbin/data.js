@@ -421,7 +421,7 @@ async function fetchGamesRequest(isDashboard) {
             games = result_parse.data;
             removePrivateGames();
 
-            if (urlParams != null) {
+            if (search_query != null) {
                 removeIrrelevantGames();
             };
             
