@@ -148,7 +148,7 @@ const gameHandler = async (gameId) => {
             game_title.addEventListener("input", function() {
                 const text = this.innerHTML;
 
-                if (this.length > 40) {
+                if (text.length > 40) {
                     this.innerHTML = text.slice(0, 40);
                 };
             });
@@ -156,10 +156,18 @@ const gameHandler = async (gameId) => {
             game_summary.addEventListener("input", function() {
                 const text = this.innerHTML;
 
-                if (this.length > 50) {
+                if (text.length > 50) {
                     this.innerHTML = text.slice(0, 50);
                 };
             });
+
+            game_desc.addEventListener("input", function() {
+                const text = this.innerHTML;
+
+                if (text.length > 4000) {
+                    this.innerHTML = text.slice(0, 4000)
+                }
+            })
     
             function create_stat(stat_name) {
                 var game_stat = document.createElement("div");
