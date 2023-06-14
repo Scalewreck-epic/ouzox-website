@@ -108,8 +108,8 @@ function createGamePage(game, game_price, editable) {
 
     gameImageHolder.appendChild(gameImage);
     gamesDiv.appendChild(gameImageHolder);
-    gamesDiv.appendChild(gameSummary);
     gamesDiv.appendChild(gameTitle);
+    gamesDiv.appendChild(gameSummary);
     gamesDiv.appendChild(gamePrice);
 
     if (editable) {
