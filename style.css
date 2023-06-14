@@ -560,25 +560,26 @@ p{
 }
 
 .product-title{
-	font-size: 25px;
+	font-size: 18px;
 	font-family: 'Secular One', sans-serif;
 	outline: #000;
 	color: #FFF;
 	width: auto;
 	float: left;
 	overflow: hidden;
-	word-break: break-all;
+	word-break: break-word;
 }
 
 .product-summary {
-	font-size: 10px;
+	font-size: 12px;
 	font-family: 'Secular One', sans-serif;
 	outline: #000;
-	color: #FFF;
+	color: gray;
 	width: auto;
 	float: left;
 	overflow: hidden;
 	word-break: break-all;
+	opacity: 0.8;
 }
 
 .product-price {
@@ -594,7 +595,7 @@ p{
 	border-radius: 3px;
 	padding: 2px 4px;
 	font-weight: bold;
-	}
+}
 
 .web-icon, .product-image {
 	transition: transform 0.2s ease-in-out;
@@ -606,7 +607,8 @@ p{
 	height: 200px;
 	border-radius: 15px;
 	box-shadow: 0px 5px 10px black;
-	object-fit: cover;
+	object-fit: fill;
+	object-position: center;
 }
 
 .game-column {
