@@ -9,18 +9,16 @@ import {filter} from "./moderation.js";
 
 uploadGame.addEventListener("submit", async function(event) {
     event.preventDefault();
-    var error_label = document.getElementById("error-label");
+    const error_label = document.getElementById("error-label");
 
-    var game_file_warn = document.getElementById("game-file-warn");
-    var title_warn = document.getElementById("game-title-warn");
-    var desc_warn = document.getElementById("desc-warn");
+    const game_file_warn = document.getElementById("game-file-warn");
 
     checkThumbnail();
     checkFileSize();
     checkPrice();
     checkPrice();
 
-    if (desc_warn.innerText == "" && title_warn.innerText == "" && game_file_warn.innerText == "") {
+    if (game_file_warn.innerText == "") {
         const file_input = document.getElementById("download-file");
         const thumbnail_input = document.getElementById("thumbnail");
         const description_input = document.getElementById("description");
@@ -85,7 +83,7 @@ uploadGame.addEventListener("submit", async function(event) {
                             "id": null,
                             "name": title_input.value,
                             "active": null,
-                            "description": description_input.value,
+                            "description": description_input.innerHTML,
                             "metadata": {
                                 "developer_name": uploader_name.innerHTML,
                                 "summary": summary_input.value,
@@ -116,8 +114,7 @@ uploadGame.addEventListener("submit", async function(event) {
                 const response = await fetch(upload_product_api_url, uploadRequestOptions);
                 const result = await response.text();
                 const result_parse = JSON.parse(result);
-    
-                console.log(result_parse);
+
                 return result_parse;
             } catch (error) {
                 warn("There was an error trying to upload a product: "+error);
@@ -130,7 +127,6 @@ uploadGame.addEventListener("submit", async function(event) {
                 const result = await response.text();
                 const result_parse = JSON.parse(result);
 
-                console.log(result_parse);
                 return result_parse;
             } catch (error) {
                 warn("There was an error trying to upload an image: "+error);
@@ -181,8 +177,7 @@ uploadGame.addEventListener("submit", async function(event) {
                 const response = await fetch(set_product_price_url, priceRequestOptions);
                 const result = await response.text();
                 const result_parse = JSON.parse(result);
-    
-                console.log(result_parse);
+
                 return result_parse;
             } catch (error) {
                 warn("There was an error trying to set price: "+error);
@@ -297,6 +292,7 @@ function checkPrice() {
 const game_thumbnail = document.getElementById("thumbnail");
 const game_price = document.getElementById("price");
 const game_isfree = document.getElementById("isfree");
+const description_input = document.getElementById("description");
 
 checkIsFree();
 
@@ -311,3 +307,7 @@ game_price.onchange = function() {
 game_isfree.onchange = function() {
     checkIsFree();
 };
+
+description_input.addEventListener("input", function() {
+    description_input.innerHTML = description_input.value;
+});
