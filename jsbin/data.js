@@ -231,12 +231,16 @@ function removeIrrelevantGames() {
 
     for (let i = 0; i < games.length; i++) {
         const game = games[i];
+
         const game_name = game.name;
+        const game_summary = game.metadata.summary;
 
-        const similarity = calculateSimilarity(search_query, game_name);
-        console.log(similarity);
+        const title_similarity = calculateSimilarity(search_query, game_name);
+        const summary_similarity = calculateSimilarity(search_query, game_summary);
 
-        if (similarity < similarityThreshold) {
+        const game_similarity = 0.7 * title_similarity + 0.3 * summary_similarity;
+
+        if (game_similarity < similarityThreshold) {
             let index = games.indexOf(game);
             games.splice(index, 1);
         };
