@@ -44,7 +44,6 @@ function implementUsername() {
         .then(response => response.text())
         .then(result => {
             var result_parse = JSON.parse(result);
-            console.log("User info:" , result_parse);
 
             if (result_parse.name) {
                 username.innerHTML = result_parse.name;
