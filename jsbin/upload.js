@@ -85,7 +85,7 @@ uploadGame.addEventListener("submit", async function(event) {
                             "active": null,
                             "description": description_input.innerHTML,
                             "metadata": {
-                                "developer_name": uploader_name.innerHTML,
+                                "developer_name": uploader_name,
                                 "summary": summary_input.value,
                                 "genre": genre,
                                 "artstyle": artstyle,
