@@ -144,6 +144,22 @@ const gameHandler = async (gameId) => {
             var commitChangesButton = document.createElement("button");
             commitChangesButton.className = "game-download-button";
             commitChangesButton.innerHTML = "Commit Changes";
+
+            game_title.addEventListener("input", function() {
+                const text = this.innerHTML;
+
+                if (this.length > 40) {
+                    this.innerHTML = text.slice(0, 40);
+                };
+            });
+
+            game_summary.addEventListener("input", function() {
+                const text = this.innerHTML;
+
+                if (this.length > 50) {
+                    this.innerHTML = text.slice(0, 50);
+                };
+            });
     
             function create_stat(stat_name) {
                 var game_stat = document.createElement("div");
@@ -189,18 +205,18 @@ const gameHandler = async (gameId) => {
     
             changeButtonColor.onchange = function() {
                 document.getElementById("download-button").style.backgroundColor = changeButtonColor.value;
-            }
+            };
     
             changeButtonText.onchange = function() {
                 document.getElementById("download-button").style.color = changeButtonText.value;
-            }
+            };
     
             changeStatsColor.onchange = function() {
                 var elements = document.getElementsByClassName("game-stat");
     
                 for (var i = 0; i < elements.length; i++) {
                     elements[i].style.color = changeStatsColor.value;
-                }
+                };
             };
             
             var isLoading = false;
