@@ -7,6 +7,9 @@ const get_user_url = "https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv/user/"; // 
 
 import {getCookie} from "./exportuser.js";
 
+const urlParams = new URLSearchParams(window.location.search);
+const search_query = urlParams.get("q");
+
 const refreshTime = 5;
 const gamesPerPage = 20;
 var isFetching = false;
@@ -177,6 +180,39 @@ function sortGames(gameSortType, listSortType) {
     }
 }
 
+function levenshteinDistance(a, b) {
+    const dp = Array(a.length + 1)
+    .fill(null)
+    .map(() => Array(b.length + 1).fill(null));
+
+    for (let i = 0; i <= a.length; i++) {
+        dp[i][0] = i;
+    };
+
+    for (let j = 0; j <= b.length; j++) {
+        dp[0][j] = j;
+    };
+
+    for (let i = 1; i <= a.length; i++) {
+        for (let j = 1; j <= b.length; j++) {
+            const indicator = a[i - 1] == b[j - 1] ? 0 : 1;
+            dp[i][j] = Math.min(
+                dp[i - 1][j] + 1,
+                dp[i][j - 1] + 1,
+                dp[i - 1][j - 1] + indicator
+            );
+        };
+    };
+
+    return dp[a.length][b.length];
+};
+
+function calculateSimilarity(a, b) {
+    const distance = levenshteinDistance(a.toLowerCase(), b.toLowerCase());
+    const maxLength = Math.max(a.length, b.length);
+    return 1 - distance / maxLength;
+};
+
 function removePrivateGames() {
     for (let i = 0; i < games.length; i++) {
         const game = games[i];
@@ -186,9 +222,26 @@ function removePrivateGames() {
         } else {
             let index = games.indexOf(game);
             games.splice(index, 1);
-        }
-    }
-}
+        };
+    };
+};
+
+function removeIrrelevantGames() {
+    const similarityThreshold = 0.15;
+
+    for (let i = 0; i < games.length; i++) {
+        const game = games[i];
+        const game_name = game.name;
+
+        const similarity = calculateSimilarity(search_query, game_name);
+        console.log(similarity);
+
+        if (similarity < similarityThreshold) {
+            let index = games.indexOf(game);
+            games.splice(index, 1);
+        };
+    };
+};
 
 async function verifyUser() {
     var data = getCookie("session_id");
@@ -367,6 +420,7 @@ async function fetchGamesRequest(isDashboard) {
 
             games = result_parse.data;
             removePrivateGames();
+            removeIrrelevantGames();
             sortGames(selectedGameSort, selectedListSort);
 
             if (isDashboard) {
@@ -423,7 +477,9 @@ function isPathDashboard() {
     };
 
     return false;
-}
+};
+
+document.getElementById("search-query").value = search_query;
 
 document.getElementById("refresh-button").addEventListener("click", function() {
     if (!isFetching) {
