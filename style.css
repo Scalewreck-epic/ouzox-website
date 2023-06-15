@@ -466,7 +466,7 @@ p{
 .upload-button:disabled,
 .login-button:disabled,
 .twitter-button:disabled,
-.game-download-button:disabled
+.game-download-button:disabled,
 .load-button:disabled {
   opacity: 0.5;
   cursor: not-allowed;
@@ -570,6 +570,10 @@ p{
 	word-break: break-word;
 }
 
+.product-title:hover{
+	text-decoration: underline;
+}
+
 .product-summary {
 	font-size: 12px;
 	font-family: 'Secular One', sans-serif;
@@ -578,7 +582,7 @@ p{
 	width: auto;
 	float: left;
 	overflow: hidden;
-	word-break: break-all;
+	word-break: break-word;
 	opacity: 0.8;
 }
 
@@ -589,7 +593,7 @@ p{
 	width: auto;
 	float: right;
 	overflow: hidden;
-	word-break: break-all;
+	word-break: break-word;
 	outline: none;
 	background-color: #6c757d;
 	border-radius: 3px;
@@ -602,9 +606,9 @@ p{
 }
 
 .product-image {
-	position: relative;
 	width: 200px;
-	height: 200px;
+	height: 160px;
+	position: relative;
 	border-radius: 15px;
 	box-shadow: 0px 5px 10px black;
 	object-fit: fill;
