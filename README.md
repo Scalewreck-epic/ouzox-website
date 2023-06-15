@@ -1,17 +1,6 @@
 # Econsole
-Welcome to Econsole, a platform for game developers to publish their games for free.
-Our website is not finished just yet, we're still working on it.
-
-Our platform provides a range of games for players to discover and play.
-
-## Features
-- Free game publishing for developers
-- A wide variety of games for players to discover and play
-
-## Getting Started
-To start playing games on Econsole, simply visit our website and browse through our selection of games.
-
-To publish your own game, create an account and upload your game files.
+Welcome to Econsole, a platform that focuses on user experience and developer recognition.
+Our platform allows users like yourself to easily find the game you are looking for. We also give developers the chance to be recognized.
 
 ## Support
 If you encounter any issues or have any questions, please contact our support team at scalewreck@protonmail.com.
