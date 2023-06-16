@@ -121,9 +121,9 @@ const gameHandler = async (gameId) => {
 
     // metadata
     developer_name.innerHTML = "By: " + gameData.developer_name;
-    game_genre.innerHTML = gameData.genre;
+    game_genre.innerHTML = gameData.genre.toUpperCase();
     game_summary.innerHTML = gameData.summary;
-    game_art.innerHTML = gameData.artstyle;
+    game_art.innerHTML = gameData.artstyle.toUpperCase();
 
     if (!gameData.useDefaultColors) {
       var elements = document.getElementsByClassName("game-stat");
@@ -202,7 +202,7 @@ const gameHandler = async (gameId) => {
         document.getElementById("game-column").appendChild(game_stat);
 
         return changeBGcolor;
-      }
+      };
 
       const changeBGcolor = create_stat("BG Color");
       const changeBG2color = create_stat("BG2 Color");
