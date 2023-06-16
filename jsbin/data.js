@@ -152,15 +152,14 @@ function createGamePage(game, game_price, editable) {
             update_product_url + game.id,
             deactivate_product_options
           );
-          const result = await response.text();
-          const result_parse = JSON.parse(result);
+          await response.text();
+          gamesDiv.remove();
         } catch (error) {
           showError(error, false);
         }
       }
 
       await deactivate_product();
-      gamesDiv.remove();
     });
 
     gamesDiv.appendChild(deleteButton);
