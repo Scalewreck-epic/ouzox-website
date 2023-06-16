@@ -662,15 +662,6 @@ p{
 	border: 1px solid #4CAF50;
 	transition: border-color 0.2s ease-in-out;
 }
-.game-download-button:focus {
-	outline: none;
-	border-color: #4CAF50;
-}
-
-.game-download-button:focus {
-	outline: none;
-	box-shadow: 0px 0px 0px 2px #4CAF50, 0px 5px 10px black;
-}
 
 .game-price {
 	display: inline-block;
@@ -685,8 +676,23 @@ p{
 	font-family: 'Secular One', sans-serif;
 	margin: 20px;
 	margin-top: 0px;
-	width: 70%;
 	color: white;
+}
+
+.left-column {
+	display: inline-block;
+	width: 50%;
+}
+
+.right-column {
+	width: 50%;
+	min-height: 100px;
+	float: right;
+}
+
+.game-image-list {
+	display: block;
+	width: 100%;
 }
 
 .game-title-column {
