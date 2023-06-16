@@ -244,6 +244,7 @@ p{
 	display: inline-block;
 	font-size: 16px;
 	border-radius: 5px;
+	padding: 5px;
 	font-family: 'Secular One', sans-serif;
 	color: #fff;
 	background-color: #292929;
@@ -286,6 +287,7 @@ p{
 	min-width: 200px;
 	max-width: 500px;
 	width: 200px;
+	padding: 5px;
 	color: #fff;
 	background-color: #292929;
 	border-radius: 5px;
@@ -501,6 +503,7 @@ p{
 	color: #fff;
 	background-color: #007bff;
 	border-radius: 3px;
+	overflow: none;
 }
 
 .updated-label {
@@ -576,13 +579,11 @@ p{
 }
 
 .product-title{
-	font-size: 18px;
+	font-size: 15px;
 	font-family: 'Secular One', sans-serif;
-	outline: #000;
-	color: #FFF;
-	width: auto;
-	float: left;
-	overflow: hidden;
+	border-radius: 10px;
+	color: white;
+	width: 100%;
 	word-break: break-word;
 }
 
@@ -593,28 +594,23 @@ p{
 .product-summary {
 	font-size: 12px;
 	font-family: 'Secular One', sans-serif;
-	outline: #000;
 	color: gray;
-	width: auto;
-	float: left;
-	overflow: hidden;
+	width: 100%;
 	word-break: break-word;
-	opacity: 0.8;
+	opacity: 0.7;
+	line-height: 1.1;
 }
 
 .product-price {
 	font-size: 15px;
 	font-family: 'Secular One', sans-serif;
-	color: #fff;
+	color: white;
 	width: auto;
 	float: right;
-	overflow: hidden;
 	word-break: break-word;
-	outline: none;
 	background-color: #6c757d;
 	border-radius: 3px;
 	padding: 2px 4px;
-	font-weight: bold;
 }
 
 .web-icon, .product-image {
@@ -634,8 +630,9 @@ p{
 .game-column {
 	display: block;
 	max-width: 960px;
-	min-height: 812px;
+	min-height: 880px;
 	width: auto;
+	height: auto;
 	margin: 0 auto;
 	background-color: #000;
 }
@@ -686,15 +683,15 @@ p{
 	display: block;
 	font-size: 18px;
 	font-family: 'Secular One', sans-serif;
+	margin: 20px;
 	margin-top: 0px;
-	margin-bottom: 32px;
-	margin-left: 35px;
+	width: 70%;
 	color: white;
 }
 
 .game-title-column {
-	margin-bottom: 32px;
-	margin-left: 80px;
+	margin: 20px;
+	margin-top: 0;
 	color: white;
 }
 
@@ -766,14 +763,11 @@ p{
 	font-size: 20px;
 	font-weight: bold;
 	color: #FFF;
-	background-color: #1F1F1F;
-	border: 3px solid black;
+	background-color: #19191c;
+	border: none;
+	border-radius: 5px;
+	padding: 3px;
 	width: 150px;
-}
-
-.developer-market{
-	display: grid;
-	grid-template-columns: repeat(auto-fit, minmax(285px, 285px));
 }
 
 .errorImg{
@@ -808,8 +802,8 @@ p{
 
 .market {
 	display: grid;
-	grid-template-columns: repeat(auto-fit, minmax(285px, 285px));
-	padding-left: 20px;
+	grid-template-columns: repeat(auto-fit, minmax(200px, 200px));
+	gap: 20px 20px;
 }
 
 .errors{
