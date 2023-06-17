@@ -156,8 +156,8 @@ function createGamePage(game, game_price, editable) {
           gamesDiv.remove();
         } catch (error) {
           showError(error, false);
-        }
-      }
+        };
+      };
 
       await deactivate_product();
     });
@@ -242,8 +242,13 @@ function removePrivateGames() {
     } else {
       let index = games.indexOf(game);
       games.splice(index, 1);
-    }
-  }
+    };
+  };
+};
+
+function removeGameFromList(game) {
+  let index = games.indexOf(game);
+  games.splice(index, 1);
 }
 
 function removeIrrelevantGames() {
@@ -252,20 +257,41 @@ function removeIrrelevantGames() {
   for (let i = 0; i < games.length; i++) {
     const game = games[i];
 
-    const game_name = game.name;
-    const game_summary = game.metadata.summary;
+    const genre_sort = document.getElementById("genre-sort");
+    const art_sort = document.getElementById("art-sort");
+    const age_sort = document.getElementById("age-sort");
 
-    const title_similarity = calculateSimilarity(search_query, game_name);
-    const summary_similarity = calculateSimilarity(search_query, game_summary);
+    const genre = genre_sort.options[genre_sort.selectedIndex].value;
+    const art = art_sort.options[art_sort.selectedIndex].value;
+    const age = age_sort.options[age_sort.selectedIndex].value;
 
-    const game_similarity = 0.7 * title_similarity + 0.3 * summary_similarity;
-
-    if (game_similarity < similarityThreshold) {
-      let index = games.indexOf(game);
-      games.splice(index, 1);
+    if (game.metadata.genre != genre) {
+      removeGameFromList(game);
     }
-  }
-}
+
+    if (game.metadata.artstyle != art) {
+      removeGameFromList(game);
+    }
+
+    if (game.metadata.age_rating != age) {
+      removeGameFromList(game);
+    }
+
+    if (search_query != null) {
+      const game_name = game.name;
+      const game_summary = game.metadata.summary;
+  
+      const title_similarity = calculateSimilarity(search_query, game_name);
+      const summary_similarity = calculateSimilarity(search_query, game_summary);
+  
+      const game_similarity = 0.7 * title_similarity + 0.3 * summary_similarity;
+  
+      if (game_similarity < similarityThreshold) {
+        removeGameFromList(game);
+      };
+    };
+  };
+};
 
 async function verifyUser() {
   var data = getCookie("session_id");
@@ -300,9 +326,6 @@ async function verifyUser() {
 }
 
 function loadGames() {
-  const genre_input = document.getElementById("genre-sort");
-  const genre = genre_input.options[genre_input.selectedIndex].value;
-
   for (
     let i = currentPage;
     i < currentPage + gamesPerPage && i < games.length;
@@ -315,14 +338,7 @@ function loadGames() {
 
       if (game_price) {
         currentPage += 1;
-
-        if (genre == "all") {
-          createGamePage(game, game_price, false);
-        } else {
-          if (game.metadata.genre == genre) {
-            createGamePage(game, game_price, false);
-          }
-        }
+        createGamePage(game, game_price, false);
       }
     }
   }
@@ -332,8 +348,6 @@ async function loadDashboard() {
   const username = await verifyUser();
 
   if (username != undefined) {
-    const genre_input = document.getElementById("genre-sort");
-    const genre = genre_input.options[genre_input.selectedIndex].value;
     for (
       let i = currentPage;
       i < currentPage + gamesPerPage && i < games.length;
@@ -350,14 +364,7 @@ async function loadDashboard() {
 
         if (game_price) {
           currentPage += 1;
-
-          if (genre == "all") {
-            createGamePage(game, game_price, true);
-          } else {
-            if (game.metadata.genre == genre) {
-              createGamePage(game, game_price, true);
-            }
-          }
+          createGamePage(game, game_price, true);
         }
       }
     }
@@ -459,10 +466,7 @@ async function fetchGamesRequest(isDashboard) {
 
       games = result_parse.data;
       removePrivateGames();
-
-      if (search_query != null) {
-        removeIrrelevantGames();
-      }
+      removeIrrelevantGames();
 
       sortGames(selectedGameSort, selectedListSort);
 
