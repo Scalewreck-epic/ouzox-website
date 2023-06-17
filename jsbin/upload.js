@@ -316,6 +316,11 @@ function checkPrice() {
   }
 }
 
+function checkTime() {
+  const input = document.getElementById("game-length-number");
+  input.value = input.value.replace(/[^0-9]/g, "");
+}
+
 const game_thumbnail = document.getElementById("thumbnail");
 const game_price = document.getElementById("price");
 const game_isfree = document.getElementById("isfree");
@@ -329,13 +334,13 @@ game_thumbnail.onchange = function () {
   checkThumbnail();
 };
 
-game_price.onchange = function () {
-  checkPrice();
-};
-
 game_isfree.onchange = function () {
   checkIsFree();
 };
+
+game_price.addEventListener("input", function() {
+  checkPrice();
+})
 
 game_title.addEventListener("input", function() {
   this.style.width = (this.value.length + 1) * 10 + "px";
@@ -346,5 +351,6 @@ game_summary.addEventListener("input", function() {
 });
 
 game_length.addEventListener("input", function() {
+  checkTime();
   this.style.width = (this.value.length + 1) * 10 + "px";
 })
