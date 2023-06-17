@@ -189,6 +189,7 @@ a:not(:has(img)):hover{
 }
 
 .divider{
+	display: inline-block;
 	margin: 15px auto;
 	width: 95%;
 	border-bottom: #FFFFFF solid 2px;
@@ -752,8 +753,15 @@ p{
 	margin-top: 0px;
 }
 
+.game-stats{
+	display: inline-block;
+	width: 100%;
+	height: 50px;
+}
+
 .game-stat{
 	width: 11%;
+	height: auto;
 	text-align: center;
 	display: inline-block;
 	color: white;
