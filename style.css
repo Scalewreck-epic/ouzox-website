@@ -286,6 +286,20 @@ p{
 	cursor: pointer;
 }
 
+.filter-text-box {
+	position: relative;
+	display: inline-block;
+	font-size: 16px;
+	font-family: 'Secular One', sans-serif;
+	width: 144px;
+	padding: 5px;
+	color: #fff;
+	background-color: #292929;
+	border-radius: 5px;
+	cursor: text;
+	transition: background-color 0.3s ease-in-out;
+}
+
 .text-box {
 	position: relative;
 	display: inline-block;
@@ -302,7 +316,8 @@ p{
 	transition: background-color 0.3s ease-in-out;
   }
   
-.text-box:before {
+.text-box:before,
+.filter-text-box:before {
 	content: "";
 	position: absolute;
 	top: 50%;
@@ -313,15 +328,18 @@ p{
 	background-size: cover;
 }
 
-.text-box:hover {
+.text-box:hover,
+.filter-text-box:hover {
 	background-color: #4b4b4b;
 }
 
-.text-box:focus-within {
+.text-box:focus-within,
+.filter-text-box:focus-within {
 	background-color: #4b4b4b;
 }
 
-.text-box input[type="text"] {
+.text-box input[type="text"],
+.filter-text-box input[type="text"] {
 	position: absolute;
 	top: 0;
 	left: 0;
