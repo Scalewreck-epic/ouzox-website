@@ -16,6 +16,7 @@ nav{
 	width: 100%;
 	display: block;
 	box-sizing: border-box;
+	font-weight: bold;
 }
 
 .navbar{
@@ -237,6 +238,12 @@ p{
 	list-style-type: none;
 	margin: auto;
 	padding: 25px;
+}
+
+.upload-game-form ul h1, h3{
+	color: white;
+	margin: 10px;
+	font-family: 'Secular One', sans-serif;
 }
 
 .upload-box {
