@@ -40,6 +40,7 @@
 			<div class="container">
 				<form id="upload-game" class="upload-game-form">
 					<ul>
+						<h1>Main</h1>
 						<li>
 							<label class="title-label">Title:</label>
 							<input type="text" class="text-box" id="title" placeholder="Game Title." value="My new project!" autocorrect="on" maxlength="120" minlength="1"/>
@@ -69,6 +70,23 @@
 							<input type="text" class="text-box" id="price" pattern="[0-9]*" placeholder="0" value="0"/>
 						</li>
 						<li>
+							<label class="title-label">Currency:</label>
+							<select class="game-sort" id="currency-sort">
+								<option value="usd">USD</option>
+								<option value="eur">EUR</option>
+								<option value="jpy">JPY</option>
+								<option value="gbp">GBP</option>
+								<option value="aud">AUD</option>
+								<option value="cad">CAD</option>
+								<option value="cnh">CNH</option>
+								<option value="chf">CHF</option>
+								<option value="hkd">HKD</option>
+								<option value="nzd">NZD</option>
+							</select>
+						</li>
+						<h1>Extra</h1>
+						<h3>This is how users will find your game</h3>
+						<li>
 							<label class="title-label">Genre:</label>
 							<select id="genre-sort" class="game-sort">
 								<option value="all">All Genres</option>
@@ -84,21 +102,6 @@
 							</select>
 						</li>
 						<li>
-							<label class="title-label">Currency:</label>
-							<select class="game-sort" id="currency-sort">
-								<option value="usd">USD</option>
-								<option value="eur">EUR</option>
-								<option value="jpy">JPY</option>
-								<option value="gbp">GBP</option>
-								<option value="aud">AUD</option>
-								<option value="cad">CAD</option>
-								<option value="cnh">CNH</option>
-								<option value="chf">CHF</option>
-								<option value="hkd">HKD</option>
-								<option value="nzd">NZD</option>
-							</select>
-						</li>
-						<li>
 							<label class="title-label">Art Style:</label>
 							<select class="game-sort" id="art-sort">
 								<option value="realistic">Realistic</option>
@@ -108,6 +111,24 @@
 								<option value="steampunk">Steampunk</option>
 								<option value="gothic">Gothic</option>
 								<option value="minimalistic">Minimalistic</option>
+							</select>
+						</li>
+						<li>
+							<label class="title-label">Age Rating</label>
+							<select class="game-sort" id="age-sort">
+								<option value="everyone">Everyone</option>
+								<option value="9+">9+</option>
+								<option value="13+">13+</option>
+							</select>
+						</li>
+						<li>
+							<label class="title-label">Game Length:</label>
+							<input type="text" class="text-box" id="game-length-number" pattern="[0-9]*" placeholder="0" value="0"/>
+							<select class="game-sort" id="time-sort">
+								<option value="seconds">Seconds</option>
+								<option value="minutes">Minutes</option>
+								<option value="Hours">Hours</option>
+								<option value="Days">Days</option>
 							</select>
 						</li>
 					</ul>
