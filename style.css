@@ -151,6 +151,8 @@ nav{
 }
 
 .footer h1{
+	margin-left: 20px;
+	margin-right: 20px;
 	margin-bottom: 0;
 	color: #FFF;
 }
@@ -197,6 +199,10 @@ a:not(:has(img)):hover{
 	margin: auto;
 	width: 62%;
 	position: relative;
+}
+
+.spacer {
+	margin: 0 10px;
 }
 
 .search-bar{
