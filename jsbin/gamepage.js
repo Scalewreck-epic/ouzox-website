@@ -87,6 +87,8 @@ async function retrieveGameData(gameId) {
     genre: rawGameData.metadata.genre,
     summary: rawGameData.metadata.summary,
     artstyle: rawGameData.metadata.artstyle,
+    agerating: rawGameData.metadata.age_rating,
+    gamelength: rawGameData.metadata.game_length,
     icon: rawGameData.images[0],
     created: createdFormattedDate,
     updated: updatedFormattedDate,
@@ -105,25 +107,33 @@ const gameHandler = async (gameId) => {
     const game_desc = document.getElementById("game-description");
     const created = document.getElementById("created");
     const updated = document.getElementById("updated");
+
+    const navigation_title = document.getElementById("navigation-title");
     const icon = document.getElementById("icon");
 
     const developer_name = document.getElementById("game-developer-name");
     const game_genre = document.getElementById("game-genre");
     const game_summary = document.getElementById("game-summary");
     const game_art = document.getElementById("game-art");
+    const game_age = document.getElementById("game-age");
+    const game_length = document.getElementById("game-length");
 
     // main data
     game_title.innerHTML = gameData.name;
     game_desc.innerHTML = gameData.description;
     created.innerHTML = gameData.created;
     updated.innerHTML = gameData.updated;
+
     icon.setAttribute("href", gameData.icon);
+    navigation_title.innerHTML = gameData.name + " By " + gameData.developer_name;
 
     // metadata
     developer_name.innerHTML = "By: " + gameData.developer_name;
     game_genre.innerHTML = gameData.genre.toUpperCase();
     game_summary.innerHTML = gameData.summary;
     game_art.innerHTML = gameData.artstyle.toUpperCase();
+    game_age.innerHTML = gameData.agerating.toUpperCase();
+    game_length.innerHTML = gameData.gamelength.toUpperCase();
 
     if (!gameData.useDefaultColors) {
       var elements = document.getElementsByClassName("game-stat");
