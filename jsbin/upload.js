@@ -22,15 +22,19 @@ uploadGame.addEventListener("submit", async function (event) {
   checkPrice();
 
   if (game_file_warn.innerText == "") {
-    const file_input = document.getElementById("download-file");
+    const title_input = document.getElementById("title");
+    const summary_input = document.getElementById("summary");
     const thumbnail_input = document.getElementById("thumbnail");
+    const file_input = document.getElementById("download-file");
     const description_input = document.getElementById("description");
     const price_input = document.getElementById("price");
     const currency_input = document.getElementById("currency-sort");
+
     const genre_input = document.getElementById("genre-sort");
     const art_input = document.getElementById("art-sort");
-    const title_input = document.getElementById("title");
-    const summary_input = document.getElementById("summary");
+    const age_rating = document.getElementById("age-sort");
+    const game_length = document.getElementById("time-sort");
+    const game_time = document.getElementById("game-length-number");
 
     const uploader = await getUser();
     const uploader_name = uploader.name;
@@ -52,6 +56,8 @@ uploadGame.addEventListener("submit", async function (event) {
     const currency = currency_input.options[currency_input.selectedIndex].value;
     const genre = genre_input.options[genre_input.selectedIndex].value;
     const artstyle = art_input.options[art_input.selectedIndex].value;
+    const age = age_rating.options[age_rating.selectedIndex].value;
+    const time = game_length.options[game_length.selectedIndex].value;
 
     const image = thumbnail_input.files[0];
     const reader = new FileReader();
@@ -95,6 +101,8 @@ uploadGame.addEventListener("submit", async function (event) {
                 summary: summary_input.value,
                 genre: genre,
                 artstyle: artstyle,
+                age_rating: age,
+                game_length: game_time.value+" "+time,
               },
               type: null,
               attributes: [],
@@ -313,6 +321,7 @@ const game_price = document.getElementById("price");
 const game_isfree = document.getElementById("isfree");
 const game_title = document.getElementById("title");
 const game_summary = document.getElementById("summary");
+const game_length = document.getElementById("game-length-number");
 
 checkIsFree();
 
@@ -335,3 +344,7 @@ game_title.addEventListener("input", function() {
 game_summary.addEventListener("input", function() {
   this.style.width = (this.value.length + 1) * 10 + "px";
 });
+
+game_length.addEventListener("input", function() {
+  this.style.width = (this.value.length + 1) * 10 + "px";
+})
