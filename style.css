@@ -6,9 +6,9 @@ body{
 }
 
 .mail-link{
-	font-size: 25px;
+	font-size: 1.563rem;
 	font-family: 'Secular One', sans-serif;
-	text-shadow: 5px 5px 10px black;
+	text-shadow: 0.313rem 0.313rem 0.625rem black;
 	text-decoration: underline;
 }
 
@@ -20,10 +20,10 @@ nav{
 }
 
 .navbar{
-	height: 85px;
+	height: 5.313rem;
 	overflow: auto;
 	background-color: #2e2f32;
-	padding-top: 1px;
+	padding-top: 0.063rem;
 	box-sizing: border-box;
 }
 
@@ -59,15 +59,15 @@ nav{
 }
 
 .web-icon{
-	width: 70px;
-	height: 70px;
-	padding-top: 8px;
+	width: 4.375rem;
+	height: 4.375rem;
+	padding-top: 0.5rem;
 	vertical-align: middle;
 }
 
 .web-thumbnail{
-	width: 660px;
-	height: 170px;
+	width: 41.25rem;
+	height: 10.625rem;
 }
 
 .username {
@@ -78,8 +78,8 @@ nav{
 
 .grid a, .grid div {
 	text-decoration: none;
-	font-size: 20px;
-	padding: 0 5px;
+	font-size: 1.25rem;
+	padding: 0 0.313rem;
 }
 
 nav{
@@ -100,12 +100,12 @@ nav{
 .dashboard{
 	display: flex;
 	align-items: left;
-	padding: 10px;
+	padding: 0.625rem;
 }
 
 .content{
-	padding-top: 50px;
-	padding-bottom: 200px;
+	padding-top: 3.125rem;
+	padding-bottom: 12.5rem;
 	margin: 0 auto;
 	overflow: auto;
 }
@@ -118,26 +118,26 @@ nav{
 
 .errorpage h1{
 	font-weight: bold;
-	font-size: 150px;
+	font-size: 9.375rem;
 	margin: 0;
 }
 
 .errorpage h2{
 	font-weight: bold;
-	font-size: 30px;
+	font-size: 1.875rem;
 	margin: 0;
-	margin-top: 48px;
+	margin-top: 3rem;
 }
 
 .errorpage p{
-	font-size: 20px;
+	font-size: 1.25rem;
 	margin: 0;
-	margin-top: 8px;
-	margin-bottom: 32px;
+	margin-top: 0.5rem;
+	margin-bottom: 2rem;
 }
 
 .errorpage a{
-	font-size: 20px;
+	font-size: 1.25rem;
 	margin: 0;
 	color: #00FFE1;
 }
@@ -150,11 +150,11 @@ nav{
     background-color: #19191c;
     color: #64646a;
 	flex-grow: 1;
-	min-height: 25vh;
+	min-height: 4rem;
     bottom: 0;
-    padding: 40px 0;
+    padding: 2.5rem 0;
     width: 100%;
-	margin-top: 150px;
+	margin-top: 9.375rem;
 }
 
 .footer p{
@@ -162,8 +162,8 @@ nav{
 }
 
 .footer h1{
-	margin-left: 20px;
-	margin-right: 20px;
+	margin-left: 1.25rem;
+	margin-right: 1.25rem;
 	margin-bottom: 0;
 	color: #FFF;
 }
@@ -172,15 +172,15 @@ nav{
 	display: flex;
 	text-align: left;
 	margin: auto;
-	margin-top: 20px;
+	margin-top: 1.25rem;
 	position: relative;
 	width: 62%;
 }
 
 .footer-content a{
-	margin-left: 20px;
-	margin-right: 20px;
-	margin-top: 30px;
+	margin-left: 1.25rem;
+	margin-right: 1.25rem;
+	margin-top: 1.875rem;
 	font-weight: 700;
 	color: #8a8a8a;
 	font-size: large;
@@ -188,22 +188,22 @@ nav{
 
 a:not(:has(img)):hover{
 	text-decoration: none;
-	border-bottom: 2px solid #00FFE1;
+	border-bottom: 0.125rem solid #00FFE1;
 	color: #00FFE1;
 	transition: border-bottom 0.2s ease-in-out, color 0.2s ease-in-out;
 }
 
 .footer-divider{
-	margin: 15px auto;
+	margin: 0.938rem auto;
 	width: 62%;
-	border-bottom: #46464c solid 1px;
+	border-bottom: #46464c solid 0.063rem;
 }
 
 .divider{
 	display: inline-block;
-	margin: 15px auto;
+	margin: 0.938rem auto;
 	width: 95%;
-	border-bottom: #FFFFFF solid 2px;
+	border-bottom: #FFFFFF solid 0.125rem;
 }
 
 .footer-copyright{
@@ -214,7 +214,7 @@ a:not(:has(img)):hover{
 }
 
 .spacer {
-	margin: 0 10px;
+	margin: 0 0.625rem;
 }
 
 .search-bar{
@@ -239,15 +239,15 @@ p{
 
 .header{
 	display: flex;
-	padding: 2px;
+	padding: 0.125rem;
 }
 
 .stat{
-	margin: 15px;
+	margin: 0.938rem;
 }
 
 .loadingGif{
-	width: 200px;
+	width: 12.5rem;
 	aspect-ratio: 1;
 }
 
@@ -255,21 +255,21 @@ p{
 	display: inline-block;
 	list-style-type: none;
 	margin: auto;
-	padding: 25px;
+	padding: 1.563rem;
 }
 
 .upload-game-form ul h1, h3{
 	color: white;
-	margin: 10px;
+	margin: 0.625rem;
 	font-family: 'Secular One', sans-serif;
 }
 
 .upload-box {
 	position: relative;
 	display: inline-block;
-	font-size: 16px;
-	border-radius: 5px;
-	padding: 5px;
+	font-size: 1rem;
+	border-radius: 0.313rem;
+	padding: 0.313rem;
 	font-family: 'Secular One', sans-serif;
 	color: #fff;
 	background-color: #292929;
@@ -283,8 +283,8 @@ p{
 	top: 50%;
 	left: 50%;
 	transform: translate(-50%, -50%);
-	width: 20px;
-	height: 20px;
+	width: 1.25rem;
+	height: 1.25rem;
 	background-size: cover;
 }
   
@@ -307,13 +307,13 @@ p{
 .filter-text-box {
 	position: relative;
 	display: inline-block;
-	font-size: 16px;
+	font-size: 1rem;
 	font-family: 'Secular One', sans-serif;
-	width: 144px;
-	padding: 5px;
+	width: 9rem;
+	padding: 0.313rem;
 	color: #fff;
 	background-color: #292929;
-	border-radius: 5px;
+	border-radius: 0.313rem;
 	cursor: text;
 	transition: background-color 0.3s ease-in-out;
 }
@@ -321,15 +321,15 @@ p{
 .text-box {
 	position: relative;
 	display: inline-block;
-	font-size: 16px;
+	font-size: 1rem;
 	font-family: 'Secular One', sans-serif;
-	min-width: 200px;
-	max-width: 500px;
-	width: 200px;
-	padding: 5px;
+	min-width: 12.5rem;
+	max-width: 31.25rem;
+	width: 12.5rem;
+	padding: 0.313rem;
 	color: #fff;
 	background-color: #292929;
-	border-radius: 5px;
+	border-radius: 0.313rem;
 	cursor: text;
 	transition: background-color 0.3s ease-in-out;
   }
@@ -339,10 +339,10 @@ p{
 	content: "";
 	position: absolute;
 	top: 50%;
-	left: 20px;
+	left: 1.25rem;
 	transform: translateY(-50%);
-	width: 20px;
-	height: 20px;
+	width: 1.25rem;
+	height: 1.25rem;
 	background-size: cover;
 }
 
@@ -377,71 +377,71 @@ p{
 .cl-checkbox .cl-checkbox-box {
 	display: inline-block;
 	position: relative;
-	width: 16px;
-	height: 16px;
-	border: 1px solid #ccc;
-	border-radius: 3px;
+	width: 1rem;
+	height: 1rem;
+	border: 0.063rem solid #ccc;
+	border-radius: 0.188rem;
 	background-color: #fff;
 }
 
 .cl-checkbox input[type="checkbox"]:checked + .cl-checkbox-box::after {
 	content: "";
 	position: absolute;
-	left: 4px;
-	top: 1px;
-	width: 5px;
-	height: 9px;
+	left: 0.25rem;
+	top: 0.063rem;
+	width: 0.313rem;
+	height: 0.563rem;
 	border: solid #000000;
-	border-width: 0 2px 2px 0;
+	border-width: 0 0.125rem 0.125rem 0;
 	transform: rotate(45deg);
 }
 
 .image-display{
-	width: 250px;
-	height: 250px;
-	box-shadow: 5px 5px 10px black;
+	width: 15.625rem;
+	height: 15.625rem;
+	box-shadow: 0.313rem 0.313rem 0.625rem black;
 }
 
 .description{
 	display: inline-block;
-	font-size:16px;
+	font-size: 1rem;
 	font-family: 'Secular One', sans-serif;
 	background: black;
 	color: white;
-	border-radius: 10px;
-	margin-left: 25px;
-	min-height: 350px;
-	width: 500px;
+	border-radius: 0.625rem;
+	margin-left: 1.563rem;
+	min-height: 21.875rem;
+	width: 31.25rem;
 	outline: none;
 }
 
 
 .checkbox{
 	background: #00FFE1;
-	border-radius: 30px;
-	box-shadow: 5px 5px 10px black;
-	width: 15px;
-	height: 15px;
+	border-radius: 1.875rem;
+	box-shadow: 0.313rem 0.313rem 0.625rem black;
+	width: 0.938rem;
+	height: 0.938rem;
 	outline: none;
 }
 
 .title-label{
-	font-size: 25px;
+	font-size: 1.563rem;
 	font-family: 'Secular One', sans-serif;
 	color: #FFF;
 }
 
 .error-label{
-	font-size: 20px;
+	font-size: 1.25rem;
 	font-family: 'Secular One', sans-serif;
 	color: red;
 }
 
 .acceptance-label{
 	display: inline-block;
-	font-size: 20px;
+	font-size: 1.25rem;
 	color: #FFF;
-	margin: 5px;
+	margin: 0.313rem;
 }
 
 .acceptance-label a{
@@ -450,9 +450,9 @@ p{
 
 .encourage-label{
 	display: inline-block;
-	font-size: 35px;
+	font-size: 2.188rem;
 	color: #FFF;
-	margin: 5px;
+	margin: 0.313rem;
 }
 
 /* Default button style */
@@ -461,13 +461,13 @@ p{
 .twitter-button,
 .delete-button,
 .load-button {
-  font-size: 20px;
+  font-size: 1.25rem;
   font-family: 'Secular One', sans-serif;
   background: #00FFE1;
   color: black;
-  border-radius: 8px;
-  margin: 15px;
-  box-shadow: 0px 5px 10px black;
+  border-radius: 0.5rem;
+  margin: 0.938rem;
+  box-shadow: 0 0.313rem 0.625rem black;
   outline: none;
   cursor: pointer;
   transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
@@ -489,8 +489,8 @@ p{
 .game-download-button:hover,
 .delete-button:hover,
 .load-button:hover {
-  transform: translateY(-3px);
-  box-shadow: 0px 8px 15px black;
+  transform: translateY(-0.188rem);
+  box-shadow: 0 0.5rem 0.938rem black;
 }
 
 .upload-button:focus,
@@ -499,7 +499,7 @@ p{
 .delete-button:focus,
 .load-button:focus {
   outline: none;
-  box-shadow: 0px 0px 0px 2px #00FFE1, 0px 5px 10px black;
+  box-shadow: 0 0 0 0.125rem #00FFE1, 0 0.313rem 0.625rem black;
 }
 
 .upload-button:active,
@@ -508,8 +508,8 @@ p{
 .delete-button:active,
 .game-download-button:active
 .load-button:active {
-  transform: translateY(0px);
-  box-shadow: 0px 3px 5px black;
+  transform: translateY(0);
+  box-shadow: 0 0.188rem 0.313rem black;
 }
 
 .upload-button:disabled,
@@ -519,20 +519,20 @@ p{
 .load-button:disabled {
   opacity: 0.5;
   cursor: not-allowed;
-  box-shadow: 0px 5px 10px black;
+  box-shadow: 0 0.313rem 0.625rem black;
 }
 
 .load-button:disabled:hover::after {
 	content: "You've reached the end.";
 	display: block;
 	position: absolute;
-	top: -25px;
+	top: -1.563rem;
 	left: 100%;
-	padding: 5px;
+	padding: 0.313rem;
 	background-color: black;
 	color: white;
-	border-radius: 5px;
-	font-size: 12px;
+	border-radius: 0.313rem;
+	font-size: 0.75rem;
 	white-space: nowrap;
 	z-index: 9999;
 	cursor: default;
@@ -540,91 +540,71 @@ p{
 
 .new-label {
 	display: inline-block;
-	padding: 2px 6px;
-	font-size: 12px;
+	padding: 0.125rem 0.375rem;
+	font-size: 0.75rem;
 	font-weight: bold;
 	color: #fff;
 	background-color: #007bff;
-	border-radius: 3px;
+	border-radius: 0.188rem;
 	overflow: none;
 }
 
 .updated-label {
 	display: inline-block;
-	padding: 2px 6px;
-	font-size: 12px;
+	padding: 0.125rem 0.375rem;
+	font-size: 0.75rem;
 	font-weight: bold;
 	color: #fff;
 	background-color: #6c757d;
-	border-radius: 3px;
+	border-radius: 0.188rem;
 }
 
 .twitter-button{
-	width: 200px;
-	font-size: 40px;
+	width: 12.5rem;
+	font-size: 2.5rem;
 }
 
 .upload-button{
-	width: 100px;
+	width: 6.25rem;
 }
 
 .login-button{
-	width: 250px;
+	width: 15.625rem;
 }
 
 .load-button-div{
 	text-align: center;
 }
 
+.download-button,
+.signin-button,
 .dashboard-button{
-	font-size:35px;
+	font-size: 1.25rem;
 	font-family: 'Secular One', sans-serif;
 	background: #00FFE1;
 	color: #000;
-	border-radius: 8px;
-	box-shadow: 0px 5px 10px black;
-	width: 100px;
-	outline: none;
-}
-
-.signin-button{
-	font-size:35px;
-	font-family: 'Secular One', sans-serif;
-	background: #00FFE1;
-	color: #000;
-	border-radius: 8px;
-	box-shadow: 0px 5px 10px black;
-	width: 250px;
-	outline: none;
-}
-
-.download-button{
-	font-size:20px;
-	font-family: 'Secular One', sans-serif;
-	background: #00FFE1;
-	color: #000;
-	border-radius: 8px;
-	box-shadow: 0px 5px 10px black;
-	width: 100px;
+	border-radius: 0.5rem;
+	box-shadow: 0 0.313rem 0.625rem black;
+	width: 6.25rem;
 	outline: none;
 }
 
 .game {
 	float: left;
-	width: 200px;
+	width: 12.5rem;
 	height: auto;
 	transition: transform 0.3s ease;
 }
 
 .game:hover {
 	transform: scale(1.1);
-	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+	box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.2);
 }
 
 .product-title{
-	font-size: 15px;
+	font-size: 0.938rem;
 	font-weight: bold;
-	border-radius: 10px;
+	border-radius: 0.625rem;
 	color: white;
 	width: 100%;
 	word-break: break-word;
@@ -635,7 +615,7 @@ p{
 }
 
 .product-summary {
-	font-size: 12px;
+	font-size: 0.75rem;
 	font-family: 'Secular One', sans-serif;
 	color: gray;
 	width: 100%;
@@ -645,7 +625,7 @@ p{
 }
 
 .product-price {
-	font-size: 15px;
+	font-size: 0.938rem;
 	font-weight: bold;
 	font-family: 'Secular One', sans-serif;
 	color: white;
@@ -653,8 +633,8 @@ p{
 	float: right;
 	word-break: break-word;
 	background-color: #6c757d;
-	border-radius: 3px;
-	padding: 2px 4px;
+	border-radius: 0.188rem;
+	padding: 0.125rem 0.25rem;
 }
 
 .web-icon, .product-image {
@@ -662,11 +642,11 @@ p{
 }
 
 .product-image {
-	width: 200px;
-	height: 160px;
+	width: 12.5rem;
+	height: 10rem;
 	position: relative;
-	border-radius: 15px;
-	box-shadow: 0px 5px 10px black;
+	border-radius: 0.938rem;
+	box-shadow: 0 0.313rem 0.625rem black;
 	object-fit: fill;
 	object-position: center;
 }
@@ -682,42 +662,42 @@ p{
 }
 
 .game-download {
-	margin: 20px;
+	margin: 1.25rem;
 }
 
 .game-download-button {
 	display: inline-block;
-	padding: 5px 10px;
-	font-size: 18px;
-	margin-right: 10px;
+	padding: 0.313rem 0.625rem;
+	font-size: 1.125rem;
+	margin-right: 0.625rem;
 	font-family: 'Secular One', sans-serif;
 	background-color: #4CAF50;
 	color: white;
 	text-decoration: none;
-	border-radius: 4px;
+	border-radius: 0.25rem;
 	cursor: pointer;
 	transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
 }
 
 .game-download-input {
-	font-size: 18px;
-	border-radius: 4px;
-	margin-right: 10px;
-	border: 1px solid #4CAF50;
+	font-size: 1.125rem;
+	border-radius: 0.25rem;
+	margin-right: 0.625rem;
+	border: 0.063rem solid #4CAF50;
 	transition: border-color 0.2s ease-in-out;
 }
 
 .game-price {
 	display: inline-block;
-	font-size: 19px;
+	font-size: 1.188rem;
 	opacity: .5;
 }
 
 .game-description {
 	display: block;
-	font-size: 18px;
-	margin: 20px;
-	margin-top: 0px;
+	font-size: 1.125rem;
+	margin: 1.25rem;
+	margin-top: 0;
 	color: white;
 }
 
@@ -729,7 +709,7 @@ p{
 
 .right-column {
 	width: 50%;
-	min-height: 100px;
+	min-height: 6.25rem;
 	float: right;
 }
 
@@ -739,29 +719,29 @@ p{
 }
 
 .game-title-column {
-	margin: 20px;
+	margin: 1.25rem;
 	margin-top: 0;
 	color: white;
 }
 
 .game-developer-name {
 	display: block;
-	font-size: 20px;
+	font-size: 1.25rem;
 	font-weight: bold;
 }
 
 .game-summary {
 	display: block;
-	font-size: 14px;
+	font-size: 0.875rem;
 	opacity: .5;
 	font-weight: bold;
 }
 
 .game-title {
 	display: block;
-	font-size: 50px;
+	font-size: 3.125rem;
 	font-weight: bold;
-	margin-top: 0px;
+	margin-top: 0;
 }
 
 .game-stats{
@@ -785,14 +765,14 @@ p{
 	display: block;
 	margin: 0;
 	margin-top: 0;
-	font-size: 15px;
+	font-size: 0.938rem;
 	opacity: .5;
 }
 
 .game-updated-title{
 	width: 100%;
 	display: block;
-	font-size: 15px;
+	font-size: 0.938rem;
 	margin: 0;
 	font-family: 'Secular One', sans-serif;
 }
@@ -804,14 +784,14 @@ p{
 .desc{
 	font-family: 'Secular One', sans-serif;
 	color: #FFF;
-	margin-left: 20px;
+	margin-left: 1.25rem;
 }
 
 .selections {
-	width: 160px;
+	width: 10rem;
 	float: left;
 	text-align: center;
-	border-right: 2px solid black;
+	border-right: 0.125rem solid black;
 }
 
 .selections h1{
@@ -820,21 +800,21 @@ p{
 }
   
 .game-sort {
-	margin: 3px auto;
+	margin: 0.188rem auto;
 	text-align: center;
-	font-size: 20px;
+	font-size: 1.25rem;
 	font-weight: bold;
 	color: #FFF;
 	background-color: #19191c;
 	border: none;
-	border-radius: 5px;
-	padding: 3px;
-	width: 150px;
+	border-radius: 0.313rem;
+	padding: 0.188rem;
+	width: 9.375rem;
 }
 
 .errorImg{
-	width: 250px;
-	height: 250px;
+	width: 15.625rem;
+	height: 15.625rem;
 }
 
 .error-title, .error-caption{
@@ -847,25 +827,25 @@ p{
 }
 
 .error-title{
-	font-size: 25px;
+	font-size: 1.563rem;
 }
 
 .error-caption{
-	font-size: 20px;
+	font-size: 1.25rem;
 }
 
 .market, .errors{
-	width: calc(100% - 185px);
+	width: calc(100% - 11.563rem);
 	float: right;
 	position: relative;
 	flex: 1;
-	min-height: 1px;
+	min-height: 0.063rem;
 }
 
 .market {
 	display: grid;
-	grid-template-columns: repeat(auto-fit, minmax(200px, 200px));
-	gap: 20px 20px;
+	grid-template-columns: repeat(auto-fit, minmax(12.5rem, 12.5rem));
+	gap: 1.25rem 1.25rem;
 }
 
 .errors{
@@ -875,7 +855,7 @@ p{
 .login-form, .settings{
 	width: 100%;
 	text-align: center;
-	margin-bottom: 150px;
+	margin-bottom: 9.375rem;
 }
 
 .login-form ul, .settings ul{
