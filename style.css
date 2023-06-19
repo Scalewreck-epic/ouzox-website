@@ -850,9 +850,16 @@ p{
 }
 
 .login-form{
-	width: 100%;
+	width: 50rem;
+	background-color: #19191c;
+	padding: 5rem;
+	border-radius: 0.5rem;
 	text-align: center;
-	margin-bottom: 9.375rem;
+	margin: 0 auto;
+}
+
+.login-form ul{
+	width: 100%;
 }
 
 .settings {
