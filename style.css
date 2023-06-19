@@ -243,10 +243,6 @@ p{
 	padding: 0.125rem;
 }
 
-.stat{
-	margin: 0.938rem;
-}
-
 .loadingGif{
 	width: 12.5rem;
 	aspect-ratio: 1;
@@ -853,10 +849,41 @@ p{
 	text-align: center;
 }
 
-.login-form, .settings{
+.login-form{
 	width: 100%;
 	text-align: center;
 	margin-bottom: 9.375rem;
+}
+
+.settings {
+	margin-left: 16rem;
+	margin-bottom: 9.375rem;
+}
+
+.settings h1{
+	color: white;
+	font-weight: bold;
+	margin-left: 2rem;
+}
+
+.profile-settings, .email-settings, .password-settings {
+	width: 80rem;
+	background-color: #19191c;
+	margin-top: 1.25rem;
+	padding: 0.5rem;
+	border-radius: 0.5rem;
+}
+
+.profile-settings div{
+	color: white;
+	margin: 1rem;
+	font-weight: bold;
+}
+
+.extra-buttons {
+	margin-top: 5rem;
+	width: 80rem;
+	text-align: center;
 }
 
 .login-form ul, .settings ul{
@@ -864,6 +891,7 @@ p{
 	list-style-type: none;
 	margin: auto;
 	padding: 0;
+	font-family: "Secular One", sans-serif;
 }
 
 .xtra-login{
