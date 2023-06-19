@@ -6,6 +6,7 @@ const getsingle_endpoint =
   "https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv/user/"; // + user session
 
 const annualExpiration = 1;
+const data = getCookie("session_id");
 
 import {
   getCookie,
@@ -27,7 +28,6 @@ function calculateExpiration(past) {
 
 function implementUsername() {
   var username = document.getElementById("username");
-  var data = getCookie("session_id");
 
   var login_btn = document.getElementById("login-btn");
   var signup_btn = document.getElementById("signup-btn");
@@ -69,7 +69,6 @@ function implementUsername() {
 }
 
 function setStats() {
-  var data = getCookie("session_id");
   const url = getsingle_endpoint + data.Data;
 
   var myHeaders = new Headers();
@@ -118,8 +117,6 @@ function clearCookieData() {
 }
 
 function createSessionData() {
-  var data = getCookie("session_id");
-
   if (!data.Valid) {
     const username_input = document.getElementById("username_input").value;
     const email_input = document.getElementById("email_input").value;
@@ -163,8 +160,6 @@ function createSessionData() {
 }
 
 function getSessionData() {
-  var data = getCookie("session_id");
-
   if (!data.Valid) {
     const username_input = document.getElementById("username_login").value;
     const password_input = document.getElementById("password_login").value;
@@ -197,28 +192,31 @@ function getSessionData() {
           window.location.assign("index.html");
         } else {
           error_label.innerHTML = result_parse.message;
-        }
+        };
       });
-  }
-}
+  };
+};
 
 function logout() {
-  var data = getCookie("session_id");
-
   if (data.Valid) {
     clearCookieData();
-  }
+  };
 
   window.location.assign("login.html");
-}
+};
 
 implementUsername();
 document.getElementById("username").addEventListener("click", function () {
-  var data = getCookie("session_id");
   if (data.Valid) {
     window.location.assign("settings.html");
-  }
+  };
 });
+
+if (data.Valid) {
+  if (window.location.pathname.includes("/settings") || window.location.pathname.includes("/upload")) {
+    window.location.assign("login.html");
+  };
+};
 
 if (window.location.pathname.includes("/settings")) {
   const email_button = document.getElementById("save-email");
