@@ -186,7 +186,8 @@ nav{
 	font-size: large;
 }
 
-a:not(:has(img)):hover{
+a:not(:has(img)):hover,
+.username:hover{
 	text-decoration: none;
 	border-bottom: 0.125rem solid #00FFE1;
 	color: #00FFE1;
