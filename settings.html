@@ -37,39 +37,26 @@
 		</nav>
 		<div class="content">
 			<div class="settings">
-				<p class="middle-title">Profile</p>
-				<div class="footer-divider"></div>
-				<ul><font size="5">
-					<p id="email-stat" class="stat">Email:</p>
-					<p id="creation-stat" class="stat">Join Date:</p>
-				</ul></font>
-				<div class="footer-divider"></div>
-				<p class="middle-title">Change Email</p>
-				<div class="footer-divider"></div>
-				<ul><font size="5">
-					<li>
-						<input type="email" class="text-box" name="email" id="email_input" placeholder="New Email">
-					</li>
-				</ul></font>
-				<br>
-				<button class="login-button" id="save-email"><font size="5">Save Email</font></button>
-				<p class="middle-title">Change Password</p>
-				<div class="footer-divider"></div>
-				<ul><font size="5">
-					<li>
-						<input type="text" class="text-box" name="password" id="password_input" placeholder="New Password">
-					</li>
-					<li>
-						<input type="text" class="text-box" name="password" id="old_password_input" placeholder="Old Password">
-					</li>
-				</ul></font>
-				<br>
-				<button class="login-button" id="save-password"><font size="5">Save Password</font></button>
-				<div class="footer-divider"></div>
-				<ul>
+				<div class="profile-settings">
+					<h1>Profile Information</h1>
+					<div id="email-stat">Email:</div>
+					<div id="creation-stat">Join Date:</div>
+				</div>
+				<div class="email-settings">
+					<h1>Email</h1>
+					<input type="email" class="text-box" name="email" id="email_input" placeholder="New Email">
+					<button class="login-button" id="save-email"><font size="5">Save Email</font></button>
+				</div>
+				<div class="password-settings">
+					<h1>Password</h1>
+					<input type="text" class="text-box" name="password" id="password_input" placeholder="New Password">
+					<input type="text" class="text-box" name="password" id="old_password_input" placeholder="Old Password">
+					<button class="login-button" id="save-password"><font size="5">Save Password</font></button>
+				</div>
+				<div class="extra-buttons">
 					<button class="login-button" id="logout-profile"><font size="5">Logout</font></button>
-				</ul>
-				<br><div class="error-label" id="error-label"></div>
+				</div>
+				<div class="error-label" id="error-label"></div>
 			</div>
 		</div>
 		<footer class="footer">
