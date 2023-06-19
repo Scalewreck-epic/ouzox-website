@@ -111,9 +111,13 @@ nav{
 }
 
 .errorpage {
-	padding-top: 10%;
+	width: 50rem;
+	padding: 5rem;
+	border-radius: 1rem;
+	margin: auto;
 	text-align: center;
 	color: white;
+	background-color: #19191c;
 }
 
 .errorpage h1{
@@ -138,6 +142,7 @@ nav{
 
 .errorpage a{
 	font-size: 1.25rem;
+	font-weight: bold;
 	margin: 0;
 	color: #00FFE1;
 }
@@ -248,17 +253,36 @@ p{
 	aspect-ratio: 1;
 }
 
-.upload-game-form ul{
-	display: inline-block;
-	list-style-type: none;
-	margin: auto;
-	padding: 1.563rem;
+.main-upload-form,
+.extra-upload-form {
+	width: 50%;
+	margin-left: 5rem;
+	margin-bottom: 2rem;
+	padding: 2rem;
+	border-radius: 1rem;
+	background-color: #19191c;
 }
 
-.upload-game-form ul h1, h3{
+.main-upload-form h1,
+.extra-upload-form h1,
+.extra-upload-form h3,
+.extra-upload-form div,
+.main-upload-form div {
 	color: white;
-	margin: 0.625rem;
-	font-family: 'Secular One', sans-serif;
+	margin: 1rem;
+}
+
+.upload-game-conclusion {
+	width: 50%;
+	margin-left: 5rem;
+	padding: 2rem;
+	border-radius: 1rem;
+	background-color: #19191c;
+}
+
+.upload-game-conclusion label {
+	display: block;
+	width: 100%;
 }
 
 .upload-box {
@@ -393,22 +417,16 @@ p{
 	transform: rotate(45deg);
 }
 
-.image-display{
-	width: 15.625rem;
-	height: 15.625rem;
-	box-shadow: 0.313rem 0.313rem 0.625rem black;
-}
-
 .description{
-	display: inline-block;
+	display: block;
 	font-size: 1rem;
 	font-family: 'Secular One', sans-serif;
 	background: black;
 	color: white;
 	border-radius: 0.625rem;
-	margin-left: 1.563rem;
-	min-height: 21.875rem;
-	width: 31.25rem;
+	margin: 1rem;
+	min-height: 21rem;
+	width: 31rem;
 	outline: none;
 }
 
@@ -562,7 +580,7 @@ p{
 }
 
 .upload-button{
-	width: 6.25rem;
+	width: auto;
 }
 
 .login-button{
@@ -802,7 +820,7 @@ p{
 	font-size: 1.25rem;
 	font-weight: bold;
 	color: #FFF;
-	background-color: #19191c;
+	background-color:#242426;
 	border: none;
 	border-radius: 0.313rem;
 	padding: 0.188rem;
