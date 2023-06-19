@@ -37,38 +37,38 @@
 		</nav>
 		<div class="content">
 			<div class="container">
-				<form id="upload-game" class="upload-game-form">
-					<ul>
+				<form id="upload-game">
+					<div class="main-upload-form">
 						<h1>Main</h1>
-						<li>
+						<div>
 							<label class="title-label">Title:</label>
-							<input type="text" class="text-box" id="title" placeholder="Game Title." value="My new project!" autocorrect="on" maxlength="120" minlength="1"/>
-						</li>
-						<li>
+							<input type="text" class="text-box" id="title" placeholder="Game Title." value="My new project!" autocorrect="on" maxlength="120" minlength="1" required/>
+						</div>
+						<div>
 							<label class="title-label">Summary:</label>
-							<input type="text" class="text-box" id="summary" placeholder="Game Summary." value="What's best about your project?" autocorrect="on" maxlength="120" minlength="1"/>
-						</li>
-						<li>
+							<input type="text" class="text-box" id="summary" placeholder="Game Summary." value="What's best about your project?" autocorrect="on" maxlength="120" minlength="1" required/>
+						</div>
+						<div>
 							<label class="title-label">Thumbnail:</label>
 							<input type="file" id="thumbnail" class="upload-box" accept="image/jpeg, image/png" required/>
-						</li>
-						<li>
+						</div>
+						<div>
 							<label class="title-label">Download File:</label>
 							<input type="file" id="download-file" class="upload-box" accept=".exe, .zip, .apk, .ipa" required/>
 							<div class="error-label" id="game-file-warn"></div>
-						</li>
-						<li>
+						</div>
+						<div>
 							<label class="title-label">Free:</label>
 							<label class="cl-checkbox">
 								<input type="checkbox" value="1" id="isfree">
 								<span class="cl-checkbox-box"></span>
 							</label>
-						</li>
-						<li>
+						</div>
+						<div>
 							<label class="title-label" id="price-label">Price ($):</label>
 							<input type="text" class="text-box" id="price" pattern="[0-9]*" placeholder="0" value="0"/>
-						</li>
-						<li>
+						</div>
+						<div>
 							<label class="title-label">Currency:</label>
 							<select class="game-sort" id="currency-sort">
 								<option value="usd">USD</option>
@@ -82,10 +82,12 @@
 								<option value="hkd">HKD</option>
 								<option value="nzd">NZD</option>
 							</select>
-						</li>
-						<h1>Extra</h1>
+						</div>
+					</div>
+					<div class="extra-upload-form">
+						<h1>Advanced</h1>
 						<h3>This is how users will find your game</h3>
-						<li>
+						<div>
 							<label class="title-label">Genre:</label>
 							<select id="genre-sort" class="game-sort">
 								<option value="all">All Genres</option>
@@ -99,8 +101,8 @@
 								<option value="interactive">Interactive</option>
 								<option value="simulation">Simulation</option>
 							</select>
-						</li>
-						<li>
+						</div>
+						<div>
 							<label class="title-label">Art Style:</label>
 							<select class="game-sort" id="art-sort">
 								<option value="realistic">Realistic</option>
@@ -111,16 +113,16 @@
 								<option value="gothic">Gothic</option>
 								<option value="minimalistic">Minimalistic</option>
 							</select>
-						</li>
-						<li>
+						</div>
+						<div>
 							<label class="title-label">Age Rating</label>
 							<select class="game-sort" id="age-sort">
 								<option value="everyone">Everyone</option>
 								<option value="9+">9+</option>
 								<option value="13+">13+</option>
 							</select>
-						</li>
-						<li>
+						</div>
+						<div>
 							<label class="title-label">Game Length:</label>
 							<input type="text" class="text-box" id="game-length-number" pattern="[0-9]*" placeholder="0" value="0"/>
 							<select class="game-sort" id="time-sort">
@@ -129,15 +131,17 @@
 								<option value="Hours">Hours</option>
 								<option value="Days">Days</option>
 							</select>
-						</li>
-					</ul>
-					<img id="previewImage" class="product-image"/>
-					<br><label class="title-label">Description:</label>
-					<br><div contenteditable="true" class="description" id="description"></div>
-					<br><button class="upload-button" id="upload-button" type="submit"><font size="5">Upload</font></button>
-					<br><div class="error-label" id="error-label"></div>
+						</div>
+					</div>
+					<div class="upload-game-conclusion">
+						<label class="title-label">Description:</label>
+						<div contenteditable="true" class="description" id="description"></div>
+						<img id="previewImage" class="product-image"/><br>
+						<button class="upload-button" id="upload-button" type="submit"><font size="6">Publish Game</font></button>
+						<div class="error-label" id="error-label"></div>
+						<div class="xtra-login"><font size="5">View your projects <a href="dashboard.html">on your dashboard</a></font></div>
+					</div>
 				</form>
-				<div class="xtra-login"><font size="5">View your projects <a href="dashboard.html">on your dashboard</a></font></div>
 			</div>
 		</div>
 		<footer class="footer">
