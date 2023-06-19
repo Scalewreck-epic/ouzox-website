@@ -17,6 +17,7 @@ const refreshTime = 5;
 const gamesPerPage = 20;
 var isFetching = false;
 let currentPage = 0;
+//let lastGame;
 
 var prices = [];
 var games = [];
@@ -249,7 +250,7 @@ function removePrivateGames() {
 function removeGameFromList(game) {
   let index = games.indexOf(game);
   games.splice(index, 1);
-}
+};
 
 function removeIrrelevantGames() {
   const similarityThreshold = 0.15;
@@ -526,8 +527,6 @@ function isPathDashboard() {
   return false;
 }
 
-document.getElementById("search-query").value = search_query;
-
 document
   .getElementById("refresh-button")
   .addEventListener("click", function () {
@@ -547,4 +546,7 @@ document
     }
   });
 
+if (!isPathDashboard()) {
+  document.getElementById("search-query").value = search_query;
+};
 fetchGames(isPathDashboard());
