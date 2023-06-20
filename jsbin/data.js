@@ -13,10 +13,7 @@ import { getCookie } from "./exportuser.js";
 const urlParams = new URLSearchParams(window.location.search);
 const search_query = urlParams.get("q");
 
-const refreshTime = 5;
-const gamesPerPage = 20;
-var isFetching = false;
-let currentPage = 0;
+const gamesPerCategory = 20;
 //let lastGame;
 
 var prices = [];
@@ -45,7 +42,7 @@ function calculateDiffDays(timestamp) {
   return createdDiffDays;
 }
 
-function createGamePage(game, game_price, editable) {
+function createGamePage(game, game_price, editable, market) {
   const price = game_price.price / 100;
   const currency = game_price.currency;
 
@@ -156,7 +153,7 @@ function createGamePage(game, game_price, editable) {
           await response.text();
           gamesDiv.remove();
         } catch (error) {
-          showError(error, false);
+          console.warn("There was an error trying to deactivate product: ", err);
         };
       };
 
@@ -166,38 +163,21 @@ function createGamePage(game, game_price, editable) {
     gamesDiv.appendChild(deleteButton);
   }
 
-  document.getElementById("market").appendChild(gamesDiv);
+  market.appendChild(gamesDiv);
 }
 
-function sortGames(gameSortType, listSortType) {
+function sortGames(gameSortType) {
   if (gameSortType == "newest") {
-    if (listSortType == "descending") {
-      games.sort((a, b) => (a.created > b.created ? -1 : 1));
-    } else {
-      games.sort((a, b) => (a.created > b.created ? 1 : -1));
-    }
+    games.sort((a, b) => (a.created > b.created ? -1 : 1));
   } else if (gameSortType == "upToDate") {
-    if (listSortType == "descending") {
-      games.sort((a, b) => (a.updated > b.updated ? -1 : 1));
-    } else {
-      games.sort((a, b) => (a.updated > b.updated ? 1 : -1));
-    }
+    games.sort((a, b) => (a.updated > b.updated ? -1 : 1));
   } else if (gameSortType == "price") {
-    if (listSortType == "descending") {
-      games.sort((a, b) =>
-        getGamePrice(a.id.toString()).price / 100 >
-        getGamePrice(b.id.toString()).price / 100
-          ? -1
-          : 1
-      );
-    } else {
-      games.sort((a, b) =>
-        getGamePrice(a.id.toString()).price / 100 >
-        getGamePrice(b.id.toString()).price / 100
-          ? 1
-          : -1
-      );
-    }
+    games.sort((a, b) =>
+      getGamePrice(a.id.toString()).price / 100 >
+      getGamePrice(b.id.toString()).price / 100
+        ? -1
+        : 1
+    );
   }
 }
 
@@ -258,26 +238,6 @@ function removeIrrelevantGames() {
   for (let i = 0; i < games.length; i++) {
     const game = games[i];
 
-    const genre_sort = document.getElementById("genre-sort");
-    const art_sort = document.getElementById("art-sort");
-    const age_sort = document.getElementById("age-sort");
-
-    const genre = genre_sort.options[genre_sort.selectedIndex].value;
-    const art = art_sort.options[art_sort.selectedIndex].value;
-    const age = age_sort.options[age_sort.selectedIndex].value;
-
-    if (game.metadata.genre != genre) {
-      removeGameFromList(game);
-    }
-
-    if (game.metadata.artstyle != art) {
-      removeGameFromList(game);
-    }
-
-    if (game.metadata.age_rating != age) {
-      removeGameFromList(game);
-    }
-
     if (search_query != null) {
       const game_name = game.name;
       const game_summary = game.metadata.summary;
@@ -317,7 +277,7 @@ async function verifyUser() {
         const result_parse = JSON.parse(result);
         return result_parse;
       } catch (error) {
-        showError(error, false);
+        console.warn("There was an error trying to get user: ", err);
       }
     }
 
@@ -326,10 +286,9 @@ async function verifyUser() {
   }
 }
 
-function loadGames() {
+function loadGamesWithList(list, isDashboard) {
   for (
-    let i = currentPage;
-    i < currentPage + gamesPerPage && i < games.length;
+    let i = 0; i < gamesPerCategory;
     i++
   ) {
     var game = games[i];
@@ -338,90 +297,31 @@ function loadGames() {
       var game_price = getGamePrice(game.id.toString());
 
       if (game_price) {
-        currentPage += 1;
-        createGamePage(game, game_price, false);
-      }
-    }
-  }
-}
+        createGamePage(game, game_price, isDashboard, list);
+      };
+    };
+  };
+};
+
+function loadGames() {
+  const newest_games_list = document.getElementById("newest-games-list");
+  const updated_games_list = document.getElementById("updated-games-list");
+  //const genre_list = document.getElementById("genre-list");
+
+  sortGames("newest");
+  loadGamesWithList(newest_games_list, false);
+
+  sortGames("upToDate");
+  loadGamesWithList(updated_games_list, false);
+};
 
 async function loadDashboard() {
+  const market = document.getElementById("market");
   const username = await verifyUser();
 
   if (username != undefined) {
-    for (
-      let i = currentPage;
-      i < currentPage + gamesPerPage && i < games.length;
-      i++
-    ) {
-      var game = games[i];
-
-      if (
-        game &&
-        game.active &&
-        game.metadata.developer_name == username.name
-      ) {
-        var game_price = getGamePrice(game.id.toString());
-
-        if (game_price) {
-          currentPage += 1;
-          createGamePage(game, game_price, true);
-        }
-      }
-    }
-  }
-
-  const market = document.getElementById("market");
-  const errors = document.getElementById("errors");
-
-  if (market.innerHTML == "") {
-    document.getElementById("generate-button").remove();
-    document.getElementById("twitter-plug").remove();
-
-    const encourage = document.createElement("label");
-    encourage.innerHTML = "You're a developer? Upload your first game!";
-    encourage.className = "encourage-label";
-
-    const brk = document.createElement("br");
-
-    const otherletter = document.createElement("label");
-    const link = document.createElement("a");
-    link.href = "index.html";
-    link.innerHTML = "Nah, just want to download games.";
-    otherletter.className = "acceptance-label";
-
-    otherletter.appendChild(link);
-
-    errors.appendChild(encourage);
-    errors.appendChild(brk);
-    errors.appendChild(otherletter);
-  }
-}
-
-function showError(err) {
-  console.warn("There was an error trying to get games: ", err);
-
-  if (document.getElementById("errors").innerHTML == "") {
-    const error = document.createElement("div");
-    error.className = "error";
-
-    const errorImg = document.createElement("img");
-    errorImg.setAttribute("src", "Images/error.png");
-    errorImg.className = "errorImg";
-
-    const errorMessage = document.createElement("div");
-    errorMessage.className = "error-title";
-
-    const errorCaption = document.createElement("div");
-    errorCaption.className = "error-caption";
-
-    errorMessage.innerHTML = "An error occurred.";
-    errorCaption.innerHTML = "Game loading error. Please try again later.";
-
-    error.appendChild(errorImg);
-    error.appendChild(errorMessage);
-    error.appendChild(errorCaption);
-    document.getElementById("errors").appendChild(error);
+    sortGames("newest");
+    loadGamesWithList(market, false);
   }
 }
 
@@ -435,12 +335,6 @@ async function fetchGamesRequest(isDashboard) {
     redirect: "follow",
   };
 
-  var loadingGif = document.createElement("img");
-  loadingGif.setAttribute("src", "Images/loading.gif");
-  loadingGif.className = "loadingGif";
-
-  document.getElementById("errors").appendChild(loadingGif);
-
   async function setPrices() {
     try {
       const response = await fetch(games_prices_url, requestOptions);
@@ -450,7 +344,7 @@ async function fetchGamesRequest(isDashboard) {
       prices = result_parse.data;
       prices.sort((a, b) => (a.unit_amount > b.unit_amount ? 1 : -1));
     } catch (error) {
-      showError(error, false);
+      console.warn("There was an error trying to set prices: ", err);
     }
   }
 
@@ -460,16 +354,9 @@ async function fetchGamesRequest(isDashboard) {
       const result = await response.text();
       const result_parse = JSON.parse(result);
 
-      const gameSort = document.getElementById("game-sort");
-      const listSort = document.getElementById("list-sort");
-      const selectedGameSort = gameSort.options[gameSort.selectedIndex].value;
-      const selectedListSort = listSort.options[listSort.selectedIndex].value;
-
       games = result_parse.data;
       removePrivateGames();
       removeIrrelevantGames();
-
-      sortGames(selectedGameSort, selectedListSort);
 
       if (isDashboard) {
         loadDashboard();
@@ -477,46 +364,17 @@ async function fetchGamesRequest(isDashboard) {
         loadGames();
       }
     } catch (error) {
-      showError(error, false);
+      console.warn("There was an error trying to get games: ", err);
     }
   }
 
   await setPrices();
   await fetchData();
-  loadingGif.remove();
-}
-
-async function countdown(time) {
-  return new Promise((resolve) => {
-    var intervalId = setInterval(() => {
-      document.getElementById("refresh-button").innerHTML = time;
-      if (time <= 0) {
-        clearInterval(intervalId);
-        resolve();
-      } else {
-        time--;
-      }
-    }, 1000);
-  });
 }
 
 async function fetchGames(isDashboard) {
-  isFetching = true;
-
-  var market = document.getElementById("market");
-  var errors = document.getElementById("errors");
-
-  market.innerHTML = "";
-  errors.innerHTML = "";
-
-  currentPage = 0;
   prices = [];
   fetchGamesRequest(isDashboard);
-
-  await countdown(refreshTime);
-
-  document.getElementById("refresh-button").innerHTML = "Refresh";
-  isFetching = false;
 }
 
 function isPathDashboard() {
@@ -526,25 +384,6 @@ function isPathDashboard() {
 
   return false;
 }
-
-document
-  .getElementById("refresh-button")
-  .addEventListener("click", function () {
-    if (!isFetching) {
-      fetchGames(isPathDashboard());
-    }
-  });
-
-document
-  .getElementById("generate-button")
-  .addEventListener("click", function () {
-    if (currentPage >= games.length) {
-      document.getElementById("generate-button").disabled = true;
-    } else {
-      errors.innerHTML = "";
-      fetchGamesRequest(isPathDashboard());
-    }
-  });
 
 if (!isPathDashboard()) {
   document.getElementById("search-query").value = search_query;
