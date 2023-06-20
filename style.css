@@ -854,22 +854,27 @@ p{
 	font-size: 1.25rem;
 }
 
-.market, .errors{
-	width: calc(100% - 11.563rem);
-	float: right;
+.category {
+	width: 80%;
+	min-height: 1rem;
+	margin: auto;
+	margin-bottom: 3rem;
+	padding: 1rem;
+	border-radius: 1rem;
 	position: relative;
 	flex: 1;
-	min-height: 0.063rem;
+	background-color: #19191c;
+}
+
+.category h1 {
+	margin-left: 3rem;
+	color: white;
 }
 
 .market {
 	display: grid;
 	grid-template-columns: repeat(auto-fit, minmax(12.5rem, 12.5rem));
 	gap: 1.25rem 1.25rem;
-}
-
-.errors{
-	text-align: center;
 }
 
 .login-form{
