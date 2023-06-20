@@ -4,6 +4,10 @@ const set_product_price_url =
   "https://x8ki-letl-twmt.n7.xano.io/api:tFdG2Vz-/prices";
 const upload_image_api_url =
   "https://x8ki-letl-twmt.n7.xano.io/api:4A2Ya61A/storage/image";
+const get_genre_api_url = 
+  "https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv/genres/" // + genre name;
+const change_genre_api_url = "https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv/genres/update/" // + genre name
+const add_genre_api_url = "https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv/genres/create";
 
 const uploadGame = document.getElementById("upload-game");
 
@@ -30,11 +34,9 @@ uploadGame.addEventListener("submit", async function (event) {
     const price_input = document.getElementById("price");
     const currency_input = document.getElementById("currency-sort");
 
-    const genre_input = document.getElementById("genre-sort");
-    const art_input = document.getElementById("art-sort");
+    const genre_input = document.getElementById("genre-input");
+    const art_input = document.getElementById("art-style-input");
     const age_rating = document.getElementById("age-sort");
-    const game_length = document.getElementById("time-sort");
-    const game_time = document.getElementById("game-length-number");
 
     const uploader = await getUser();
     const uploader_name = uploader.name;
@@ -54,10 +56,7 @@ uploadGame.addEventListener("submit", async function (event) {
     }
 
     const currency = currency_input.options[currency_input.selectedIndex].value;
-    const genre = genre_input.options[genre_input.selectedIndex].value;
-    const artstyle = art_input.options[art_input.selectedIndex].value;
     const age = age_rating.options[age_rating.selectedIndex].value;
-    const time = game_length.options[game_length.selectedIndex].value;
 
     const image = thumbnail_input.files[0];
     const reader = new FileReader();
@@ -99,10 +98,9 @@ uploadGame.addEventListener("submit", async function (event) {
               metadata: {
                 developer_name: uploader_name,
                 summary: summary_input.value,
-                genre: genre,
-                artstyle: artstyle,
+                genre: genre_input.value.toUpperCase(),
+                artstyle: art_input.value.toUpperCase(),
                 age_rating: age,
-                game_length: game_time.value+" "+time,
               },
               type: null,
               attributes: [],
@@ -150,6 +148,56 @@ uploadGame.addEventListener("submit", async function (event) {
         warn("There was an error trying to upload an image: " + error);
       }
     }
+
+    async function updateGenre() {
+      const uploadGenreOptions = {
+        method: "GET",
+        headers: myHeaders,
+        redirect: "follow",
+      };
+    
+      let doesGenreExist = false;
+      let genreData = {};
+    
+      try {
+        const response = await fetch(
+          get_genre_api_url + genre_input.value.toUpperCase(),
+          uploadGenreOptions
+        );
+        const result = await response.text();
+        const resultParse = JSON.parse(result);
+    
+        console.log(resultParse);
+        if (resultParse.message && resultParse.message == "Not Found") {
+          doesGenreExist = false;
+        } else {
+          doesGenreExist = true;
+          genreData = resultParse;
+        };
+      } catch (error) {
+        warn("There was an error trying to upload genre: " + error);
+      };
+    
+      const changeGenreOptions = {
+        method: "POST",
+        headers: myHeaders,
+        redirect: "follow",
+        body: JSON.stringify({
+          genre_name: genre_input.value.toUpperCase(),
+          games_with_genre: doesGenreExist ? genreData.games_with_genre + 1 : 1,
+        }),
+      };
+    
+      try {
+        const endpointURL = doesGenreExist
+          ? change_genre_api_url + genre_input.value.toUpperCase()
+          : add_genre_api_url;
+          
+        await fetch(endpointURL, changeGenreOptions);
+      } catch (error) {
+        warn("There was an error trying to upload genre: " + error);
+      };
+    };
 
     async function setProductPrice(product_id) {
       var priceRequestOptions = {
@@ -230,6 +278,7 @@ uploadGame.addEventListener("submit", async function (event) {
             if (result && result.id) {
               error_label.innerHTML = "Setting price...";
               const price = await setProductPrice(result.id);
+              await updateGenre();
               if (price && price.active) {
                 console.log("Product uploaded successfully!");
                 error_label.innerHTML = "Successfully published game!";
@@ -349,8 +398,3 @@ game_title.addEventListener("input", function() {
 game_summary.addEventListener("input", function() {
   this.style.width = (this.value.length + 1) * 10 + "px";
 });
-
-game_length.addEventListener("input", function() {
-  checkTime();
-  this.style.width = (this.value.length + 1) * 10 + "px";
-})
