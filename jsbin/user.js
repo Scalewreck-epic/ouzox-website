@@ -213,6 +213,10 @@ document.getElementById("username").addEventListener("click", function () {
 });
 
 if (data.Valid) {
+  if (window.location.pathname.includes("/login") || window.location.pathname.includes("/signup")) {
+    window.location.assign("settings.html");
+  };
+} else {
   if (window.location.pathname.includes("/settings") || window.location.pathname.includes("/upload")) {
     window.location.assign("login.html");
   };
