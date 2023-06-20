@@ -427,13 +427,14 @@ p{
 	font-family: 'Secular One', sans-serif;
 	background: black;
 	color: white;
-	border-radius: 0.625rem;
+	padding: 1rem;
+	border-radius: 1rem;
 	margin: 1rem;
 	min-height: 21rem;
-	width: 31rem;
+	max-width: 31rem;
+	width: auto;
 	outline: none;
 }
-
 
 .checkbox{
 	background: #00FFE1;
