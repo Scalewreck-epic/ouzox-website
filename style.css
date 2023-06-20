@@ -869,6 +869,37 @@ p{
 .category h1 {
 	margin-left: 3rem;
 	color: white;
+	text-shadow: 0 0.5rem 0.938rem black;
+}
+
+.genre-button {
+	display: inline-block;
+	background-color: #46464c;
+	color: white;
+	font-weight: bold;
+	padding: 0.5rem 3rem;
+	border-radius: 1rem;
+	margin: 0 0.25rem;
+	width: auto;
+	box-shadow: 0 0.1rem 0.5rem black;
+	transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.genre-button h2,
+.genre-button h4 {
+	display: block;
+	margin: 0;
+	text-align: center;
+}
+
+.genre-button h4 {
+	opacity: 0.5;
+}
+
+.genre-button:hover {
+	cursor: pointer;
+	transform: translateY(-0.188rem);
+	box-shadow: 0 0.5rem 0.938rem black;
 }
 
 .market {
