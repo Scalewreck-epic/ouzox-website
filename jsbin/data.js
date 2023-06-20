@@ -2,7 +2,7 @@ const games_list_api =
   "https://x8ki-letl-twmt.n7.xano.io/api:iwAsZq4E:v1/products";
 const games_prices_url =
   "https://x8ki-letl-twmt.n7.xano.io/api:tFdG2Vz-/prices";
-
+const genre_list_url = "https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv/genres";
 const update_product_url =
   "https://x8ki-letl-twmt.n7.xano.io/api:iwAsZq4E/products/"; // + product id
 
@@ -18,6 +18,7 @@ const gamesPerCategory = 20;
 
 var prices = [];
 var games = [];
+var genres = [];
 
 function getGamePrice(game_id) {
   const result = prices.find((item) => item.product === game_id);
@@ -40,6 +41,22 @@ function calculateDiffDays(timestamp) {
   var createdDiffDays = Math.ceil(createdTimeDiff / (1000 * 3600 * 24));
 
   return createdDiffDays;
+}
+
+function createGenrePage(name, amount) {
+  const genre_button = document.createElement("button");
+  genre_button.className = "genre-button";
+
+  const genre_name = document.createElement("h2");
+  const genre_games_amount = document.createElement("h4");
+
+  genre_name.innerHTML = name;
+  genre_games_amount.innerHTML = amount+" games";
+
+  genre_button.appendChild(genre_name);
+  genre_button.appendChild(genre_games_amount);
+
+  document.getElementById("genres").appendChild(genre_button);
 }
 
 function createGamePage(game, game_price, editable, market) {
@@ -166,21 +183,6 @@ function createGamePage(game, game_price, editable, market) {
   market.appendChild(gamesDiv);
 }
 
-function sortGames(gameSortType) {
-  if (gameSortType == "newest") {
-    games.sort((a, b) => (a.created > b.created ? -1 : 1));
-  } else if (gameSortType == "upToDate") {
-    games.sort((a, b) => (a.updated > b.updated ? -1 : 1));
-  } else if (gameSortType == "price") {
-    games.sort((a, b) =>
-      getGamePrice(a.id.toString()).price / 100 >
-      getGamePrice(b.id.toString()).price / 100
-        ? -1
-        : 1
-    );
-  }
-}
-
 function levenshteinDistance(a, b) {
   const dp = Array(a.length + 1)
     .fill(null)
@@ -227,11 +229,6 @@ function removePrivateGames() {
   };
 };
 
-function removeGameFromList(game) {
-  let index = games.indexOf(game);
-  games.splice(index, 1);
-};
-
 function removeIrrelevantGames() {
   const similarityThreshold = 0.15;
 
@@ -248,7 +245,8 @@ function removeIrrelevantGames() {
       const game_similarity = 0.7 * title_similarity + 0.3 * summary_similarity;
   
       if (game_similarity < similarityThreshold) {
-        removeGameFromList(game);
+        let index = games.indexOf(game);
+        games.splice(index, 1);
       };
     };
   };
@@ -303,10 +301,37 @@ function loadGamesWithList(list, isDashboard) {
   };
 };
 
+function sortGames(gameSortType) {
+  if (gameSortType == "newest") {
+    games.sort((a, b) => (a.created > b.created ? -1 : 1));
+  } else if (gameSortType == "upToDate") {
+    games.sort((a, b) => (a.updated > b.updated ? -1 : 1));
+  } else if (gameSortType == "price") {
+    games.sort((a, b) =>
+      getGamePrice(a.id.toString()).price / 100 >
+      getGamePrice(b.id.toString()).price / 100
+        ? -1
+        : 1
+    );
+  };
+};
+
+function loadGenres() {
+  for (
+    let i = 0; i < 5;
+    i++
+  ) {
+    var genre = genres[i];
+
+    if (genre && genre.games_with_genre > 0) {
+      createGenrePage(genre.genre_name, genre.games_with_genre);
+    }
+  }
+}
+
 function loadGames() {
   const newest_games_list = document.getElementById("newest-games-list");
   const updated_games_list = document.getElementById("updated-games-list");
-  //const genre_list = document.getElementById("genre-list");
 
   sortGames("newest");
   loadGamesWithList(newest_games_list, false);
@@ -326,10 +351,20 @@ async function loadDashboard() {
 }
 
 async function fetchGamesRequest(isDashboard) {
-  var myHeaders = new Headers();
+  const myHeaders = new Headers();
   myHeaders.append("Content-Type", "application/json");
 
-  var requestOptions = {
+  const requestGamesOptions = {
+    method: "GET",
+    headers: myHeaders,
+    redirect: "follow",
+    params: JSON.stringify({
+      "limit": 10000,
+      "active": "true",
+    })
+  };
+
+  const requestOptions = {
     method: "GET",
     headers: myHeaders,
     redirect: "follow",
@@ -342,15 +377,35 @@ async function fetchGamesRequest(isDashboard) {
       const result_parse = JSON.parse(result);
 
       prices = result_parse.data;
-      prices.sort((a, b) => (a.unit_amount > b.unit_amount ? 1 : -1));
+
+      if (prices.length > 0) {
+        prices.sort((a, b) => (a.unit_amount > b.unit_amount ? 1 : -1));
+      }
     } catch (error) {
-      console.warn("There was an error trying to set prices: ", err);
+      console.warn("There was an error trying to set prices: ", error);
+    }
+  }
+
+  async function setGenres() {
+    try {
+      const response = await fetch(genre_list_url, requestOptions);
+      const result = await response.text();
+      const result_parse = JSON.parse(result);
+
+      genres = result_parse;
+
+      if (genres.length > 0) {
+        genres.sort((a, b) => (a.games_with_genre > b.games_with_genre ? 1 : -1));
+        loadGenres();
+      }
+    } catch (error) {
+      console.warn("There was an error trying to set genres: ", error);
     }
   }
 
   async function fetchData() {
     try {
-      const response = await fetch(games_list_api, requestOptions);
+      const response = await fetch(games_list_api, requestGamesOptions);
       const result = await response.text();
       const result_parse = JSON.parse(result);
 
@@ -364,11 +419,12 @@ async function fetchGamesRequest(isDashboard) {
         loadGames();
       }
     } catch (error) {
-      console.warn("There was an error trying to get games: ", err);
+      console.warn("There was an error trying to get games: ", error);
     }
   }
 
   await setPrices();
+  await setGenres();
   await fetchData();
 }
 
