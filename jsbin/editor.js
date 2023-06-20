@@ -7,6 +7,16 @@ function applyHeader(level) {
     document.execCommand('formatBlock', false, headerCommand);
 };
 
+function createLink() {
+    var url = prompt("Enter the URL:");
+    var linkText = prompt("Enter the link text:");
+  
+    if (url && linkText) {
+      var link = "<a href='" + url + "' target='_blank'>" + linkText + "</a>";
+      document.execCommand("insertHTML", false, link);
+    };
+};
+
 document.getElementById("bold").addEventListener("click", function() {
     applyFormatting("bold");
 });
@@ -17,6 +27,34 @@ document.getElementById("italic").addEventListener("click", function() {
 
 document.getElementById("underline").addEventListener("click", function() {
     applyFormatting("underline");
+});
+
+document.getElementById("strikethrough").addEventListener("click", function() {
+    applyFormatting("strikethrough");
+});
+
+document.getElementById("link").addEventListener("click", function() {
+    createLink();
+});
+
+document.getElementById("insertUnorderedList").addEventListener("click", function() {
+    applyFormatting("insertUnorderedList");
+});
+
+document.getElementById("insertOrderedList").addEventListener("click", function() {
+    applyFormatting("insertOrderedList");
+});
+
+document.getElementById("justifyLeft").addEventListener("click", function() {
+    applyFormatting("justifyLeft");
+});
+
+document.getElementById("justifyRight").addEventListener("click", function() {
+    applyFormatting("justifyRight");
+});
+
+document.getElementById("justifyCenter").addEventListener("click", function() {
+    applyFormatting("justifyCenter");
 });
 
 document.getElementById("1").addEventListener("click", function() {
