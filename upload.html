@@ -86,50 +86,20 @@
 					</div>
 					<div class="extra-upload-form">
 						<h1>Advanced</h1>
-						<h3>This is how users will find your game</h3>
 						<div>
 							<label class="title-label">Genre:</label>
-							<select id="genre-sort" class="game-sort">
-								<option value="all">All Genres</option>
-								<option value="horror">Horror</option>
-								<option value="adventure">Adventure</option>
-								<option value="adventure">Creepy</option>
-								<option value="adventure">Action</option>
-								<option value="retro">Retro</option>
-								<option value="sci-fi">Sci-Fi</option>
-								<option value="survival">Survival</option>
-								<option value="interactive">Interactive</option>
-								<option value="simulation">Simulation</option>
-							</select>
+							<input type="text" class="text-box" id="genre-input" placeholder="Genre" value="All" autocorrect="on" maxlength="120" minlength="1" required/>
 						</div>
 						<div>
 							<label class="title-label">Art Style:</label>
-							<select class="game-sort" id="art-sort">
-								<option value="realistic">Realistic</option>
-								<option value="comic">Comic</option>
-								<option value="cartoon">Cartoon</option>
-								<option value="pixel">Pixel</option>
-								<option value="steampunk">Steampunk</option>
-								<option value="gothic">Gothic</option>
-								<option value="minimalistic">Minimalistic</option>
-							</select>
+							<input type="text" class="text-box" id="art-style-input" placeholder="Art" value="Realistic" autocorrect="on" maxlength="120" minlength="1" required/>
 						</div>
 						<div>
 							<label class="title-label">Age Rating</label>
 							<select class="game-sort" id="age-sort">
 								<option value="everyone">Everyone</option>
-								<option value="9+">9+</option>
-								<option value="13+">13+</option>
-							</select>
-						</div>
-						<div>
-							<label class="title-label">Game Length:</label>
-							<input type="text" class="text-box" id="game-length-number" pattern="[0-9]*" placeholder="0" value="0"/>
-							<select class="game-sort" id="time-sort">
-								<option value="seconds">Seconds</option>
-								<option value="minutes">Minutes</option>
-								<option value="Hours">Hours</option>
-								<option value="Days">Days</option>
+								<option value="teen">Teen</option>
+								<option value="mature">Mature</option>
 							</select>
 						</div>
 					</div>
