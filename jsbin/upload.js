@@ -12,7 +12,6 @@ const add_genre_api_url = "https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv/genres
 const uploadGame = document.getElementById("upload-game");
 
 import { getUser } from "./exportuser.js";
-import { filter } from "./moderation.js";
 
 uploadGame.addEventListener("submit", async function (event) {
   event.preventDefault();
@@ -60,7 +59,7 @@ uploadGame.addEventListener("submit", async function (event) {
     const myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
 
-    var uploadImageRequestOptions = {
+    const uploadImageRequestOptions = {
       method: "POST",
       headers: myHeaders,
       redirect: "follow",
@@ -71,7 +70,7 @@ uploadGame.addEventListener("submit", async function (event) {
 
     async function uploadProduct(product_image) {
       try {
-        var uploadRequestOptions = {
+        const uploadRequestOptions = {
           method: "POST",
           headers: myHeaders,
           redirect: "follow",
@@ -186,7 +185,7 @@ uploadGame.addEventListener("submit", async function (event) {
     };
 
     async function setProductPrice(product_id) {
-      var priceRequestOptions = {
+      const priceRequestOptions = {
         method: "POST",
         headers: myHeaders,
         redirect: "follow",
