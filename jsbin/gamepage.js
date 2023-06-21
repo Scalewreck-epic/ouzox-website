@@ -10,10 +10,10 @@ const urlParams = new URLSearchParams(window.location.search);
 const gameId = urlParams.get("j");
 
 async function retrieveGameData(gameId) {
-  var myHeaders = new Headers();
+  const myHeaders = new Headers();
   myHeaders.append("Content-Type", "application/json");
 
-  var options = {
+  const options = {
     method: "GET",
     headers: myHeaders,
     redirect: "follow",
@@ -52,8 +52,8 @@ async function retrieveGameData(gameId) {
     day: "2-digit",
   });
 
-  var colors = {};
-  var defaultColors = true;
+  let colors = {};
+  let defaultColors = true;
   const metadata = rawGameData.metadata;
 
   if (
@@ -134,9 +134,9 @@ const gameHandler = async (gameId) => {
     game_age.innerHTML = gameData.agerating.toUpperCase();
 
     if (!gameData.useDefaultColors) {
-      var elements = document.getElementsByClassName("game-stat");
+      const elements = document.getElementsByClassName("game-stat");
 
-      for (var i = 0; i < elements.length; i++) {
+      for (let i = 0; i < elements.length; i++) {
         elements[i].style.color = gameData.colors.statsColor;
       }
 
@@ -166,7 +166,7 @@ const gameHandler = async (gameId) => {
       game_desc.contentEditable = true;
       game_summary.contentEditable = true;
 
-      var commitChangesButton = document.createElement("button");
+      const commitChangesButton = document.createElement("button");
       commitChangesButton.className = "game-download-button";
       commitChangesButton.innerHTML = "Commit Changes";
 
@@ -195,15 +195,15 @@ const gameHandler = async (gameId) => {
       });
 
       function create_stat(stat_name) {
-        var game_stat = document.createElement("div");
+        const game_stat = document.createElement("div");
         game_stat.className = "game-stat";
 
-        var stat_title = document.createElement("div");
+        const stat_title = document.createElement("div");
         stat_title.className = "game-updated-title";
         stat_title.innerHTML = stat_name;
         game_stat.appendChild(stat_title);
 
-        var changeBGcolor = document.createElement("input");
+        const changeBGcolor = document.createElement("input");
         changeBGcolor.className = "game-download-input";
         changeBGcolor.type = "color";
         game_stat.appendChild(changeBGcolor);
@@ -250,9 +250,9 @@ const gameHandler = async (gameId) => {
       };
 
       changeStatsColor.onchange = function () {
-        var elements = document.getElementsByClassName("game-stat");
+        const elements = document.getElementsByClassName("game-stat");
 
-        for (var i = 0; i < elements.length; i++) {
+        for (let i = 0; i < elements.length; i++) {
           elements[i].style.color = changeStatsColor.value;
         }
       };
@@ -266,7 +266,7 @@ const gameHandler = async (gameId) => {
           const myHeaders = new Headers();
           myHeaders.append("Content-Type", "application/json");
 
-          var update_product_options = {
+          const update_product_options = {
             method: "POST",
             headers: myHeaders,
             redirect: "follow",
