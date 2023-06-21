@@ -16,9 +16,9 @@ const search_query = urlParams.get("q");
 const gamesPerCategory = 20;
 //let lastGame;
 
-var prices = [];
-var games = [];
-var genres = [];
+let prices = [];
+let games = [];
+let genres = [];
 
 function getGamePrice(game_id) {
   const result = prices.find((item) => item.product === game_id);
@@ -32,13 +32,13 @@ function getGamePrice(game_id) {
 }
 
 function calculateDiffDays(timestamp) {
-  var createdTimestamp = new Date(timestamp * 1000);
-  var currentDate = new Date();
+  const createdTimestamp = new Date(timestamp * 1000);
+  const currentDate = new Date();
 
-  var createdTimeDiff = Math.abs(
+  const createdTimeDiff = Math.abs(
     currentDate.getTime() - createdTimestamp.getTime()
   );
-  var createdDiffDays = Math.ceil(createdTimeDiff / (1000 * 3600 * 24));
+  const createdDiffDays = Math.ceil(createdTimeDiff / (1000 * 3600 * 24));
 
   return createdDiffDays;
 }
@@ -175,6 +175,7 @@ function createGamePage(game, game_price, editable, market) {
       };
 
       await deactivate_product();
+      await update_genre();
     });
 
     gamesDiv.appendChild(deleteButton);
@@ -253,12 +254,12 @@ function removeIrrelevantGames() {
 };
 
 async function verifyUser() {
-  var data = getCookie("session_id");
+  const data = getCookie("session_id");
 
-  var myHeaders = new Headers();
+  const myHeaders = new Headers();
   myHeaders.append("Content-Type", "application/json");
 
-  var get_user_options = {
+  const get_user_options = {
     method: "GET",
     headers: myHeaders,
     redirect: "follow",
@@ -279,24 +280,34 @@ async function verifyUser() {
       }
     }
 
-    var user = await get_user();
+    const user = await get_user();
     return user;
   }
 }
 
-function loadGamesWithList(list, isDashboard) {
+function loadGamesWithList(list, isDashboard, category) {
+  let gamesInList = 0;
   for (
     let i = 0; i < gamesPerCategory;
     i++
   ) {
-    var game = games[i];
+    const game = games[i];
 
     if (game && game.active) {
-      var game_price = getGamePrice(game.id.toString());
+      const game_price = getGamePrice(game.id.toString());
 
       if (game_price) {
         createGamePage(game, game_price, isDashboard, list);
+        gamesInList += 1;
       };
+    };
+  };
+
+  if (gamesInList > 0) {
+    const categoryNoneElement = category.querySelector(".category-none");
+
+    if (categoryNoneElement) {
+      categoryNoneElement.remove();
     };
   };
 };
@@ -321,7 +332,7 @@ function loadGenres() {
     let i = 0; i < 5;
     i++
   ) {
-    var genre = genres[i];
+    const genre = genres[i];
 
     if (genre && genre.games_with_genre > 0) {
       createGenrePage(genre.genre_name, genre.games_with_genre);
@@ -330,14 +341,11 @@ function loadGenres() {
 }
 
 function loadGames() {
-  const newest_games_list = document.getElementById("newest-games-list");
-  const updated_games_list = document.getElementById("updated-games-list");
-
   sortGames("newest");
-  loadGamesWithList(newest_games_list, false);
+  loadGamesWithList(document.getElementById("newest-games-list"), false, document.getElementById("new-games"));
 
   sortGames("upToDate");
-  loadGamesWithList(updated_games_list, false);
+  loadGamesWithList(document.getElementById("updated-games-list"), false, document.getElementById("fresh-games"));
 };
 
 async function loadDashboard() {
