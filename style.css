@@ -66,8 +66,8 @@ nav{
 }
 
 .web-thumbnail{
-	width: 41.25rem;
-	height: 10.625rem;
+	width: 100%;
+	height: auto;
 }
 
 .username {
@@ -948,7 +948,7 @@ p{
 }
 
 .login-form{
-	width: 50rem;
+	width: 35%;
 	background-color: #19191c;
 	padding: 5rem;
 	border-radius: 0.5rem;
@@ -961,7 +961,7 @@ p{
 }
 
 .settings {
-	width: 80rem;
+	width: 80%;
 	margin: 0 auto;
 	margin-bottom: 9.375rem;
 }
@@ -988,7 +988,7 @@ p{
 
 .extra-buttons {
 	margin-top: 5rem;
-	width: 80rem;
+	width: 100%;
 	text-align: center;
 }
 
