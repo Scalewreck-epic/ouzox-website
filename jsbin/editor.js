@@ -3,16 +3,16 @@ function applyFormatting(command) {
 };
 
 function applyHeader(level) {
-    var headerCommand = 'h' + level;
+    const headerCommand = 'h' + level;
     document.execCommand('formatBlock', false, headerCommand);
 };
 
 function createLink() {
-    var url = prompt("Enter the URL:");
-    var linkText = prompt("Enter the link text:");
+    const url = prompt("Enter the URL:");
+    const linkText = prompt("Enter the link text:");
   
     if (url && linkText) {
-      var link = "<a href='" + url + "' target='_blank'>" + linkText + "</a>";
+        const link = "<a href='" + url + "' target='_blank'>" + linkText + "</a>";
       document.execCommand("insertHTML", false, link);
     };
 };
