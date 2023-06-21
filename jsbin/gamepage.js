@@ -2,8 +2,8 @@ const get_product_url =
   "https://x8ki-letl-twmt.n7.xano.io/api:iwAsZq4E/products/"; // + product id
 const update_product_url =
   "https://x8ki-letl-twmt.n7.xano.io/api:iwAsZq4E/products/"; // + product id
+const get_price_url = "https://x8ki-letl-twmt.n7.xano.io/api:tFdG2Vz-/prices/"; // + price id
 
-import { filter } from "./moderation.js";
 import { getUser } from "./exportuser.js";
 
 const urlParams = new URLSearchParams(window.location.search);
@@ -88,7 +88,6 @@ async function retrieveGameData(gameId) {
     summary: rawGameData.metadata.summary,
     artstyle: rawGameData.metadata.artstyle,
     agerating: rawGameData.metadata.age_rating,
-    gamelength: rawGameData.metadata.game_length,
     icon: rawGameData.images[0],
     created: createdFormattedDate,
     updated: updatedFormattedDate,
@@ -116,7 +115,6 @@ const gameHandler = async (gameId) => {
     const game_summary = document.getElementById("game-summary");
     const game_art = document.getElementById("game-art");
     const game_age = document.getElementById("game-age");
-    const game_length = document.getElementById("game-length");
 
     // main data
     game_title.innerHTML = gameData.name;
@@ -125,7 +123,8 @@ const gameHandler = async (gameId) => {
     updated.innerHTML = gameData.updated;
 
     icon.setAttribute("href", gameData.icon);
-    navigation_title.innerHTML = gameData.name + " By " + gameData.developer_name;
+    navigation_title.innerHTML =
+      gameData.name + " By " + gameData.developer_name;
 
     // metadata
     developer_name.innerHTML = "By: " + gameData.developer_name;
@@ -133,7 +132,6 @@ const gameHandler = async (gameId) => {
     game_summary.innerHTML = gameData.summary;
     game_art.innerHTML = gameData.artstyle.toUpperCase();
     game_age.innerHTML = gameData.agerating.toUpperCase();
-    game_length.innerHTML = gameData.gamelength.toUpperCase();
 
     if (!gameData.useDefaultColors) {
       var elements = document.getElementsByClassName("game-stat");
@@ -212,7 +210,7 @@ const gameHandler = async (gameId) => {
         document.getElementById("game-column").appendChild(game_stat);
 
         return changeBGcolor;
-      };
+      }
 
       const changeBGcolor = create_stat("BG Color");
       const changeBG2color = create_stat("BG2 Color");
@@ -259,82 +257,68 @@ const gameHandler = async (gameId) => {
         }
       };
 
-      var isLoading = false;
+      let isLoading = false;
       commitChangesButton.addEventListener("click", async function () {
         if (!isLoading) {
           isLoading = true;
           commitChangesButton.innerHTML = "Uploading..";
-          const titleFilter = await filter(game_title.innerHTML);
-          const descFilter = await filter(game_desc.innerHTML);
 
-          if (titleFilter == "No reason" && descFilter == "No reason") {
-            const myHeaders = new Headers();
-            myHeaders.append("Content-Type", "application/json");
+          const myHeaders = new Headers();
+          myHeaders.append("Content-Type", "application/json");
 
-            var update_product_options = {
-              method: "POST",
-              headers: myHeaders,
-              redirect: "follow",
-              body: JSON.stringify({
-                product: {
-                  name: game_title.innerHTML,
-                  description: game_desc.innerHTML,
-                  metadata: {
-                    summary: game_summary.innerHTML,
-                    bgColor: document.body.style.backgroundColor,
-                    bg2Color:
-                      document.getElementById("game-column").style
-                        .backgroundColor,
-                    titleColor:
-                      document.getElementById("game-title-column").style.color,
-                    descColor:
-                      document.getElementById("game-description").style.color,
-                    buttonColor:
-                      document.getElementById("download-button").style
-                        .backgroundColor,
-                    buttonTextColor:
-                      document.getElementById("download-button").style.color,
-                    statsColor:
-                      document.getElementsByClassName("game-stat")[0].style
-                        .color,
-                  },
+          var update_product_options = {
+            method: "POST",
+            headers: myHeaders,
+            redirect: "follow",
+            body: JSON.stringify({
+              product: {
+                name: game_title.innerHTML,
+                description: game_desc.innerHTML,
+                metadata: {
+                  summary: game_summary.innerHTML,
+                  bgColor: document.body.style.backgroundColor,
+                  bg2Color:
+                    document.getElementById("game-column").style
+                      .backgroundColor,
+                  titleColor:
+                    document.getElementById("game-title-column").style.color,
+                  descColor:
+                    document.getElementById("game-description").style.color,
+                  buttonColor:
+                    document.getElementById("download-button").style
+                      .backgroundColor,
+                  buttonTextColor:
+                    document.getElementById("download-button").style.color,
+                  statsColor:
+                    document.getElementsByClassName("game-stat")[0].style.color,
                 },
-                id: gameId,
-              }),
-            };
+              },
+              id: gameId,
+            }),
+          };
 
-            async function update_product() {
-              if (user.name == gameData.developer_name) {
-                try {
-                  await fetch(
-                    update_product_url + gameId,
-                    update_product_options
-                  );
-                  commitChangesButton.innerHTML = "Success";
-                } catch (error) {
-                  commitChangesButton.innerHTML = "An error occured";
-                  showError(error, false);
-                }
-              } else {
-                console.warn(
-                  "User somehow accessed the developer panel onto a project they do not own."
+          async function update_product() {
+            if (user.name == gameData.developer_name) {
+              try {
+                await fetch(
+                  update_product_url + gameId,
+                  update_product_options
                 );
-                commitChangesButton.innerHTML =
-                  "You should not be editing this project.";
+                commitChangesButton.innerHTML = "Success";
+              } catch (error) {
+                commitChangesButton.innerHTML = "An error occured";
+                showError(error, false);
               }
+            } else {
+              console.warn(
+                "User somehow accessed the developer panel onto a project they do not own."
+              );
+              commitChangesButton.innerHTML =
+                "You should not be editing this project.";
             }
-
-            await update_product();
-          } else {
-            if (titleFilter != "No reason") {
-              game_title.innerHTML = titleFilter;
-            }
-
-            if (descFilter != "No reason") {
-              game_desc.innerHTML = descFilter;
-            }
-            commitChangesButton.innerHTML = "Cannot upload";
           }
+
+          await update_product();
           isLoading = false;
         }
       });
