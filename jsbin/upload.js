@@ -41,20 +41,6 @@ uploadGame.addEventListener("submit", async function (event) {
     const uploader = await getUser();
     const uploader_name = uploader.name;
 
-    function handleFilterResult(result, label) {
-      if (result == "No reason") {
-        console.log(label, "accepted through filter.");
-        return true;
-      } else {
-        console.warn(
-          "Cannot continue upload process because text includes",
-          result
-        );
-        error_label.innerHTML = label + " not accepted because of " + result;
-        return false;
-      }
-    }
-
     const currency = currency_input.options[currency_input.selectedIndex].value;
     const age = age_rating.options[age_rating.selectedIndex].value;
 
@@ -254,41 +240,28 @@ uploadGame.addEventListener("submit", async function (event) {
     }
 
     try {
-      error_label.innerHTML = "Checking title...";
-      const titleResult = await filter(title_input.value);
-      const isTitleValid = handleFilterResult(titleResult, "Title");
+      error_label.innerHTML = "Uploading image...";
+      const image_metadata = await uploadImage();
 
-      error_label.innerHTML = "Checking description...";
-      const descriptionResult = await filter(description_input.value);
-      const isDescriptionValid = handleFilterResult(
-        descriptionResult,
-        "Description"
-      );
+      if (image_metadata) {
+        error_label.innerHTML = "Creating game page...";
 
-      if (isTitleValid && isDescriptionValid) {
-        error_label.innerHTML = "Uploading image...";
-        const image_metadata = await uploadImage();
+        if (price_input.value > 0) {
+          const result = await uploadProduct(image_metadata.image.image);
 
-        if (image_metadata) {
-          error_label.innerHTML = "Creating game page...";
-
-          if (price_input.value > 0) {
-            const result = await uploadProduct(image_metadata.image.image);
-
-            if (result && result.id) {
-              error_label.innerHTML = "Setting price...";
-              const price = await setProductPrice(result.id);
-              await updateGenre();
-              if (price && price.active) {
-                console.log("Product uploaded successfully!");
-                error_label.innerHTML = "Successfully published game!";
-              }
+          if (result && result.id) {
+            error_label.innerHTML = "Setting price...";
+            const price = await setProductPrice(result.id);
+            await updateGenre();
+            if (price && price.active) {
+              console.log("Product uploaded successfully!");
+              error_label.innerHTML = "Successfully published game!";
             }
-          } else {
-            error_label.innerHTML =
-              "Free games are not able to be put onto the platform just yet.";
-            // Handle uploading game when user sets price to free.
           }
+        } else {
+          error_label.innerHTML =
+            "Free games are not able to be put onto the platform just yet.";
+          // Handle uploading game when user sets price to free.
         }
       }
     } catch (error) {
@@ -365,17 +338,11 @@ function checkPrice() {
   }
 }
 
-function checkTime() {
-  const input = document.getElementById("game-length-number");
-  input.value = input.value.replace(/[^0-9]/g, "");
-}
-
 const game_thumbnail = document.getElementById("thumbnail");
 const game_price = document.getElementById("price");
 const game_isfree = document.getElementById("isfree");
 const game_title = document.getElementById("title");
 const game_summary = document.getElementById("summary");
-const game_length = document.getElementById("game-length-number");
 
 checkIsFree();
 
