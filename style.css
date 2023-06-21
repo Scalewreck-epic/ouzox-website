@@ -896,10 +896,19 @@ p{
 	background-color: #19191c;
 }
 
-.category h1 {
+.category h1,
+.category h4 {
+	margin-top: 1rem;
+	margin-bottom: 0;
 	margin-left: 3rem;
 	color: white;
 	text-shadow: 0 0.5rem 0.938rem black;
+}
+
+.category-none {
+	opacity: 0.25;
+	text-align: center;
+	font-size: 5rem;
 }
 
 .genre-button {
