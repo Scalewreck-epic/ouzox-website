@@ -15,7 +15,7 @@ import {
 } from "./exportuser.js";
 
 function calculateExpiration(past) {
-  var currentDate = new Date();
+  const currentDate = new Date();
 
   if (past == true) {
     currentDate.setFullYear(currentDate.getFullYear() - annualExpiration);
@@ -27,12 +27,12 @@ function calculateExpiration(past) {
 }
 
 function implementUsername() {
-  var username = document.getElementById("username");
+  const username = document.getElementById("username");
 
-  var login_btn = document.getElementById("login-btn");
-  var signup_btn = document.getElementById("signup-btn");
-  var dashboard_btn = document.getElementById("dashboard-btn");
-  var upload_btn = document.getElementById("upload-btn");
+  const login_btn = document.getElementById("login-btn");
+  const signup_btn = document.getElementById("signup-btn");
+  const dashboard_btn = document.getElementById("dashboard-btn");
+  const upload_btn = document.getElementById("upload-btn");
 
   if (data.Valid) {
     const url = getsingle_endpoint + data.Data;
@@ -40,9 +40,9 @@ function implementUsername() {
     login_btn.remove();
     signup_btn.remove();
 
-    var myHeaders = new Headers();
+    const myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
-    var requestOptions = {
+    const requestOptions = {
       method: "GET",
       headers: myHeaders,
     };
@@ -50,7 +50,7 @@ function implementUsername() {
     fetch(url, requestOptions)
       .then((response) => response.text())
       .then((result) => {
-        var result_parse = JSON.parse(result);
+        const result_parse = JSON.parse(result);
 
         if (result_parse.name) {
           username.innerHTML = result_parse.name;
@@ -71,9 +71,9 @@ function implementUsername() {
 function setStats() {
   const url = getsingle_endpoint + data.Data;
 
-  var myHeaders = new Headers();
+  const myHeaders = new Headers();
   myHeaders.append("Content-Type", "application/json");
-  var requestOptions = {
+  const requestOptions = {
     method: "GET",
     headers: myHeaders,
   };
@@ -81,7 +81,7 @@ function setStats() {
   fetch(url, requestOptions)
     .then((response) => response.text())
     .then((result) => {
-      var result_parse = JSON.parse(result);
+      const result_parse = JSON.parse(result);
 
       if (result_parse.email && result_parse.created_at) {
         const email_stat = document.getElementById("email-stat");
@@ -122,13 +122,13 @@ function createSessionData() {
     const email_input = document.getElementById("email_input").value;
     const password_input = document.getElementById("password_input").value;
 
-    var username = username_input.toString();
-    var password = password_input.toString();
-    var email = email_input.toString();
+    const username = username_input.toString();
+    const password = password_input.toString();
+    const email = email_input.toString();
 
-    var myHeaders = new Headers();
+    const myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
-    var requestOptions = {
+    const requestOptions = {
       method: "POST",
       headers: myHeaders,
       body: JSON.stringify({
@@ -138,13 +138,13 @@ function createSessionData() {
       }),
     };
 
-    var error_label = document.getElementById("error-label");
+    const error_label = document.getElementById("error-label");
     error_label.innerHTML = "Creating account...";
 
     fetch(signup_endpoint, requestOptions)
       .then((response) => response.text())
       .then((result) => {
-        var result_parse = JSON.parse(result);
+        const result_parse = JSON.parse(result);
         if (result_parse.authToken) {
           createCookieData(result_parse.authToken);
           error_label.innerHTML = "Successfully created account!";
@@ -164,12 +164,12 @@ function getSessionData() {
     const username_input = document.getElementById("username_login").value;
     const password_input = document.getElementById("password_login").value;
 
-    var username = username_input.toString();
-    var password = password_input.toString();
+    const username = username_input.toString();
+    const password = password_input.toString();
 
-    var myHeaders = new Headers();
+    const myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
-    var requestOptions = {
+    const requestOptions = {
       method: "POST",
       headers: myHeaders,
       body: JSON.stringify({
@@ -178,13 +178,13 @@ function getSessionData() {
       }),
     };
 
-    var error_label = document.getElementById("error-label");
+    const error_label = document.getElementById("error-label");
     error_label.innerHTML = "Logging you in...";
 
     fetch(login_endpoint, requestOptions)
       .then((response) => response.text())
       .then((result) => {
-        var result_parse = JSON.parse(result);
+        const result_parse = JSON.parse(result);
 
         if (result_parse.authToken) {
           createCookieData(result_parse.authToken);
