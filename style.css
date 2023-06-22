@@ -334,7 +334,8 @@ p{
 	display: inline-block;
 	font-size: 1rem;
 	font-family: 'Secular One', sans-serif;
-	width: 9rem;
+	max-width: 9rem;
+	width: auto;
 	padding: 0.313rem;
 	color: #fff;
 	background-color: #292929;
@@ -505,7 +506,6 @@ p{
 /* Default button style */
 .upload-button,
 .login-button,
-.twitter-button,
 .delete-button,
 .load-button {
   font-size: 1.25rem;
@@ -524,15 +524,8 @@ p{
 	margin: 0;
 }
 
-.twitter-button:hover {
-	background: #1DA1F2;
-	color: white;
-	transition: background 0.2s ease-in-out, color 0.2s ease-in-out;
-  }
-
 .upload-button:hover,
 .login-button:hover,
-.twitter-button:hover,
 .game-download-button:hover,
 .delete-button:hover,
 .load-button:hover {
@@ -542,7 +535,6 @@ p{
 
 .upload-button:focus,
 .login-button:focus,
-.twitter-button:focus,
 .delete-button:focus,
 .load-button:focus {
   outline: none;
@@ -551,7 +543,6 @@ p{
 
 .upload-button:active,
 .login-button:active,
-.twitter-button:active,
 .delete-button:active,
 .game-download-button:active
 .load-button:active {
@@ -561,7 +552,6 @@ p{
 
 .upload-button:disabled,
 .login-button:disabled,
-.twitter-button:disabled,
 .game-download-button:disabled,
 .load-button:disabled {
   opacity: 0.5;
@@ -606,18 +596,14 @@ p{
 	border-radius: 0.188rem;
 }
 
-.twitter-button{
-	width: 12.5rem;
-	font-size: 2.5rem;
-}
-
 .upload-button{
-	width: auto;
+	width: 100%;
 	min-width: 5rem;
 }
 
 .login-button{
-	width: 15.625rem;
+	width: 100%;
+	max-width: 15.625rem;
 }
 
 .load-button-div{
