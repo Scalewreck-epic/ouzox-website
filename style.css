@@ -2,7 +2,6 @@ body{
 	font-family: 'Alata', sans-serif;
 	background: #242426;
 	margin: 0;
-	padding: 0;
 }
 
 .mail-link{
@@ -985,10 +984,12 @@ p{
 	font-family: "Secular One", sans-serif;
 }
 
-.xtra-login{
-	color: #FFFFFF;
+.agreement{
+	display: block;
+	color: grey;
+	opacity: 0.5;
 }
 
-.xtra-login a{
-	color: #00FFE1;
+.agreement a{
+	color: white;
 }
