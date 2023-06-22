@@ -597,7 +597,7 @@ p{
 }
 
 .upload-button{
-	width: 100%;
+	width: auto;
 	min-width: 5rem;
 }
 
