@@ -38,7 +38,7 @@
 		<div class="content">
 			<form class="login-form" id="signup-form">
 				<img src="Images/baner.png" class="web-thumbnail">
-				<ul><font size="5">
+				<ul>
 					<li>
 						<input type="text" class="text-box" name="username" id="username_input" placeholder="Username" maxlength="20" minlength="3" required>
 					</li>
@@ -48,17 +48,15 @@
 					<li>
 						<input type="password" class="text-box" name="password" id="password_input" placeholder="Password" required>
 					</li>
-					<li>
-						<label class="xtra-login"><font size="3">By creating an account, you agree to the <a href="https://econsole-games.gitbook.io/econsole-docs/terms-of-service" target="_blank">Terms of Service</a> and the <a href="https://econsole-games.gitbook.io/econsole-docs/privacy-policy" target="_blank">Privacy Policy</a></font></label>
-						<label class="cl-checkbox">
-							<input type="checkbox" name="example" value="1">
-							<span class="cl-checkbox-box"></span>
-						</label>
-					</li>
-				</ul></font>
+				</ul>
 				<button class="login-button" id="upload-button" type="submit">Signup</button>
+				<div class="agreement">
+					By creating an account, you agree to the
+					<a href="https://econsole-games.gitbook.io/econsole-docs/terms-of-service" target="_blank">Terms of Service</a>
+					and the
+					<a href="https://econsole-games.gitbook.io/econsole-docs/privacy-policy" target="_blank">Privacy Policy</a>
+				</div>
 				<div class="error-label" id="error-label"></div>
-				<div class="xtra-login"><font size="5">Already have an account? <a href="login.html">Login now!</a></font></div>
 			</form>
 		</div>
 		<footer class="footer">
