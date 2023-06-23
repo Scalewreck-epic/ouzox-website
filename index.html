@@ -2,13 +2,13 @@
 <html lang="en">
 	<head>
 		<meta charset="UTF-8">
-		<title>Econsole | Upload Game</title>
-		<link rel="icon" type="x-icon" href="Images/icon.png">
-		<link rel="stylesheet" href="style.css">
-		<link rel="preconnect" href="https://fonts.googleapis.com">
-		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-		<link href="https://fonts.googleapis.com/css2?family=Secular+One&display=swap" rel="stylesheet">
-		<link href="https://fonts.googleapis.com/css2?family=Alata&display=swap" rel="stylesheet">
+		<title>Econsole | Market</title>
+		<link rel="icon" type="x-icon" href="Images/icon.png"/>
+		<link rel="stylesheet" href="style.css"/>
+		<link rel="preconnect" href="https://fonts.googleapis.com"/>
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+		<link href="https://fonts.googleapis.com/css2?family=Secular+One&display=swap" rel="stylesheet"/>
+		<link href="https://fonts.googleapis.com/css2?family=Alata&display=swap" rel="stylesheet"/>
 	</head>
 	<body>
 		<style>
@@ -35,104 +35,45 @@
 				</div>
 			</div>
 		</nav>
+		<div class="search-bar">
+			<form>
+				<input class="text-box" id="search-query" name="q" type="text" placeholder="Search" autocomplete="off" required>
+				<button type="submit" class="upload-button">Search</button>
+			</form>
+		</div>
 		<div class="content">
-			<div class="container">
-				<form id="upload-game">
-					<div class="main-upload-form">
-						<h1>Main</h1>
-						<div>
-							<label class="title-label">Title:</label>
-							<input type="text" class="text-box" id="title" placeholder="Game Title." value="My new project!" autocorrect="on" maxlength="120" minlength="1" required/>
-						</div>
-						<div>
-							<label class="title-label">Summary:</label>
-							<input type="text" class="text-box" id="summary" placeholder="Game Summary." value="What's best about your project?" autocorrect="on" maxlength="120" minlength="1" required/>
-						</div>
-						<div>
-							<label class="title-label">Thumbnail:</label>
-							<input type="file" id="thumbnail" class="upload-box" accept="image/jpeg, image/png" required/>
-						</div>
-						<div>
-							<label class="title-label">Download File:</label>
-							<input type="file" id="download-file" class="upload-box" accept=".exe, .zip, .apk, .ipa" required/>
-							<div class="error-label" id="game-file-warn"></div>
-						</div>
-						<div>
-							<label class="title-label">Free:</label>
-							<label class="cl-checkbox">
-								<input type="checkbox" value="1" id="isfree">
-								<span class="cl-checkbox-box"></span>
-							</label>
-						</div>
-						<div>
-							<label class="title-label" id="price-label">Price ($):</label>
-							<input type="text" class="text-box" id="price" pattern="[0-9]*" placeholder="0" value="0"/>
-						</div>
-						<div>
-							<label class="title-label">Currency:</label>
-							<select class="game-sort" id="currency-sort">
-								<option value="usd">USD</option>
-								<option value="eur">EUR</option>
-								<option value="jpy">JPY</option>
-								<option value="gbp">GBP</option>
-								<option value="aud">AUD</option>
-								<option value="cad">CAD</option>
-								<option value="cnh">CNH</option>
-								<option value="chf">CHF</option>
-								<option value="hkd">HKD</option>
-								<option value="nzd">NZD</option>
-							</select>
-						</div>
-					</div>
-					<div class="extra-upload-form">
-						<h1>Advanced</h1>
-						<div>
-							<label class="title-label">Genre:</label>
-							<input type="text" class="text-box" id="genre-input" placeholder="Genre" value="All" autocorrect="on" maxlength="120" minlength="1" required/>
-						</div>
-						<div>
-							<label class="title-label">Art Style:</label>
-							<input type="text" class="text-box" id="art-style-input" placeholder="Art" value="Realistic" autocorrect="on" maxlength="120" minlength="1" required/>
-						</div>
-						<div>
-							<label class="title-label">Age Rating</label>
-							<select class="game-sort" id="age-sort">
-								<option value="everyone">Everyone</option>
-								<option value="teen">Teen</option>
-								<option value="mature">Mature</option>
-							</select>
-						</div>
-					</div>
-					<div class="upload-game-conclusion">
-						<label class="title-label">Description:</label>
-						<div class="buttons">
-							<h3>Text Customization:</h3>
-							<button class="description-button" id="bold" type="button">Bold</button>
-							<button class="description-button" id="italic" type="button">Italic</button>
-							<button class="description-button" id="underline" type="button">Underline</button>
-							<button class="description-button" id="link" type="button">Link</button>
-							<button class="description-button" id="strikethrough" type="button">Strike through</button>
-							<button class="description-button" id="insertUnorderedList" type="button">Order List</button>
-							<button class="description-button" id="insertOrderedList" type="button">Number List</button>
-							<div>
-								<button class="description-button" id="justifyLeft" type="button">Align Left</button>
-								<button class="description-button" id="justifyRight" type="button">Align Right</button>
-								<button class="description-button" id="justifyCenter" type="button">Align Center</button>
-							</div>
-							<div>
-								<button class="description-button" id="1" type="button">Header 1</button>
-								<button class="description-button" id="2" type="button">Header 2</button>
-								<button class="description-button" id="3" type="button">Header 3</button>
-								<button class="description-button" id="4" type="button">Header 4</button>
-							</div>
-						</div>
-						<div contenteditable="true" class="description" id="description"></div>
-						<img id="previewImage" class="product-image"/><br>
-						<button class="upload-button" id="upload-button" type="submit"><font size="6">Publish Game</font></button>
-						<div class="error-label" id="error-label"></div>
-						<div class="xtra-login"><font size="5">View your projects <a href="dashboard.html">on your dashboard</a></font></div>
-					</div>
-				</form>
+			<div class="category" id="new-games">
+				<h1>New Games</h1>
+				<h4>The latest and greatest games that are just waiting to be played.</h4>
+				<div class="category-none">None</div>
+				<div class="market" id="newest-games-list">
+				</div>
+			</div>
+			<div class="category" id="fresh-games">
+				<h1>Fresh Games</h1>
+				<h4>Games that have been recently updated or that have received positive reviews.</h4>
+				<div class="category-none">None</div>
+				<div class="market" id="updated-games-list">
+				</div>
+			</div>
+			<div class="category" id="genres">
+				<h1>Top Genres</h1>
+				<h4>The most popular genres on the platfornm, so you can find games that you're interested in.</h4>
+				<div class="category-none">None</div>
+			</div>
+			<div class="category" id="top-seller-games">
+				<h1>Top Sellers</h1>
+				<h4>The games that are currently selling the best, so you can see what other people are enjoying.</h4>
+				<div class="category-none">None</div>
+				<div class="market" id="top-sellers-list">
+				</div>
+			</div>
+			<div class="category" id="free-games">
+				<h1>Free Games</h1>
+				<h4>Games that you can play without having to spend any money.</h4>
+				<div class="category-none">None</div>
+				<div class="market" id="free-games-list">
+				</div>
 			</div>
 		</div>
 		<footer class="footer">
@@ -156,6 +97,5 @@
 		</footer>
 	</body>
 	<script type="module" src="jsbin/user.js"></script>
-	<script type="module" src="jsbin/upload.js"></script>
-	<script type="module" src="jsbin/editor.js"></script>
+	<script type="module" src="jsbin/data.js"></script>
 </html>
