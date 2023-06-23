@@ -206,11 +206,6 @@ function logout() {
 };
 
 implementUsername();
-document.getElementById("username").addEventListener("click", function () {
-  if (data.Valid) {
-    window.location.assign("settings.html");
-  };
-});
 
 if (data.Valid) {
   if (window.location.pathname.includes("/login") || window.location.pathname.includes("/signup")) {
