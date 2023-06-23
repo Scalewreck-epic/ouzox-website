@@ -1,269 +1,249 @@
-body{
-	font-family: 'Alata', sans-serif;
-	background: #242426;
-	margin: 0;
+body {
+  font-family: "Alata", sans-serif;
+  background: #242426;
+  margin: 0;
 }
 
-.mail-link{
-	font-size: 1.563rem;
-	font-family: 'Secular One', sans-serif;
-	text-shadow: 0.313rem 0.313rem 0.625rem black;
-	text-decoration: underline;
+.navbar {
+  background-color: #2e2f32;
+  color: #fff;
+  height: 3.125rem;
+  padding: 0.45rem 0;
 }
 
-nav{
-	width: 100%;
-	display: block;
-	box-sizing: border-box;
-	font-weight: bold;
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
 }
 
-.navbar{
-	height: 5.313rem;
-	overflow: auto;
-	background-color: #2e2f32;
-	padding-top: 0.063rem;
-	box-sizing: border-box;
+.push-left,
+.push-right {
+  font-size: 1.3rem;
+  font-weight: bold;
 }
 
-.grid{
-	width: 100%;
-	height: 100%;
-	margin: 0 auto;
-	box-sizing: border-box;
-	overflow: auto;
-	color: white;
-	overflow-x: hidden;
-	overflow-y: hidden;
+.push-left {
+  display: flex;
+  align-items: center;
 }
 
-.push-left{
-	height: 100%;
-	float: left;
-	text-align: left;
-	vertical-align: top;
+.push-left a {
+  color: #fff;
+  text-decoration: none;
 }
 
-.push-left ul{
-	padding: 0;
-	margin: 0;
-	vertical-align: middle;
+.web-icon {
+  margin: 0 1rem;
 }
 
-.push-right{
-	height: 100%;
-	float: right;
-	text-align: center;
-	vertical-align: top;
+.push-left .web-icon {
+  width: auto;
+  height: 3.125rem;
+  vertical-align: middle;
 }
 
-.web-icon{
-	width: 4.375rem;
-	height: 4.375rem;
-	padding-top: 0.5rem;
-	vertical-align: middle;
+.push-left ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
 }
 
-.web-thumbnail{
-	width: 100%;
-	height: auto;
+.push-left ul a {
+  color: #fff;
+  text-decoration: none;
+  margin-right: 1rem;
+}
+
+.push-right {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
 }
 
 .username {
-	position: relative;
-	top: 30%;
-	cursor: pointer;
+  display: flex;
+  margin-right: 3rem;
+  color: #fff;
+  flex: 0 1 auto;
 }
 
-.grid a, .grid div {
-	text-decoration: none;
-	font-size: 1.25rem;
-	padding: 0 0.313rem;
+.dashboard-buttons {
+  flex: 1;
+  text-align: center;
 }
 
-nav{
-	flex: 1;
-	text-align: left;
+.dashboard-buttons ul {
+  display: inline-block;
+  list-style-type: none;
 }
 
-.dashboard-buttons{
-	flex: 1;
-	text-align: center;
+.dashboard {
+  display: flex;
+  align-items: left;
+  padding: 0.625rem;
 }
 
-.dashboard-buttons ul{
-	display: inline-block;
-	list-style-type: none;
-}
-
-.dashboard{
-	display: flex;
-	align-items: left;
-	padding: 0.625rem;
-}
-
-.content{
-	padding-top: 3.125rem;
-	padding-bottom: 12.5rem;
-	margin: 0 auto;
-	overflow: auto;
+.content {
+  padding-top: 3.125rem;
+  padding-bottom: 12.5rem;
+  margin: 0 auto;
+  overflow: auto;
 }
 
 .errorpage {
-	max-width: 50rem;
-	padding: 3rem;
-	border-radius: 1rem;
-	margin: auto;
-	text-align: center;
-	color: white;
-	background-color: #19191c;
+  width: 45%;
+  padding: 5rem;
+  border-radius: 0.5rem;
+  margin: auto;
+  text-align: center;
+  color: white;
+  background-color: #19191c;
 }
 
-.errorpage h1{
-	width: 100%;
-	font-weight: bold;
-	font-size: 9.375rem;
-	margin: 0;
+.errorpage h1 {
+  width: 100%;
+  font-weight: bold;
+  font-size: 10rem;
+  margin: 0;
 }
 
-.errorpage h2{
-	width: 100%;
-	font-weight: bold;
-	font-size: 1.875rem;
-	margin: 0;
-	margin-top: 3rem;
+.errorpage h2 {
+  width: 100%;
+  font-weight: bold;
+  font-size: 2rem;
+  margin: 0;
+  margin-top: 3rem;
 }
 
-.errorpage p{
-	width: 100%;
-	font-size: 1.25rem;
-	margin: 0;
-	margin-top: 0.5rem;
-	margin-bottom: 2rem;
+.errorpage p {
+  width: 100%;
+  font-size: 1.25rem;
+  margin: 0;
+  margin-top: 0.5rem;
+  margin-bottom: 2rem;
 }
 
-.errorpage a{
-	width: 100%;
-	font-size: 1.25rem;
-	font-weight: bold;
-	margin: 0;
-	color: #00FFE1;
+.errorpage a {
+  width: 100%;
+  font-size: 1.25rem;
+  font-weight: bold;
+  margin: 0;
+  color: #00ffe1;
 }
 
-.footer{
-	display: flex;
-	flex-direction: column;
-    text-align: center;
-	box-sizing: border-box;
-    background-color: #19191c;
-    color: #64646a;
-	flex-grow: 1;
-	min-height: 4rem;
-    bottom: 0;
-    padding: 2.5rem 0;
-    width: 100%;
-	margin-top: 9.375rem;
+.footer {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  box-sizing: border-box;
+  background-color: #19191c;
+  color: #64646a;
+  flex-grow: 1;
+  min-height: 4rem;
+  bottom: 0;
+  padding: 2.5rem 0;
+  width: 100%;
 }
 
-.footer p{
-	color: #8a8a8a;
+.footer p {
+  color: #8a8a8a;
 }
 
-.footer h1{
-	margin-left: 1.25rem;
-	margin-right: 1.25rem;
-	margin-bottom: 0;
-	color: #FFF;
+.footer h1 {
+  margin-left: 1.25rem;
+  margin-right: 1.25rem;
+  margin-bottom: 0;
+  color: #fff;
 }
 
-.footer-content{
-	display: flex;
-	text-align: left;
-	margin: auto;
-	margin-top: 1.25rem;
-	position: relative;
-	width: 62%;
+.footer-content {
+  display: flex;
+  text-align: left;
+  margin: auto;
+  margin-top: 1.25rem;
+  position: relative;
+  width: 60%;
 }
 
-.footer-content a{
-	margin-left: 1.25rem;
-	margin-right: 1.25rem;
-	margin-top: 1.875rem;
-	font-weight: 700;
-	color: #8a8a8a;
-	font-size: large;
+.footer-content a {
+  margin-left: 1.25rem;
+  margin-right: 1.25rem;
+  margin-top: 1.875rem;
+  font-weight: 700;
+  color: #8a8a8a;
+  font-size: large;
 }
 
-a:not(:has(img)):hover,
-.username:hover{
-	text-decoration: none;
-	border-bottom: 0.125rem solid #00FFE1;
-	color: #00FFE1;
-	transition: border-bottom 0.2s ease-in-out, color 0.2s ease-in-out;
+a:not(:has(img)):hover{
+  text-decoration: none;
+  border-bottom: 0.125rem solid #00ffe1;
+  color: #00ffe1;
+  transition: border-bottom 0.2s ease-in-out, color 0.2s ease-in-out;
 }
 
-.footer-divider{
-	margin: 0.938rem auto;
-	width: 62%;
-	border-bottom: #46464c solid 0.063rem;
+.footer-divider {
+  margin: 0.938rem auto;
+  width: 65%;
+  border-bottom: #46464c solid 0.063rem;
 }
 
-.divider{
-	display: inline-block;
-	margin: 0.938rem auto;
-	width: 95%;
-	border-bottom: #FFFFFF solid 0.125rem;
+.divider {
+  display: inline-block;
+  margin: 0.938rem auto;
+  width: 95%;
+  border-bottom: #ffffff solid 0.125rem;
 }
 
-.footer-copyright{
-	text-align: left;
-	margin: auto;
-	width: 62%;
-	position: relative;
+.footer-copyright {
+  text-align: left;
+  margin: auto;
+  width: 60%;
+  position: relative;
 }
 
 .spacer {
-	margin: 0 0.625rem;
+  margin: 0 0.625rem;
 }
 
-.search-bar{
-	flex: 1;
-	text-align: center;
+.search-bar {
+  flex: 1;
+  text-align: center;
 }
 
-nav ul{
-	display: inline-block;
-	list-style-type: none;
+nav ul {
+  display: inline-block;
+  list-style-type: none;
 }
 
-a{
-	text-decoration: none;
-	color: #FFFFFF;
+a {
+  text-decoration: none;
+  color: #ffffff;
 }
 
-p{
-	text-decoration: none;
-	color: #FFFFFF;
+p {
+  text-decoration: none;
+  color: #ffffff;
 }
 
-.header{
-	display: flex;
-	padding: 0.125rem;
+.header {
+  display: flex;
+  padding: 0.125rem;
 }
 
-.loadingGif{
-	width: 12.5rem;
-	aspect-ratio: 1;
+.loadingGif {
+  width: 12.5rem;
+  aspect-ratio: 1;
 }
 
 .main-upload-form,
 .extra-upload-form {
-	width: 50%;
-	margin-left: 5rem;
-	margin-bottom: 2rem;
-	padding: 2rem;
-	border-radius: 1rem;
-	background-color: #19191c;
+  width: 50%;
+  margin-left: 5rem;
+  margin-bottom: 2rem;
+  padding: 2rem;
+  border-radius: 1rem;
+  background-color: #19191c;
 }
 
 .main-upload-form h1,
@@ -271,235 +251,236 @@ p{
 .extra-upload-form h3,
 .extra-upload-form div,
 .main-upload-form div {
-	color: white;
-	margin: 1rem;
+  color: white;
+  margin: 1rem;
 }
 
 .upload-game-conclusion {
-	width: 50%;
-	margin-left: 5rem;
-	padding: 2rem;
-	border-radius: 1rem;
-	background-color: #19191c;
+  width: 50%;
+  margin-left: 5rem;
+  padding: 2rem;
+  border-radius: 1rem;
+  background-color: #19191c;
 }
 
 .upload-game-conclusion label {
-	display: block;
-	width: 100%;
+  display: block;
+  width: 100%;
 }
 
 .upload-box {
-	position: relative;
-	display: inline-block;
-	font-size: 1rem;
-	border-radius: 0.313rem;
-	padding: 0.313rem;
-	font-family: 'Secular One', sans-serif;
-	color: #fff;
-	background-color: #292929;
-	cursor: pointer;
-	transition: background-color 0.3s ease-in-out;
+  position: relative;
+  display: inline-block;
+  font-size: 1rem;
+  border-radius: 0.313rem;
+  padding: 0.313rem;
+  font-family: "Secular One", sans-serif;
+  color: #fff;
+  background-color: #292929;
+  cursor: pointer;
+  transition: background-color 0.3s ease-in-out;
 }
-  
+
 .upload-box:before {
-	content: "";
-	position: absolute;
-	top: 50%;
-	left: 50%;
-	transform: translate(-50%, -50%);
-	width: 1.25rem;
-	height: 1.25rem;
-	background-size: cover;
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 1.25rem;
+  height: 1.25rem;
+  background-size: cover;
 }
-  
+
 .upload-box:hover {
-	background-color: #4b4b4b;
+  background-color: #4b4b4b;
 }
 
 .upload-box:active {
-	background-color: #4b4b4b;
+  background-color: #4b4b4b;
 }
-  
+
 .upload-box input[type="file"] {
-	position: absolute;
-	top: 0;
-	left: 0;
-	opacity: 0;
-	cursor: pointer;
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0;
+  cursor: pointer;
 }
 
 .filter-text-box {
-	position: relative;
-	display: inline-block;
-	font-size: 1rem;
-	font-family: 'Secular One', sans-serif;
-	max-width: 9rem;
-	width: auto;
-	padding: 0.313rem;
-	color: #fff;
-	background-color: #292929;
-	border-radius: 0.313rem;
-	cursor: text;
-	transition: background-color 0.3s ease-in-out;
+  position: relative;
+  display: inline-block;
+  font-size: 1rem;
+  font-family: "Secular One", sans-serif;
+  max-width: 9rem;
+  width: auto;
+  padding: 0.313rem;
+  color: #fff;
+  background-color: #292929;
+  border-radius: 0.313rem;
+  cursor: text;
+  transition: background-color 0.3s ease-in-out;
 }
 
 .text-box {
-	position: relative;
-	display: inline-block;
-	font-size: 1rem;
-	font-family: 'Secular One', sans-serif;
-	min-width: 12.5rem;
-	max-width: 31.25rem;
-	width: 12.5rem;
-	padding: 0.313rem;
-	color: #fff;
-	background-color: #292929;
-	border-radius: 0.313rem;
-	cursor: text;
-	transition: background-color 0.3s ease-in-out;
-  }
-  
+  position: relative;
+  display: inline-block;
+  font-size: 1rem;
+  font-family: "Secular One", sans-serif;
+  min-width: 12.5rem;
+  max-width: 31.25rem;
+  width: 12.5rem;
+  padding: 0.313rem;
+  color: #fff;
+  background-color: #292929;
+  box-shadow: 0 0.5rem 0.5rem black;
+  border-radius: 0.313rem;
+  cursor: text;
+  transition: background-color 0.3s ease-in-out;
+}
+
 .text-box:before,
 .filter-text-box:before {
-	content: "";
-	position: absolute;
-	top: 50%;
-	left: 1.25rem;
-	transform: translateY(-50%);
-	width: 1.25rem;
-	height: 1.25rem;
-	background-size: cover;
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 1.25rem;
+  transform: translateY(-50%);
+  width: 1.25rem;
+  height: 1.25rem;
+  background-size: cover;
 }
 
 .text-box:hover,
 .filter-text-box:hover {
-	background-color: #4b4b4b;
+  background-color: #4b4b4b;
 }
 
 .text-box:focus-within,
 .filter-text-box:focus-within {
-	background-color: #4b4b4b;
+  background-color: #4b4b4b;
 }
 
 .text-box input[type="text"],
 .filter-text-box input[type="text"] {
-	position: absolute;
-	top: 0;
-	left: 0;
-	opacity: 0;
-	cursor: text;
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0;
+  cursor: text;
 }
 
 .cl-checkbox input[type="checkbox"] {
-	position: absolute;
-	opacity: 0;
+  position: absolute;
+  opacity: 0;
 }
 
-.cl-checkbox-box:hover{
-	cursor: pointer;
+.cl-checkbox-box:hover {
+  cursor: pointer;
 }
 
 .cl-checkbox .cl-checkbox-box {
-	display: inline-block;
-	position: relative;
-	width: 1rem;
-	height: 1rem;
-	border: 0.063rem solid #ccc;
-	border-radius: 0.188rem;
-	background-color: #fff;
+  display: inline-block;
+  position: relative;
+  width: 1rem;
+  height: 1rem;
+  border: 0.063rem solid #ccc;
+  border-radius: 0.188rem;
+  background-color: #fff;
 }
 
 .cl-checkbox input[type="checkbox"]:checked + .cl-checkbox-box::after {
-	content: "";
-	position: absolute;
-	left: 0.25rem;
-	top: 0.063rem;
-	width: 0.313rem;
-	height: 0.563rem;
-	border: solid #000000;
-	border-width: 0 0.125rem 0.125rem 0;
-	transform: rotate(45deg);
+  content: "";
+  position: absolute;
+  left: 0.25rem;
+  top: 0.063rem;
+  width: 0.313rem;
+  height: 0.563rem;
+  border: solid #000000;
+  border-width: 0 0.125rem 0.125rem 0;
+  transform: rotate(45deg);
 }
 
 .buttons {
-	color: white;
+  color: white;
 }
 
 .description-button {
-	display: inline-block;
-	padding: 0.5rem 1rem;
-	font-size: 0.875rem;
-	font-weight: bold;
-	text-align: center;
-	text-decoration: none;
-	border-radius: 0.25rem;
-	margin-bottom: 0.3rem;
-	border: none;
-	cursor: pointer;
-	background-color: black;
-	color: white;
-  }
-  
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  font-weight: bold;
+  text-align: center;
+  text-decoration: none;
+  border-radius: 0.25rem;
+  margin-bottom: 0.3rem;
+  border: none;
+  cursor: pointer;
+  background-color: black;
+  color: white;
+}
+
 .description-button:hover {
-	background-color: #333;
+  background-color: #333;
 }
-  
+
 .description-button:active {
-	background-color: #222;
+  background-color: #222;
 }
 
-.description{
-	display: block;
-	font-size: 1rem;
-	font-family: 'Secular One', sans-serif;
-	background: black;
-	color: white;
-	padding: 1rem;
-	border-radius: 1rem;
-	margin: 1rem;
-	min-height: 21rem;
-	max-width: 31rem;
-	width: auto;
-	outline: none;
+.description {
+  display: block;
+  font-size: 1rem;
+  font-family: "Secular One", sans-serif;
+  background: black;
+  color: white;
+  padding: 1rem;
+  border-radius: 1rem;
+  margin: 1rem;
+  min-height: 21rem;
+  max-width: 31rem;
+  width: auto;
+  outline: none;
 }
 
-.checkbox{
-	background: #00FFE1;
-	border-radius: 1.875rem;
-	box-shadow: 0.313rem 0.313rem 0.625rem black;
-	width: 0.938rem;
-	height: 0.938rem;
-	outline: none;
+.checkbox {
+  background: #00ffe1;
+  border-radius: 1.875rem;
+  box-shadow: 0.313rem 0.313rem 0.625rem black;
+  width: 0.938rem;
+  height: 0.938rem;
+  outline: none;
 }
 
-.title-label{
-	font-size: 1.563rem;
-	font-family: 'Secular One', sans-serif;
-	color: #FFF;
+.title-label {
+  font-size: 1.563rem;
+  font-family: "Secular One", sans-serif;
+  color: #fff;
 }
 
-.error-label{
-	font-size: 1.25rem;
-	font-family: 'Secular One', sans-serif;
-	color: red;
+.error-label {
+  font-size: 1.25rem;
+  font-family: "Secular One", sans-serif;
+  color: red;
 }
 
-.acceptance-label{
-	display: inline-block;
-	font-size: 1.25rem;
-	color: #FFF;
-	margin: 0.313rem;
+.acceptance-label {
+  display: inline-block;
+  font-size: 1.25rem;
+  color: #fff;
+  margin: 0.313rem;
 }
 
-.acceptance-label a{
-	color: #00FFE1;
+.acceptance-label a {
+  color: #00ffe1;
 }
 
-.encourage-label{
-	display: inline-block;
-	font-size: 2.188rem;
-	color: #FFF;
-	margin: 0.313rem;
+.encourage-label {
+  display: inline-block;
+  font-size: 2.188rem;
+  color: #fff;
+  margin: 0.313rem;
 }
 
 /* Default button style */
@@ -508,19 +489,19 @@ p{
 .delete-button,
 .load-button {
   font-size: 1.25rem;
-  font-family: 'Secular One', sans-serif;
-  background: #00FFE1;
+  font-family: "Secular One", sans-serif;
+  background: #00ffe1;
   color: black;
   border-radius: 0.5rem;
   margin: 0.938rem;
-  box-shadow: 0 0.313rem 0.625rem black;
+  box-shadow: 0 0.5rem 0.5rem black;
   outline: none;
   cursor: pointer;
   transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
 }
 
 .delete-button {
-	margin: 0;
+  margin: 0;
 }
 
 .upload-button:hover,
@@ -537,14 +518,13 @@ p{
 .delete-button:focus,
 .load-button:focus {
   outline: none;
-  box-shadow: 0 0 0 0.125rem #00FFE1, 0 0.313rem 0.625rem black;
+  box-shadow: 0 0 0 0.125rem #00ffe1, 0 0.313rem 0.625rem black;
 }
 
 .upload-button:active,
 .login-button:active,
 .delete-button:active,
-.game-download-button:active
-.load-button:active {
+.game-download-button:active .load-button:active {
   transform: translateY(0);
   box-shadow: 0 0.188rem 0.313rem black;
 }
@@ -559,437 +539,453 @@ p{
 }
 
 .load-button:disabled:hover::after {
-	content: "You've reached the end.";
-	display: block;
-	position: absolute;
-	top: -1.563rem;
-	left: 100%;
-	padding: 0.313rem;
-	background-color: black;
-	color: white;
-	border-radius: 0.313rem;
-	font-size: 0.75rem;
-	white-space: nowrap;
-	z-index: 9999;
-	cursor: default;
+  content: "You've reached the end.";
+  display: block;
+  position: absolute;
+  top: -1.563rem;
+  left: 100%;
+  padding: 0.313rem;
+  background-color: black;
+  color: white;
+  border-radius: 0.313rem;
+  font-size: 0.75rem;
+  white-space: nowrap;
+  z-index: 9999;
+  cursor: default;
 }
 
 .new-label {
-	display: inline-block;
-	padding: 0.125rem 0.375rem;
-	font-size: 0.75rem;
-	font-weight: bold;
-	color: #fff;
-	background-color: #007bff;
-	border-radius: 0.188rem;
-	overflow: none;
+  display: inline-block;
+  padding: 0.125rem 0.375rem;
+  font-size: 0.75rem;
+  font-weight: bold;
+  color: #fff;
+  background-color: #007bff;
+  border-radius: 0.188rem;
+  overflow: none;
 }
 
 .updated-label {
-	display: inline-block;
-	padding: 0.125rem 0.375rem;
-	font-size: 0.75rem;
-	font-weight: bold;
-	color: #fff;
-	background-color: #6c757d;
-	border-radius: 0.188rem;
+  display: inline-block;
+  padding: 0.125rem 0.375rem;
+  font-size: 0.75rem;
+  font-weight: bold;
+  color: #fff;
+  background-color: #6c757d;
+  border-radius: 0.188rem;
 }
 
-.upload-button{
-	width: auto;
-	min-width: 5rem;
+.upload-button {
+  width: auto;
+  min-width: 5rem;
 }
 
-.login-button{
-	width: 100%;
-	max-width: 15.625rem;
+.login-button {
+  width: 100%;
+  max-width: 15.625rem;
 }
 
-.load-button-div{
-	text-align: center;
+.load-button-div {
+  text-align: center;
 }
 
 .download-button,
 .signin-button,
-.dashboard-button{
-	font-size: 1.25rem;
-	font-family: 'Secular One', sans-serif;
-	background: #00FFE1;
-	color: #000;
-	border-radius: 0.5rem;
-	box-shadow: 0 0.313rem 0.625rem black;
-	width: 6.25rem;
-	outline: none;
+.dashboard-button {
+  font-size: 1.25rem;
+  font-family: "Secular One", sans-serif;
+  background: #00ffe1;
+  color: #000;
+  border-radius: 0.5rem;
+  box-shadow: 0 0.313rem 0.625rem black;
+  width: 6.25rem;
+  outline: none;
 }
 
 .game {
-	float: left;
-	width: 12.5rem;
-	height: auto;
-	transition: transform 0.3s ease;
+  float: left;
+  width: 12.5rem;
+  height: auto;
+  transition: transform 0.3s ease;
 }
 
 .game:hover {
-	transform: scale(1.1);
-	box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.2);
+  transform: scale(1.1);
+  box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.2);
 }
 
-.product-title{
-	font-size: 0.938rem;
-	font-weight: bold;
-	border-radius: 0.625rem;
-	color: white;
-	width: 100%;
-	word-break: break-word;
+.product-title {
+  font-size: 0.938rem;
+  font-weight: bold;
+  border-radius: 0.625rem;
+  color: white;
+  width: 100%;
+  word-break: break-word;
 }
 
 .product-title:hover {
-	text-decoration: underline;
+  text-decoration: underline;
 }
 
 .product-summary {
-	font-size: 0.75rem;
-	font-family: 'Secular One', sans-serif;
-	color: gray;
-	width: 100%;
-	word-break: break-word;
-	opacity: 0.7;
-	line-height: 1.1;
+  font-size: 0.75rem;
+  font-family: "Secular One", sans-serif;
+  color: gray;
+  width: 100%;
+  word-break: break-word;
+  opacity: 0.7;
+  line-height: 1.1;
 }
 
 .product-price {
-	font-size: 0.938rem;
-	font-weight: bold;
-	font-family: 'Secular One', sans-serif;
-	color: white;
-	width: auto;
-	float: right;
-	word-break: break-word;
-	background-color: #6c757d;
-	border-radius: 0.188rem;
-	padding: 0.125rem 0.25rem;
+  font-size: 0.938rem;
+  font-weight: bold;
+  font-family: "Secular One", sans-serif;
+  color: white;
+  width: auto;
+  float: right;
+  word-break: break-word;
+  background-color: #6c757d;
+  border-radius: 0.188rem;
+  padding: 0.125rem 0.25rem;
 }
 
-.web-icon, .product-image {
-	transition: transform 0.2s ease-in-out;
+.web-icon,
+.product-image {
+  transition: transform 0.2s ease-in-out;
+}
+
+.web-thumbnail {
+	display: block;
+	width: 100%;
 }
 
 .product-image {
-	width: 12.5rem;
-	height: 10rem;
-	position: relative;
-	border-radius: 0.938rem;
-	box-shadow: 0 0.313rem 0.625rem black;
-	object-fit: fill;
-	object-position: center;
+  width: 12.5rem;
+  height: 10rem;
+  position: relative;
+  border-radius: 0.938rem;
+  box-shadow: 0 0.313rem 0.625rem black;
+  object-fit: fill;
+  object-position: center;
 }
 
 .game-column {
-	display: block;
-	max-width: 60rem;
-	min-height: 55rem;
-	border-radius: 1rem;
-	padding: 1rem;
-	width: auto;
-	height: auto;
-	margin: 0 auto;
-	background-color: #000;
+  display: block;
+  max-width: 60rem;
+  min-height: 55rem;
+  border-radius: 1rem;
+  padding: 1rem;
+  width: auto;
+  height: auto;
+  margin: 0 auto;
+  background-color: #000;
 }
 
 .game-download {
-	margin: 1.25rem;
+  margin: 1.25rem;
 }
 
 .game-download-button {
-	display: inline-block;
-	padding: 0.313rem 0.625rem;
-	font-size: 1.125rem;
-	margin-right: 0.625rem;
-	font-family: 'Secular One', sans-serif;
-	background-color: #4CAF50;
-	color: white;
-	text-decoration: none;
-	border-radius: 0.25rem;
-	cursor: pointer;
-	transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+  display: inline-block;
+  padding: 0.313rem 0.625rem;
+  font-size: 1.125rem;
+  margin-right: 0.625rem;
+  font-family: "Secular One", sans-serif;
+  background-color: #4caf50;
+  color: white;
+  text-decoration: none;
+  border-radius: 0.25rem;
+  cursor: pointer;
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
 }
 
 .game-download-input {
-	font-size: 1.125rem;
-	border-radius: 0.25rem;
-	margin-right: 0.625rem;
-	border: 0.063rem solid #4CAF50;
-	transition: border-color 0.2s ease-in-out;
+  font-size: 1.125rem;
+  border-radius: 0.25rem;
+  margin-right: 0.625rem;
+  border: 0.063rem solid #4caf50;
+  transition: border-color 0.2s ease-in-out;
 }
 
 .game-price {
-	display: inline-block;
-	font-size: 1.188rem;
-	opacity: .5;
+  display: inline-block;
+  font-size: 1.188rem;
+  opacity: 0.5;
 }
 
 .game-description {
-	display: block;
-	font-size: 1.125rem;
-	margin: 1.25rem;
-	margin-top: 0;
-	color: white;
+  display: block;
+  font-size: 1.125rem;
+  margin: 1.25rem;
+  margin-top: 0;
+  color: white;
 }
 
 .left-column {
-	font-family: 'Secular One', sans-serif;
-	display: inline-block;
-	width: 50%;
+  font-family: "Secular One", sans-serif;
+  display: inline-block;
+  width: 50%;
 }
 
 .right-column {
-	width: 50%;
-	min-height: 6.25rem;
-	float: right;
+  width: 50%;
+  min-height: 6.25rem;
+  float: right;
 }
 
 .game-image-list {
-	display: block;
-	width: 100%;
+  display: block;
+  width: 100%;
 }
 
 .game-title-column {
-	margin: 1.25rem;
-	margin-top: 0;
-	color: white;
+  margin: 1.25rem;
+  margin-top: 0;
+  color: white;
 }
 
 .game-developer-name {
-	display: block;
-	font-size: 1.25rem;
-	font-weight: bold;
+  display: block;
+  font-size: 1.25rem;
+  font-weight: bold;
 }
 
 .game-summary {
-	display: block;
-	font-size: 0.875rem;
-	opacity: .5;
-	font-weight: bold;
+  display: block;
+  font-size: 0.875rem;
+  opacity: 0.5;
+  font-weight: bold;
 }
 
 .game-title {
-	display: block;
-	font-size: 3.125rem;
-	font-weight: bold;
-	margin-top: 0;
+  display: block;
+  font-size: 3.125rem;
+  font-weight: bold;
+  margin-top: 0;
 }
 
-.game-stats{
-	display: block;
-	width: 100%;
-	height: auto;
+.game-stats {
+  display: block;
+  width: 100%;
+  height: auto;
 }
 
-.game-stat{
-	width: 8rem;
-	margin: 0;
-	height: auto;
-	text-align: center;
-	display: inline-block;
-	font-family: 'Secular One', sans-serif;
-	color: white;
+.game-stat {
+  width: 8rem;
+  margin: 0;
+  height: auto;
+  text-align: center;
+  display: inline-block;
+  font-family: "Secular One", sans-serif;
+  color: white;
 }
 
 .game-updated {
-	width: 100%;
-	display: block;
-	margin: 0;
-	margin-top: 0;
-	font-size: 0.938rem;
-	opacity: .5;
+  width: 100%;
+  display: block;
+  margin: 0;
+  margin-top: 0;
+  font-size: 0.938rem;
+  opacity: 0.5;
 }
 
-.game-updated-title{
-	width: 100%;
-	display: block;
-	font-size: 0.938rem;
-	margin: 0;
-	font-family: 'Secular One', sans-serif;
+.game-updated-title {
+  width: 100%;
+  display: block;
+  font-size: 0.938rem;
+  margin: 0;
+  font-family: "Secular One", sans-serif;
 }
 
 .web-icon:hover {
-	transform: scale(1.1);
+  transform: scale(1.1);
 }
 
-.desc{
-	font-family: 'Secular One', sans-serif;
-	color: #FFF;
-	margin-left: 1.25rem;
+.desc {
+  font-family: "Secular One", sans-serif;
+  color: #fff;
+  margin-left: 1.25rem;
 }
 
 .selections {
-	width: 10rem;
-	float: left;
-	text-align: center;
-	border-right: 0.125rem solid black;
+  width: 10rem;
+  float: left;
+  text-align: center;
+  border-right: 0.125rem solid black;
 }
 
-.selections h1{
-	color: white;
-	margin: 0;
+.selections h1 {
+  color: white;
+  margin: 0;
 }
-  
+
 .game-sort {
-	margin: 0.188rem auto;
-	text-align: center;
-	font-size: 1.25rem;
-	font-weight: bold;
-	color: #FFF;
-	background-color: black;
-	border: none;
-	border-radius: 0.313rem;
-	padding: 0.188rem;
-	width: 9.375rem;
+  margin: 0.188rem auto;
+  text-align: center;
+  font-size: 1.25rem;
+  font-weight: bold;
+  color: #fff;
+  background-color: black;
+  border: none;
+  border-radius: 0.313rem;
+  padding: 0.188rem;
+  width: 9.375rem;
 }
 
-.errorImg{
-	width: 15.625rem;
-	height: 15.625rem;
+.errorImg {
+  width: 15.625rem;
+  height: 15.625rem;
 }
 
-.error-title, .error-caption{
-	font-family: 'Secular One', sans-serif;
-	outline: #000;
-	color: #FFF;
-	width: auto;
-	overflow: hidden;
-	word-break: break-all;
+.error-title,
+.error-caption {
+  font-family: "Secular One", sans-serif;
+  outline: #000;
+  color: #fff;
+  width: auto;
+  overflow: hidden;
+  word-break: break-all;
 }
 
-.error-title{
-	font-size: 1.563rem;
+.error-title {
+  font-size: 1.563rem;
 }
 
-.error-caption{
-	font-size: 1.25rem;
+.error-caption {
+  font-size: 1.25rem;
 }
 
 .category {
-	width: 80%;
-	min-height: 1rem;
-	margin: auto;
-	margin-bottom: 3rem;
-	padding: 1rem;
-	border-radius: 1rem;
-	position: relative;
-	flex: 1;
-	background-color: #19191c;
+  width: 80%;
+  min-height: 1rem;
+  margin: auto;
+  margin-bottom: 3rem;
+  padding: 1rem;
+  border-radius: 1rem;
+  position: relative;
+  flex: 1;
+  box-shadow: 0 1rem 1rem black;
+  background-color: #19191c;
+  transition: transform 0.3s ease;
+}
+
+.category:hover {
+  transform: scale(1.05);
 }
 
 .category h1,
 .category h4 {
-	margin-bottom: 2rem;
-	margin-left: 3rem;
-	color: white;
-	text-shadow: 0 0.5rem 0.938rem black;
+  margin-bottom: 2rem;
+  margin-left: 3rem;
+  color: white;
+  text-shadow: 0 0.5rem 0.5rem black;
 }
 
 .category-none {
-	opacity: 0.25;
-	text-align: center;
-	font-size: 5rem;
+  opacity: 0.25;
+  text-align: center;
+  font-size: 5rem;
 }
 
 .genre-button {
-	display: inline-block;
-	background-color: #46464c;
-	color: white;
-	font-weight: bold;
-	padding: 0.5rem 3rem;
-	border-radius: 1rem;
-	margin: 0 0.25rem;
-	width: auto;
-	box-shadow: 0 0.1rem 0.5rem black;
-	transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+  display: inline-block;
+  background-color: #46464c;
+  color: white;
+  font-weight: bold;
+  padding: 0.5rem 3rem;
+  border-radius: 1rem;
+  margin: 0 0.25rem;
+  width: auto;
+  box-shadow: 0 0.1rem 0.5rem black;
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
 }
 
 .genre-button h2,
 .genre-button h4 {
-	display: block;
-	margin: 0;
-	text-align: center;
+  display: block;
+  margin: 0;
+  text-align: center;
 }
 
 .genre-button h4 {
-	opacity: 0.5;
+  opacity: 0.5;
 }
 
 .genre-button:hover {
-	cursor: pointer;
-	transform: translateY(-0.188rem);
-	box-shadow: 0 0.5rem 0.938rem black;
+  cursor: pointer;
+  transform: translateY(-0.188rem);
+  box-shadow: 0 0.5rem 0.938rem black;
 }
 
 .market {
-	display: grid;
-	grid-template-columns: repeat(auto-fit, minmax(12.5rem, 12.5rem));
-	gap: 1.25rem 1.25rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(12.5rem, 12.5rem));
+  gap: 1.25rem 1.25rem;
 }
 
-.login-form{
-	width: 35%;
-	background-color: #19191c;
-	padding: 5rem;
-	border-radius: 0.5rem;
-	text-align: center;
-	margin: 0 auto;
+.login-form {
+  width: 45%;
+  background-color: #19191c;
+  padding: 5rem;
+  border-radius: 0.5rem;
+  text-align: center;
+  margin: 0 auto;
 }
 
-.login-form ul{
-	width: 100%;
+.login-form ul {
+  width: 100%;
 }
 
 .settings {
-	width: 80%;
-	margin: 0 auto;
-	margin-bottom: 9.375rem;
+  width: 80%;
+  margin: 0 auto;
+  margin-bottom: 9.375rem;
 }
 
-.settings h1{
-	color: white;
-	font-weight: bold;
-	margin-left: 2rem;
+.settings h1 {
+  color: white;
+  font-weight: bold;
+  margin-left: 2rem;
 }
 
-.profile-settings, .email-settings, .password-settings {
-	width: 100%;
-	background-color: #19191c;
-	margin-top: 1.25rem;
-	padding: 0.5rem;
-	border-radius: 0.5rem;
+.profile-settings,
+.email-settings,
+.password-settings {
+  width: 100%;
+  background-color: #19191c;
+  margin-top: 1.25rem;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
 }
 
-.profile-settings div{
-	color: white;
-	margin: 1rem;
-	font-weight: bold;
+.profile-settings div {
+  color: white;
+  margin: 1rem;
+  font-weight: bold;
 }
 
 .extra-buttons {
-	margin-top: 5rem;
-	width: 100%;
-	text-align: center;
+  margin-top: 5rem;
+  width: 100%;
+  text-align: center;
 }
 
-.login-form ul, .settings ul{
-	display: inline-block;
-	list-style-type: none;
-	margin: auto;
-	padding: 0;
-	font-family: "Secular One", sans-serif;
+.login-form ul,
+.settings ul {
+  display: inline-block;
+  list-style-type: none;
+  margin: auto;
+  padding: 0;
+  font-family: "Secular One", sans-serif;
 }
 
-.agreement{
-	display: block;
-	color: grey;
-	opacity: 0.5;
+.agreement {
+  display: block;
+  color: grey;
+  opacity: 0.5;
 }
 
-.agreement a{
-	color: white;
+.agreement a {
+  color: white;
 }
