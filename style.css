@@ -728,8 +728,6 @@ p {
 }
 
 .right-column {
-  background-color: #19191c;
-  border-radius: 1rem;
   width: 40%;
   min-height: 6.25rem;
   float: right;
@@ -768,19 +766,23 @@ p {
 
 .game-stats {
   display: block;
+  border-radius: 1rem;
+  background-color: #19191c;
   width: 100%;
-  padding: 1rem;
   height: auto;
   color: white;
 }
 
 .game-stats h1 {
-  margin: 0.5rem;
+  width: 100%;
+  display: inline-block;
+  margin: 1rem;
 }
 
 .game-stat {
   width: 100%;
   margin: 0;
+  margin-left: 1rem;
   height: auto;
   display: inline-block;
   font-family: "Secular One", sans-serif;
