@@ -262,7 +262,7 @@ const gameHandler = async (gameId) => {
 
       changeStatsBGColor.onchange = function() {
         const game_stats = document.getElementById("game-stats");
-        game_stats.style.backgroundColor = changeStatsColor.value;
+        game_stats.style.backgroundColor = changeStatsBGColor.value;
       }
 
       let isLoading = false;
