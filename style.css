@@ -659,6 +659,15 @@ p {
   object-position: center;
 }
 
+.editing-game {
+  color: white;
+}
+
+.game-setting {
+  font-weight: bold;
+  font-size: 1.5rem;
+}
+
 .game-column {
   display: block;
   max-width: 60rem;
@@ -714,11 +723,14 @@ p {
 .left-column {
   font-family: "Secular One", sans-serif;
   display: inline-block;
-  width: 50%;
+  width: 60%;
+  min-height: 6.25rem;
 }
 
 .right-column {
-  width: 50%;
+  background-color: #19191c;
+  border-radius: 1rem;
+  width: 40%;
   min-height: 6.25rem;
   float: right;
 }
@@ -742,7 +754,7 @@ p {
 
 .game-summary {
   display: block;
-  font-size: 0.875rem;
+  font-size: 1.3rem;
   opacity: 0.5;
   font-weight: bold;
 }
@@ -757,32 +769,35 @@ p {
 .game-stats {
   display: block;
   width: 100%;
+  padding: 1rem;
   height: auto;
-}
-
-.game-stat {
-  width: 8rem;
-  margin: 0;
-  height: auto;
-  text-align: center;
-  display: inline-block;
-  font-family: "Secular One", sans-serif;
   color: white;
 }
 
-.game-updated {
+.game-stats h1 {
+  margin: 0.5rem;
+}
+
+.game-stat {
   width: 100%;
+  margin: 0;
+  height: auto;
+  display: inline-block;
+  font-family: "Secular One", sans-serif;
+}
+
+.game-updated {
   display: block;
   margin: 0;
   margin-top: 0;
-  font-size: 0.938rem;
+  font-size: 1rem;
   opacity: 0.5;
 }
 
 .game-updated-title {
   width: 100%;
   display: block;
-  font-size: 0.938rem;
+  font-size: 1rem;
   margin: 0;
   font-family: "Secular One", sans-serif;
 }
