@@ -922,6 +922,14 @@ p {
   box-shadow: 0 0.5rem 0.938rem black;
 }
 
+.dashboard {
+  min-height: 15rem;
+  border-radius: 1rem;
+  width: 80%;
+  margin: auto;
+  background-color: #19191c;
+}
+
 .market {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(12.5rem, 12.5rem));
