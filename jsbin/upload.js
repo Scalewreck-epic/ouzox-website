@@ -42,6 +42,9 @@ uploadGame.addEventListener("submit", async function (event) {
 
     const currency = currency_input.options[currency_input.selectedIndex].value;
     const age = age_rating.options[age_rating.selectedIndex].value;
+    const file = file_input.files[0];
+
+    const fileSizeInMB = file.size / (1024 * 1024);
 
     const image = thumbnail_input.files[0];
     const reader = new FileReader();
@@ -86,6 +89,7 @@ uploadGame.addEventListener("submit", async function (event) {
                 genre: genre_input.value.toUpperCase(),
                 artstyle: art_input.value.toUpperCase(),
                 age_rating: age,
+                size: Math.round(fileSizeInMB),
               },
               type: null,
               attributes: [],
