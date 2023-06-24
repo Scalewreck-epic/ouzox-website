@@ -74,6 +74,7 @@ async function retrieveGameData(gameId) {
       buttonColor: metadata.buttonColor,
       buttonTextColor: metadata.buttonTextColor,
       statsColor: metadata.statsColor,
+      statsBGColor: metadata.statsBGColor,
     };
   } else {
     defaultColors = true;
@@ -87,6 +88,7 @@ async function retrieveGameData(gameId) {
     genre: rawGameData.metadata.genre,
     summary: rawGameData.metadata.summary,
     artstyle: rawGameData.metadata.artstyle,
+    filesize: rawGameData.size,
     agerating: rawGameData.metadata.age_rating,
     icon: rawGameData.images[0],
     created: createdFormattedDate,
@@ -115,6 +117,7 @@ const gameHandler = async (gameId) => {
     const game_summary = document.getElementById("game-summary");
     const game_art = document.getElementById("game-art");
     const game_age = document.getElementById("game-age");
+    const game_size = document.getElementById("game-size");
 
     // main data
     game_title.innerHTML = gameData.name;
@@ -132,6 +135,7 @@ const gameHandler = async (gameId) => {
     game_summary.innerHTML = gameData.summary;
     game_art.innerHTML = gameData.artstyle.toUpperCase();
     game_age.innerHTML = gameData.agerating.toUpperCase();
+    game_size.innerHTML = gameData.size+" MB";
 
     if (!gameData.useDefaultColors) {
       const elements = document.getElementsByClassName("game-stat");
@@ -151,6 +155,8 @@ const gameHandler = async (gameId) => {
         gameData.colors.buttonColor;
       document.getElementById("download-button").style.color =
         gameData.colors.buttonTextColor;
+      document.getElementById("game-stats").style.color =
+        gameData.colors.statsBGColor;
     }
 
     document
@@ -196,10 +202,9 @@ const gameHandler = async (gameId) => {
 
       function create_stat(stat_name) {
         const game_stat = document.createElement("div");
-        game_stat.className = "game-stat";
+        game_stat.className = "game-setting";
 
         const stat_title = document.createElement("div");
-        stat_title.className = "game-updated-title";
         stat_title.innerHTML = stat_name;
         game_stat.appendChild(stat_title);
 
@@ -207,7 +212,7 @@ const gameHandler = async (gameId) => {
         changeBGcolor.className = "game-download-input";
         changeBGcolor.type = "color";
         game_stat.appendChild(changeBGcolor);
-        document.getElementById("game-column").appendChild(game_stat);
+        document.getElementById("game-settings").appendChild(game_stat);
 
         return changeBGcolor;
       }
@@ -216,7 +221,8 @@ const gameHandler = async (gameId) => {
       const changeBG2color = create_stat("BG2 Color");
       const changeTitleColor = create_stat("Title Color");
       const changeDescColor = create_stat("Description Color");
-      const changeStatsColor = create_stat("Stats Color");
+      const changeStatsColor = create_stat("Game Details Color");
+      const changeStatsBGColor = create_stat("Game Details BG Color");
       const changeButtonColor = create_stat("Button BG Color");
       const changeButtonText = create_stat("Button Text Color");
 
@@ -250,12 +256,14 @@ const gameHandler = async (gameId) => {
       };
 
       changeStatsColor.onchange = function () {
-        const elements = document.getElementsByClassName("game-stat");
-
-        for (let i = 0; i < elements.length; i++) {
-          elements[i].style.color = changeStatsColor.value;
-        }
+        const game_stats = document.getElementById("game-stats");
+        game_stats.style.color = changeStatsColor.value;
       };
+
+      changeStatsBGColor.onchange = function() {
+        const game_stats = document.getElementById("game-stats");
+        game_stats.style.backgroundColor = changeStatsColor.value;
+      }
 
       let isLoading = false;
       commitChangesButton.addEventListener("click", async function () {
@@ -291,6 +299,8 @@ const gameHandler = async (gameId) => {
                     document.getElementById("download-button").style.color,
                   statsColor:
                     document.getElementsByClassName("game-stat")[0].style.color,
+                  statsBGColor:
+                    document.getElementById("game-stats").style.backgroundColor,
                 },
               },
               id: gameId,
@@ -324,6 +334,8 @@ const gameHandler = async (gameId) => {
       });
 
       document.getElementById("buttons").appendChild(commitChangesButton);
+    } else {
+      document.getElementById("game-editing").remove();
     }
   } else {
     console.warn("There is no valid game id.");
