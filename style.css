@@ -19,7 +19,7 @@ body {
 
 .push-left,
 .push-right {
-  font-size: 1.3rem;
+  font-size: 1.5rem;
   font-weight: bold;
 }
 
@@ -95,10 +95,17 @@ body {
   width: 45%;
   padding: 5rem;
   border-radius: 0.5rem;
+  box-shadow: 0 1rem 1rem black;
   margin: auto;
   text-align: center;
   color: white;
   background-color: #19191c;
+  box-shadow: 0 1rem 1rem black;
+  transition: transform 0.3s ease;
+}
+
+.errorpage:hover {
+  transform: scale(1.05);
 }
 
 .errorpage h1 {
@@ -244,6 +251,13 @@ p {
   padding: 2rem;
   border-radius: 1rem;
   background-color: #19191c;
+  box-shadow: 0 1rem 1rem black;
+  transition: transform 0.3s ease;
+}
+
+.main-upload-form:hover,
+.extra-upload-form {
+  transform: scale(1.05);
 }
 
 .main-upload-form h1,
@@ -308,40 +322,24 @@ p {
   cursor: pointer;
 }
 
-.filter-text-box {
-  position: relative;
-  display: inline-block;
-  font-size: 1rem;
-  font-family: "Secular One", sans-serif;
-  max-width: 9rem;
-  width: auto;
-  padding: 0.313rem;
-  color: #fff;
-  background-color: #292929;
-  border-radius: 0.313rem;
-  cursor: text;
-  transition: background-color 0.3s ease-in-out;
-}
-
 .text-box {
   position: relative;
   display: inline-block;
   font-size: 1rem;
   font-family: "Secular One", sans-serif;
-  min-width: 12.5rem;
-  max-width: 31.25rem;
-  width: 12.5rem;
-  padding: 0.313rem;
+  max-width: 30rem;
+  margin: 0.15rem 0;
+  width: auto;
+  padding: 0.3rem;
   color: #fff;
   background-color: #292929;
   box-shadow: 0 0.5rem 0.5rem black;
-  border-radius: 0.313rem;
+  border-radius: 0.3rem;
   cursor: text;
   transition: background-color 0.3s ease-in-out;
 }
 
-.text-box:before,
-.filter-text-box:before {
+.text-box:before {
   content: "";
   position: absolute;
   top: 50%;
@@ -352,18 +350,15 @@ p {
   background-size: cover;
 }
 
-.text-box:hover,
-.filter-text-box:hover {
+.text-box:hover {
   background-color: #4b4b4b;
 }
 
-.text-box:focus-within,
-.filter-text-box:focus-within {
+.text-box:focus-within {
   background-color: #4b4b4b;
 }
 
-.text-box input[type="text"],
-.filter-text-box input[type="text"] {
+.text-box input[type="text"] {
   position: absolute;
   top: 0;
   left: 0;
@@ -927,6 +922,7 @@ p {
 .login-form {
   width: 45%;
   background-color: #19191c;
+  box-shadow: 0 1rem 1rem black;
   padding: 5rem;
   border-radius: 0.5rem;
   text-align: center;
@@ -956,7 +952,15 @@ p {
   background-color: #19191c;
   margin-top: 1.25rem;
   padding: 0.5rem;
+  box-shadow: 0 1rem 1rem black;
   border-radius: 0.5rem;
+  transition: transform 0.3s ease;
+}
+
+.profile-settings:hover,
+.email-settings:hover,
+.password-settings:hover {
+  transform: scale(1.05);
 }
 
 .profile-settings div {
