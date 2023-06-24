@@ -360,14 +360,37 @@ function loadGames() {
 };
 
 async function loadDashboard() {
-  const market = document.getElementById("market");
-  const username = await verifyUser();
+  const user = await verifyUser();
 
-  if (username != undefined) {
+  if (user != undefined) {
     sortGames("newest");
-    loadGamesWithList(market, false);
-  }
-}
+
+    let gamesInList = 0;
+    for (
+      let i = 0; i < games.length;
+      i++
+    ) {
+      const game = games[i];
+
+      if (game && game.active) {
+        const game_price = getGamePrice(game.id.toString());
+
+        if (game_price && game.metadata.developer_name == user.name) {
+          createGamePage(game, game_price, isDashboard, list);
+          gamesInList += 1;
+        };
+      };
+    };
+
+    if (gamesInList > 0) {
+      const categoryNoneElement = category.querySelector(".category-none");
+
+      if (categoryNoneElement) {
+        categoryNoneElement.remove();
+      };
+    };
+  };
+};
 
 async function fetchGamesRequest(isDashboard) {
   const myHeaders = new Headers();
