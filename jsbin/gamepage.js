@@ -340,7 +340,7 @@ const gameHandler = async (gameId) => {
   } else {
     console.warn("There is no valid game id.");
     window.location.assign("404.html");
-  }
+  };
 };
 
 if (gameId != null) {
@@ -348,4 +348,4 @@ if (gameId != null) {
 } else {
   console.warn("There is no game id.");
   window.location.assign("404.html");
-}
+};
