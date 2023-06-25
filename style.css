@@ -712,18 +712,15 @@ p {
   opacity: 0.5;
 }
 
-.game-description {
-  display: block;
-  font-size: 1.125rem;
-  margin: 1.25rem;
-  margin-top: 0;
-  color: white;
+.columns {
+  display: flex;
+  justify-content: center;
 }
 
 .left-column {
+  flex: 1;
   font-family: "Secular One", sans-serif;
-  display: inline-block;
-  width: 60%;
+  width: 50%;
   min-height: 6.25rem;
 }
 
@@ -768,37 +765,51 @@ p {
   display: block;
   border-radius: 1rem;
   background-color: #19191c;
-  width: 100%;
+  width: auto;
+  padding: 1rem;
   height: auto;
   color: white;
 }
 
-.game-stats h1 {
-  width: 100%;
-  display: inline-block;
+.game-description {
+  display: block;
+  padding: 1rem;
+  font-size: 1.125rem;
+  border-radius: 1rem;
+  min-height: 10rem;
+  background-color: #19191c;
+  width: auto;
   margin: 1rem;
+  margin-top: 0;
+  color: white;
+}
+
+.game-stats h1 {
+  width: auto;
+  margin: 0.5rem 0;
+  display: block;
 }
 
 .game-stat {
-  width: 100%;
-  margin: 0;
-  margin-left: 1rem;
+  width: auto;
+  margin-top: 0.3rem;
   height: auto;
-  display: inline-block;
+  display: block;
   font-family: "Secular One", sans-serif;
 }
 
 .game-updated {
-  display: block;
+  float: right;
   margin: 0;
   margin-top: 0;
+  width: auto;
   font-size: 1rem;
   opacity: 0.5;
 }
 
 .game-updated-title {
-  width: 100%;
-  display: block;
+  display: inline-block;
+  width: auto;
   font-size: 1rem;
   margin: 0;
   font-family: "Secular One", sans-serif;
