@@ -130,7 +130,7 @@ const gameHandler = async (gameId) => {
       gameData.name + " By " + gameData.developer_name;
 
     // metadata
-    developer_name.innerHTML = "By: " + gameData.developer_name;
+    developer_name.innerHTML = gameData.developer_name;
     game_genre.innerHTML = gameData.genre.toUpperCase();
     game_summary.innerHTML = gameData.summary;
     game_art.innerHTML = gameData.artstyle.toUpperCase();
@@ -181,7 +181,7 @@ const gameHandler = async (gameId) => {
 
         if (text.length > 120) {
           this.innerHTML = text.slice(0, 120);
-        }
+        };
       });
 
       game_summary.addEventListener("input", function () {
@@ -189,7 +189,7 @@ const gameHandler = async (gameId) => {
 
         if (text.length > 120) {
           this.innerHTML = text.slice(0, 120);
-        }
+        };
       });
 
       game_desc.addEventListener("input", function () {
@@ -197,7 +197,7 @@ const gameHandler = async (gameId) => {
 
         if (text.length > 4000) {
           this.innerHTML = text.slice(0, 4000);
-        }
+        };
       });
 
       function create_stat(stat_name) {
