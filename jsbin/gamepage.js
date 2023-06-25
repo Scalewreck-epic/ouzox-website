@@ -1,5 +1,3 @@
-const get_product_url =
-  "https://x8ki-letl-twmt.n7.xano.io/api:iwAsZq4E/products/"; // + product id
 const update_product_url =
   "https://x8ki-letl-twmt.n7.xano.io/api:iwAsZq4E/products/"; // + product id
 const get_price_url = "https://x8ki-letl-twmt.n7.xano.io/api:tFdG2Vz-/prices/"; // + price id
@@ -7,7 +5,7 @@ const get_price_url = "https://x8ki-letl-twmt.n7.xano.io/api:tFdG2Vz-/prices/"; 
 import { getUser } from "./exportuser.js";
 
 const urlParams = new URLSearchParams(window.location.search);
-const gameId = urlParams.get("j");
+const gameIdParam = urlParams.get("g");
 
 async function retrieveGameData(gameId) {
   const myHeaders = new Headers();
@@ -19,20 +17,22 @@ async function retrieveGameData(gameId) {
     redirect: "follow",
   };
 
-  async function getGameData() {
+  async function getPriceData() {
     try {
-      const response = await fetch(get_product_url + gameId, options);
+      const response = await fetch(get_price_url + gameId, options);
       const result = await response.text();
       const result_parse = JSON.parse(result);
 
       return result_parse;
     } catch (error) {
-      console.warn(error);
+      console.warn("There was an error trying to get price: ", error);
+      console.warn("Redirecting to 404 error page.");
       window.location.assign("404.html");
     }
   }
 
-  const rawGameData = await getGameData();
+  const rawPriceData = await getPriceData();
+  const rawGameData = rawPriceData.product;
 
   const createdTimestampMs = rawGameData.created * 1000;
   const updatedTimestampMs = rawGameData.updated * 1000;
@@ -112,7 +112,14 @@ async function retrieveGameData(gameId) {
     console.log("Project uses default color parameters");
   }
 
+  const priceData = {
+    id: rawPriceData.id,
+    currency: rawPriceData.currency.toUpperCase(),
+    amount: parseFloat(rawPriceData.unit_amount / 100),
+  }
+
   const gameData = {
+    id: rawGameData.id,
     name: rawGameData.name,
     description: rawGameData.description,
     developer_name: rawGameData.metadata.developer_name,
@@ -127,6 +134,7 @@ async function retrieveGameData(gameId) {
     datestodays: datestodays,
     useDefaultColors: defaultColors,
     colors: colors,
+    price: priceData,
   };
 
   return gameData;
@@ -135,6 +143,7 @@ async function retrieveGameData(gameId) {
 const gameHandler = async (gameId) => {
   if (gameId != null) {
     const gameData = await retrieveGameData(gameId);
+    const realGameId = gameData.id;
 
     const game_title = document.getElementById("game-title");
     const game_desc = document.getElementById("game-description");
@@ -150,10 +159,12 @@ const gameHandler = async (gameId) => {
     const game_art = document.getElementById("game-art");
     const game_age = document.getElementById("game-age");
     const game_size = document.getElementById("game-size");
+    const game_price = document.getElementById("game-price");
 
     // main data
     game_title.innerHTML = gameData.name;
     game_desc.innerHTML = gameData.description;
+    game_price.innerHTML = gameData.price.amount + " " + gameData.price.currency;
     created.innerHTML = gameData.created;
     updated.innerHTML = gameData.updated;
 
@@ -362,7 +373,7 @@ const gameHandler = async (gameId) => {
                     document.getElementById("game-stats").style.backgroundColor,
                 },
               },
-              id: gameId,
+              id: realGameId,
             }),
           };
 
@@ -370,12 +381,13 @@ const gameHandler = async (gameId) => {
             if (user.name == gameData.developer_name) {
               try {
                 await fetch(
-                  update_product_url + gameId,
+                  update_product_url + realGameId,
                   update_product_options
                 );
                 commitChangesButton.innerHTML = "Success";
               } catch (error) {
                 commitChangesButton.innerHTML = "An error occured";
+                console.log("There was an error trying to update the product:" , error);
                 showError(error, false);
               }
             } else {
@@ -403,8 +415,8 @@ const gameHandler = async (gameId) => {
 };
 
 if (gameId != null) {
-  gameHandler("prod_" + gameId);
+  gameHandler("price_" + gameIdParam);
 } else {
   console.warn("There is no game id.");
-  window.location.assign("404.html");
+  //window.location.assign("404.html");
 };
