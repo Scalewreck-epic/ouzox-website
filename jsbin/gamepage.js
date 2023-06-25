@@ -54,13 +54,16 @@ async function retrieveGameData(gameId) {
     day: "2-digit",
   });
 
-  const publishedDaysAgo = Math.abs(
+  const publishedDifference = Math.abs(
     currentDate.getTime() - createdDate.getTime()
   );
 
-  const updatedDaysAgo = Math.abs(
+  const updatedDifference = Math.abs(
     currentDate.getTime() - updatedDate.getTime()
   );
+
+  const publishedDaysAgo = Math.ceil(publishedDifference / (1000 * 3600 * 24));
+  const updatedDaysAgo = Math.ceil(updatedDifference / (1000 * 3600 * 24));
 
   const publishedWeeksAgo = publishedDaysAgo / 7
   const updatedWeeksAgo = updatedDaysAgo / 7
@@ -165,25 +168,24 @@ const gameHandler = async (gameId) => {
     game_title.innerHTML = gameData.name;
     game_desc.innerHTML = gameData.description;
     game_price.innerHTML = gameData.price.amount + " " + gameData.price.currency;
-    created.innerHTML = gameData.created;
-    updated.innerHTML = gameData.updated;
 
     function formatTimeAgo(createdOrUpdated, publishedOrUpdatedYearsAgo, publishedOrUpdatedMonthsAgo, publishedOrUpdatedWeeksAgo, publishedOrUpdatedDaysAgo) {
-      if (publishedOrUpdatedYearsAgo > 0) {
-        return createdOrUpdated + "(" + publishedOrUpdatedYearsAgo + " Years Ago)";
-      } else if (publishedOrUpdatedMonthsAgo > 0) {
-        return createdOrUpdated + "(" + publishedOrUpdatedMonthsAgo + " Months Ago)";
-      } else if (publishedOrUpdatedWeeksAgo > 0) {
-        return createdOrUpdated + "(" + publishedOrUpdatedWeeksAgo + " Weeks Ago)";
-      } else if (publishedDaysAgo > 0) {
-        return createdOrUpdated + "(" + publishedOrUpdatedDaysAgo + " Days Ago)";
+      console.log(publishedOrUpdatedDaysAgo, publishedOrUpdatedWeeksAgo, publishedOrUpdatedMonthsAgo, publishedOrUpdatedYearsAgo);
+      if (publishedOrUpdatedYearsAgo > 1) {
+        return createdOrUpdated + " (" + publishedOrUpdatedYearsAgo + " Years Ago)";
+      } else if (publishedOrUpdatedMonthsAgo > 1) {
+        return createdOrUpdated + " (" + publishedOrUpdatedMonthsAgo + " Months Ago)";
+      } else if (publishedOrUpdatedWeeksAgo > 1) {
+        return createdOrUpdated + " (" + publishedOrUpdatedWeeksAgo + " Weeks Ago)";
+      } else if (publishedOrUpdatedDaysAgo > 1) {
+        return createdOrUpdated + " (" + publishedOrUpdatedDaysAgo + " Days Ago)";
       } else {
         return "Today";
       };
     };
     
-    created.innerHTML = formatTimeAgo("Created", gameData.created, gameData.datestodays.publishedYearsAgo, gameData.datestodays.publishedMonthsAgo, gameData.datestodays.publishedWeeksAgo, gameData.datestodays.publishedDaysAgo);
-    updated.innerHTML = formatTimeAgo("Updated", gameData.updated, gameData.datestodays.updatedYearsAgo, gameData.datestodays.updatedMonthsAgo, gameData.datestodays.updatedWeeksAgo, gameData.datestodays.updatedDaysAgo);
+    created.innerHTML = formatTimeAgo(gameData.created, gameData.datestodays.publishedYearsAgo, gameData.datestodays.publishedMonthsAgo, gameData.datestodays.publishedWeeksAgo, gameData.datestodays.publishedDaysAgo);
+    updated.innerHTML = formatTimeAgo(gameData.updated, gameData.datestodays.updatedYearsAgo, gameData.datestodays.updatedMonthsAgo, gameData.datestodays.updatedWeeksAgo, gameData.datestodays.updatedDaysAgo);
 
     icon.setAttribute("href", gameData.icon);
     navigation_title.innerHTML =
