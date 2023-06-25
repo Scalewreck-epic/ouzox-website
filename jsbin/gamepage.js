@@ -40,6 +40,8 @@ async function retrieveGameData(gameId) {
   const createdDate = new Date(createdTimestampMs);
   const updatedDate = new Date(updatedTimestampMs);
 
+  const currentDate = new Date();
+
   const createdFormattedDate = createdDate.toLocaleDateString("en-US", {
     year: "2-digit",
     month: "2-digit",
@@ -52,8 +54,37 @@ async function retrieveGameData(gameId) {
     day: "2-digit",
   });
 
+  const publishedDaysAgo = Math.abs(
+    currentDate.getTime() - createdDate.getTime()
+  );
+
+  const updatedDaysAgo = Math.abs(
+    currentDate.getTime() - updatedDate.getTime()
+  );
+
+  const publishedWeeksAgo = publishedDaysAgo / 7
+  const updatedWeeksAgo = updatedDaysAgo / 7
+
+  const publishedMonthsAgo = publishedDaysAgo / 31
+  const updatedMonthsAgo = publishedDaysAgo / 31
+
+  const publishedYearsAgo = publishedDaysAgo / 365
+  const updatedYearsAgo = updatedDaysAgo / 365
+
   let colors = {};
+  let datestodays = {
+    publishedDaysAgo: publishedDaysAgo,
+    publishedWeeksAgo: publishedWeeksAgo,
+    publishedMonthsAgo: publishedMonthsAgo,
+    publishedYearsAgo: publishedYearsAgo,
+    updatedDaysAgo: updatedDaysAgo,
+    updatedWeeksAgo: updatedWeeksAgo,
+    updatedMonthsAgo: updatedMonthsAgo,
+    updatedYearsAgo: updatedYearsAgo,
+  };
+
   let defaultColors = true;
+
   const metadata = rawGameData.metadata;
 
   if (
@@ -93,6 +124,7 @@ async function retrieveGameData(gameId) {
     icon: rawGameData.images[0],
     created: createdFormattedDate,
     updated: updatedFormattedDate,
+    datestodays: datestodays,
     useDefaultColors: defaultColors,
     colors: colors,
   };
@@ -124,6 +156,23 @@ const gameHandler = async (gameId) => {
     game_desc.innerHTML = gameData.description;
     created.innerHTML = gameData.created;
     updated.innerHTML = gameData.updated;
+
+    function formatTimeAgo(createdOrUpdated, publishedOrUpdatedYearsAgo, publishedOrUpdatedMonthsAgo, publishedOrUpdatedWeeksAgo, publishedOrUpdatedDaysAgo) {
+      if (publishedOrUpdatedYearsAgo > 0) {
+        return createdOrUpdated + "(" + publishedOrUpdatedYearsAgo + " Years Ago)";
+      } else if (publishedOrUpdatedMonthsAgo > 0) {
+        return createdOrUpdated + "(" + publishedOrUpdatedMonthsAgo + " Months Ago)";
+      } else if (publishedOrUpdatedWeeksAgo > 0) {
+        return createdOrUpdated + "(" + publishedOrUpdatedWeeksAgo + " Weeks Ago)";
+      } else if (publishedDaysAgo > 0) {
+        return createdOrUpdated + "(" + publishedOrUpdatedDaysAgo + " Days Ago)";
+      } else {
+        return "Today";
+      };
+    };
+    
+    created.innerHTML = formatTimeAgo("Created", gameData.created, gameData.datestodays.publishedYearsAgo, gameData.datestodays.publishedMonthsAgo, gameData.datestodays.publishedWeeksAgo, gameData.datestodays.publishedDaysAgo);
+    updated.innerHTML = formatTimeAgo("Updated", gameData.updated, gameData.datestodays.updatedYearsAgo, gameData.datestodays.updatedMonthsAgo, gameData.datestodays.updatedWeeksAgo, gameData.datestodays.updatedDaysAgo);
 
     icon.setAttribute("href", gameData.icon);
     navigation_title.innerHTML =
@@ -221,11 +270,13 @@ const gameHandler = async (gameId) => {
       const changeBG2color = create_stat("BG2 Color");
       const changeTitleColor = create_stat("Title Color");
       const changeDescColor = create_stat("Description Color");
+      const changeDescBGColor = create_stat("Description BG Color");
       const changeStatsColor = create_stat("Game Details Color");
       const changeStatsBGColor = create_stat("Game Details BG Color");
       const changeButtonColor = create_stat("Button BG Color");
       const changeButtonText = create_stat("Button Text Color");
 
+      changeBGcolor.value = document.body.style.backgroundColor;
       changeBGcolor.onchange = function () {
         document.body.style.backgroundColor = changeBGcolor.value;
       };
@@ -245,6 +296,10 @@ const gameHandler = async (gameId) => {
           changeDescColor.value;
       };
 
+      changeDescBGColor.onchange = function() {
+        document.getElementById("game-description").style.backgroundColor = changeDescBGColor.value;
+      };
+
       changeButtonColor.onchange = function () {
         document.getElementById("download-button").style.backgroundColor =
           changeButtonColor.value;
@@ -255,15 +310,17 @@ const gameHandler = async (gameId) => {
           changeButtonText.value;
       };
 
+      changeStatsColor.value = document.getElementById("game-stats").style.color;
       changeStatsColor.onchange = function () {
         const game_stats = document.getElementById("game-stats");
         game_stats.style.color = changeStatsColor.value;
       };
 
+      changeStatsBGColor.value = document.getElementById("game-stats").style.backgroundColor;
       changeStatsBGColor.onchange = function() {
         const game_stats = document.getElementById("game-stats");
         game_stats.style.backgroundColor = changeStatsBGColor.value;
-      }
+      };
 
       let isLoading = false;
       commitChangesButton.addEventListener("click", async function () {
@@ -292,6 +349,8 @@ const gameHandler = async (gameId) => {
                     document.getElementById("game-title-column").style.color,
                   descColor:
                     document.getElementById("game-description").style.color,
+                  descBGColor:
+                    document.getElementById("game-description").style.backgroundColor,
                   buttonColor:
                     document.getElementById("download-button").style
                       .backgroundColor,
