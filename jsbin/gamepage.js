@@ -414,7 +414,7 @@ const gameHandler = async (gameId) => {
   };
 };
 
-if (gameId != null) {
+if (gameIdParam != null) {
   gameHandler("price_" + gameIdParam);
 } else {
   console.warn("There is no game id.");
