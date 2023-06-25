@@ -71,9 +71,10 @@ function createGamePage(game, game_price, editable, market) {
   gameImage.setAttribute("src", game.images[0]);
 
   const gameLink = document.createElement("a");
-  const gameId = game.id.replace(/^prod_/, "");
 
-  gameLink.setAttribute("href", `game.html?j=${gameId}`);
+  const priceId = game_price.id.replace(/^price_/, "");
+
+  gameLink.setAttribute("href", `game.html?g=${priceId}`);
 
   const gameTitle = document.createElement("div");
   gameTitle.className = "product-title";
