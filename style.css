@@ -660,7 +660,17 @@ p {
 }
 
 .editing-game {
+  display: flex;
   color: white;
+  background-color: #19191c;
+  box-shadow: 0 1rem 1rem black;
+  border-radius: 1rem;
+  padding: 1rem;
+  transition: transform 0.3s ease;
+}
+
+.editing-game:hover {
+  transform: scale(1.05);
 }
 
 .game-setting {
@@ -677,7 +687,8 @@ p {
   width: auto;
   height: auto;
   margin: 0 auto;
-  background-color: #000;
+  background-color: #0a0a0a;
+  box-shadow: 0 1rem 1rem black;
 }
 
 .game-download {
@@ -719,7 +730,6 @@ p {
 
 .left-column {
   flex: 1;
-  font-family: "Secular One", sans-serif;
   width: 50%;
   min-height: 6.25rem;
 }
@@ -765,23 +775,36 @@ p {
   display: block;
   border-radius: 1rem;
   background-color: #19191c;
+  box-shadow: 0 1rem 1rem black;
   width: auto;
   padding: 1rem;
   height: auto;
   color: white;
+  transition: transform 0.3s ease;
+}
+
+.game-stats:hover {
+  transform: scale(1.05);
 }
 
 .game-description {
+  font-family: "Secular One", sans-serif;
   display: block;
   padding: 1rem;
   font-size: 1.125rem;
   border-radius: 1rem;
   min-height: 10rem;
   background-color: #19191c;
+  box-shadow: 0 1rem 1rem black;
   width: auto;
   margin: 1rem;
   margin-top: 0;
   color: white;
+  transition: transform 0.3s ease;
+}
+
+.game-description:hover {
+  transform: scale(1.05);
 }
 
 .game-stats h1 {
