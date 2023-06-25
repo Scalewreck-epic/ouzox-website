@@ -167,7 +167,7 @@ const gameHandler = async (gameId) => {
 
     const user = await getUser();
 
-    if (user.name == gameData.developer_name) {
+    if (user != null && user.name == gameData.developer_name) {
       game_title.contentEditable = true;
       game_desc.contentEditable = true;
       game_summary.contentEditable = true;
