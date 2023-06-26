@@ -28,8 +28,8 @@ async function retrieveGameData(gameId) {
       console.warn("There was an error trying to get price: ", error);
       console.warn("Redirecting to 404 error page.");
       window.location.assign("404.html");
-    }
-  }
+    };
+  };
 
   const rawPriceData = await getPriceData();
   const rawGameData = rawPriceData.product;
@@ -65,17 +65,30 @@ async function retrieveGameData(gameId) {
   const publishedDaysAgo = Math.ceil(publishedDifference / (1000 * 3600 * 24));
   const updatedDaysAgo = Math.ceil(updatedDifference / (1000 * 3600 * 24));
 
-  const publishedWeeksAgo = publishedDaysAgo / 7
-  const updatedWeeksAgo = updatedDaysAgo / 7
+  const publishedWeeksAgo = publishedDaysAgo / 7;
+  const updatedWeeksAgo = updatedDaysAgo / 7;
 
-  const publishedMonthsAgo = publishedDaysAgo / 31
-  const updatedMonthsAgo = publishedDaysAgo / 31
+  const publishedMonthsAgo = publishedDaysAgo / 31;
+  const updatedMonthsAgo = publishedDaysAgo / 31;
 
-  const publishedYearsAgo = publishedDaysAgo / 365
-  const updatedYearsAgo = updatedDaysAgo / 365
+  const publishedYearsAgo = publishedDaysAgo / 365;
+  const updatedYearsAgo = updatedDaysAgo / 365;
 
-  let colors = {};
-  let datestodays = {
+  const metadata = rawGameData.metadata;
+  const metadata_colors = metadata.colors;
+
+  const colors = {
+    bgColor: metadata_colors.bgColor,
+    bg2Color: metadata_colors.bg2Color,
+    titleColor: metadata_colors.titleColor,
+    descColor: metadata_colors.descColor,
+    buttonColor: metadata_colors.buttonColor,
+    buttonTextColor: metadata_colors.buttonTextColor,
+    statsColor: metadata_colors.statsColor,
+    statsBGColor: metadata_colors.statsBGColor,
+  };
+
+  const datestodays = {
     publishedDaysAgo: publishedDaysAgo,
     publishedWeeksAgo: publishedWeeksAgo,
     publishedMonthsAgo: publishedMonthsAgo,
@@ -85,35 +98,6 @@ async function retrieveGameData(gameId) {
     updatedMonthsAgo: updatedMonthsAgo,
     updatedYearsAgo: updatedYearsAgo,
   };
-
-  let defaultColors = true;
-
-  const metadata = rawGameData.metadata;
-
-  if (
-    metadata.bgColor &&
-    metadata.bg2Color &&
-    metadata.titleColor &&
-    metadata.descColor &&
-    metadata.buttonColor &&
-    metadata.buttonTextColor &&
-    metadata.statsColor
-  ) {
-    defaultColors = false;
-    colors = {
-      bgColor: metadata.bgColor,
-      bg2Color: metadata.bg2Color,
-      titleColor: metadata.titleColor,
-      descColor: metadata.descColor,
-      buttonColor: metadata.buttonColor,
-      buttonTextColor: metadata.buttonTextColor,
-      statsColor: metadata.statsColor,
-      statsBGColor: metadata.statsBGColor,
-    };
-  } else {
-    defaultColors = true;
-    console.log("Project uses default color parameters");
-  }
 
   const priceData = {
     id: rawPriceData.id,
@@ -135,7 +119,7 @@ async function retrieveGameData(gameId) {
     created: createdFormattedDate,
     updated: updatedFormattedDate,
     datestodays: datestodays,
-    useDefaultColors: defaultColors,
+    useDefaultColors: metadata_colors.default,
     colors: colors,
     price: priceData,
   };
@@ -170,7 +154,6 @@ const gameHandler = async (gameId) => {
     game_price.innerHTML = gameData.price.amount + " " + gameData.price.currency;
 
     function formatTimeAgo(createdOrUpdated, publishedOrUpdatedYearsAgo, publishedOrUpdatedMonthsAgo, publishedOrUpdatedWeeksAgo, publishedOrUpdatedDaysAgo) {
-      console.log(publishedOrUpdatedDaysAgo, publishedOrUpdatedWeeksAgo, publishedOrUpdatedMonthsAgo, publishedOrUpdatedYearsAgo);
       if (publishedOrUpdatedYearsAgo > 1) {
         return createdOrUpdated + " (" + publishedOrUpdatedYearsAgo + " Years Ago)";
       } else if (publishedOrUpdatedMonthsAgo > 1) {
@@ -354,25 +337,18 @@ const gameHandler = async (gameId) => {
                 description: game_desc.innerHTML,
                 metadata: {
                   summary: game_summary.innerHTML,
-                  bgColor: document.body.style.backgroundColor,
-                  bg2Color:
-                    document.getElementById("game-column").style
-                      .backgroundColor,
-                  titleColor:
-                    document.getElementById("game-title-column").style.color,
-                  descColor:
-                    document.getElementById("game-description").style.color,
-                  descBGColor:
-                    document.getElementById("game-description").style.backgroundColor,
-                  buttonColor:
-                    document.getElementById("download-button").style
-                      .backgroundColor,
-                  buttonTextColor:
-                    document.getElementById("download-button").style.color,
-                  statsColor:
-                    document.getElementsByClassName("game-stat")[0].style.color,
-                  statsBGColor:
-                    document.getElementById("game-stats").style.backgroundColor,
+                  colors: {
+                    default: false,
+                    bgColor: document.body.style.backgroundColor,
+                    bg2Color: document.getElementById("game-column").style.backgroundColor,
+                    titleColor: document.getElementById("game-title-column").style.color,
+                    descColor: document.getElementById("game-description").style.color,
+                    descBGColor: document.getElementById("game-description").style.backgroundColor,
+                    buttonColor: document.getElementById("download-button").style.backgroundColor,
+                    buttonTextColor: document.getElementById("download-button").style.color,
+                    statsColor: document.getElementsByClassName("game-stat")[0].style.color,
+                    statsBGColor: document.getElementById("game-stats").style.backgroundColor,
+                  },
                 },
               },
               id: realGameId,
@@ -420,5 +396,5 @@ if (gameIdParam != null) {
   gameHandler("price_" + gameIdParam);
 } else {
   console.warn("There is no game id.");
-  //window.location.assign("404.html");
+  window.location.assign("404.html");
 };
