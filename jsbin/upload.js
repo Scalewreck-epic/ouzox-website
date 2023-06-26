@@ -90,6 +90,16 @@ uploadGame.addEventListener("submit", async function (event) {
                 artstyle: art_input.value.toUpperCase(),
                 age_rating: age,
                 size: Math.round(fileSizeInMB),
+                defaultColors: true,
+                bgColor: "",
+                bg2Color: "",
+                titleColor: "",
+                descColor: "",
+                descBGColor: "",
+                buttonColor: "",
+                buttonTextColor: "",
+                statsColor: "",
+                statsBGColor: "",
               },
               type: null,
               attributes: [],
@@ -296,12 +306,12 @@ function checkFileSize() {
   const warn = document.getElementById("game-file-warn");
 
   const file = input.files[0];
-  const maxFileSize = 5000000000; // 5GB in bytes
+  const maxFileSize = 5 * (1024 * 1024 * 1024);
 
   if (file.size > maxFileSize) {
-    warn.innerHTML = `File size too large. Select a file under ${
-      maxFileSize / 1000000000
-    }GB`;
+    warn.innerHTML = `File size too large. Select a file under 
+    ${maxFileSize / (1024 * 1024 * 1024)}
+    GB`;
     input.value = "";
   } else {
     warn.innerHTML = "";
