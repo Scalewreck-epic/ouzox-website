@@ -1,493 +1,382 @@
-const games_list_api =
-  "https://x8ki-letl-twmt.n7.xano.io/api:iwAsZq4E:v1/products";
-const games_prices_url =
+const upload_product_api_url =
+  "https://x8ki-letl-twmt.n7.xano.io/api:iwAsZq4E/products";
+const set_product_price_url =
   "https://x8ki-letl-twmt.n7.xano.io/api:tFdG2Vz-/prices";
-const genre_list_url = "https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv/genres";
-const update_product_url =
-  "https://x8ki-letl-twmt.n7.xano.io/api:iwAsZq4E/products/"; // + product id
+const upload_image_api_url =
+  "https://x8ki-letl-twmt.n7.xano.io/api:4A2Ya61A/storage/image";
+const get_genre_api_url = 
+  "https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv/genres/" // + genre name;
+const change_genre_api_url = "https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv/genres/update/" // + genre name
+const add_genre_api_url = "https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv/genres/create";
 
-const get_user_url = "https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv/user/"; // + session id
+const uploadGame = document.getElementById("upload-game");
 
-import { getCookie } from "./exportuser.js";
+import { getUser } from "./exportuser.js";
 
-const urlParams = new URLSearchParams(window.location.search);
-const search_query = urlParams.get("q");
+uploadGame.addEventListener("submit", async function (event) {
+  event.preventDefault();
+  const error_label = document.getElementById("error-label");
 
-const gamesPerCategory = 20;
-//let lastGame;
+  const game_file_warn = document.getElementById("game-file-warn");
 
-let prices = [];
-let games = [];
-let genres = [];
+  checkThumbnail();
+  checkFileSize();
+  checkPrice();
+  checkPrice();
 
-function getGamePrice(game_id) {
-  const result = prices.find((item) => item.product === game_id);
-  if (result) {
-    return {
-      price: result.unit_amount,
-      currency: result.currency,
-      id: result.id,
+  if (game_file_warn.innerText == "") {
+    const title_input = document.getElementById("title");
+    const summary_input = document.getElementById("summary");
+    const thumbnail_input = document.getElementById("thumbnail");
+    const file_input = document.getElementById("download-file");
+    const description_input = document.getElementById("description");
+    const price_input = document.getElementById("price");
+    const currency_input = document.getElementById("currency-sort");
+
+    const genre_input = document.getElementById("genre-input");
+    const art_input = document.getElementById("art-style-input");
+    const age_rating = document.getElementById("age-sort");
+
+    const uploader = await getUser();
+    const uploader_name = uploader.name;
+
+    const currency = currency_input.options[currency_input.selectedIndex].value;
+    const age = age_rating.options[age_rating.selectedIndex].value;
+    const file = file_input.files[0];
+
+    const fileSizeInMB = file.size / (1024 * 1024);
+
+    const image = thumbnail_input.files[0];
+    const reader = new FileReader();
+    let imageURI;
+
+    reader.onload = function (event) {
+      imageURI = event.target.result;
     };
-  }
-}
 
-function calculateDiffDays(timestamp) {
-  const createdTimestamp = new Date(timestamp * 1000);
-  const currentDate = new Date();
-
-  const createdTimeDiff = Math.abs(
-    currentDate.getTime() - createdTimestamp.getTime()
-  );
-  const createdDiffDays = Math.ceil(createdTimeDiff / (1000 * 3600 * 24));
-
-  return createdDiffDays;
-}
-
-function createGenrePage(name, amount) {
-  const genre_button = document.createElement("button");
-  genre_button.className = "genre-button";
-
-  const genre_name = document.createElement("h2");
-  const genre_games_amount = document.createElement("h4");
-
-  genre_name.innerHTML = name;
-  genre_games_amount.innerHTML = amount+" games";
-
-  genre_button.appendChild(genre_name);
-  genre_button.appendChild(genre_games_amount);
-
-  document.getElementById("genres").appendChild(genre_button);
-}
-
-function createGamePage(game, game_price, editable, market) {
-  const price = game_price.price / 100;
-  const currency = game_price.currency;
-
-  const gamesDiv = document.createElement("div");
-  gamesDiv.className = "game";
-
-  const gameImage = document.createElement("img");
-  gameImage.className = "product-image";
-  gameImage.setAttribute("src", game.images[0]);
-
-  const gameLink = document.createElement("a");
-
-  const priceId = game_price.id.replace(/^price_/, "");
-
-  gameLink.setAttribute("href", `game.html?g=${priceId}`);
-
-  const gameTitle = document.createElement("div");
-  gameTitle.className = "product-title";
-  gameTitle.innerHTML = game.name;
-
-  const gameSummary = document.createElement("div");
-  gameSummary.className = "product-summary";
-  gameSummary.innerHTML = game.metadata.summary;
-
-  const gamePrice = document.createElement("div");
-  gamePrice.className = "product-price";
-  gamePrice.innerHTML = price + " " + currency.toUpperCase();
-
-  const diffDaysCreated = calculateDiffDays(game.created);
-  const diffDaysUpdated = calculateDiffDays(game.updated);
-
-  if (diffDaysCreated <= 7) {
-    const createdLabel = document.createElement("span");
-    createdLabel.className = "new-label";
-    createdLabel.innerHTML = "NEW";
-    createdLabel.setAttribute("data-days", diffDaysCreated);
-    gamesDiv.appendChild(createdLabel);
-
-    createdLabel.addEventListener("mouseenter", function () {
-      if (diffDaysUpdated > 1) {
-        createdLabel.innerHTML = `${diffDaysCreated} DAYS AGO`;
-      } else if (diffDaysUpdated == 1) {
-        createdLabel.innerHTML = `1 DAY AGO`;
-      } else {
-        createdLabel.innerHTML = "TODAY";
-      }
+    await new Promise((resolve) => {
+      reader.onloadend = () => resolve();
+      reader.readAsDataURL(image);
     });
-
-    createdLabel.addEventListener("mouseleave", function () {
-      createdLabel.innerHTML = "NEW";
-    });
-  } else if (diffDaysUpdated <= 7) {
-    const updatedLabel = document.createElement("span");
-    updatedLabel.className = "updated-label";
-    updatedLabel.innerHTML = "UPDATED";
-    updatedLabel.setAttribute("data-days", diffDaysUpdated);
-    gamesDiv.appendChild(updatedLabel);
-
-    updatedLabel.addEventListener("mouseenter", function () {
-      if (diffDaysUpdated > 1) {
-        updatedLabel.innerHTML = `${diffDaysUpdated} DAYS AGO`;
-      } else if (diffDaysUpdated == 1) {
-        updatedLabel.innerHTML = `1 DAY AGO`;
-      } else {
-        updatedLabel.innerHTML = "TODAY";
-      }
-    });
-
-    updatedLabel.addEventListener("mouseleave", function () {
-      updatedLabel.innerHTML = "UPDATED";
-    });
-  }
-
-  gameLink.appendChild(gameImage);
-  gameLink.appendChild(gameTitle);
-  gamesDiv.appendChild(gameLink);
-  gamesDiv.appendChild(gameSummary);
-  gamesDiv.appendChild(gamePrice);
-
-  if (editable) {
-    gameTitle.contentEditable = true;
-
-    const deleteButton = document.createElement("button");
-    deleteButton.className = "delete-button";
-    deleteButton.innerHTML = "DELETE";
 
     const myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
 
-    deleteButton.addEventListener("click", async function () {
-      const deactivate_product_options = {
+    const uploadImageRequestOptions = {
+      method: "POST",
+      headers: myHeaders,
+      redirect: "follow",
+      body: JSON.stringify({
+        image: imageURI,
+      }),
+    };
+
+    async function uploadProduct(product_image) {
+      try {
+        const uploadRequestOptions = {
+          method: "POST",
+          headers: myHeaders,
+          redirect: "follow",
+          body: JSON.stringify({
+            product: {
+              id: null,
+              name: title_input.value,
+              active: null,
+              description: description_input.innerHTML,
+              metadata: {
+                developer_name: uploader_name,
+                summary: summary_input.value,
+                genre: genre_input.value.toUpperCase(),
+                artstyle: art_input.value.toUpperCase(),
+                age_rating: age,
+                size: Math.round(fileSizeInMB),
+                colors: {
+                  default: true,
+                  bgColor: "",
+                  bg2Color: "",
+                  titleColor: "",
+                  descColor: "",
+                  descBGColor: "",
+                  buttonColor: "",
+                  buttonTextColor: "",
+                  statsColor: "",
+                  statsBGColor: "",
+                }
+              },
+              type: null,
+              attributes: [],
+              caption: null,
+              deactivate_on: [],
+              images: [product_image.url],
+              package_dimensions: {
+                height: null,
+                length: null,
+                weight: null,
+                width: null,
+              },
+              shippable: null,
+              statement_descriptor: null,
+              unit_label: null,
+              url: null,
+            },
+          }),
+        };
+
+        const response = await fetch(
+          upload_product_api_url,
+          uploadRequestOptions
+        );
+        const result = await response.text();
+        const result_parse = JSON.parse(result);
+
+        return result_parse;
+      } catch (error) {
+        warn("There was an error trying to upload a product: " + error);
+      }
+    }
+
+    async function uploadImage() {
+      try {
+        const response = await fetch(
+          upload_image_api_url,
+          uploadImageRequestOptions
+        );
+        const result = await response.text();
+        const result_parse = JSON.parse(result);
+
+        return result_parse;
+      } catch (error) {
+        warn("There was an error trying to upload an image: " + error);
+      }
+    }
+
+    async function updateGenre() {
+      const uploadGenreOptions = {
+        method: "GET",
+        headers: myHeaders,
+        redirect: "follow",
+      };
+    
+      let doesGenreExist = false;
+      let genreData = {};
+    
+      try {
+        const response = await fetch(
+          get_genre_api_url + genre_input.value.toUpperCase(),
+          uploadGenreOptions
+        );
+        const result = await response.text();
+        const resultParse = JSON.parse(result);
+    
+        console.log(resultParse);
+        if (resultParse.message && resultParse.message == "Not Found") {
+          doesGenreExist = false;
+        } else {
+          doesGenreExist = true;
+          genreData = resultParse;
+        };
+      } catch (error) {
+        warn("There was an error trying to upload genre: " + error);
+      };
+    
+      const changeGenreOptions = {
         method: "POST",
         headers: myHeaders,
         redirect: "follow",
         body: JSON.stringify({
-          product: {
-            active: "false",
+          genre_name: genre_input.value.toUpperCase(),
+          games_with_genre: doesGenreExist ? genreData.games_with_genre + 1 : 1,
+        }),
+      };
+    
+      try {
+        const endpointURL = doesGenreExist
+          ? change_genre_api_url + genre_input.value.toUpperCase()
+          : add_genre_api_url;
+          
+        await fetch(endpointURL, changeGenreOptions);
+      } catch (error) {
+        warn("There was an error trying to upload genre: " + error);
+      };
+    };
+
+    async function setProductPrice(product_id) {
+      const priceRequestOptions = {
+        method: "POST",
+        headers: myHeaders,
+        redirect: "follow",
+        body: JSON.stringify({
+          price: {
+            currency: currency,
+            unit_amount: price_input.value * 100,
+            active: null,
+            nickname: "",
+            product: product_id,
+            recurring: {
+              interval: null,
+              aggregate_usage: null,
+              interval_count: null,
+              usage_type: null,
+            },
+            tiers: [],
+            tiers_mode: null,
+            billing_scheme: null,
+            lookup_key: null,
+            product_data: {
+              name: null,
+              active: null,
+              statement_descriptor: null,
+              unit_label: null,
+              metadata: null,
+            },
+            transfer_lookup_key: null,
+            transform_quantity: {
+              divide_by: null,
+              round: null,
+            },
+            unit_amount_decimal: null,
+            metadata: null,
           },
-          id: game.id,
         }),
       };
 
-      async function deactivate_product() {
-        try {
-          const response = await fetch(
-            update_product_url + game.id,
-            deactivate_product_options
-          );
-          await response.text();
-          gamesDiv.remove();
-        } catch (error) {
-          console.warn("There was an error trying to deactivate product: ", err);
-        };
-      };
-
-      await deactivate_product();
-      await update_genre();
-    });
-
-    gamesDiv.appendChild(deleteButton);
-  }
-
-  market.appendChild(gamesDiv);
-}
-
-function levenshteinDistance(a, b) {
-  const dp = Array(a.length + 1)
-    .fill(null)
-    .map(() => Array(b.length + 1).fill(null));
-
-  for (let i = 0; i <= a.length; i++) {
-    dp[i][0] = i;
-  }
-
-  for (let j = 0; j <= b.length; j++) {
-    dp[0][j] = j;
-  }
-
-  for (let i = 1; i <= a.length; i++) {
-    for (let j = 1; j <= b.length; j++) {
-      const indicator = a[i - 1] == b[j - 1] ? 0 : 1;
-      dp[i][j] = Math.min(
-        dp[i - 1][j] + 1,
-        dp[i][j - 1] + 1,
-        dp[i - 1][j - 1] + indicator
-      );
-    }
-  }
-
-  return dp[a.length][b.length];
-}
-
-function calculateSimilarity(a, b) {
-  const distance = levenshteinDistance(a.toLowerCase(), b.toLowerCase());
-  const maxLength = Math.max(a.length, b.length);
-  return 1 - distance / maxLength;
-}
-
-function removePrivateGames() {
-  for (let i = 0; i < games.length; i++) {
-    const game = games[i];
-
-    if (game.active) {
-      continue;
-    } else {
-      let index = games.indexOf(game);
-      games.splice(index, 1);
-    };
-  };
-};
-
-function removeIrrelevantGames() {
-  const similarityThreshold = 0.15;
-
-  for (let i = 0; i < games.length; i++) {
-    const game = games[i];
-
-    if (search_query != null) {
-      const game_name = game.name;
-      const game_summary = game.metadata.summary;
-  
-      const title_similarity = calculateSimilarity(search_query, game_name);
-      const summary_similarity = calculateSimilarity(search_query, game_summary);
-  
-      const game_similarity = 0.7 * title_similarity + 0.3 * summary_similarity;
-  
-      if (game_similarity < similarityThreshold) {
-        let index = games.indexOf(game);
-        games.splice(index, 1);
-      };
-    };
-  };
-};
-
-async function verifyUser() {
-  const data = getCookie("session_id");
-
-  const myHeaders = new Headers();
-  myHeaders.append("Content-Type", "application/json");
-
-  const get_user_options = {
-    method: "GET",
-    headers: myHeaders,
-    redirect: "follow",
-  };
-
-  if (data.Valid) {
-    async function get_user() {
       try {
         const response = await fetch(
-          get_user_url + data.Data,
-          get_user_options
+          set_product_price_url,
+          priceRequestOptions
         );
         const result = await response.text();
         const result_parse = JSON.parse(result);
+
         return result_parse;
       } catch (error) {
-        console.warn("There was an error trying to get user: ", err);
+        warn("There was an error trying to set price: " + error);
       }
     }
 
-    const user = await get_user();
-    return user;
-  }
-}
-
-function loadGamesWithList(list, isDashboard, category) {
-  let gamesInList = 0;
-  for (
-    let i = 0; i < gamesPerCategory;
-    i++
-  ) {
-    const game = games[i];
-
-    if (game && game.active) {
-      const game_price = getGamePrice(game.id.toString());
-
-      if (game_price) {
-        createGamePage(game, game_price, isDashboard, list);
-        gamesInList += 1;
-      };
-    };
-  };
-
-  if (gamesInList > 0) {
-    const categoryNoneElement = category.querySelector(".category-none");
-
-    if (categoryNoneElement) {
-      categoryNoneElement.remove();
-    };
-  };
-};
-
-function sortGames(gameSortType) {
-  if (gameSortType == "newest") {
-    games.sort((a, b) => (a.created > b.created ? -1 : 1));
-  } else if (gameSortType == "upToDate") {
-    games.sort((a, b) => (a.updated > b.updated ? -1 : 1));
-  } else if (gameSortType == "price") {
-    games.sort((a, b) =>
-      getGamePrice(a.id.toString()).price / 100 >
-      getGamePrice(b.id.toString()).price / 100
-        ? -1
-        : 1
-    );
-  };
-};
-
-function loadGenres() {
-  let genresOnList = 0;
-
-  for (
-    let i = 0; i < 5;
-    i++
-  ) {
-    const genre = genres[i];
-
-    if (genre && genre.games_with_genre > 0) {
-      createGenrePage(genre.genre_name, genre.games_with_genre);
-      genresOnList += 1;
-    };
-  };
-
-  if (genresOnList > 0) {
-    const categoryNoneElement = document.getElementById("genres").querySelector(".category-none");
-
-    if (categoryNoneElement) {
-      categoryNoneElement.remove();
-    };
-  };
-}
-
-function loadGames() {
-  sortGames("newest");
-  loadGamesWithList(document.getElementById("newest-games-list"), false, document.getElementById("new-games"));
-
-  sortGames("upToDate");
-  loadGamesWithList(document.getElementById("updated-games-list"), false, document.getElementById("fresh-games"));
-};
-
-async function loadDashboard() {
-  const user = await verifyUser();
-
-  if (user != undefined) {
-    sortGames("newest");
-
-    let gamesInList = 0;
-    for (
-      let i = 0; i < games.length;
-      i++
-    ) {
-      const game = games[i];
-
-      if (game && game.active) {
-        const game_price = getGamePrice(game.id.toString());
-
-        if (game_price && game.metadata.developer_name == user.name) {
-          createGamePage(game, game_price, true, list);
-          gamesInList += 1;
-        };
-      };
-    };
-
-    if (gamesInList > 0) {
-      const categoryNoneElement = category.querySelector(".category-none");
-
-      if (categoryNoneElement) {
-        categoryNoneElement.remove();
-      };
-    };
-  };
-};
-
-async function fetchGamesRequest(isDashboard) {
-  const myHeaders = new Headers();
-  myHeaders.append("Content-Type", "application/json");
-
-  const requestGamesOptions = {
-    method: "GET",
-    headers: myHeaders,
-    redirect: "follow",
-    params: JSON.stringify({
-      "limit": 10000,
-      "active": "true",
-    })
-  };
-
-  const requestOptions = {
-    method: "GET",
-    headers: myHeaders,
-    redirect: "follow",
-  };
-
-  async function setPrices() {
     try {
-      const response = await fetch(games_prices_url, requestOptions);
-      const result = await response.text();
-      const result_parse = JSON.parse(result);
+      error_label.innerHTML = "Uploading image...";
+      const image_metadata = await uploadImage();
 
-      prices = result_parse.data;
+      if (image_metadata) {
+        error_label.innerHTML = "Creating game page...";
 
-      if (prices.length > 0) {
-        prices.sort((a, b) => (a.unit_amount > b.unit_amount ? 1 : -1));
-      }
-    } catch (error) {
-      console.warn("There was an error trying to set prices: ", error);
-    }
-  }
+        if (price_input.value > 0) {
+          const result = await uploadProduct(image_metadata.image.image);
 
-  async function setGenres() {
-    try {
-      const response = await fetch(genre_list_url, requestOptions);
-      const result = await response.text();
-      const result_parse = JSON.parse(result);
-
-      genres = result_parse;
-
-      if (genres.length > 0) {
-        genres.sort((a, b) => (a.games_with_genre > b.games_with_genre ? 1 : -1));
-        loadGenres();
-      };
-    } catch (error) {
-      console.warn("There was an error trying to set genres: ", error);
-    }
-  }
-
-  async function fetchData() {
-    try {
-      const response = await fetch(games_list_api, requestGamesOptions);
-      const result = await response.text();
-      const result_parse = JSON.parse(result);
-
-      games = result_parse.data;
-
-      if (games.length > 0) {
-        removePrivateGames();
-        removeIrrelevantGames();
-  
-        if (isDashboard) {
-          loadDashboard();
+          if (result && result.id) {
+            error_label.innerHTML = "Setting price...";
+            const price = await setProductPrice(result.id);
+            await updateGenre();
+            if (price && price.active) {
+              console.log("Product uploaded successfully!");
+              error_label.innerHTML = "Successfully published game!";
+            }
+          }
         } else {
-          loadGames();
-        };
-      };
+          error_label.innerHTML =
+            "Free games are not able to be put onto the platform just yet.";
+          // Handle uploading game when user sets price to free.
+        }
+      }
     } catch (error) {
-      console.warn("There was an error trying to get games: ", error);
-    };
-  };
-
-  await setPrices();
-  await setGenres();
-  await fetchData();
-};
-
-async function fetchGames(isDashboard) {
-  prices = [];
-  fetchGamesRequest(isDashboard);
-}
-
-function isPathDashboard() {
-  if (window.location.pathname.includes("/dashboard.html")) {
-    return true;
+      console.warn("There was an error trying to publish game: ", error);
+      error_label.innerHTML = "There was an error trying to upload game.";
+    }
+  } else {
+    error_label.innerHTML = "Incomplete form.";
   }
+});
 
-  return false;
+function checkThumbnail() {
+  const input = document.getElementById("thumbnail");
+  const previewImage = document.getElementById("previewImage");
+
+  const reader = new FileReader();
+  const file = input.files[0];
+
+  reader.addEventListener("load", function () {
+    const imageUrl = reader.result;
+    previewImage.src = imageUrl;
+  });
+
+  reader.readAsDataURL(file);
 }
 
-if (!isPathDashboard()) {
-  document.getElementById("search-query").value = search_query;
+function checkFileSize() {
+  const input = document.getElementById("download-file");
+  const warn = document.getElementById("game-file-warn");
+
+  const file = input.files[0];
+  const maxFileSize = 5 * (1024 * 1024 * 1024);
+
+  if (file.size > maxFileSize) {
+    warn.innerHTML = `File size too large. Select a file under 
+    ${maxFileSize / (1024 * 1024 * 1024)}
+    GB`;
+    input.value = "";
+  } else {
+    warn.innerHTML = "";
+  }
+}
+
+function checkIsFree() {
+  const isfree = document.getElementById("isfree");
+  const input = document.getElementById("price");
+
+  if (!isfree.checked) {
+    checkPrice();
+  } else {
+    input.value = 0;
+  }
+}
+
+function checkPrice() {
+  const input = document.getElementById("price");
+  const isfree = document.getElementById("isfree");
+
+  const minPrice = 1;
+  const maxPrice = 5000;
+
+  input.value = input.value.replace(/[^0-9]/g, "");
+
+  if (!isfree.checked) {
+    if (input.value < minPrice) {
+      input.value = minPrice;
+    }
+
+    if (input.value > maxPrice) {
+      input.value = maxPrice;
+    }
+  } else {
+    input.value = 0;
+  }
+}
+
+const game_thumbnail = document.getElementById("thumbnail");
+const game_price = document.getElementById("price");
+const game_isfree = document.getElementById("isfree");
+const game_title = document.getElementById("title");
+const game_summary = document.getElementById("summary");
+
+checkIsFree();
+
+game_thumbnail.onchange = function () {
+  checkThumbnail();
 };
-fetchGames(isPathDashboard());
+
+game_isfree.onchange = function () {
+  checkIsFree();
+};
+
+game_price.addEventListener("input", function() {
+  checkPrice();
+})
+
+game_title.addEventListener("input", function() {
+  this.style.width = (this.value.length + 1) * 10 + "px";
+});
+
+game_summary.addEventListener("input", function() {
+  this.style.width = (this.value.length + 1) * 10 + "px";
+});
