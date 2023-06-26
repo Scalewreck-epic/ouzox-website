@@ -967,6 +967,12 @@ p {
   width: 80%;
   margin: auto;
   background-color: #19191c;
+  box-shadow: 0 1rem 1rem black;
+  transition: transform 0.3s ease;
+}
+
+.dashboard:hover {
+  transform: scale(1.05);
 }
 
 .market {
