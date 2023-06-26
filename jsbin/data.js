@@ -377,7 +377,7 @@ async function loadDashboard() {
         const game_price = getGamePrice(game.id.toString());
 
         if (game_price && game.metadata.developer_name == user.name) {
-          createGamePage(game, game_price, isDashboard, list);
+          createGamePage(game, game_price, true, list);
           gamesInList += 1;
         };
       };
