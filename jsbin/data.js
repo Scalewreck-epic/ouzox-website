@@ -469,8 +469,11 @@ async function fetchGamesRequest(isDashboard) {
     };
   };
 
+  if (!isDashboard) {
+    await setGenres();
+  }
+
   await setPrices();
-  await setGenres();
   await fetchData();
 };
 
