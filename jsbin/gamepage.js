@@ -75,17 +75,16 @@ async function retrieveGameData(gameId) {
   const updatedYearsAgo = updatedDaysAgo / 365;
 
   const metadata = rawGameData.metadata;
-  const metadata_colors = metadata.colors;
 
   const colors = {
-    bgColor: metadata_colors.bgColor,
-    bg2Color: metadata_colors.bg2Color,
-    titleColor: metadata_colors.titleColor,
-    descColor: metadata_colors.descColor,
-    buttonColor: metadata_colors.buttonColor,
-    buttonTextColor: metadata_colors.buttonTextColor,
-    statsColor: metadata_colors.statsColor,
-    statsBGColor: metadata_colors.statsBGColor,
+    bgColor: metadata.bgColor,
+    bg2Color: metadata.bg2Color,
+    titleColor: metadata.titleColor,
+    descColor: metadata.descColor,
+    buttonColor: metadata.buttonColor,
+    buttonTextColor: metadata.buttonTextColor,
+    statsColor: metadata.statsColor,
+    statsBGColor: metadata.statsBGColor,
   };
 
   const datestodays = {
@@ -119,7 +118,7 @@ async function retrieveGameData(gameId) {
     created: createdFormattedDate,
     updated: updatedFormattedDate,
     datestodays: datestodays,
-    useDefaultColors: metadata_colors.default,
+    useDefaultColors: metadata.default,
     colors: colors,
     price: priceData,
   };
@@ -337,18 +336,16 @@ const gameHandler = async (gameId) => {
                 description: game_desc.innerHTML,
                 metadata: {
                   summary: game_summary.innerHTML,
-                  colors: {
-                    default: false,
-                    bgColor: document.body.style.backgroundColor,
-                    bg2Color: document.getElementById("game-column").style.backgroundColor,
-                    titleColor: document.getElementById("game-title-column").style.color,
-                    descColor: document.getElementById("game-description").style.color,
-                    descBGColor: document.getElementById("game-description").style.backgroundColor,
-                    buttonColor: document.getElementById("download-button").style.backgroundColor,
-                    buttonTextColor: document.getElementById("download-button").style.color,
-                    statsColor: document.getElementsByClassName("game-stat")[0].style.color,
-                    statsBGColor: document.getElementById("game-stats").style.backgroundColor,
-                  },
+                  defaultColors: false,
+                  bgColor: document.body.style.backgroundColor,
+                  bg2Color: document.getElementById("game-column").style.backgroundColor,
+                  titleColor: document.getElementById("game-title-column").style.color,
+                  descColor: document.getElementById("game-description").style.color,
+                  descBGColor: document.getElementById("game-description").style.backgroundColor,
+                  buttonColor: document.getElementById("download-button").style.backgroundColor,
+                  buttonTextColor: document.getElementById("download-button").style.color,
+                  statsColor: document.getElementsByClassName("game-stat")[0].style.color,
+                  statsBGColor: document.getElementById("game-stats").style.backgroundColor,
                 },
               },
               id: realGameId,
