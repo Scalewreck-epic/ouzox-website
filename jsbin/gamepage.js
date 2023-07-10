@@ -28,8 +28,8 @@ async function retrieveGameData(gameId) {
       console.warn("There was an error trying to get price: ", error);
       console.warn("Redirecting to 404 error page.");
       window.location.assign("404.html");
-    };
-  };
+    }
+  }
 
   const rawPriceData = await getPriceData();
   const rawGameData = rawPriceData.product;
@@ -102,7 +102,7 @@ async function retrieveGameData(gameId) {
     id: rawPriceData.id,
     currency: rawPriceData.currency.toUpperCase(),
     amount: parseFloat(rawPriceData.unit_amount / 100),
-  }
+  };
 
   const gameData = {
     id: rawGameData.id,
@@ -140,6 +140,7 @@ const gameHandler = async (gameId) => {
     const icon = document.getElementById("icon");
 
     const developer_name = document.getElementById("game-developer-name");
+    const download_button = document.getElementById("download-button");
     const game_genre = document.getElementById("game-genre");
     const game_summary = document.getElementById("game-summary");
     const game_art = document.getElementById("game-art");
@@ -150,24 +151,51 @@ const gameHandler = async (gameId) => {
     // main data
     game_title.innerHTML = gameData.name;
     game_desc.innerHTML = gameData.description;
-    game_price.innerHTML = gameData.price.amount + " " + gameData.price.currency;
+    game_price.innerHTML =
+      gameData.price.amount + " " + gameData.price.currency;
 
-    function formatTimeAgo(createdOrUpdated, publishedOrUpdatedYearsAgo, publishedOrUpdatedMonthsAgo, publishedOrUpdatedWeeksAgo, publishedOrUpdatedDaysAgo) {
+    function formatTimeAgo(
+      createdOrUpdated,
+      publishedOrUpdatedYearsAgo,
+      publishedOrUpdatedMonthsAgo,
+      publishedOrUpdatedWeeksAgo,
+      publishedOrUpdatedDaysAgo
+    ) {
       if (publishedOrUpdatedYearsAgo > 1) {
-        return createdOrUpdated + " (" + publishedOrUpdatedYearsAgo + " Years Ago)";
+        return (
+          createdOrUpdated + " (" + publishedOrUpdatedYearsAgo + " Years Ago)"
+        );
       } else if (publishedOrUpdatedMonthsAgo > 1) {
-        return createdOrUpdated + " (" + publishedOrUpdatedMonthsAgo + " Months Ago)";
+        return (
+          createdOrUpdated + " (" + publishedOrUpdatedMonthsAgo + " Months Ago)"
+        );
       } else if (publishedOrUpdatedWeeksAgo > 1) {
-        return createdOrUpdated + " (" + publishedOrUpdatedWeeksAgo + " Weeks Ago)";
+        return (
+          createdOrUpdated + " (" + publishedOrUpdatedWeeksAgo + " Weeks Ago)"
+        );
       } else if (publishedOrUpdatedDaysAgo > 1) {
-        return createdOrUpdated + " (" + publishedOrUpdatedDaysAgo + " Days Ago)";
+        return (
+          createdOrUpdated + " (" + publishedOrUpdatedDaysAgo + " Days Ago)"
+        );
       } else {
         return "Today";
-      };
-    };
-    
-    created.innerHTML = formatTimeAgo(gameData.created, gameData.datestodays.publishedYearsAgo, gameData.datestodays.publishedMonthsAgo, gameData.datestodays.publishedWeeksAgo, gameData.datestodays.publishedDaysAgo);
-    updated.innerHTML = formatTimeAgo(gameData.updated, gameData.datestodays.updatedYearsAgo, gameData.datestodays.updatedMonthsAgo, gameData.datestodays.updatedWeeksAgo, gameData.datestodays.updatedDaysAgo);
+      }
+    }
+
+    created.innerHTML = formatTimeAgo(
+      gameData.created,
+      gameData.datestodays.publishedYearsAgo,
+      gameData.datestodays.publishedMonthsAgo,
+      gameData.datestodays.publishedWeeksAgo,
+      gameData.datestodays.publishedDaysAgo
+    );
+    updated.innerHTML = formatTimeAgo(
+      gameData.updated,
+      gameData.datestodays.updatedYearsAgo,
+      gameData.datestodays.updatedMonthsAgo,
+      gameData.datestodays.updatedWeeksAgo,
+      gameData.datestodays.updatedDaysAgo
+    );
 
     icon.setAttribute("href", gameData.icon);
     navigation_title.innerHTML =
@@ -179,7 +207,7 @@ const gameHandler = async (gameId) => {
     game_summary.innerHTML = gameData.summary;
     game_art.innerHTML = gameData.artstyle.toUpperCase();
     game_age.innerHTML = gameData.agerating.toUpperCase();
-    game_size.innerHTML = gameData.size+" MB";
+    game_size.innerHTML = gameData.size + " MB";
 
     if (!gameData.useDefaultColors) {
       const elements = document.getElementsByClassName("game-stat");
@@ -225,7 +253,7 @@ const gameHandler = async (gameId) => {
 
         if (text.length > 120) {
           this.innerHTML = text.slice(0, 120);
-        };
+        }
       });
 
       game_summary.addEventListener("input", function () {
@@ -233,7 +261,7 @@ const gameHandler = async (gameId) => {
 
         if (text.length > 120) {
           this.innerHTML = text.slice(0, 120);
-        };
+        }
       });
 
       game_desc.addEventListener("input", function () {
@@ -241,7 +269,7 @@ const gameHandler = async (gameId) => {
 
         if (text.length > 4000) {
           this.innerHTML = text.slice(0, 4000);
-        };
+        }
       });
 
       function create_stat(stat_name) {
@@ -291,8 +319,9 @@ const gameHandler = async (gameId) => {
           changeDescColor.value;
       };
 
-      changeDescBGColor.onchange = function() {
-        document.getElementById("game-description").style.backgroundColor = changeDescBGColor.value;
+      changeDescBGColor.onchange = function () {
+        document.getElementById("game-description").style.backgroundColor =
+          changeDescBGColor.value;
       };
 
       changeButtonColor.onchange = function () {
@@ -305,14 +334,16 @@ const gameHandler = async (gameId) => {
           changeButtonText.value;
       };
 
-      changeStatsColor.value = document.getElementById("game-stats").style.color;
+      changeStatsColor.value =
+        document.getElementById("game-stats").style.color;
       changeStatsColor.onchange = function () {
         const game_stats = document.getElementById("game-stats");
         game_stats.style.color = changeStatsColor.value;
       };
 
-      changeStatsBGColor.value = document.getElementById("game-stats").style.backgroundColor;
-      changeStatsBGColor.onchange = function() {
+      changeStatsBGColor.value =
+        document.getElementById("game-stats").style.backgroundColor;
+      changeStatsBGColor.onchange = function () {
         const game_stats = document.getElementById("game-stats");
         game_stats.style.backgroundColor = changeStatsBGColor.value;
       };
@@ -338,14 +369,25 @@ const gameHandler = async (gameId) => {
                   summary: game_summary.innerHTML,
                   defaultColors: false,
                   bgColor: document.body.style.backgroundColor,
-                  bg2Color: document.getElementById("game-column").style.backgroundColor,
-                  titleColor: document.getElementById("game-title-column").style.color,
-                  descColor: document.getElementById("game-description").style.color,
-                  descBGColor: document.getElementById("game-description").style.backgroundColor,
-                  buttonColor: document.getElementById("download-button").style.backgroundColor,
-                  buttonTextColor: document.getElementById("download-button").style.color,
-                  statsColor: document.getElementsByClassName("game-stat")[0].style.color,
-                  statsBGColor: document.getElementById("game-stats").style.backgroundColor,
+                  bg2Color:
+                    document.getElementById("game-column").style
+                      .backgroundColor,
+                  titleColor:
+                    document.getElementById("game-title-column").style.color,
+                  descColor:
+                    document.getElementById("game-description").style.color,
+                  descBGColor:
+                    document.getElementById("game-description").style
+                      .backgroundColor,
+                  buttonColor:
+                    document.getElementById("download-button").style
+                      .backgroundColor,
+                  buttonTextColor:
+                    document.getElementById("download-button").style.color,
+                  statsColor:
+                    document.getElementsByClassName("game-stat")[0].style.color,
+                  statsBGColor:
+                    document.getElementById("game-stats").style.backgroundColor,
                 },
               },
               id: realGameId,
@@ -362,7 +404,10 @@ const gameHandler = async (gameId) => {
                 commitChangesButton.innerHTML = "Success";
               } catch (error) {
                 commitChangesButton.innerHTML = "An error occured";
-                console.log("There was an error trying to update the product:" , error);
+                console.log(
+                  "There was an error trying to update the product:",
+                  error
+                );
                 showError(error, false);
               }
             } else {
@@ -386,7 +431,7 @@ const gameHandler = async (gameId) => {
   } else {
     console.warn("There is no valid game id.");
     window.location.assign("404.html");
-  };
+  }
 };
 
 if (gameIdParam != null) {
@@ -394,4 +439,4 @@ if (gameIdParam != null) {
 } else {
   console.warn("There is no game id.");
   window.location.assign("404.html");
-};
+}
