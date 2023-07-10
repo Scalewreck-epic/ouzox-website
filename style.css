@@ -95,7 +95,6 @@ body {
   width: 45%;
   padding: 5rem;
   border-radius: 0.5rem;
-  box-shadow: 0 1rem 1rem black;
   margin: auto;
   text-align: center;
   color: white;
@@ -104,8 +103,35 @@ body {
   transition: transform 0.3s ease;
 }
 
-.errorpage:hover {
+.downloadpage {
+  width: 45%;
+  padding: 3rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 1rem 1rem black;
+  margin: auto;
+  color: white;
+  background-color: #19191c;
+  transition: transform 0.3s ease;
+}
+
+.title-block {
+  margin-bottom: 3rem;
+}
+
+.errorpage:hover
+.downloadpage:hover {
   transform: scale(1.05);
+}
+
+.downloadpage h1 {
+  width: 100%;
+  font-weight: bold;
+  margin: 0;
+}
+
+.downloadpage h2 {
+  width: 100%;
+  margin: 0;
 }
 
 .errorpage h1 {
@@ -131,7 +157,8 @@ body {
   margin-bottom: 2rem;
 }
 
-.errorpage a {
+.errorpage a,
+.downloadpage a {
   width: 100%;
   font-size: 1.25rem;
   font-weight: bold;
@@ -146,9 +173,7 @@ body {
   box-sizing: border-box;
   background-color: #19191c;
   color: #64646a;
-  flex-grow: 1;
   min-height: 4rem;
-  bottom: 0;
   padding: 2.5rem 0;
   width: 100%;
 }
@@ -455,7 +480,7 @@ p {
 }
 
 .acceptance-label {
-  display: inline-block;
+  display: block;
   font-size: 1.25rem;
   color: #fff;
   margin: 0.313rem;
@@ -575,7 +600,9 @@ p {
 }
 
 .load-button-div {
+  margin-top: 0.5rem;
   text-align: center;
+  margin-bottom: 5rem;
 }
 
 .download-button,
