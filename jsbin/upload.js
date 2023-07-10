@@ -85,6 +85,7 @@ uploadGame.addEventListener("submit", async function (event) {
               description: description_input.innerHTML,
               metadata: {
                 developer_name: uploader_name,
+                file_name: file.name,
                 summary: summary_input.value,
                 genre: genre_input.value.toUpperCase(),
                 artstyle: art_input.value.toUpperCase(),
@@ -306,12 +307,10 @@ function checkFileSize() {
   const warn = document.getElementById("game-file-warn");
 
   const file = input.files[0];
-  const maxFileSize = 5 * (1024 * 1024 * 1024);
+  const maxFileSize = 5368709120;
 
   if (file.size > maxFileSize) {
-    warn.innerHTML = `File size too large. Select a file under 
-    ${maxFileSize / (1024 * 1024 * 1024)}
-    GB`;
+    warn.innerHTML = "File size too large, select a file under 5GB";
     input.value = "";
   } else {
     warn.innerHTML = "";
