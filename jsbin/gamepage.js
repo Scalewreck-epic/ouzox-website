@@ -198,8 +198,7 @@ const gameHandler = async (gameId) => {
     );
 
     icon.setAttribute("href", gameData.icon);
-    navigation_title.innerHTML =
-      gameData.name + " By " + gameData.developer_name;
+    navigation_title.innerHTML = `${gameData.name} By ${gameData.developer_name}`
 
     // metadata
     developer_name.innerHTML = gameData.developer_name;
@@ -207,7 +206,7 @@ const gameHandler = async (gameId) => {
     game_summary.innerHTML = gameData.summary;
     game_art.innerHTML = gameData.artstyle.toUpperCase();
     game_age.innerHTML = gameData.agerating.toUpperCase();
-    game_size.innerHTML = gameData.size + " MB";
+    game_size.innerHTML = `${gameData.filesize} MB`;
 
     if (!gameData.useDefaultColors) {
       const elements = document.getElementsByClassName("game-stat");
@@ -435,7 +434,7 @@ const gameHandler = async (gameId) => {
 };
 
 if (gameIdParam != null) {
-  gameHandler("price_" + gameIdParam);
+  gameHandler(`price_${gameIdParam}`);
 } else {
   console.warn("There is no game id.");
   window.location.assign("404.html");
