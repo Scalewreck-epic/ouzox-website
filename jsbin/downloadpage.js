@@ -43,4 +43,9 @@ async function setGameData(gameId, priceId) {
     return_button.setAttribute("a", `game.html?g=${priceId}`);
 }
 
-setGameData("prod_"+gameIdParam, "price_"+priceIdParam);
+if (gameIdParam && priceIdParam) {
+  setGameData(`prod_${gameIdParam}, "price_${priceIdParam}`);
+} else {
+  console.warn("There are no params.");
+  window.location.assign("404.html");
+}
