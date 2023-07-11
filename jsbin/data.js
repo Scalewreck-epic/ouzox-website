@@ -368,6 +368,8 @@ function loadGames() {
     false,
     document.getElementById("fresh-games")
   );
+
+  console.info("Data sorted: Projects");
 }
 
 async function loadDashboard() {
@@ -393,10 +395,13 @@ async function loadDashboard() {
 
     if (gamesInList > 0) {
       const categoryNoneElement = category.querySelector(".category-none");
+      console.info("Data sorted: Your Projects");
 
       if (categoryNoneElement) {
         categoryNoneElement.remove();
       }
+    } else {
+      console.info("There are no projects");
     }
   }
 }
@@ -431,6 +436,7 @@ async function fetchGamesRequest(isDashboard) {
 
       if (prices.length > 0) {
         prices.sort((a, b) => (a.unit_amount > b.unit_amount ? 1 : -1));
+        console.info("Data loaded: Prices");
       }
     } catch (error) {
       console.warn("There was an error trying to set prices: ", error);
@@ -450,6 +456,7 @@ async function fetchGamesRequest(isDashboard) {
           a.games_with_genre > b.games_with_genre ? 1 : -1
         );
         loadGenres();
+        console.info("Data loaded: Genres");
       }
     } catch (error) {
       console.warn("There was an error trying to set genres: ", error);
@@ -468,6 +475,7 @@ async function fetchGamesRequest(isDashboard) {
         removePrivateGames();
         removeIrrelevantGames();
 
+        console.info("Data loaded: Projects");
         if (isDashboard) {
           loadDashboard();
         } else {
