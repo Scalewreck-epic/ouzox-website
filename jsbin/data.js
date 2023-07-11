@@ -371,6 +371,7 @@ function loadGames() {
 }
 
 async function loadDashboard() {
+  const category = document.getElementById("dashboard-market")
   const user = await verifyUser();
 
   if (user != undefined) {
@@ -384,7 +385,7 @@ async function loadDashboard() {
         const game_price = getGamePrice(game.id.toString());
 
         if (game_price && game.metadata.developer_name == user.name) {
-          createGamePage(game, game_price, true, document.getElementById("dashboard-market"));
+          createGamePage(game, game_price, true, category);
           gamesInList += 1;
         }
       }
