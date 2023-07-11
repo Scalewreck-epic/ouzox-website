@@ -34,9 +34,11 @@ async function setGameData(gameId, priceId) {
     const devname = document.getElementById("dev-name");
     const return_button = document.getElementById("game-page");
     const file_name = document.getElementById("file-name");
+    const nav_title = document.getElementById("navigation-title");
 
-    title.innerHTML = gameData.name;
-    devname.innerHTML = gameData.metadata.developer_name;
+    title.innerHTML = `Download: "${gameData.name}"`;
+    nav_title.innerHTML = `Download ${gameData.name}`;
+    devname.innerHTML = `By: ${gameData.metadata.developer_name}`;
     file_name.innerHTML = gameData.metadata.file_name;
     return_button.setAttribute("a", `game.html?g=${priceId}`);
 }
