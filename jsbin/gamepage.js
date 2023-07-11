@@ -231,11 +231,9 @@ const gameHandler = async (gameId) => {
         gameData.colors.statsBGColor;
     }
 
-    document
-      .getElementById("download-button")
-      .addEventListener("click", function () {
-        // send user to the stripe payment session
-      });
+    download_button.addEventListener("click", function() {
+      window.location.assign(`download.html?g=${realGameId}&p=${gameId}`);
+    })
 
     const user = await getUser();
 
