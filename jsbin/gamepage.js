@@ -232,7 +232,9 @@ const gameHandler = async (gameId) => {
     }
 
     download_button.addEventListener("click", function() {
-      window.location.assign(`download.html?g=${realGameId}&p=${gameId}`);
+      const newGameId = realGameId.replace(/^prod_/, "");
+      const newPriceId = gameId.replace(/^price_/, "");
+      window.location.assign(`download.html?g=${newGameId}&p=${newPriceId}`);
     })
 
     const user = await getUser();
