@@ -12,7 +12,7 @@ import { getCookie } from "./exportuser.js";
 
 const urlParams = new URLSearchParams(window.location.search);
 const search_query = urlParams.get("q");
-const category_name = urlParams.get("c");
+const category_name = urlParams.get("n");
 
 const gamesPerCategory = 20;
 //let lastGame;
@@ -538,7 +538,7 @@ if (document.getElementById("search-query") != null) {
 }
 
 if (window.location.pathname.includes("/category.html")) {
-  const search_label = document.getElementById("search_label");
+  const search_label = document.getElementById("search-label");
   search_label.innerHTML = `Top '${category_name}' Games`
 }
 
