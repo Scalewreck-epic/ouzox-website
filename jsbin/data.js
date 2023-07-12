@@ -355,19 +355,28 @@ function loadGenres() {
 }
 
 function loadGames() {
-  sortGames("newest");
-  loadGamesWithList(
-    document.getElementById("newest-games-list"),
-    false,
-    document.getElementById("new-games")
-  );
-
-  sortGames("upToDate");
-  loadGamesWithList(
-    document.getElementById("updated-games-list"),
-    false,
-    document.getElementById("fresh-games")
-  );
+  if (window.location.pathname.includes("/search")) {
+    sortGames("upToDate");
+    loadGamesWithList(
+      document.getElementById("relevant-games-list"),
+      false,
+      document.getElementById("relevant-games"),
+    );
+  } else {
+    sortGames("newest");
+    loadGamesWithList(
+      document.getElementById("newest-games-list"),
+      false,
+      document.getElementById("new-games")
+    );
+  
+    sortGames("upToDate");
+    loadGamesWithList(
+      document.getElementById("updated-games-list"),
+      false,
+      document.getElementById("fresh-games")
+    );
+  };
 
   console.info("Data sorted: Projects");
 }
