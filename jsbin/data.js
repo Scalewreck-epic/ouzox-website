@@ -12,6 +12,7 @@ import { getCookie } from "./exportuser.js";
 
 const urlParams = new URLSearchParams(window.location.search);
 const search_query = urlParams.get("q");
+const category_name = urlParams.get("c");
 
 const gamesPerCategory = 20;
 //let lastGame;
@@ -52,6 +53,10 @@ function createGenrePage(name, amount) {
 
   genre_name.innerHTML = name;
   genre_games_amount.innerHTML = amount + " games";
+
+  genre_button.addEventListener("click", function () {
+    window.location.assign(`category.html?n=${name}`);
+  })
 
   genre_button.appendChild(genre_name);
   genre_button.appendChild(genre_games_amount);
@@ -253,6 +258,17 @@ function removeIrrelevantGames() {
       const game_similarity = 0.7 * title_similarity + 0.3 * summary_similarity;
 
       if (game_similarity < similarityThreshold) {
+        let index = games.indexOf(game);
+        games.splice(index, 1);
+      }
+    }
+
+    if (category_name != null) {
+      const game_genre = game.metadata.genre;
+
+      if (game_genre == category_name) {
+        continue;
+      } else {
         let index = games.indexOf(game);
         games.splice(index, 1);
       }
