@@ -360,6 +360,7 @@ function loadGenres() {
   }
 
   if (genresOnList > 0) {
+    console.info("Data sorted: Genres");
     const categoryNoneElement = document
       .getElementById("genres")
       .querySelector(".category-none");
@@ -371,7 +372,7 @@ function loadGenres() {
 }
 
 function loadGames() {
-  if (window.location.pathname.includes("/search")) {
+  if (window.location.pathname.includes("/search") || window.location.pathname.includes("/category")) {
     sortGames("upToDate");
     loadGamesWithList(
       document.getElementById("relevant-games-list"),
@@ -426,7 +427,7 @@ async function loadDashboard() {
         categoryNoneElement.remove();
       }
     } else {
-      console.info("There are no projects");
+      console.info("User creates no games.");
     }
   }
 }
@@ -461,7 +462,7 @@ async function fetchGamesRequest(isDashboard) {
 
       if (prices.length > 0) {
         prices.sort((a, b) => (a.unit_amount > b.unit_amount ? 1 : -1));
-        console.info("Data loaded: Prices");
+        console.info("Data loaded & sorted: Prices");
       }
     } catch (error) {
       console.warn("There was an error trying to set prices: ", error);
