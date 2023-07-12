@@ -112,7 +112,7 @@ async function retrieveGameData(gameId) {
     genre: rawGameData.metadata.genre,
     summary: rawGameData.metadata.summary,
     artstyle: rawGameData.metadata.artstyle,
-    filesize: rawGameData.size,
+    filesize: rawGameData.metadata.size,
     agerating: rawGameData.metadata.age_rating,
     icon: rawGameData.images[0],
     created: createdFormattedDate,
