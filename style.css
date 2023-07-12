@@ -305,8 +305,8 @@ p {
   position: relative;
   display: inline-block;
   font-size: 1rem;
-  border-radius: 0.313rem;
-  padding: 0.313rem;
+  border-radius: 0.3rem;
+  padding: 0.3rem;
   font-family: "Secular One", sans-serif;
   color: #fff;
   background-color: #292929;
@@ -353,7 +353,7 @@ p {
   color: #fff;
   background-color: #292929;
   box-shadow: 0 0.5rem 0.5rem black;
-  border-radius: 0.3rem;
+  border-radius: 0.5rem;
   cursor: text;
   transition: background-color 0.3s ease-in-out;
 }
@@ -626,7 +626,7 @@ p {
 }
 
 .game:hover {
-  transform: scale(1.1);
+  transform: scale(0.9);
   box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.2);
 }
 
@@ -970,9 +970,9 @@ p {
   background-color: #46464c;
   color: white;
   font-weight: bold;
-  padding: 0.5rem 3rem;
+  padding: 0.5rem 1rem;
   border-radius: 1rem;
-  margin: 0 0.25rem;
+  margin: 0 0.5rem;
   width: auto;
   box-shadow: 0 0.1rem 0.5rem black;
   transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
@@ -983,6 +983,7 @@ p {
   display: block;
   margin: 0;
   text-align: center;
+  width: 100%;
 }
 
 .genre-button h4 {
