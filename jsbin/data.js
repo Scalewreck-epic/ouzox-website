@@ -550,8 +550,12 @@ function isPathDashboard() {
 
 if (document.getElementById("search-query") != null) {
   const search_label = document.getElementById("search-label");
-  document.getElementById("search-query").value = search_query;
-  search_label.innerHTML = `Top search results for '${search_query}'`
+  const search_query2 = document.getElementById("search-query")
+
+  search_query2.value = search_query;
+  if (search_label != null) {
+    search_label.innerHTML = `Top search results for '${search_query}'`
+  }
 }
 
 if (window.location.pathname.includes("/category.html")) {
