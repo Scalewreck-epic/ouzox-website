@@ -61,7 +61,7 @@ function createGenrePage(name, amount) {
   genre_button.appendChild(genre_name);
   genre_button.appendChild(genre_games_amount);
 
-  document.getElementById("genres").appendChild(genre_button);
+  document.getElementById("genres-list").appendChild(genre_button);
 }
 
 function createGamePage(game, game_price, editable, market) {
@@ -271,6 +271,20 @@ function removeIrrelevantGames() {
       } else {
         let index = games.indexOf(game);
         games.splice(index, 1);
+      }
+    }
+  }
+
+  for (let i = 0; i < genres.length; i++) {
+    const genre = genres[i];
+
+    if (search_query != null) {
+      const genre_name = genre.genre_name;
+      const genre_similarity = calculateSimilarity(search_query, genre_name);
+
+      if (genre_similarity < similarityThreshold) {
+        let index = genres.indexOf(genre);
+        genres.splice(index, 1);
       }
     }
   }
@@ -535,7 +549,9 @@ function isPathDashboard() {
 }
 
 if (document.getElementById("search-query") != null) {
+  const search_label = document.getElementById("search-label");
   document.getElementById("search-query").value = search_query;
+  search_label.innerHTML = `Top search results for '${search_query}'`
 }
 
 if (window.location.pathname.includes("/category.html")) {
