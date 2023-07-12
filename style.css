@@ -107,20 +107,20 @@ body {
   width: 45%;
   padding: 3rem;
   border-radius: 0.5rem;
-  box-shadow: 0 1rem 1rem black;
   margin: auto;
   color: white;
   background-color: #19191c;
+  box-shadow: 0 1rem 1rem black;
   transition: transform 0.3s ease;
+}
+
+.errorpage:hover,
+.downloadpage:hover {
+  transform: scale(1.05);
 }
 
 .title-block {
   margin-bottom: 3rem;
-}
-
-.errorpage:hover
-.downloadpage:hover {
-  transform: scale(1.05);
 }
 
 .downloadpage h1 {
@@ -751,6 +751,7 @@ p {
   font-weight: bold;
   color: white;
   opacity: 0.3;
+  width: 100%;
 }
 
 .columns {
