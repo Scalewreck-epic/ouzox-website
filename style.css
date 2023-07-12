@@ -105,6 +105,7 @@ body {
 
 .downloadpage {
   width: 45%;
+  height: 16rem;
   padding: 3rem;
   border-radius: 0.5rem;
   margin: auto;
@@ -751,7 +752,6 @@ p {
   font-weight: bold;
   color: white;
   opacity: 0.3;
-  width: 100%;
 }
 
 .columns {
