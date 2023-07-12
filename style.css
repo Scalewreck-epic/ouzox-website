@@ -958,6 +958,12 @@ p {
   font-size: 5rem;
 }
 
+.search-label {
+  color: white;
+  font-size: 3rem;
+  margin-left: 5rem;
+}
+
 .genre-button {
   display: inline-block;
   background-color: #46464c;
