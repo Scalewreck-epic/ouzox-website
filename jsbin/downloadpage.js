@@ -44,7 +44,7 @@ async function setGameData(gameId, priceId) {
 }
 
 if (gameIdParam && priceIdParam) {
-  setGameData(`prod_${gameIdParam}, "price_${priceIdParam}`);
+  setGameData(`prod_${gameIdParam}`, `price_${priceIdParam}`);
 } else {
   console.warn("There are no params.");
   window.location.assign("404.html");
