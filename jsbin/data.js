@@ -533,7 +533,13 @@ function isPathDashboard() {
   return false;
 }
 
-if (!isPathDashboard()) {
+if (document.getElementById("search-query") != null) {
   document.getElementById("search-query").value = search_query;
 }
+
+if (window.location.pathname.includes("/category.html")) {
+  const search_label = document.getElementById("search_label");
+  search_label.innerHTML = `Top '${category_name}' Games`
+}
+
 fetchGames(isPathDashboard());
