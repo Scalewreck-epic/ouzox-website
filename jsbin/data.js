@@ -242,49 +242,49 @@ function removePrivateGames() {
 function removeIrrelevantGames() {
   const similarityThreshold = 0.15;
 
-  for (let i = 0; i < games.length; i++) {
-    const game = games[i];
-
-    if (search_query != null) {
+  if (search_query != null) {
+    for (let i = 0; i < genres.length; i++) {
+      const genre = genres[i];
+  
+      if (search_query != null) {
+        const genre_name = genre.genre_name;
+        const genre_similarity = calculateSimilarity(search_query, genre_name);
+  
+        if (genre_similarity < similarityThreshold) {
+          console.log(similarityThreshold);
+          let index = genres.indexOf(genre);
+          genres.splice(index, 1);
+        }
+      }
+    }
+  
+    for (let i = 0; i < games.length; i++) {
+      const game = games[i];
       const game_name = game.name;
       const game_summary = game.metadata.summary;
-
+  
       const title_similarity = calculateSimilarity(search_query, game_name);
       const summary_similarity = calculateSimilarity(
         search_query,
         game_summary
       );
-
+  
       const game_similarity = 0.7 * title_similarity + 0.3 * summary_similarity;
-
+  
       if (game_similarity < similarityThreshold) {
         let index = games.indexOf(game);
         games.splice(index, 1);
       }
-    }
-
-    if (category_name != null) {
-      const game_genre = game.metadata.genre;
-
-      if (game_genre == category_name) {
-        continue;
-      } else {
-        let index = games.indexOf(game);
-        games.splice(index, 1);
-      }
-    }
-  }
-
-  for (let i = 0; i < genres.length; i++) {
-    const genre = genres[i];
-
-    if (search_query != null) {
-      const genre_name = genre.genre_name;
-      const genre_similarity = calculateSimilarity(search_query, genre_name);
-
-      if (genre_similarity < similarityThreshold) {
-        let index = genres.indexOf(genre);
-        genres.splice(index, 1);
+  
+      if (category_name != null) {
+        const game_genre = game.metadata.genre;
+    
+        if (game_genre == category_name) {
+          continue;
+        } else {
+          let index = games.indexOf(game);
+          games.splice(index, 1);
+        }
       }
     }
   }
