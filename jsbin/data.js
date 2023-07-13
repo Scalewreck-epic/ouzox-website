@@ -376,7 +376,7 @@ function loadGenres() {
   if (genresOnList > 0) {
     console.info("Data sorted: Genres");
     const categoryNoneElement = document
-      .getElementById("genres")
+      .getElementById("genres-list")
       .querySelector(".category-none");
 
     if (categoryNoneElement) {
