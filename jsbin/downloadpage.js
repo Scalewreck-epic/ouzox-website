@@ -40,7 +40,7 @@ async function setGameData(gameId, priceId) {
     nav_title.innerHTML = `Download ${gameData.name}`;
     devname.innerHTML = `By: ${gameData.metadata.developer_name}`;
     file_name.innerHTML = `${gameData.metadata.file_name} (${gameData.metadata.size} MB)`;
-    return_button.setAttribute("a", `game.html?g=${priceId}`);
+    return_button.setAttribute("href", `game.html?g=${priceId}`);
 }
 
 if (gameIdParam && priceIdParam) {
