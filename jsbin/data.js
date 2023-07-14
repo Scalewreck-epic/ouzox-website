@@ -382,7 +382,7 @@ function loadGenres() {
 
   if (genresOnList > 0) {
     const categoryNoneElement = document
-      .getElementById("genres")
+      .getElementById("genres-list")
       .querySelector(".category-none");
 
     if (categoryNoneElement) {
