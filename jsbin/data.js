@@ -56,7 +56,7 @@ function createGenrePage(name, amount) {
 
   genre_button.addEventListener("click", function () {
     window.location.assign(`category.html?n=${name}`);
-  })
+  });
 
   genre_button.appendChild(genre_name);
   genre_button.appendChild(genre_games_amount);
@@ -245,11 +245,11 @@ function removeIrrelevantGames() {
   if (search_query != null) {
     for (let i = 0; i < genres.length; i++) {
       const genre = genres[i];
-  
+
       if (search_query != null) {
         const genre_name = genre.genre_name;
         const genre_similarity = calculateSimilarity(search_query, genre_name);
-  
+
         if (genre_similarity < similarityThreshold) {
           let index = genres.indexOf(genre);
           genres.splice(index, 1);
@@ -258,30 +258,30 @@ function removeIrrelevantGames() {
         }
       }
     }
-  
+
     for (let i = 0; i < games.length; i++) {
       const game = games[i];
       const game_name = game.name;
       const game_summary = game.metadata.summary;
-  
+
       const title_similarity = calculateSimilarity(search_query, game_name);
       const summary_similarity = calculateSimilarity(
         search_query,
         game_summary
       );
-  
+
       const game_similarity = 0.7 * title_similarity + 0.3 * summary_similarity;
-  
+
       if (game_similarity < similarityThreshold) {
         let index = games.indexOf(game);
         games.splice(index, 1);
       } else {
         games.relevance = game_similarity;
       }
-  
+
       if (category_name != null) {
         const game_genre = game.metadata.genre;
-    
+
         if (game_genre == category_name) {
           continue;
         } else {
@@ -358,12 +358,13 @@ function sortList(gameSortType, list) {
     list.sort((a, b) => (a.relevance > b.relevance ? -1 : 1));
   } else if (gameSortType == "price") {
     list.sort((a, b) =>
-      getGamePrice(a.id.toString()).price / 100 >
-      getGamePrice(b.id.toString()).price / 100
+      getGamePrice(a.id.toString()).price > getGamePrice(b.id.toString()).price
         ? -1
         : 1
     );
   }
+
+  console.info(`Data sorted by ${gameSortType}: ${list}`);
 }
 
 function loadGenres() {
@@ -380,7 +381,6 @@ function loadGenres() {
   }
 
   if (genresOnList > 0) {
-    console.info("Data sorted: Genres");
     const categoryNoneElement = document
       .getElementById("genres")
       .querySelector(".category-none");
@@ -392,12 +392,15 @@ function loadGenres() {
 }
 
 function loadGames() {
-  if (window.location.pathname.includes("/search") || window.location.pathname.includes("/category")) {
+  if (
+    window.location.pathname.includes("/search") ||
+    window.location.pathname.includes("/category")
+  ) {
     sortList("relevance", games);
     loadGamesWithList(
       document.getElementById("relevant-games-list"),
       false,
-      document.getElementById("relevant-games"),
+      document.getElementById("relevant-games")
     );
   } else {
     sortList("newest", games);
@@ -406,20 +409,18 @@ function loadGames() {
       false,
       document.getElementById("new-games")
     );
-  
-    sortList("upToDate", list);
+
+    sortList("upToDate", games);
     loadGamesWithList(
       document.getElementById("updated-games-list"),
       false,
       document.getElementById("fresh-games")
     );
-  };
-
-  console.info("Data sorted: Projects");
+  }
 }
 
 async function loadDashboard() {
-  const category = document.getElementById("dashboard-market")
+  const category = document.getElementById("dashboard-market");
   const user = await verifyUser();
 
   if (user != undefined) {
@@ -441,7 +442,6 @@ async function loadDashboard() {
 
     if (gamesInList > 0) {
       const categoryNoneElement = category.querySelector(".category-none");
-      console.info("Data sorted: Your Projects");
 
       if (categoryNoneElement) {
         categoryNoneElement.remove();
@@ -482,7 +482,6 @@ async function fetchGamesRequest(isDashboard) {
 
       if (prices.length > 0) {
         prices.sort((a, b) => (a.unit_amount > b.unit_amount ? 1 : -1));
-        console.info("Data loaded & sorted: Prices");
       }
     } catch (error) {
       console.warn("There was an error trying to set prices: ", error);
@@ -502,7 +501,6 @@ async function fetchGamesRequest(isDashboard) {
           a.games_with_genre > b.games_with_genre ? 1 : -1
         );
         loadGenres();
-        console.info("Data loaded: Genres");
       }
     } catch (error) {
       console.warn("There was an error trying to set genres: ", error);
@@ -521,7 +519,6 @@ async function fetchGamesRequest(isDashboard) {
         removePrivateGames();
         removeIrrelevantGames();
 
-        console.info("Data loaded: Projects");
         if (isDashboard) {
           loadDashboard();
         } else {
@@ -556,17 +553,17 @@ function isPathDashboard() {
 
 if (document.getElementById("search-query") != null) {
   const search_label = document.getElementById("search-label");
-  const search_query2 = document.getElementById("search-query")
+  const search_query2 = document.getElementById("search-query");
 
   search_query2.value = search_query;
   if (search_label != null) {
-    search_label.innerHTML = `Top search results for '${search_query}'`
+    search_label.innerHTML = `Top search results for '${search_query}'`;
   }
 }
 
 if (window.location.pathname.includes("/category.html")) {
   const search_label = document.getElementById("search-label");
-  search_label.innerHTML = `Top '${category_name}' Games`
+  search_label.innerHTML = `Top '${category_name}' Games`;
 }
 
 fetchGames(isPathDashboard());
