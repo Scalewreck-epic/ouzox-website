@@ -935,8 +935,6 @@ p {
   margin-bottom: 3rem;
   padding: 1rem;
   border-radius: 1rem;
-  position: relative;
-  flex: 1;
   box-shadow: 0 1rem 1rem black;
   background-color: #222222;
   transition: transform 0.3s ease;
@@ -1012,8 +1010,8 @@ p {
 }
 
 .market {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(12.5rem, 12.5rem));
+  display: flex;
+  overflow-x: auto;
   gap: 1.25rem 1.25rem;
 }
 
