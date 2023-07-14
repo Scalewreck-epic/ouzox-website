@@ -364,7 +364,7 @@ function sortList(gameSortType, list) {
     );
   }
 
-  console.info(`Data sorted by ${gameSortType}: ${list}`);
+  console.info(`Data sorted by ${gameSortType}: ${list.toString()}`);
 }
 
 function loadGenres() {
@@ -533,7 +533,7 @@ async function fetchGamesRequest(isDashboard) {
   await setPrices();
   await fetchData();
 
-  if (document.getElementById("genres") != null) {
+  if (document.getElementById("genres-list") != null) {
     await setGenres();
   }
 }
