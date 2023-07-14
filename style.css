@@ -1,11 +1,11 @@
 body {
   font-family: "Alata", sans-serif;
-  background: #242426;
+  background: #121212;
   margin: 0;
 }
 
 .navbar {
-  background-color: #2e2f32;
+  background-color: #222222;
   color: #fff;
   height: 3.125rem;
   padding: 0.45rem 0;
@@ -98,7 +98,7 @@ body {
   margin: auto;
   text-align: center;
   color: white;
-  background-color: #19191c;
+  background-color: #222222;
   box-shadow: 0 1rem 1rem black;
   transition: transform 0.3s ease;
 }
@@ -111,7 +111,7 @@ body {
   margin: auto;
   margin-bottom: 3.5rem;
   color: white;
-  background-color: #19191c;
+  background-color: #222222;
   box-shadow: 0 1rem 1rem black;
   transition: transform 0.3s ease;
 }
@@ -173,10 +173,10 @@ body {
   flex-direction: column;
   text-align: center;
   box-sizing: border-box;
-  background-color: #19191c;
+  background-color: #0e0e0e;
   color: #64646a;
   min-height: 4rem;
-  padding: 2.5rem 0;
+  padding: 1rem 0;
   width: 100%;
 }
 
@@ -278,7 +278,7 @@ p {
   margin-bottom: 2rem;
   padding: 2rem;
   border-radius: 1rem;
-  background-color: #19191c;
+  background-color: #222222;
   box-shadow: 0 1rem 1rem black;
   transition: transform 0.3s ease;
 }
@@ -691,7 +691,7 @@ p {
 .editing-game {
   display: flex;
   color: white;
-  background-color: #19191c;
+  background-color: #222222;
   box-shadow: 0 1rem 1rem black;
   border-radius: 1rem;
   padding: 1rem;
@@ -806,7 +806,7 @@ p {
 .game-stats {
   display: block;
   border-radius: 1rem;
-  background-color: #19191c;
+  background-color: #222222;
   box-shadow: 0 1rem 1rem black;
   width: auto;
   padding: 1rem;
@@ -826,7 +826,7 @@ p {
   font-size: 1.125rem;
   border-radius: 1rem;
   min-height: 10rem;
-  background-color: #19191c;
+  background-color: #222222;
   box-shadow: 0 1rem 1rem black;
   width: auto;
   margin: 1rem;
@@ -938,7 +938,7 @@ p {
   position: relative;
   flex: 1;
   box-shadow: 0 1rem 1rem black;
-  background-color: #19191c;
+  background-color: #222222;
   transition: transform 0.3s ease;
 }
 
@@ -1002,7 +1002,7 @@ p {
   border-radius: 1rem;
   width: 80%;
   margin: auto;
-  background-color: #19191c;
+  background-color: #222222;
   box-shadow: 0 1rem 1rem black;
   transition: transform 0.3s ease;
 }
@@ -1019,7 +1019,7 @@ p {
 
 .login-form {
   width: 45%;
-  background-color: #19191c;
+  background-color: #222222;
   box-shadow: 0 1rem 1rem black;
   padding: 5rem;
   border-radius: 0.5rem;
@@ -1052,7 +1052,7 @@ p {
 .email-settings,
 .password-settings {
   width: 100%;
-  background-color: #19191c;
+  background-color: #222222;
   margin-top: 1.25rem;
   padding: 0.5rem;
   box-shadow: 0 1rem 1rem black;
