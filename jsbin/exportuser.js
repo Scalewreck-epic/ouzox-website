@@ -14,7 +14,7 @@ function changeSessionData(headers, endpoint) {
       const result_parse = JSON.parse(result);
 
       if (result_parse.message) {
-        error_label.innerHTML = result_parse.message;
+        error_label.textContent = result_parse.message;
       } else {
         error_label.innerHTML = "Successfully changed settings!";
       }
