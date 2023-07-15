@@ -995,20 +995,6 @@ p {
   box-shadow: 0 0.5rem 0.938rem black;
 }
 
-.dashboard {
-  min-height: 15rem;
-  border-radius: 1rem;
-  width: 80%;
-  margin: auto;
-  background-color: #222222;
-  box-shadow: 0 1rem 1rem black;
-  transition: transform 0.3s ease;
-}
-
-.dashboard:hover {
-  transform: scale(1.05);
-}
-
 .market {
   display: flex;
   overflow-x: auto;
