@@ -149,9 +149,9 @@ const gameHandler = async (gameId) => {
     const game_price = document.getElementById("game-price");
 
     // main data
-    game_title.innerHTML = gameData.name;
+    game_title.textContent = gameData.name;
     game_desc.innerHTML = gameData.description;
-    game_price.innerHTML =
+    game_price.textContent =
       gameData.price.amount + " " + gameData.price.currency;
 
     function formatTimeAgo(
@@ -198,15 +198,15 @@ const gameHandler = async (gameId) => {
     );
 
     icon.setAttribute("href", gameData.icon);
-    navigation_title.innerHTML = `${gameData.name} By ${gameData.developer_name}`
+    navigation_title.textContent = `${gameData.name} By ${gameData.developer_name}`
 
     // metadata
-    developer_name.innerHTML = gameData.developer_name;
-    game_genre.innerHTML = gameData.genre.toUpperCase();
-    game_summary.innerHTML = gameData.summary;
-    game_art.innerHTML = gameData.artstyle.toUpperCase();
-    game_age.innerHTML = gameData.agerating.toUpperCase();
-    game_size.innerHTML = `${gameData.filesize} MB`;
+    developer_name.textContent = gameData.developer_name;
+    game_genre.textContent = gameData.genre.toUpperCase();
+    game_summary.textContent = gameData.summary;
+    game_art.textContent = gameData.artstyle.toUpperCase();
+    game_age.textContent = gameData.agerating.toUpperCase();
+    game_size.textContent = `${gameData.filesize} MB`;
 
     if (!gameData.useDefaultColors) {
       const elements = document.getElementsByClassName("game-stat");
@@ -248,7 +248,7 @@ const gameHandler = async (gameId) => {
       commitChangesButton.innerHTML = "Commit Changes";
 
       game_title.addEventListener("input", function () {
-        const text = this.innerHTML;
+        const text = this.textContent;
 
         if (text.length > 120) {
           this.innerHTML = text.slice(0, 120);
@@ -276,7 +276,7 @@ const gameHandler = async (gameId) => {
         game_stat.className = "game-setting";
 
         const stat_title = document.createElement("div");
-        stat_title.innerHTML = stat_name;
+        stat_title.textContent = stat_name;
         game_stat.appendChild(stat_title);
 
         const changeBGcolor = document.createElement("input");
@@ -362,10 +362,10 @@ const gameHandler = async (gameId) => {
             redirect: "follow",
             body: JSON.stringify({
               product: {
-                name: game_title.innerHTML,
+                name: game_title.textContent,
                 description: game_desc.innerHTML,
                 metadata: {
-                  summary: game_summary.innerHTML,
+                  summary: game_summary.textContent,
                   defaultColors: false,
                   bgColor: document.body.style.backgroundColor,
                   bg2Color:
