@@ -51,8 +51,8 @@ function createGenrePage(name, amount) {
   const genre_name = document.createElement("h2");
   const genre_games_amount = document.createElement("h4");
 
-  genre_name.innerHTML = name;
-  genre_games_amount.innerHTML = amount + " games";
+  genre_name.textContent = name;
+  genre_games_amount.textContent = amount + " games";
 
   genre_button.addEventListener("click", function () {
     window.location.assign(`category.html?n=${name}`);
@@ -83,11 +83,11 @@ function createGamePage(game, game_price, editable, market) {
 
   const gameTitle = document.createElement("div");
   gameTitle.className = "product-title";
-  gameTitle.innerHTML = game.name;
+  gameTitle.textContent = game.name;
 
   const gameSummary = document.createElement("div");
   gameSummary.className = "product-summary";
-  gameSummary.innerHTML = game.metadata.summary;
+  gameSummary.textContent = game.metadata.summary;
 
   const gamePrice = document.createElement("div");
   gamePrice.className = "product-price";
@@ -176,7 +176,7 @@ function createGamePage(game, game_price, editable, market) {
           await response.text();
           gamesDiv.remove();
         } catch (error) {
-          console.warn(
+          console.error(
             "There was an error trying to deactivate product: ",
             err
           );
@@ -316,7 +316,7 @@ async function verifyUser() {
         const result_parse = JSON.parse(result);
         return result_parse;
       } catch (error) {
-        console.warn("There was an error trying to get user: ", err);
+        console.error("There was an error trying to get user: ", err);
       }
     }
 
@@ -484,7 +484,7 @@ async function fetchGamesRequest(isDashboard) {
         prices.sort((a, b) => (a.unit_amount > b.unit_amount ? 1 : -1));
       }
     } catch (error) {
-      console.warn("There was an error trying to set prices: ", error);
+      console.error("There was an error trying to set prices: ", error);
     }
   }
 
@@ -503,7 +503,7 @@ async function fetchGamesRequest(isDashboard) {
         loadGenres();
       }
     } catch (error) {
-      console.warn("There was an error trying to set genres: ", error);
+      console.error("There was an error trying to set genres: ", error);
     }
   }
 
@@ -526,7 +526,7 @@ async function fetchGamesRequest(isDashboard) {
         }
       }
     } catch (error) {
-      console.warn("There was an error trying to get games: ", error);
+      console.error("There was an error trying to get games: ", error);
     }
   }
 
@@ -557,13 +557,13 @@ if (document.getElementById("search-query") != null) {
 
   search_query2.value = search_query;
   if (search_label != null) {
-    search_label.innerHTML = `Top search results for '${search_query}'`;
+    search_label.textContent = `Top search results for '${search_query}'`;
   }
 }
 
 if (window.location.pathname.includes("/category.html")) {
   const search_label = document.getElementById("search-label");
-  search_label.innerHTML = `Top '${category_name}' Games`;
+  search_label.textContent = `Top '${category_name}' Games`;
 }
 
 fetchGames(isPathDashboard());
