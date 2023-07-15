@@ -53,7 +53,7 @@ function implementUsername() {
         const result_parse = JSON.parse(result);
 
         if (result_parse.name) {
-          username.innerHTML = result_parse.name;
+          username.textContent = result_parse.name;
         } else if (result_parse.message) {
           if ((result_parse.message = "Not Found")) {
             clearCookieData();
@@ -64,7 +64,7 @@ function implementUsername() {
   } else {
     dashboard_btn.remove();
     upload_btn.remove();
-    username.innerHTML = "";
+    username.textContent = "";
   }
 }
 
@@ -95,8 +95,8 @@ function setStats() {
           day: "2-digit",
         });
 
-        email_stat.innerHTML = "Email: " + result_parse.email;
-        join_time.innerHTML = "Join Date: " + formattedDate;
+        email_stat.textContent = "Email: " + result_parse.email;
+        join_time.textContent = "Join Date: " + formattedDate;
       }
     });
 }
@@ -122,40 +122,49 @@ function createSessionData() {
     const email_input = document.getElementById("email_input").value;
     const password_input = document.getElementById("password_input").value;
 
-    const username = username_input.toString();
-    const password = password_input.toString();
-    const email = email_input.toString();
-
-    const myHeaders = new Headers();
-    myHeaders.append("Content-Type", "application/json");
-    const requestOptions = {
-      method: "POST",
-      headers: myHeaders,
-      body: JSON.stringify({
-        name: username,
-        email: email,
-        password: password,
-      }),
-    };
+    const validUsername = /^[a-zA-Z0-9]+$/.test(username_input);
+    const validEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email_input);
+    const validPassword = password_input.length >= 8;
 
     const error_label = document.getElementById("error-label");
-    error_label.innerHTML = "Creating account...";
 
-    fetch(signup_endpoint, requestOptions)
-      .then((response) => response.text())
-      .then((result) => {
-        const result_parse = JSON.parse(result);
-        if (result_parse.authToken) {
-          createCookieData(result_parse.authToken);
-          error_label.innerHTML = "Successfully created account!";
-          window.location.assign("index.html");
-        } else {
-          error_label.innerHTML = result_parse.message;
-        }
-      })
-      .catch((error) => {
-        console.warn("Error trying to create session data:", error);
-      });
+    if (validUsername && validEmail && validPassword) {
+      const username = username_input.toString();
+      const password = password_input.toString();
+      const email = email_input.toString();
+
+      const myHeaders = new Headers();
+      myHeaders.append("Content-Type", "application/json");
+      const requestOptions = {
+        method: "POST",
+        headers: myHeaders,
+        body: JSON.stringify({
+          name: username,
+          email: email,
+          password: password,
+        }),
+      };
+
+      error_label.textContent = "Creating account...";
+
+      fetch(signup_endpoint, requestOptions)
+        .then((response) => response.text())
+        .then((result) => {
+          const result_parse = JSON.parse(result);
+          if (result_parse.authToken) {
+            createCookieData(result_parse.authToken);
+            error_label.textContent = "Successfully created account!";
+            window.location.assign("index.html");
+          } else {
+            error_label.textContent = result_parse.message;
+          }
+        })
+        .catch((error) => {
+          console.error("Error trying to create session data:", error);
+        });
+    } else {
+      error_label.textContent = "Not secure enough.";
+    }
   }
 }
 
@@ -179,7 +188,7 @@ function getSessionData() {
     };
 
     const error_label = document.getElementById("error-label");
-    error_label.innerHTML = "Logging you in...";
+    error_label.textContent = "Logging you in...";
 
     fetch(login_endpoint, requestOptions)
       .then((response) => response.text())
@@ -188,10 +197,10 @@ function getSessionData() {
 
         if (result_parse.authToken) {
           createCookieData(result_parse.authToken);
-          error_label.innerHTML = "Successfully logged in!";
+          error_label.textContent = "Successfully logged in!";
           window.location.assign("index.html");
         } else {
-          error_label.innerHTML = result_parse.message;
+          error_label.textContent = result_parse.message;
         };
       });
   };
@@ -212,7 +221,7 @@ if (data.Valid) {
     window.location.assign("settings.html");
   };
 } else {
-  if (window.location.pathname.includes("/settings") || window.location.pathname.includes("/upload")) {
+  if (window.location.pathname.includes("/settings") || window.location.pathname.includes("/upload") || window.location.pathname.includes("/dashboard")) {
     window.location.assign("login.html");
   };
 };
