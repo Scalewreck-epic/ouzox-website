@@ -4,10 +4,12 @@ const set_product_price_url =
   "https://x8ki-letl-twmt.n7.xano.io/api:tFdG2Vz-/prices";
 const upload_image_api_url =
   "https://x8ki-letl-twmt.n7.xano.io/api:4A2Ya61A/storage/image";
-const get_genre_api_url = 
-  "https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv/genres/" // + genre name;
-const change_genre_api_url = "https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv/genres/update/" // + genre name
-const add_genre_api_url = "https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv/genres/create";
+const get_genre_api_url =
+  "https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv/genres/"; // + genre name;
+const change_genre_api_url =
+  "https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv/genres/update/"; // + genre name
+const add_genre_api_url =
+  "https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv/genres/create";
 
 const uploadGame = document.getElementById("upload-game");
 
@@ -155,10 +157,10 @@ uploadGame.addEventListener("submit", async function (event) {
         headers: myHeaders,
         redirect: "follow",
       };
-    
+
       let doesGenreExist = false;
       let genreData = {};
-    
+
       try {
         const response = await fetch(
           get_genre_api_url + genre_input.value.toUpperCase(),
@@ -166,18 +168,18 @@ uploadGame.addEventListener("submit", async function (event) {
         );
         const result = await response.text();
         const resultParse = JSON.parse(result);
-    
+
         console.log(resultParse);
         if (resultParse.message && resultParse.message == "Not Found") {
           doesGenreExist = false;
         } else {
           doesGenreExist = true;
           genreData = resultParse;
-        };
+        }
       } catch (error) {
         warn("There was an error trying to upload genre: " + error);
-      };
-    
+      }
+
       const changeGenreOptions = {
         method: "POST",
         headers: myHeaders,
@@ -187,17 +189,17 @@ uploadGame.addEventListener("submit", async function (event) {
           games_with_genre: doesGenreExist ? genreData.games_with_genre + 1 : 1,
         }),
       };
-    
+
       try {
         const endpointURL = doesGenreExist
           ? change_genre_api_url + genre_input.value.toUpperCase()
           : add_genre_api_url;
-          
+
         await fetch(endpointURL, changeGenreOptions);
       } catch (error) {
         warn("There was an error trying to upload genre: " + error);
-      };
-    };
+      }
+    }
 
     async function setProductPrice(product_id) {
       const priceRequestOptions = {
@@ -279,7 +281,7 @@ uploadGame.addEventListener("submit", async function (event) {
         }
       }
     } catch (error) {
-      console.warn("There was an error trying to publish game: ", error);
+      console.error("There was an error trying to publish game: ", error);
       error_label.innerHTML = "There was an error trying to upload game.";
     }
   } else {
@@ -366,14 +368,14 @@ game_isfree.onchange = function () {
   checkIsFree();
 };
 
-game_price.addEventListener("input", function() {
+game_price.addEventListener("input", function () {
   checkPrice();
-})
+});
 
-game_title.addEventListener("input", function() {
+game_title.addEventListener("input", function () {
   this.style.width = (this.value.length + 1) * 10 + "px";
 });
 
-game_summary.addEventListener("input", function() {
+game_summary.addEventListener("input", function () {
   this.style.width = (this.value.length + 1) * 10 + "px";
 });
