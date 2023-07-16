@@ -25,8 +25,7 @@ async function retrieveGameData(gameId) {
 
       return result_parse;
     } catch (error) {
-      console.warn("There was an error trying to get price: ", error);
-      console.warn("Redirecting to 404 error page.");
+      console.error("There was an error trying to get price: ", error);
       window.location.assign("404.html");
     }
   }
@@ -198,7 +197,7 @@ const gameHandler = async (gameId) => {
     );
 
     icon.setAttribute("href", gameData.icon);
-    navigation_title.textContent = `${gameData.name} By ${gameData.developer_name}`
+    navigation_title.textContent = `${gameData.name} By ${gameData.developer_name}`;
 
     // metadata
     developer_name.textContent = gameData.developer_name;
@@ -230,11 +229,11 @@ const gameHandler = async (gameId) => {
         gameData.colors.statsBGColor;
     }
 
-    download_button.addEventListener("click", function() {
+    download_button.addEventListener("click", function () {
       const newGameId = realGameId.replace(/^prod_/, "");
       const newPriceId = gameId.replace(/^price_/, "");
       window.location.assign(`download.html?g=${newGameId}&p=${newPriceId}`);
-    })
+    });
 
     const user = await getUser();
 
