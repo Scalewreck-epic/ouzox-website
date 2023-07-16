@@ -76,7 +76,10 @@ function createGamePage(game, game_price, editable, market) {
   gameImage.setAttribute("src", game.images[0]);
 
   const gameLink = document.createElement("a");
-  gameLink.className = "product-image-container"
+  gameLink.className = "link-container";
+
+  const gameImageContainer = document.createElement("div");
+  gameImageContainer.className = "product-image-container";
 
   const priceId = game_price.id.replace(/^price_/, "");
 
@@ -101,15 +104,15 @@ function createGamePage(game, game_price, editable, market) {
 
   gamePrice.appendChild(gamePriceText);
 
-  gameLink.appendChild(gameImage);
-  gameLink.appendChild(gamePrice);
+  gameImageContainer.appendChild(gameImage);
+  gameImageContainer.appendChild(gamePrice);
 
   if (diffDaysCreated <= 7) {
     const createdLabel = document.createElement("span");
     createdLabel.className = "new-label";
     createdLabel.innerHTML = "NEW";
     createdLabel.setAttribute("data-days", diffDaysCreated);
-    gameLink.appendChild(createdLabel);
+    gameImageContainer.appendChild(createdLabel);
 
     createdLabel.addEventListener("mouseenter", function () {
       if (diffDaysUpdated > 1) {
@@ -129,7 +132,7 @@ function createGamePage(game, game_price, editable, market) {
     updatedLabel.className = "updated-label";
     updatedLabel.innerHTML = "UPDATED";
     updatedLabel.setAttribute("data-days", diffDaysUpdated);
-    gameLink.appendChild(updatedLabel);
+    gameImageContainer.appendChild(updatedLabel);
 
     updatedLabel.addEventListener("mouseenter", function () {
       if (diffDaysUpdated > 1) {
@@ -145,6 +148,7 @@ function createGamePage(game, game_price, editable, market) {
       updatedLabel.innerHTML = "UPDATED";
     });
   }
+  gameLink.appendChild(gameImageContainer);
   gameLink.appendChild(gameTitle);
   gamesDiv.appendChild(gameLink);
   gamesDiv.appendChild(gameSummary);
