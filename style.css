@@ -628,10 +628,6 @@ p {
   transition: transform 0.3s ease;
 }
 
-.game:hover {
-  transform: translate(0.3rem, -0.3rem);
-}
-
 .product-title {
   font-size: 1.5rem;
   font-weight: 600;
@@ -669,8 +665,7 @@ p {
   padding: 0.1rem 0.3rem;
 }
 
-.web-icon,
-.product-image {
+.web-icon {
   transition: transform 0.2s ease-in-out;
 }
 
@@ -679,9 +674,19 @@ p {
 	width: 100%;
 }
 
+.link-container {
+  position: relative;
+  display: inline-block;
+}
+
 .product-image-container {
   position: relative;
   display: inline-block;
+  transition: transform 0.2s ease-in-out;
+}
+
+.product-image-container:hover {
+  transform: scale(1.05);
 }
 
 .product-image {
