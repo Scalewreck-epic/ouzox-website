@@ -5,7 +5,7 @@ const urlParams = new URLSearchParams(window.location.search);
 const gameIdParam = urlParams.get("g");
 const priceIdParam = urlParams.get("p");
 
-async function setGameData(gameId, priceId) {
+async function setGameData(gameId) {
   const myHeaders = new Headers();
   myHeaders.append("Content-Type", "application/json");
 
@@ -40,11 +40,11 @@ async function setGameData(gameId, priceId) {
   nav_title.textContent = `Download ${gameData.name}`;
   devname.textContent = `By: ${gameData.metadata.developer_name}`;
   file_name.textContent = `${gameData.metadata.file_name} (${gameData.metadata.size} MB)`;
-  return_button.setAttribute("href", `game?g=${priceId}`);
+  return_button.setAttribute("href", `game?g=${priceIdParam}`);
 }
 
 if (gameIdParam && priceIdParam) {
-  setGameData(`prod_${gameIdParam}`, `price_${priceIdParam}`);
+  setGameData(`prod_${gameIdParam}`);
 } else {
   console.warn("There are no params.");
   window.location.assign("404");
