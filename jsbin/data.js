@@ -55,7 +55,7 @@ function createGenrePage(name, amount) {
   genre_games_amount.textContent = amount + " games";
 
   genre_button.addEventListener("click", function () {
-    window.location.assign(`category.html?n=${name}`);
+    window.location.assign(`category?n=${name}`);
   });
 
   genre_button.appendChild(genre_name);
@@ -83,7 +83,7 @@ function createGamePage(game, game_price, editable, market) {
 
   const priceId = game_price.id.replace(/^price_/, "");
 
-  gameLink.setAttribute("href", `game.html?g=${priceId}`);
+  gameLink.setAttribute("href", `game?g=${priceId}`);
 
   const gameTitle = document.createElement("div");
   gameTitle.className = "product-title";
@@ -553,7 +553,7 @@ async function fetchGames(isDashboard) {
 }
 
 function isPathDashboard() {
-  if (window.location.pathname.includes("/dashboard.html")) {
+  if (window.location.pathname.includes("/dashboard")) {
     return true;
   }
 
@@ -570,7 +570,7 @@ if (document.getElementById("search-query") != null) {
   }
 }
 
-if (window.location.pathname.includes("/category.html")) {
+if (window.location.pathname.includes("/category")) {
   const search_label = document.getElementById("search-label");
   search_label.textContent = `Top '${category_name}' Games`;
 }
