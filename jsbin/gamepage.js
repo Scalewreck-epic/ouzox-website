@@ -26,7 +26,7 @@ async function retrieveGameData(gameId) {
       return result_parse;
     } catch (error) {
       console.error("There was an error trying to get price: ", error);
-      window.location.assign("404.html");
+      window.location.assign("404");
     }
   }
 
@@ -231,7 +231,7 @@ const gameHandler = async (gameId) => {
     download_button.addEventListener("click", function () {
       const newGameId = realGameId.replace(/^prod_/, "");
       const newPriceId = gameId.replace(/^price_/, "");
-      window.location.assign(`download.html?g=${newGameId}&p=${newPriceId}`);
+      window.location.assign(`download?g=${newGameId}&p=${newPriceId}`);
     });
 
     const user = await getUser();
@@ -427,7 +427,7 @@ const gameHandler = async (gameId) => {
     }
   } else {
     console.warn("There is no valid game id.");
-    window.location.assign("404.html");
+    window.location.assign("404");
   }
 };
 
@@ -435,5 +435,5 @@ if (gameIdParam != null) {
   gameHandler(`price_${gameIdParam}`);
 } else {
   console.warn("There is no game id.");
-  window.location.assign("404.html");
+  window.location.assign("404");
 }
