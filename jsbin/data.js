@@ -379,7 +379,14 @@ function sortList(gameSortType, list) {
 function loadGenres() {
   let genresOnList = 0;
 
-  sortList("relevance", genres);
+  if (window.location.pathname.includes("/category")) {
+    sortList("relevance", genres);
+  } else {
+    genres.sort((a, b) =>
+      a.games_with_genre > b.games_with_genre ? 1 : -1
+    );
+  }
+
   for (let i = 0; i < 5; i++) {
     const genre = genres[i];
 
@@ -506,9 +513,6 @@ async function fetchGamesRequest(isDashboard) {
       genres = result_parse;
 
       if (genres.length > 0) {
-        genres.sort((a, b) =>
-          a.games_with_genre > b.games_with_genre ? 1 : -1
-        );
         loadGenres();
       }
     } catch (error) {
