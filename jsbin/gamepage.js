@@ -165,15 +165,15 @@ const gameHandler = async (gameId) => {
         );
       } else if (publishedOrUpdatedMonthsAgo > 1) {
         return (
-          `${createdOrUpdated} (${publishedOrUpdatedMonthsAgo} Years Ago)`
+          `${createdOrUpdated} (${publishedOrUpdatedMonthsAgo} Months Ago)`
         );
       } else if (publishedOrUpdatedWeeksAgo > 1) {
         return (
-          `${createdOrUpdated} (${publishedOrUpdatedWeeksAgo} Years Ago)`
+          `${createdOrUpdated} (${publishedOrUpdatedWeeksAgo} Weeks Ago)`
         );
       } else if (publishedOrUpdatedDaysAgo > 1) {
         return (
-          `${createdOrUpdated} (${publishedOrUpdatedDaysAgo} Years Ago)`
+          `${createdOrUpdated} (${publishedOrUpdatedDaysAgo} Days Ago)`
         );
       } else {
         return "Today";
