@@ -24,7 +24,7 @@ async function setGameData(gameId, priceId) {
       return result_parse;
     } catch (error) {
       console.error("There was an error trying to get game data: ", error);
-      window.location.assign("404.html");
+      window.location.assign("404");
     }
   }
 
@@ -40,12 +40,12 @@ async function setGameData(gameId, priceId) {
   nav_title.textContent = `Download ${gameData.name}`;
   devname.textContent = `By: ${gameData.metadata.developer_name}`;
   file_name.textContent = `${gameData.metadata.file_name} (${gameData.metadata.size} MB)`;
-  return_button.setAttribute("href", `game.html?g=${priceId}`);
+  return_button.setAttribute("href", `game?g=${priceId}`);
 }
 
 if (gameIdParam && priceIdParam) {
   setGameData(`prod_${gameIdParam}`, `price_${priceIdParam}`);
 } else {
   console.warn("There are no params.");
-  window.location.assign("404.html");
+  window.location.assign("404");
 }
