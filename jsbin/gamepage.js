@@ -150,8 +150,7 @@ const gameHandler = async (gameId) => {
     // main data
     game_title.textContent = gameData.name;
     game_desc.innerHTML = gameData.description;
-    game_price.textContent =
-      gameData.price.amount + " " + gameData.price.currency;
+    game_price.textContent = `${gameData.price.amount} ${gameData.price.currency}`;
 
     function formatTimeAgo(
       createdOrUpdated,
@@ -162,19 +161,19 @@ const gameHandler = async (gameId) => {
     ) {
       if (publishedOrUpdatedYearsAgo > 1) {
         return (
-          createdOrUpdated + " (" + publishedOrUpdatedYearsAgo + " Years Ago)"
+          `${createdOrUpdated} (${publishedOrUpdatedYearsAgo} Years Ago)`
         );
       } else if (publishedOrUpdatedMonthsAgo > 1) {
         return (
-          createdOrUpdated + " (" + publishedOrUpdatedMonthsAgo + " Months Ago)"
+          `${createdOrUpdated} (${publishedOrUpdatedMonthsAgo} Years Ago)`
         );
       } else if (publishedOrUpdatedWeeksAgo > 1) {
         return (
-          createdOrUpdated + " (" + publishedOrUpdatedWeeksAgo + " Weeks Ago)"
+          `${createdOrUpdated} (${publishedOrUpdatedWeeksAgo} Years Ago)`
         );
       } else if (publishedOrUpdatedDaysAgo > 1) {
         return (
-          createdOrUpdated + " (" + publishedOrUpdatedDaysAgo + " Days Ago)"
+          `${createdOrUpdated} (${publishedOrUpdatedDaysAgo} Years Ago)`
         );
       } else {
         return "Today";
