@@ -57,7 +57,7 @@ function implementUsername() {
         } else if (result_parse.message) {
           if ((result_parse.message = "Not Found")) {
             clearCookieData();
-            window.location.assign("login.html");
+            window.location.assign("login");
           }
         }
       });
@@ -154,7 +154,7 @@ function createSessionData() {
           if (result_parse.authToken) {
             createCookieData(result_parse.authToken);
             error_label.textContent = "Successfully created account!";
-            window.location.assign("index.html");
+            window.location.assign("index");
           } else {
             error_label.textContent = result_parse.message;
           }
@@ -198,7 +198,7 @@ function getSessionData() {
         if (result_parse.authToken) {
           createCookieData(result_parse.authToken);
           error_label.textContent = "Successfully logged in!";
-          window.location.assign("index.html");
+          window.location.assign("index");
         } else {
           error_label.textContent = result_parse.message;
         };
@@ -211,18 +211,18 @@ function logout() {
     clearCookieData();
   };
 
-  window.location.assign("login.html");
+  window.location.assign("login");
 };
 
 implementUsername();
 
 if (data.Valid) {
   if (window.location.pathname.includes("/login") || window.location.pathname.includes("/signup")) {
-    window.location.assign("settings.html");
+    window.location.assign("settings");
   };
 } else {
   if (window.location.pathname.includes("/settings") || window.location.pathname.includes("/upload") || window.location.pathname.includes("/dashboard")) {
-    window.location.assign("login.html");
+    window.location.assign("login");
   };
 };
 
