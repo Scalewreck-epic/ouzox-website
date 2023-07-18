@@ -572,15 +572,16 @@ p {
 
 .new-label {
   position: absolute;
-  top: 0.5rem;
-  right: 0.5rem;
+  top: 0rem;
+  right: 0rem;
   font-size: 1rem;
   font-weight: 500;
   color: white;
   background-color: rgba(0, 0, 0, 0.39);
   overflow: none;
   border-radius: 0.375rem;
-  padding: 0.1rem 0.3rem;
+  padding: 0.25rem 0.3rem;
+  margin: 0.5rem;
 }
 
 .updated-label {
@@ -629,11 +630,15 @@ p {
 }
 
 .product-title {
+  display: inline-block;
+  width: auto;
+  max-width: 18rem;
+  margin: 0 auto;
   font-size: 1.5rem;
   font-weight: 600;
   color: white;
-  width: 100%;
-  word-break: break-word;
+  overflow: hidden;
+  text-overflow: ellipsis;
   transition: color 0.5s ease;
 }
 
@@ -642,19 +647,22 @@ p {
 }
 
 .product-summary {
+  display: inline-block;
+  width: 18rem;
+  margin: auto;
   font-size: 1rem;
   font-family: "Secular One", sans-serif;
   color: white;
-  width: 100%;
-  word-break: break-word;
-  opacity: 0.5;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  opacity: 0.4;
   line-height: 1.1;
 }
 
 .product-price {
   position: absolute;
-  top: 0.5rem;
-  left: 0.5rem;
+  top: 0rem;
+  left: 0rem;
   font-size: 1rem;
   font-weight: 500;
   font-family: "Secular One", sans-serif;
@@ -662,7 +670,8 @@ p {
   word-break: break-word;
   background-color: black;
   border-radius: 0.375rem;
-  padding: 0.1rem 0.3rem;
+  padding: 0.25rem 0.3rem;
+  margin: 0.5rem;
 }
 
 .web-icon {
@@ -983,7 +992,7 @@ p {
   padding: 0.5rem 1rem;
   border-radius: 1rem;
   margin: 0 0.5rem;
-  width: auto;
+  width: 12rem;
   box-shadow: 0 0.1rem 0.5rem black;
   transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out, color 0.5s ease-in-out;
 }
@@ -991,6 +1000,8 @@ p {
 .genre-button h2,
 .genre-button h4 {
   display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
   margin: 0;
   text-align: center;
   width: 100%;
