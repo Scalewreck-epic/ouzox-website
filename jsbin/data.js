@@ -372,8 +372,6 @@ function sortList(gameSortType, list) {
         : 1
     );
   }
-
-  console.info(`Data sorted by ${gameSortType}: ${list.toString()}`);
 }
 
 function loadGenres() {
@@ -398,7 +396,7 @@ function loadGenres() {
 
   if (genresOnList > 0) {
     const categoryNoneElement = document
-      .getElementById("genres-list")
+      .getElementById("genres")
       .querySelector(".category-none");
 
     if (categoryNoneElement) {
@@ -463,7 +461,7 @@ async function loadDashboard() {
         categoryNoneElement.remove();
       }
     } else {
-      console.info("User creates no games.");
+      console.info("User has no available games remaining.");
     }
   }
 }
