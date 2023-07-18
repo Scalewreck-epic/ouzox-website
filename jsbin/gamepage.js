@@ -64,14 +64,14 @@ async function retrieveGameData(gameId) {
   const publishedDaysAgo = Math.ceil(publishedDifference / (1000 * 3600 * 24));
   const updatedDaysAgo = Math.ceil(updatedDifference / (1000 * 3600 * 24));
 
-  const publishedWeeksAgo = publishedDaysAgo / 7;
-  const updatedWeeksAgo = updatedDaysAgo / 7;
+  const publishedWeeksAgo = Math.round(publishedDaysAgo / 7);
+  const updatedWeeksAgo = Math.round(updatedDaysAgo / 7);
 
-  const publishedMonthsAgo = publishedDaysAgo / 31;
-  const updatedMonthsAgo = publishedDaysAgo / 31;
+  const publishedMonthsAgo = Math.round(publishedDaysAgo / 31);
+  const updatedMonthsAgo = Math.round(publishedDaysAgo / 31);
 
-  const publishedYearsAgo = publishedDaysAgo / 365;
-  const updatedYearsAgo = updatedDaysAgo / 365;
+  const publishedYearsAgo = Math.round(publishedDaysAgo / 365);
+  const updatedYearsAgo = Math.round(updatedDaysAgo / 365);
 
   const metadata = rawGameData.metadata;
 
