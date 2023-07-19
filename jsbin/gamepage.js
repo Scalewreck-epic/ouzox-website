@@ -64,14 +64,14 @@ async function retrieveGameData(gameId) {
   const publishedDaysAgo = Math.ceil(publishedDifference / (1000 * 3600 * 24));
   const updatedDaysAgo = Math.ceil(updatedDifference / (1000 * 3600 * 24));
 
-  const publishedWeeksAgo = Math.round(publishedDaysAgo / 7);
-  const updatedWeeksAgo = Math.round(updatedDaysAgo / 7);
+  const publishedWeeksAgo = Math.floor(publishedDaysAgo / 7);
+  const updatedWeeksAgo = Math.floor(updatedDaysAgo / 7);
+  
+  const publishedMonthsAgo = Math.floor(publishedDaysAgo / 31);
+  const updatedMonthsAgo = Math.floor(publishedDaysAgo / 31);
 
-  const publishedMonthsAgo = Math.round(publishedDaysAgo / 31);
-  const updatedMonthsAgo = Math.round(publishedDaysAgo / 31);
-
-  const publishedYearsAgo = Math.round(publishedDaysAgo / 365);
-  const updatedYearsAgo = Math.round(updatedDaysAgo / 365);
+  const publishedYearsAgo = Math.floor(publishedDaysAgo / 365);
+  const updatedYearsAgo = Math.floor(updatedDaysAgo / 365);
 
   const metadata = rawGameData.metadata;
 
@@ -159,22 +159,14 @@ const gameHandler = async (gameId) => {
       publishedOrUpdatedWeeksAgo,
       publishedOrUpdatedDaysAgo
     ) {
-      if (publishedOrUpdatedYearsAgo > 1) {
-        return (
-          `${createdOrUpdated} (${publishedOrUpdatedYearsAgo} Years Ago)`
-        );
-      } else if (publishedOrUpdatedMonthsAgo > 1) {
-        return (
-          `${createdOrUpdated} (${publishedOrUpdatedMonthsAgo} Months Ago)`
-        );
-      } else if (publishedOrUpdatedWeeksAgo > 1) {
-        return (
-          `${createdOrUpdated} (${publishedOrUpdatedWeeksAgo} Weeks Ago)`
-        );
-      } else if (publishedOrUpdatedDaysAgo > 1) {
-        return (
-          `${createdOrUpdated} (${publishedOrUpdatedDaysAgo} Days Ago)`
-        );
+      if (publishedOrUpdatedYearsAgo >= 1) {
+        return publishedOrUpdatedYearsAgo === 1 ? `${createdOrUpdated} (1 Year Ago)` : (publishedOrUpdatedYearsAgo > 1) ? `${createdOrUpdated} (${publishedOrUpdatedYearsAgo} Years Ago)` : false;
+      } else if (publishedOrUpdatedMonthsAgo >= 1) {
+        return publishedOrUpdatedMonthsAgo === 1 ? `${createdOrUpdated} (1 Month Ago)` : (publishedOrUpdatedMonthsAgo > 1) ? `${createdOrUpdated} (${publishedOrUpdatedMonthsAgo} Months Ago)` : false;
+      } else if (publishedOrUpdatedWeeksAgo >= 1) {
+        return publishedOrUpdatedWeeksAgo === 1 ? `${createdOrUpdated} (1 Week Ago)` : (publishedOrUpdatedWeeksAgo > 1) ? `${createdOrUpdated} (${publishedOrUpdatedWeeksAgo} Weeks Ago)` : false;
+      } else if (publishedOrUpdatedDaysAgo >= 1) {
+        return publishedOrUpdatedWeeksAgo === 1 ? `${createdOrUpdated} (1 Day Ago)` : (publishedOrUpdatedWeeksAgo > 1) ? `${createdOrUpdated} (${publishedOrUpdatedWeeksAgo} Days Ago)` : false;
       } else {
         return "Today";
       }
