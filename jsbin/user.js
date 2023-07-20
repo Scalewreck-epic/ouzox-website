@@ -116,8 +116,7 @@ function clearCookieData() {
   });
 }
 
-function createSessionData() {
-  if (!data.Valid) {
+function isValidSignup() {
     const username_input = document.getElementById("username_input").value;
     const email_input = document.getElementById("email_input").value;
     const password_input = document.getElementById("password_input").value;
@@ -126,9 +125,18 @@ function createSessionData() {
     const validEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email_input);
     const validPassword = password_input.length >= 8;
 
+    return (validUsername && validEmail && validPassword);
+}
+
+function createSessionData() {
+  if (!data.Valid) {
+    const username_input = document.getElementById("username_input").value;
+    const email_input = document.getElementById("email_input").value;
+    const password_input = document.getElementById("password_input").value;
+
     const error_label = document.getElementById("error-label");
 
-    if (validUsername && validEmail && validPassword) {
+    if (isValidSignup()) {
       const username = username_input.toString();
       const password = password_input.toString();
       const email = email_input.toString();
@@ -214,8 +222,6 @@ function logout() {
   window.location.assign("login");
 };
 
-implementUsername();
-
 if (data.Valid) {
   if (window.location.pathname.includes("/login") || window.location.pathname.includes("/signup")) {
     window.location.assign("settings");
@@ -251,9 +257,23 @@ if (window.location.pathname.includes("/settings")) {
   };
 } else if (window.location.pathname.includes("/signup")) {
   const signup_form = document.getElementById("signup-form");
+  const signup_button = document.getElementById("signup-button");
+
+  signup_button.setAttribute("disabled", true);
+  signup_form.oninput = function () {
+    if (isValidSignup()) {
+      if (signup_button.hasAttribute("disabled")) {
+        signup_button.removeAttribute("disabled");
+      }
+    } else {
+      signup_button.setAttribute("disabled", true);
+    }
+  }
 
   signup_form.onsubmit = function (event) {
     event.preventDefault();
     createSessionData();
   };
 };
+
+implementUsername();
