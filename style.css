@@ -166,7 +166,6 @@ body {
   font-weight: bold;
   margin: 0;
   color: #4D0101;
-  text-shadow: 0 0 1px black;
 }
 
 .footer {
@@ -214,7 +213,6 @@ a:not(:has(img)):hover{
   text-decoration: none;
   border-bottom: 0.125rem solid #4D0101;
   color: #4D0101;
-  text-shadow: 0 0 1px black;
   transition: border-bottom 0.2s ease-in-out, color 0.2s ease-in-out;
 }
 
@@ -492,7 +490,6 @@ p {
 
 .acceptance-label a {
   color: #4D0101;
-  text-shadow: 0 0 1px black;
 }
 
 .encourage-label {
@@ -557,8 +554,10 @@ p {
   box-shadow: 0 0.313rem 0.625rem black;
 }
 
+.upload-button:disabled:hover::after,
+.login-button:disabled:hover::after,
+.game-download-button:disabled:hover::after,
 .load-button:disabled:hover::after {
-  content: "You've reached the end.";
   display: block;
   position: absolute;
   top: -1.563rem;
@@ -571,6 +570,14 @@ p {
   white-space: nowrap;
   z-index: 9999;
   cursor: default;
+}
+
+.login-button:disabled:hover::after {
+  content: "Fill out the fields correctly.";
+}
+
+.load-button:disabled:hover::after {
+  content: "You've reached the end.";
 }
 
 .new-label {
@@ -640,7 +647,6 @@ p {
   font-size: 1.5rem;
   font-weight: 600;
   color: white;
-  text-shadow: 0 0 1px black;
   overflow: hidden;
   text-overflow: ellipsis;
   transition: color 0.5s ease;
@@ -679,7 +685,6 @@ p {
   font-weight: 600;
   font-family: "Secular One", sans-serif;
   color: #4D0101;
-  text-shadow: 0 0 1px black;
 }
 
 .web-icon {
@@ -977,7 +982,7 @@ p {
   margin-bottom: 2rem;
   margin-left: 3rem;
   color: white;
-  text-shadow: 0 0.5rem 0.5rem black;
+  text-shadow: 0.5rem 0.5rem 0.5rem black;
 }
 
 .category-none {
@@ -996,7 +1001,7 @@ p {
   display: inline-block;
   background-color: #46464c;
   color: white;
-  text-shadow: 0 0 1px black;
+  text-shadow: 0 0 0 black;
   font-weight: bold;
   padding: 0.5rem 1rem;
   border-radius: 1rem;
