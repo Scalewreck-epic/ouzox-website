@@ -8,4 +8,5 @@ Why create on our platform?
 
 ## Support
 If you encounter any issues or have any questions, please contact our support team at scalewreck@protonmail.com.
+If you want to support this project further, you can donate to our [Patreon](patreon.com/ouzox)
 For more information on how to use Econsole, please refer to our [documentation](https://econsole-games.gitbook.io/econsole-docs/)
