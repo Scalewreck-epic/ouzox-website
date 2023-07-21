@@ -565,13 +565,21 @@ if (document.getElementById("search-query") != null) {
 
   search_query2.value = search_query;
   if (search_label != null) {
-    search_label.textContent = `Top search results for '${search_query}'`;
+    if (search_query != null) {
+      search_label.textContent = `Top search results for '${search_query}'`;
+    } else {
+      window.location.assign("index");
+    }
   }
 }
 
 if (window.location.pathname.includes("/category")) {
-  const search_label = document.getElementById("search-label");
-  search_label.textContent = `Top '${category_name}' Games`;
+  if (category_name != null) {
+    const search_label = document.getElementById("search-label");
+    search_label.textContent = `Top '${category_name}' Games`;
+  } else {
+    window.location.assign("index");
+  }
 }
 
 fetchGames(isPathDashboard());
