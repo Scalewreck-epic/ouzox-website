@@ -1025,14 +1025,22 @@ p {
   transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out, color 0.5s ease-in-out;
 }
 
-.genre-button h2,
-.genre-button h4 {
+.genre-button h4,
+.genre-name {
   display: block;
   overflow: hidden;
   text-overflow: ellipsis;
   margin: 0;
   text-align: center;
-  width: 100%;
+}
+
+.genre-name {
+  font-size: 1.25rem;
+}
+
+.genre-name:hover {
+  text-decoration: none;
+  border-bottom: 0;
 }
 
 .genre-button h4 {
