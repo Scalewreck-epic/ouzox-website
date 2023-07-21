@@ -48,15 +48,14 @@ function createGenrePage(name, amount) {
   const genre_button = document.createElement("button");
   genre_button.className = "genre-button";
 
-  const genre_name = document.createElement("h2");
+  const genre_name = document.createElement("a");
   const genre_games_amount = document.createElement("h4");
 
   genre_name.textContent = name;
-  genre_games_amount.textContent = amount + " games";
+  genre_name.className = "genre-name";
+  genre_name.setAttribute("href", `category?n=${name}`);
 
-  genre_button.addEventListener("click", function () {
-    window.location.assign(`category?n=${name}`);
-  });
+  genre_games_amount.textContent = amount > 1 ? `${amount} games` : `${amount} game`
 
   genre_button.appendChild(genre_name);
   genre_button.appendChild(genre_games_amount);
@@ -154,8 +153,6 @@ function createGamePage(game, game_price, editable, market) {
   gamesDiv.appendChild(gameSummary);
 
   if (editable) {
-    gameTitle.contentEditable = true;
-
     const deleteButton = document.createElement("button");
     deleteButton.className = "delete-button";
     deleteButton.innerHTML = "DELETE";
@@ -187,7 +184,7 @@ function createGamePage(game, game_price, editable, market) {
         } catch (error) {
           console.error(
             "There was an error trying to deactivate product: ",
-            err
+            error
           );
         }
       }
