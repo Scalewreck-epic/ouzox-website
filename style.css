@@ -216,6 +216,12 @@ a:not(:has(img)):hover{
   transition: border-bottom 0.2s ease-in-out, color 0.2s ease-in-out;
 }
 
+.a-button:hover {
+  text-decoration: none;
+  border-bottom: 0;
+  color: white;
+}
+
 .footer-divider {
   margin: 0.938rem auto;
   width: 65%;
@@ -488,7 +494,15 @@ p {
   margin: 0.313rem;
 }
 
-.acceptance-label a {
+.socal-nag {
+  display: block;
+  font-size: 1.1rem;
+  color: white;
+  margin: 0.3rem 0.938rem;
+}
+
+.acceptance-label a,
+.socal-nag a {
   color: #4D0101;
 }
 
