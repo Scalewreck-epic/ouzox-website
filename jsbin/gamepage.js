@@ -66,7 +66,7 @@ async function retrieveGameData(gameId) {
 
   const publishedWeeksAgo = Math.floor(publishedDaysAgo / 7);
   const updatedWeeksAgo = Math.floor(updatedDaysAgo / 7);
-  
+
   const publishedMonthsAgo = Math.floor(publishedDaysAgo / 31);
   const updatedMonthsAgo = Math.floor(publishedDaysAgo / 31);
 
@@ -161,13 +161,29 @@ const gameHandler = async (gameId) => {
       publishedOrUpdatedDaysAgo
     ) {
       if (publishedOrUpdatedYearsAgo >= 1) {
-        return publishedOrUpdatedYearsAgo === 1 ? `${createdOrUpdated} (1 Year Ago)` : (publishedOrUpdatedYearsAgo > 1) ? `${createdOrUpdated} (${publishedOrUpdatedYearsAgo} Years Ago)` : false;
+        return publishedOrUpdatedYearsAgo === 1
+          ? `${createdOrUpdated} (1 Year Ago)`
+          : publishedOrUpdatedYearsAgo > 1
+          ? `${createdOrUpdated} (${publishedOrUpdatedYearsAgo} Years Ago)`
+          : false;
       } else if (publishedOrUpdatedMonthsAgo >= 1) {
-        return publishedOrUpdatedMonthsAgo === 1 ? `${createdOrUpdated} (1 Month Ago)` : (publishedOrUpdatedMonthsAgo > 1) ? `${createdOrUpdated} (${publishedOrUpdatedMonthsAgo} Months Ago)` : false;
+        return publishedOrUpdatedMonthsAgo === 1
+          ? `${createdOrUpdated} (1 Month Ago)`
+          : publishedOrUpdatedMonthsAgo > 1
+          ? `${createdOrUpdated} (${publishedOrUpdatedMonthsAgo} Months Ago)`
+          : false;
       } else if (publishedOrUpdatedWeeksAgo >= 1) {
-        return publishedOrUpdatedWeeksAgo === 1 ? `${createdOrUpdated} (1 Week Ago)` : (publishedOrUpdatedWeeksAgo > 1) ? `${createdOrUpdated} (${publishedOrUpdatedWeeksAgo} Weeks Ago)` : false;
+        return publishedOrUpdatedWeeksAgo === 1
+          ? `${createdOrUpdated} (1 Week Ago)`
+          : publishedOrUpdatedWeeksAgo > 1
+          ? `${createdOrUpdated} (${publishedOrUpdatedWeeksAgo} Weeks Ago)`
+          : false;
       } else if (publishedOrUpdatedDaysAgo >= 1) {
-        return publishedOrUpdatedWeeksAgo === 1 ? `${createdOrUpdated} (1 Day Ago)` : (publishedOrUpdatedWeeksAgo > 1) ? `${createdOrUpdated} (${publishedOrUpdatedWeeksAgo} Days Ago)` : false;
+        return publishedOrUpdatedWeeksAgo === 1
+          ? `${createdOrUpdated} (1 Day Ago)`
+          : publishedOrUpdatedWeeksAgo > 1
+          ? `${createdOrUpdated} (${publishedOrUpdatedWeeksAgo} Days Ago)`
+          : false;
       } else {
         return "Today";
       }
@@ -209,8 +225,6 @@ const gameHandler = async (gameId) => {
       document.body.style.backgroundColor = gameData.colors.bgColor;
       document.getElementById("game-column").style.backgroundColor =
         gameData.colors.bg2Color;
-      document.getElementById("game-column").style.fontFamily =
-        gameData.fontFamily
       document.getElementById("game-title-column").style.color =
         gameData.colors.titleColor;
       document.getElementById("game-description").style.color =
@@ -221,6 +235,11 @@ const gameHandler = async (gameId) => {
         gameData.colors.buttonTextColor;
       document.getElementById("game-stats").style.color =
         gameData.colors.statsBGColor;
+
+      if (gameData.fontFamily != undefined) {
+        document.getElementById("game-column").style.fontFamily =
+          gameData.fontFamily;
+      }
     }
 
     download_button.addEventListener("click", function () {
@@ -380,8 +399,7 @@ const gameHandler = async (gameId) => {
                     document.getElementsByClassName("game-stat")[0].style.color,
                   statsBGColor:
                     document.getElementById("game-stats").style.backgroundColor,
-                  font:
-                    document.getElementById("game-column").style.fontFamily,
+                  font: document.getElementById("game-column").style.fontFamily,
                 },
               },
               id: realGameId,
@@ -432,5 +450,5 @@ if (gameIdParam != null) {
   gameHandler(`price_${gameIdParam}`);
 } else {
   console.warn("There is no game id.");
-  window.location.assign("404");
+  //window.location.assign("404");
 }
