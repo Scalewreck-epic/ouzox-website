@@ -229,7 +229,6 @@ a:not(:has(img)):hover{
 }
 
 .divider {
-  display: inline-block;
   margin: 0.938rem auto;
   width: 95%;
   border-bottom: white solid 0.125rem;
@@ -1078,6 +1077,30 @@ p {
 
 .login-form ul {
   width: 100%;
+}
+
+.show-icon,
+.hide-icon {
+  position: absolute;
+  cursor: pointer;
+  width: 1rem;
+  height: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 50%;
+  z-index: 1;
+  margin: 0.75rem 0.3rem;
+}
+
+.show-icon {
+  background-color: green;
+}
+
+.hide-icon {
+  background-color: red;
+}
+
+.password-input {
+  display: block;
 }
 
 .settings {
