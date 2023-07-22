@@ -107,6 +107,7 @@ async function retrieveGameData(gameId) {
     id: rawGameData.id,
     name: rawGameData.name,
     description: rawGameData.description,
+    fontFamily: rawGameData.metadata.font,
     developer_name: rawGameData.metadata.developer_name,
     genre: rawGameData.metadata.genre,
     summary: rawGameData.metadata.summary,
@@ -208,6 +209,8 @@ const gameHandler = async (gameId) => {
       document.body.style.backgroundColor = gameData.colors.bgColor;
       document.getElementById("game-column").style.backgroundColor =
         gameData.colors.bg2Color;
+      document.getElementById("game-column").style.fontFamily =
+        gameData.fontFamily
       document.getElementById("game-title-column").style.color =
         gameData.colors.titleColor;
       document.getElementById("game-description").style.color =
@@ -377,6 +380,8 @@ const gameHandler = async (gameId) => {
                     document.getElementsByClassName("game-stat")[0].style.color,
                   statsBGColor:
                     document.getElementById("game-stats").style.backgroundColor,
+                  font:
+                    document.getElementById("game-column").style.fontFamily,
                 },
               },
               id: realGameId,
