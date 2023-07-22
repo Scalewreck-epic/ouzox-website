@@ -121,11 +121,21 @@ function isValidSignup() {
     const email_input = document.getElementById("email_input").value;
     const password_input = document.getElementById("password_input").value;
 
-    const validUsername = /^[a-zA-Z0-9]+$/.test(username_input);
+    const validUsername = (/^[a-zA-Z0-9]+$/.test(username_input) && username_input.length >= 3 && username_input.length <= 20);
     const validEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email_input);
     const validPassword = password_input.length >= 8;
 
     return (validUsername && validEmail && validPassword);
+}
+
+function isValidLogin() {
+  const username_input = document.getElementById("username_login").value;
+  const password_input = document.getElementById("password_login").value;
+
+  const validUsername = (/^[a-zA-Z0-9]+$/.test(username_input) && username_input.length >= 3 && username_input.length <= 20);
+  const validPassword = password_input.length >= 8;
+
+  return (validUsername && validPassword);
 }
 
 function createSessionData() {
@@ -181,36 +191,38 @@ function getSessionData() {
     const username_input = document.getElementById("username_login").value;
     const password_input = document.getElementById("password_login").value;
 
-    const username = username_input.toString();
-    const password = password_input.toString();
+    if (isValidLogin()) {
+      const username = username_input.toString();
+      const password = password_input.toString();
 
-    const myHeaders = new Headers();
-    myHeaders.append("Content-Type", "application/json");
-    const requestOptions = {
-      method: "POST",
-      headers: myHeaders,
-      body: JSON.stringify({
-        username: username,
-        password: password,
-      }),
-    };
+      const myHeaders = new Headers();
+      myHeaders.append("Content-Type", "application/json");
+      const requestOptions = {
+        method: "POST",
+        headers: myHeaders,
+        body: JSON.stringify({
+          username: username,
+          password: password,
+        }),
+      };
 
-    const error_label = document.getElementById("error-label");
-    error_label.textContent = "Logging you in...";
+      const error_label = document.getElementById("error-label");
+      error_label.textContent = "Logging you in...";
 
-    fetch(login_endpoint, requestOptions)
-      .then((response) => response.text())
-      .then((result) => {
-        const result_parse = JSON.parse(result);
+      fetch(login_endpoint, requestOptions)
+        .then((response) => response.text())
+        .then((result) => {
+          const result_parse = JSON.parse(result);
 
-        if (result_parse.authToken) {
-          createCookieData(result_parse.authToken);
-          error_label.textContent = "Successfully logged in!";
-          window.location.assign("index");
-        } else {
-          error_label.textContent = result_parse.message;
-        };
-      });
+          if (result_parse.authToken) {
+            createCookieData(result_parse.authToken);
+            error_label.textContent = "Successfully logged in!";
+            window.location.assign("index");
+          } else {
+            error_label.textContent = result_parse.message;
+          };
+        });
+    }
   };
 };
 
@@ -250,6 +262,32 @@ if (window.location.pathname.includes("/settings")) {
   });
 } else if (window.location.pathname.includes("/login")) {
   const login_form = document.getElementById("login-form");
+  const login_button = document.getElementById("login-button");
+  const icon = document.getElementById("show-password-icon");
+
+  icon.addEventListener("click", function() {
+    var passwordInput = document.getElementById("password_login");
+
+    if (passwordInput.type === "password") {
+        passwordInput.type = "text";
+        icon.className = "show-icon";
+    } else {
+        passwordInput.type = "password";
+        icon.className = "hide-icon";
+    }
+  })
+
+  login_button.setAttribute("disabled", true);
+  login_form.oninput = function() {
+    console.log("input");
+    if (isValidLogin()) {
+      if (login_button.hasAttribute("disabled")) {
+        login_button.removeAttribute("disabled");
+      }
+    } else {
+      login_button.setAttribute("disabled", true);
+    }
+  }
 
   login_form.onsubmit = function (event) {
     event.preventDefault();
@@ -258,6 +296,19 @@ if (window.location.pathname.includes("/settings")) {
 } else if (window.location.pathname.includes("/signup")) {
   const signup_form = document.getElementById("signup-form");
   const signup_button = document.getElementById("signup-button");
+  const icon = document.getElementById("show-password-icon");
+
+  icon.addEventListener("click", function() {
+    var passwordInput = document.getElementById("password_input");
+
+    if (passwordInput.type === "password") {
+        passwordInput.type = "text";
+        icon.className = "show-icon";
+    } else {
+        passwordInput.type = "password";
+        icon.className = "hide-icon";
+    }
+  })
 
   signup_button.setAttribute("disabled", true);
   signup_form.oninput = function () {
