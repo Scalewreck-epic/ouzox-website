@@ -755,10 +755,11 @@ p {
 
 .game-column {
   display: block;
-  max-width: 60rem;
-  min-height: 55rem;
+  max-width: 55rem;
+  min-height: 50.3rem;
   border-radius: 1rem;
   padding: 1rem;
+  font-family: "Secular One", sans-serif;
   width: auto;
   height: auto;
   margin: 0 auto;
@@ -774,8 +775,8 @@ p {
   display: inline-block;
   padding: 0.313rem 0.625rem;
   font-size: 1.125rem;
+  font-weight: bold;
   margin-right: 0.625rem;
-  font-family: "Secular One", sans-serif;
   background-color: #4caf50;
   color: white;
   text-decoration: none;
@@ -794,7 +795,6 @@ p {
 
 .game-price {
   display: inline-block;
-  font-family: "Secular One", sans-serif;
   font-size: 1.5rem;
   font-weight: bold;
   color: white;
@@ -839,12 +839,11 @@ p {
   display: block;
   font-size: 1.3rem;
   opacity: 0.5;
-  font-weight: bold;
 }
 
 .game-title {
   display: block;
-  font-size: 3.125rem;
+  font-size: 3rem;
   font-weight: bold;
   margin-top: 0;
 }
@@ -854,8 +853,8 @@ p {
   border-radius: 1rem;
   background-color: #222222;
   box-shadow: 0 1rem 1rem black;
-  width: auto;
   padding: 1rem;
+  width: auto;
   height: auto;
   color: white;
   transition: transform 0.3s ease;
@@ -866,7 +865,6 @@ p {
 }
 
 .game-description {
-  font-family: "Secular One", sans-serif;
   display: block;
   padding: 1rem;
   font-size: 1.125rem;
@@ -896,7 +894,6 @@ p {
   margin-top: 0.3rem;
   height: auto;
   display: block;
-  font-family: "Secular One", sans-serif;
 }
 
 .game-updated {
@@ -913,7 +910,6 @@ p {
   width: auto;
   font-size: 1rem;
   margin: 0;
-  font-family: "Secular One", sans-serif;
 }
 
 .web-icon:hover {
@@ -921,7 +917,6 @@ p {
 }
 
 .desc {
-  font-family: "Secular One", sans-serif;
   color: white;
   margin-left: 1.25rem;
 }
