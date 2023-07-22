@@ -14,23 +14,30 @@
 		<style>
 			@import url('https://fonts.googleapis.com/css2?family=Secular+One&display=swap');
 			@import url('https://fonts.googleapis.com/css2?family=Alata&display=swap');
+			@import url('https://fonts.googleapis.com/css2?family=Anonymous+Pro&display=swap');
+			@import url('https://fonts.googleapis.com/css2?family=Lato&display=swap');
+			@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+			@import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');
+			@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+			@import url('https://fonts.googleapis.com/css2?family=Raleway&display=swap');
+			@import url('https://fonts.googleapis.com/css2?family=Nuinto&display=swap');
 		</style>
 		<nav>
 			<div class="navbar">
 				<div class="grid">
 					<div class="push-left">
-						<a href="index.html">
+						<a href="index">
 							<img src="Images/icon.png" class="web-icon">
 						</a>
 						<ul>
-							<a href="dashboard.html" id="dashboard-btn">Dashboard</a>
-							<a href="upload.html" id="upload-btn">Upload</a>
-							<a href="login.html" id="login-btn">Login</a>
-							<a href="signup.html" id="signup-btn">Signup</a>
+							<a href="dashboard" id="dashboard-btn">Dashboard</a>
+							<a href="upload" id="upload-btn">Upload</a>
+							<a href="login" id="login-btn">Login</a>
+							<a href="signup" id="signup-btn">Signup</a>
 						</ul>
 					</div>
 					<div class="push-right">
-						<a class="username" href="settings.html" id="username">username</a>
+						<a class="username" href="settings" id="username">username</a>
 					</div>
 				</div>
 			</div>
@@ -88,27 +95,56 @@
 				<div class="left-column">
 					<h1>Game editing</h1>
 					<div class="game-settings" id="game-settings">
+						<div>
+							<label class="title-label">Game:</label>
+							<input type="file" id="download-file" class="upload-box" accept=".exe, .zip, .apk, .ipa" required/>
+						</div>
+						<div>
+							<label class="title-label">Genre:</label>
+							<input type="text" class="text-box" id="genre-input" placeholder="Genre" value="All" autocorrect="on" maxlength="120" minlength="1" required/>
+						</div>
+						<div>
+							<label class="title-label">Art Style:</label>
+							<input type="text" class="text-box" id="art-style-input" placeholder="Art" value="Realistic" autocorrect="on" maxlength="120" minlength="1" required/>
+						</div>
 					</div>
 				</div>
 				<div class="right-column">
 					<h1>Text editing</h1>
-					<button class="description-button" id="bold" type="button">Bold</button>
-					<button class="description-button" id="italic" type="button">Italic</button>
-					<button class="description-button" id="underline" type="button">Underline</button>
-					<button class="description-button" id="link" type="button">Link</button>
-					<button class="description-button" id="strikethrough" type="button">Strike through</button>
-					<button class="description-button" id="insertUnorderedList" type="button">Order List</button>
-					<button class="description-button" id="insertOrderedList" type="button">Number List</button>
 					<div>
+						<h2>Text:</h2>
+						<button class="description-button" id="bold" type="button">Bold</button>
+						<button class="description-button" id="italic" type="button">Italic</button>
+						<button class="description-button" id="underline" type="button">Underline</button>
+						<button class="description-button" id="link" type="button">Link</button>
+						<button class="description-button" id="strikethrough" type="button">Strike through</button>
+						<button class="description-button" id="insertUnorderedList" type="button">Order List</button>
+						<button class="description-button" id="insertOrderedList" type="button">Number List</button>
+					</div>
+					<div>
+						<h2>Align:</h2>
 						<button class="description-button" id="justifyLeft" type="button">Align Left</button>
 						<button class="description-button" id="justifyRight" type="button">Align Right</button>
 						<button class="description-button" id="justifyCenter" type="button">Align Center</button>
 					</div>
 					<div>
+						<h2>Header:</h2>
 						<button class="description-button" id="1" type="button">Header 1</button>
 						<button class="description-button" id="2" type="button">Header 2</button>
 						<button class="description-button" id="3" type="button">Header 3</button>
 						<button class="description-button" id="4" type="button">Header 4</button>
+					</div>
+					<div>
+						<h2>Font:</h2>
+						<button class="description-button" id="sans" type="button">Sans</button>
+						<button class="description-button" id="sans-serif" type="button">Sans Serif</button>
+						<button class="description-button" id="lato" type="button">Lato</button>
+						<button class="description-button" id="anonymous-pro" type="button">Anonymous Pro</button>
+						<button class="description-button" id="roboto" type="button">Roboto</button>
+						<button class="description-button" id="montserrat" type="button">Montserrat</button>
+						<button class="description-button" id="poppins" type="button">Poppins</button>
+						<button class="description-button" id="raleway" type="button">Raleway</button>
+						<button class="description-button" id="nuinto" type="button">Nuinto</button>
 					</div>
 				</div>
 			</div>
