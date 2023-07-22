@@ -759,7 +759,7 @@ p {
   min-height: 50.3rem;
   border-radius: 1rem;
   padding: 1rem;
-  font-family: "Secular One", sans-serif;
+  font-family: 'Lato';
   width: auto;
   height: auto;
   margin: 0 auto;
@@ -807,12 +807,14 @@ p {
 }
 
 .left-column {
+  font: inherit;
   flex: 1;
   width: 50%;
   min-height: 6.25rem;
 }
 
 .right-column {
+  font: inherit;
   width: 40%;
   min-height: 6.25rem;
   float: right;
@@ -826,6 +828,7 @@ p {
 .game-title-column {
   margin: 1.25rem;
   margin-top: 0;
+  font: inherit;
   color: white;
 }
 
