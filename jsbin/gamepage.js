@@ -183,7 +183,7 @@ const gameHandler = async (gameId) => {
           ? `${createdOrUpdated} (1 Day Ago)`
           : publishedOrUpdatedWeeksAgo > 1
           ? `${createdOrUpdated} (${publishedOrUpdatedWeeksAgo} Days Ago)`
-          : false;
+          : "Today";
       } else {
         return "Today";
       }
