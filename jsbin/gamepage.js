@@ -132,7 +132,7 @@ const gameHandler = async (gameId) => {
     const realGameId = gameData.id;
 
     const game_title = document.getElementById("game-title");
-    const game_desc = document.getElementById("game-description");
+    const game_desc = document.getElementById("description");
     const created = document.getElementById("created");
     const updated = document.getElementById("updated");
 
@@ -227,7 +227,7 @@ const gameHandler = async (gameId) => {
         gameData.colors.bg2Color;
       document.getElementById("game-title-column").style.color =
         gameData.colors.titleColor;
-      document.getElementById("game-description").style.color =
+      document.getElementById("description").style.color =
         gameData.colors.descColor;
       document.getElementById("download-button").style.backgroundColor =
         gameData.colors.buttonColor;
@@ -326,12 +326,12 @@ const gameHandler = async (gameId) => {
       };
 
       changeDescColor.onchange = function () {
-        document.getElementById("game-description").style.color =
+        document.getElementById("description").style.color =
           changeDescColor.value;
       };
 
       changeDescBGColor.onchange = function () {
-        document.getElementById("game-description").style.backgroundColor =
+        document.getElementById("description").style.backgroundColor =
           changeDescBGColor.value;
       };
 
@@ -386,9 +386,9 @@ const gameHandler = async (gameId) => {
                   titleColor:
                     document.getElementById("game-title-column").style.color,
                   descColor:
-                    document.getElementById("game-description").style.color,
+                    document.getElementById("description").style.color,
                   descBGColor:
-                    document.getElementById("game-description").style
+                    document.getElementById("description").style
                       .backgroundColor,
                   buttonColor:
                     document.getElementById("download-button").style
