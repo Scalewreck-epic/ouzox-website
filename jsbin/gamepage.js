@@ -450,5 +450,5 @@ if (gameIdParam != null) {
   gameHandler(`price_${gameIdParam}`);
 } else {
   console.warn("There is no game id.");
-  //window.location.assign("404");
+  window.location.assign("404");
 }
