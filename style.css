@@ -295,7 +295,9 @@ p {
 .extra-upload-form h1,
 .extra-upload-form h3,
 .extra-upload-form div,
-.main-upload-form div {
+.main-upload-form div,
+.upload-game-conclusion h1,
+.upload-game-conclusion div {
   color: white;
   margin: 1rem;
 }
@@ -314,6 +316,7 @@ p {
   font-family: "Secular One", sans-serif;
   color: white;
   background-color: #292929;
+  box-shadow: 0 0.5rem 0.5rem black;
   cursor: pointer;
   transition: background-color 0.3s ease-in-out;
 }
