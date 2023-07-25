@@ -12,6 +12,7 @@ body {
 }
 
 .grid {
+  padding: 0 1.5rem;
   display: grid;
   grid-template-columns: 1fr 1fr;
   align-items: center;
@@ -31,10 +32,11 @@ body {
 .push-left a {
   color: white;
   text-decoration: none;
+  margin: 0 0.5rem;
 }
 
 .web-icon {
-  margin: 0 1rem;
+  margin: 0;
 }
 
 .push-left .web-icon {
@@ -52,7 +54,6 @@ body {
 .push-left ul a {
   color: white;
   text-decoration: none;
-  margin-right: 1rem;
 }
 
 .push-right {
@@ -63,7 +64,6 @@ body {
 
 .username {
   display: flex;
-  margin-right: 3rem;
   color: white;
   flex: 0 1 auto;
 }
@@ -238,11 +238,8 @@ a:not(:has(img)):hover{
   text-align: left;
   margin: auto;
   width: 60%;
+  margin-bottom: 1.25rem;
   position: relative;
-}
-
-.spacer {
-  margin: 0 0.625rem;
 }
 
 .search-bar {
