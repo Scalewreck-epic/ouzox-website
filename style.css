@@ -27,12 +27,12 @@ body {
 .push-left {
   display: flex;
   align-items: center;
+  gap: 1rem
 }
 
 .push-left a {
   color: white;
   text-decoration: none;
-  margin: 0 0.5rem;
 }
 
 .web-icon {
@@ -60,12 +60,12 @@ body {
   display: flex;
   justify-content: flex-end;
   align-items: center;
+  height: 3.125rem;
 }
 
 .username {
-  display: flex;
+  margin: 0 1rem;
   color: white;
-  flex: 0 1 auto;
 }
 
 .dashboard-buttons {
