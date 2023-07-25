@@ -248,6 +248,20 @@ function removePrivateGames() {
 function removeIrrelevantGames() {
   const similarityThreshold = 0.15;
 
+  if (category_name != null) {
+    for (let i = 0; i < games.length; i++) {
+      const game = games[i];
+      const game_genre = game.metadata.genre;
+  
+      if (game_genre == category_name) {
+        continue;
+      } else {
+        let index = games.indexOf(game);
+        games.splice(index, 1);
+      }
+    }
+  }
+
   if (search_query != null) {
     for (let i = 0; i < genres.length; i++) {
       const genre = genres[i];
@@ -283,17 +297,6 @@ function removeIrrelevantGames() {
         games.splice(index, 1);
       } else {
         games.relevance = game_similarity;
-      }
-
-      if (category_name != null) {
-        const game_genre = game.metadata.genre;
-
-        if (game_genre == category_name) {
-          continue;
-        } else {
-          let index = games.indexOf(game);
-          games.splice(index, 1);
-        }
       }
     }
   }
