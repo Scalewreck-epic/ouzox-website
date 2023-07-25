@@ -19,18 +19,18 @@
 			<div class="navbar">
 				<div class="grid">
 					<div class="push-left">
-						<a href="index.html">
+						<a href="index">
 							<img src="Images/icon.png" class="web-icon">
 						</a>
 						<ul>
-							<a href="dashboard.html" id="dashboard-btn">Dashboard</a>
-							<a href="upload.html" id="upload-btn">Upload</a>
-							<a href="login.html" id="login-btn">Login</a>
-							<a href="signup.html" id="signup-btn">Signup</a>
+							<a href="dashboard" id="dashboard-btn">Dashboard</a>
+							<a href="upload" id="upload-btn">Upload</a>
+							<a href="login" id="login-btn">Login</a>
+							<a href="signup" id="signup-btn">Signup</a>
 						</ul>
 					</div>
 					<div class="push-right">
-						<a class="username" href="settings.html" id="username">username</a>
+						<a class="username" href="settings" id="username">username</a>
 					</div>
 				</div>
 			</div>
@@ -53,7 +53,7 @@
 							<input type="file" id="thumbnail" class="upload-box" accept="image/jpeg, image/png" required/>
 						</div>
 						<div>
-							<label class="title-label">Download File:</label>
+							<label class="title-label">Game:</label>
 							<input type="file" id="download-file" class="upload-box" accept=".exe, .zip, .apk, .ipa" required/>
 							<div class="error-label" id="game-file-warn"></div>
 						</div>
@@ -104,16 +104,18 @@
 						</div>
 					</div>
 					<div class="upload-game-conclusion">
-						<label class="title-label">Description:</label>
+						<h1>Description</h1>
 						<div class="buttons">
-							<h3>Text Customization:</h3>
-							<button class="description-button" id="bold" type="button">Bold</button>
-							<button class="description-button" id="italic" type="button">Italic</button>
-							<button class="description-button" id="underline" type="button">Underline</button>
-							<button class="description-button" id="link" type="button">Link</button>
-							<button class="description-button" id="strikethrough" type="button">Strike through</button>
-							<button class="description-button" id="insertUnorderedList" type="button">Order List</button>
-							<button class="description-button" id="insertOrderedList" type="button">Number List</button>
+							<label class="title-label">Text Customization</label>
+							<div>
+								<button class="description-button" id="bold" type="button">Bold</button>
+								<button class="description-button" id="italic" type="button">Italic</button>
+								<button class="description-button" id="underline" type="button">Underline</button>
+								<button class="description-button" id="link" type="button">Link</button>
+								<button class="description-button" id="strikethrough" type="button">Strike through</button>
+								<button class="description-button" id="insertUnorderedList" type="button">Order List</button>
+								<button class="description-button" id="insertOrderedList" type="button">Number List</button>
+							</div>
 							<div>
 								<button class="description-button" id="justifyLeft" type="button">Align Left</button>
 								<button class="description-button" id="justifyRight" type="button">Align Right</button>
@@ -130,7 +132,7 @@
 						<img id="previewImage" class="product-image"/><br>
 						<button class="upload-button" id="upload-button" type="submit"><font size="6">Publish Game</font></button>
 						<div class="error-label" id="error-label"></div>
-						<div class="xtra-login"><font size="5">View your projects <a href="dashboard.html">on your dashboard</a></font></div>
+						<div class="acceptance-label"><font size="5">View your projects <a href="dashboard">on your dashboard</a></font></div>
 					</div>
 				</form>
 			</div>
