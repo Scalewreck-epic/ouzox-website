@@ -29,12 +29,10 @@
 						<a href="index">
 							<img src="Images/icon.png" class="web-icon">
 						</a>
-						<ul>
-							<a href="dashboard" id="dashboard-btn">Dashboard</a>
-							<a href="upload" id="upload-btn">Upload</a>
-							<a href="login" id="login-btn">Login</a>
-							<a href="signup" id="signup-btn">Signup</a>
-						</ul>
+						<a href="dashboard" id="dashboard-btn">Dashboard</a>
+						<a href="upload" id="upload-btn">Upload</a>
+						<a href="login" id="login-btn">Login</a>
+						<a href="signup" id="signup-btn">Signup</a>
 					</div>
 					<div class="push-right">
 						<a class="username" href="settings" id="username">username</a>
@@ -96,19 +94,23 @@
 					<h1>Game editing</h1>
 					<div class="game-settings" id="game-settings">
 						<div>
-							<h2>Game:</h2>
+							<div>Game:</div>
 							<input type="file" id="download-file" class="upload-box" accept=".exe, .zip, .apk, .ipa" required/>
 						</div>
 						<div>
-							<h2>Genre:</h2>
+							<div>Thumbnail:</div>
+							<input type="file" id="thumbnail" class="upload-box" accept="image/jpeg, image/png" required/>
+						</div>
+						<div>
+							<div>Genre:</div>
 							<input type="text" class="text-box" id="genre-input" placeholder="Genre" value="All" autocorrect="on" maxlength="120" minlength="1" required/>
 						</div>
 						<div>
-							<h2>Art Style:</h2>
+							<div>Art Style:</div>
 							<input type="text" class="text-box" id="art-style-input" placeholder="Art" value="Realistic" autocorrect="on" maxlength="120" minlength="1" required/>
 						</div>
 						<div>
-							<h2>Age Rating:</h2>
+							<div>Age Rating:</div>
 							<select class="game-sort" id="age-sort">
 								<option value="everyone">Everyone</option>
 								<option value="teen">Teen</option>
@@ -116,11 +118,11 @@
 							</select>
 						</div>
 						<div>
-							<h2>Price:</h2>
+							<div>Price:</div>
 							<input type="text" class="text-box" id="price" pattern="[0-9]*" placeholder="0" value="0"/>
 						</div>
 						<div>
-							<h2>Currency:</h2>
+							<div>Currency:</div>
 							<select class="game-sort" id="currency-sort">
 								<option value="usd">USD</option>
 								<option value="eur">EUR</option>
@@ -139,7 +141,7 @@
 				<div class="right-column">
 					<h1>Text editing</h1>
 					<div>
-						<h2>Text:</h2>
+						<div>Text:</div>
 						<button class="description-button" id="bold" type="button">Bold</button>
 						<button class="description-button" id="italic" type="button">Italic</button>
 						<button class="description-button" id="underline" type="button">Underline</button>
@@ -149,20 +151,20 @@
 						<button class="description-button" id="insertOrderedList" type="button">Number List</button>
 					</div>
 					<div>
-						<h2>Align:</h2>
+						<div>Align:</div>
 						<button class="description-button" id="justifyLeft" type="button">Align Left</button>
 						<button class="description-button" id="justifyRight" type="button">Align Right</button>
 						<button class="description-button" id="justifyCenter" type="button">Align Center</button>
 					</div>
 					<div>
-						<h2>Header:</h2>
+						<div>Header:</div>
 						<button class="description-button" id="1" type="button">Header 1</button>
 						<button class="description-button" id="2" type="button">Header 2</button>
 						<button class="description-button" id="3" type="button">Header 3</button>
 						<button class="description-button" id="4" type="button">Header 4</button>
 					</div>
 					<div>
-						<h2>Font:</h2>
+						<div>Font:</div>
 						<button class="description-button" id="sans" type="button">Sans</button>
 						<button class="description-button" id="sans-serif" type="button">Sans Serif</button>
 						<button class="description-button" id="lato" type="button">Lato</button>
