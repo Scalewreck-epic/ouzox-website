@@ -93,23 +93,23 @@
 				<div class="left-column">
 					<h1>Game editing</h1>
 					<div class="game-settings" id="game-settings">
-						<div>
+						<div class="game-setting">
 							<div>Game:</div>
 							<input type="file" id="download-file" class="upload-box" accept=".exe, .zip, .apk, .ipa" required/>
 						</div>
-						<div>
+						<div class="game-setting">
 							<div>Thumbnail:</div>
 							<input type="file" id="thumbnail" class="upload-box" accept="image/jpeg, image/png" required/>
 						</div>
-						<div>
+						<div class="game-setting">
 							<div>Genre:</div>
 							<input type="text" class="text-box" id="genre-input" placeholder="Genre" value="All" autocorrect="on" maxlength="120" minlength="1" required/>
 						</div>
-						<div>
+						<div class="game-setting">
 							<div>Art Style:</div>
 							<input type="text" class="text-box" id="art-style-input" placeholder="Art" value="Realistic" autocorrect="on" maxlength="120" minlength="1" required/>
 						</div>
-						<div>
+						<div class="game-setting">
 							<div>Age Rating:</div>
 							<select class="game-sort" id="age-sort">
 								<option value="everyone">Everyone</option>
@@ -117,11 +117,11 @@
 								<option value="mature">Mature</option>
 							</select>
 						</div>
-						<div>
+						<div class="game-setting">
 							<div>Price:</div>
 							<input type="text" class="text-box" id="price" pattern="[0-9]*" placeholder="0" value="0"/>
 						</div>
-						<div>
+						<div class="game-setting">
 							<div>Currency:</div>
 							<select class="game-sort" id="currency-sort">
 								<option value="usd">USD</option>
@@ -140,7 +140,7 @@
 				</div>
 				<div class="right-column">
 					<h1>Text editing</h1>
-					<div>
+					<div class="game-setting">
 						<div>Text:</div>
 						<button class="description-button" id="bold" type="button">Bold</button>
 						<button class="description-button" id="italic" type="button">Italic</button>
@@ -150,20 +150,20 @@
 						<button class="description-button" id="insertUnorderedList" type="button">Order List</button>
 						<button class="description-button" id="insertOrderedList" type="button">Number List</button>
 					</div>
-					<div>
+					<div class="game-setting">
 						<div>Align:</div>
 						<button class="description-button" id="justifyLeft" type="button">Align Left</button>
 						<button class="description-button" id="justifyRight" type="button">Align Right</button>
 						<button class="description-button" id="justifyCenter" type="button">Align Center</button>
 					</div>
-					<div>
+					<div class="game-setting">
 						<div>Header:</div>
 						<button class="description-button" id="1" type="button">Header 1</button>
 						<button class="description-button" id="2" type="button">Header 2</button>
 						<button class="description-button" id="3" type="button">Header 3</button>
 						<button class="description-button" id="4" type="button">Header 4</button>
 					</div>
-					<div>
+					<div class="game-setting">
 						<div>Font:</div>
 						<button class="description-button" id="sans" type="button">Sans</button>
 						<button class="description-button" id="sans-serif" type="button">Sans Serif</button>
