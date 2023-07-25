@@ -746,7 +746,7 @@ p {
 
 .game-column {
   display: block;
-  max-width: 55rem;
+  max-width: 60rem;
   min-height: 50.3rem;
   border-radius: 1rem;
   padding: 1rem;
@@ -854,10 +854,6 @@ p {
   transition: transform 0.3s ease;
 }
 
-.game-stats:hover {
-  transform: scale(1.05);
-}
-
 .game-description {
   display: block;
   padding: 1rem;
@@ -873,6 +869,7 @@ p {
   transition: transform 0.3s ease;
 }
 
+.game-stats:hover,
 .game-description:hover {
   transform: scale(1.05);
 }
@@ -884,25 +881,24 @@ p {
 }
 
 .game-stat {
-  width: auto;
-  margin-top: 0.3rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  width: 100%;
+  margin-top: 0.5rem;
   height: auto;
-  display: block;
 }
 
-.game-updated {
-  float: right;
+.game-stat-data {
+  display: flex;
+  justify-content: flex-end;
+  font-size: 1.1rem;
   margin: 0;
-  margin-top: 0;
-  width: auto;
-  font-size: 1rem;
-  opacity: 0.5;
+  opacity: 0.3;
 }
 
-.game-updated-title {
-  display: inline-block;
-  width: auto;
-  font-size: 1rem;
+.game-stat-title {
+  display: flex;
+  font-size: 1.1rem;
   margin: 0;
 }
 
