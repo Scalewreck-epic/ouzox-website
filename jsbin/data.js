@@ -107,44 +107,50 @@ function createGamePage(game, game_price, editable, market) {
   gameImageContainer.appendChild(gamePrice);
 
   if (diffDaysCreated <= 7) {
-    const createdLabel = document.createElement("span");
+    const createdLabel = document.createElement("div");
     createdLabel.className = "new-label";
-    createdLabel.innerHTML = "NEW";
-    createdLabel.setAttribute("data-days", diffDaysCreated);
+
+    const createdText = document.createElement("span");
+    createdText.innerHTML = "NEW";
+
+    createdLabel.appendChild(createdText);
     gameImageContainer.appendChild(createdLabel);
 
     createdLabel.addEventListener("mouseenter", function () {
       if (diffDaysUpdated > 1) {
-        createdLabel.innerHTML = `${diffDaysCreated} DAYS AGO`;
+        createdText.innerHTML = `${diffDaysCreated} DAYS AGO`;
       } else if (diffDaysUpdated == 1) {
-        createdLabel.innerHTML = `1 DAY AGO`;
+        createdText.innerHTML = `1 DAY AGO`;
       } else {
-        createdLabel.innerHTML = "TODAY";
+        createdText.innerHTML = "TODAY";
       }
     });
 
     createdLabel.addEventListener("mouseleave", function () {
-      createdLabel.innerHTML = "NEW";
+      createdText.innerHTML = "NEW";
     });
   } else if (diffDaysUpdated <= 7) {
-    const updatedLabel = document.createElement("span");
+    const updatedLabel = document.createElement("div");
     updatedLabel.className = "updated-label";
-    updatedLabel.innerHTML = "UPDATED";
-    updatedLabel.setAttribute("data-days", diffDaysUpdated);
+
+    const updatedText = document.createElement("span");
+    updatedText.innerHTML = "UPDATED";
+
+    updatedLabel.appendChild(updatedText);
     gameImageContainer.appendChild(updatedLabel);
 
     updatedLabel.addEventListener("mouseenter", function () {
       if (diffDaysUpdated > 1) {
-        updatedLabel.innerHTML = `${diffDaysUpdated} DAYS AGO`;
+        updatedText.innerHTML = `${diffDaysUpdated} DAYS AGO`;
       } else if (diffDaysUpdated == 1) {
-        updatedLabel.innerHTML = `1 DAY AGO`;
+        updatedText.innerHTML = `1 DAY AGO`;
       } else {
-        updatedLabel.innerHTML = "TODAY";
+        updatedText.innerHTML = "TODAY";
       }
     });
 
     updatedLabel.addEventListener("mouseleave", function () {
-      updatedLabel.innerHTML = "UPDATED";
+      updatedText.innerHTML = "UPDATED";
     });
   }
   gameLink.appendChild(gameImageContainer);
