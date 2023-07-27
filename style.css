@@ -979,8 +979,7 @@ p {
 
 .category h1,
 .category h4 {
-  margin-bottom: 2rem;
-  margin-left: 3rem;
+  margin: 0.5rem 1rem;
   color: white;
   text-shadow: 0.5rem 0.5rem 0.5rem black;
 }
