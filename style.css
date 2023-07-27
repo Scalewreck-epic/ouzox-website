@@ -748,13 +748,14 @@ p {
 
 .game-column {
   display: block;
+  position: relative;
   max-width: 60rem;
-  min-height: 50.3rem;
+  min-height: 54rem;
+  height: auto;
   border-radius: 1rem;
   padding: 1rem;
   font-family: 'Lato';
   width: auto;
-  height: auto;
   margin: 0 auto;
   background-color: #0a0a0a;
   box-shadow: 0 1rem 1rem black;
@@ -884,7 +885,7 @@ p {
 
 .game-stat {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 0.65fr 1fr;
   width: 100%;
   margin-top: 0.5rem;
   height: auto;
@@ -893,14 +894,14 @@ p {
 .game-stat-data {
   display: flex;
   justify-content: flex-end;
-  font-size: 1.1rem;
+  font-size: 1rem;
   margin: 0;
   opacity: 0.3;
 }
 
 .game-stat-title {
   display: flex;
-  font-size: 1.1rem;
+  font-size: 1rem;
   margin: 0;
 }
 
