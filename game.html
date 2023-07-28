@@ -88,11 +88,17 @@
 					</div>
 				</div>
 			</div>
-			<div class="divider"></div>
 			<div class="editing-game" id="game-editing">
 				<div class="left-column">
 					<h1>Game editing</h1>
 					<div class="game-settings" id="game-settings">
+						<div class="game-setting">
+							<div>Public:</div>
+							<label class="cl-checkbox">
+								<input type="checkbox" value="1" id="public">
+								<span class="cl-checkbox-box"></span>
+							</label>
+						</div>
 						<div class="game-setting">
 							<div>Game:</div>
 							<input type="file" id="download-file" class="upload-box" accept=".exe, .zip, .apk, .ipa" required/>
