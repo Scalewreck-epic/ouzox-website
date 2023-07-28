@@ -126,6 +126,23 @@ async function retrieveGameData(gameId) {
   return gameData;
 }
 
+async function changeProduct(data) {
+  try {
+    await fetch(
+      update_product_url + realGameId,
+      data
+    );
+    commitChangesButton.innerHTML = "Success";
+  } catch (error) {
+    commitChangesButton.innerHTML = "An error occured";
+    console.log(
+      "There was an error trying to update the product:",
+      error
+    );
+    showError(error, false);
+  }
+}
+
 const gameHandler = async (gameId) => {
   if (gameId != null) {
     const gameData = await retrieveGameData(gameId);
@@ -147,6 +164,7 @@ const gameHandler = async (gameId) => {
     const game_age = document.getElementById("game-age");
     const game_size = document.getElementById("game-size");
     const game_price = document.getElementById("game-price");
+    const game_public = document.getElementById("public");
 
     // main data
     game_title.textContent = gameData.name;
@@ -376,6 +394,7 @@ const gameHandler = async (gameId) => {
               product: {
                 name: game_title.textContent,
                 description: game_desc.innerHTML,
+                active: game_public.checked,
                 metadata: {
                   summary: game_summary.textContent,
                   defaultColors: false,
@@ -406,32 +425,7 @@ const gameHandler = async (gameId) => {
             }),
           };
 
-          async function update_product() {
-            if (user.name == gameData.developer_name) {
-              try {
-                await fetch(
-                  update_product_url + realGameId,
-                  update_product_options
-                );
-                commitChangesButton.innerHTML = "Success";
-              } catch (error) {
-                commitChangesButton.innerHTML = "An error occured";
-                console.log(
-                  "There was an error trying to update the product:",
-                  error
-                );
-                showError(error, false);
-              }
-            } else {
-              console.warn(
-                "User somehow accessed the developer panel onto a project they do not own."
-              );
-              commitChangesButton.innerHTML =
-                "You should not be editing this project.";
-            }
-          }
-
-          await update_product();
+          await changeProduct(update_product_options);
           isLoading = false;
         }
       });
@@ -450,5 +444,5 @@ if (gameIdParam != null) {
   gameHandler(`price_${gameIdParam}`);
 } else {
   console.warn("There is no game id.");
-  window.location.assign("404");
+  //window.location.assign("404");
 }
