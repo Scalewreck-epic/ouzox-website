@@ -403,7 +403,7 @@ async function loadDashboard() {
     for (let i = 0; i < games.length; i++) {
       const game = games[i];
 
-      if (game && game.active) {
+      if (game) {
         const game_price = getGamePrice(game.id.toString());
 
         if (game_price && game.metadata.developer_name == user.name) {
