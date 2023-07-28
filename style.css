@@ -354,15 +354,17 @@ p {
   font-size: 1rem;
   font-family: "Secular One", sans-serif;
   max-width: 30rem;
-  margin: 0.15rem 0;
+  margin: 0.3rem 0;
   width: auto;
-  padding: 0.3rem;
+  padding: 0.5rem;
   color: white;
   background-color: #292929;
   box-shadow: 0 0.5rem 0.5rem black;
   border-radius: 0.5rem;
   cursor: text;
   transition: background-color 0.3s ease-in-out;
+  border-style: solid;
+  border-width: 0;
 }
 
 .text-box:before {
@@ -999,20 +1001,23 @@ p {
 
 .genre-button {
   display: inline-block;
-  background-color: #46464c;
   color: white;
-  text-shadow: 0 0 0 black;
   font-weight: bold;
-  padding: 0.5rem 1rem;
+  padding: 0.5rem 0.5rem;
   border-radius: 1rem;
-  margin: 0 0.5rem;
-  width: 12rem;
-  box-shadow: 0 0.1rem 0.5rem black;
-  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out, color 0.5s ease-in-out;
+  margin: 0;
+  width: 10rem;
+  height: 3rem;
+  box-shadow: 0 0.25rem 0.5rem black;
+  border-style: solid;
+  border-width: 0;
+  background-color: #46464c;
 }
 
 .genre-button h4,
 .genre-name {
+  text-shadow: 0.2rem 0.2rem black;
+  font-family: "Secular One", sans-serif;
   display: block;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -1024,20 +1029,13 @@ p {
   font-size: 1.25rem;
 }
 
-.genre-name:hover {
-  text-decoration: none;
-  border-bottom: 0;
-}
-
 .genre-button h4 {
   opacity: 0.5;
 }
 
 .genre-button:hover {
-  cursor: pointer;
-  color: #4D0101;
-  transform: translateY(-0.188rem);
-  box-shadow: 0 0.5rem 0.938rem black;
+  text-decoration: none;
+  border-bottom: 0;
 }
 
 .market {
