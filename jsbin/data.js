@@ -45,15 +45,15 @@ function calculateDiffDays(timestamp) {
 }
 
 function createGenrePage(name, amount) {
-  const genre_button = document.createElement("button");
+  const genre_button = document.createElement("a");
   genre_button.className = "genre-button";
 
-  const genre_name = document.createElement("a");
+  const genre_name = document.createElement("div");
   const genre_games_amount = document.createElement("h4");
 
   genre_name.textContent = name;
   genre_name.className = "genre-name";
-  genre_name.setAttribute("href", `category?n=${name}`);
+  genre_button.setAttribute("href", `category?n=${name}`);
 
   genre_games_amount.textContent = amount > 1 ? `${amount} games` : `${amount} game`
 
