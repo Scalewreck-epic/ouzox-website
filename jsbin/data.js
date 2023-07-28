@@ -63,7 +63,7 @@ function createGenrePage(name, amount) {
   document.getElementById("genres-list").appendChild(genre_button);
 }
 
-function createGamePage(game, game_price, editable, market) {
+function createGamePage(game, game_price, market) {
   const price = game_price.price / 100;
   const currency = game_price.currency;
 
@@ -157,50 +157,6 @@ function createGamePage(game, game_price, editable, market) {
   gameLink.appendChild(gameTitle);
   gamesDiv.appendChild(gameLink);
   gamesDiv.appendChild(gameSummary);
-
-  if (editable) {
-    const deleteButton = document.createElement("button");
-    deleteButton.className = "delete-button";
-    deleteButton.innerHTML = "DELETE";
-
-    const myHeaders = new Headers();
-    myHeaders.append("Content-Type", "application/json");
-
-    deleteButton.addEventListener("click", async function () {
-      const deactivate_product_options = {
-        method: "POST",
-        headers: myHeaders,
-        redirect: "follow",
-        body: JSON.stringify({
-          product: {
-            active: "false",
-          },
-          id: game.id,
-        }),
-      };
-
-      async function deactivate_product() {
-        try {
-          const response = await fetch(
-            update_product_url + game.id,
-            deactivate_product_options
-          );
-          await response.text();
-          gamesDiv.remove();
-        } catch (error) {
-          console.error(
-            "There was an error trying to deactivate product: ",
-            error
-          );
-        }
-      }
-
-      await deactivate_product();
-      await update_genre();
-    });
-
-    gamesDiv.appendChild(deleteButton);
-  }
 
   market.appendChild(gamesDiv);
 }
@@ -340,7 +296,7 @@ async function verifyUser() {
   }
 }
 
-function loadGamesWithList(list, isDashboard, category) {
+function loadGamesWithList(list, category) {
   let gamesInList = 0;
   for (let i = 0; i < gamesPerCategory; i++) {
     const game = games[i];
@@ -349,7 +305,7 @@ function loadGamesWithList(list, isDashboard, category) {
       const game_price = getGamePrice(game.id.toString());
 
       if (game_price) {
-        createGamePage(game, game_price, isDashboard, list);
+        createGamePage(game, game_price, list);
         gamesInList += 1;
       }
     }
@@ -419,21 +375,18 @@ function loadGames() {
     sortList("relevance", games);
     loadGamesWithList(
       document.getElementById("relevant-games-list"),
-      false,
       document.getElementById("relevant-games")
     );
   } else {
     sortList("newest", games);
     loadGamesWithList(
       document.getElementById("newest-games-list"),
-      false,
       document.getElementById("new-games")
     );
 
     sortList("upToDate", games);
     loadGamesWithList(
       document.getElementById("updated-games-list"),
-      false,
       document.getElementById("fresh-games")
     );
   }
@@ -454,7 +407,7 @@ async function loadDashboard() {
         const game_price = getGamePrice(game.id.toString());
 
         if (game_price && game.metadata.developer_name == user.name) {
-          createGamePage(game, game_price, true, category);
+          createGamePage(game, game_price, category);
           gamesInList += 1;
         }
       }
@@ -482,7 +435,6 @@ async function fetchGamesRequest(isDashboard) {
     redirect: "follow",
     params: JSON.stringify({
       limit: 10000,
-      active: "true",
     }),
   };
 
@@ -533,12 +485,12 @@ async function fetchGamesRequest(isDashboard) {
       games = result_parse.data;
 
       if (games.length > 0) {
-        removePrivateGames();
         removeIrrelevantGames();
 
         if (isDashboard) {
           loadDashboard();
         } else {
+          removePrivateGames();
           loadGames();
         }
       }
