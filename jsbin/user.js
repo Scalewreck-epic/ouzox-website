@@ -290,7 +290,7 @@ if (window.location.pathname.includes("/user")) {
 if (window.location.pathname.includes("/settings")) {
   const email_button = document.getElementById("save-email");
   const password_button = document.getElementById("save-password");
-  const status_button = document.getElementById("status-button");
+  const status_button = document.getElementById("save-status");
   const logout_button = document.getElementById("logout-profile");
 
   setStats();
