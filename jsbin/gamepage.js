@@ -126,10 +126,11 @@ async function retrieveGameData(gameId) {
   return gameData;
 }
 
-async function changeProduct(data) {
+async function changeProduct(data, gameId) {
+  const commitChangesButton = document.createElement("button");
   try {
     await fetch(
-      update_product_url + realGameId,
+      update_product_url + gameId,
       data
     );
     commitChangesButton.innerHTML = "Success";
@@ -425,7 +426,7 @@ const gameHandler = async (gameId) => {
             }),
           };
 
-          await changeProduct(update_product_options);
+          await changeProduct(update_product_options, realGameId);
           isLoading = false;
         }
       });
