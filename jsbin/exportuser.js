@@ -3,6 +3,8 @@ const change_user_email_url =
   "https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv:v1/user/edit_email/"; // + session id
 const change_user_password_url =
   "https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv:v1/user/edit_pass/"; // + session id
+const change_user_stauts_url =
+  "https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv/user/edit_status/"; // + session id
 
 function changeSessionData(headers, endpoint) {
   const error_label = document.getElementById("error-label");
@@ -88,6 +90,27 @@ export async function changePasswordData() {
     };
 
     changeSessionData(requestOptions, change_user_password_url + data.Data);
+  }
+}
+
+export async function changeStatusData() {
+  const data = getCookie("session_id");
+
+  if (data.Valid) {
+    const new_status = document.getElementById("status-input").value;
+
+    const myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+    const requestOptions = {
+      method: "POST",
+      headers: myHeaders,
+      body: JSON.stringify({
+        session_id: data.Data,
+        stauts: new_status,
+      }),
+    };
+
+    changeSessionData(requestOptions, change_user_stauts_url + data.Data);
   }
 }
 
