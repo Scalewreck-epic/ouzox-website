@@ -4,6 +4,8 @@ const login_endpoint =
   "https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv:v1/auth/login";
 const getsingle_endpoint =
   "https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv/user/"; // + user session
+const getsingle_endpoint2 =
+  "https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv/users/"; // + user id
 
 const annualExpiration = 1;
 const data = getCookie("session_id");
@@ -12,6 +14,7 @@ import {
   getCookie,
   changeEmailData,
   changePasswordData,
+  changeStatusData
 } from "./exportuser.js";
 
 function calculateExpiration(past) {
@@ -86,6 +89,7 @@ function setStats() {
       if (result_parse.email && result_parse.created_at) {
         const email_stat = document.getElementById("email-stat");
         const join_time = document.getElementById("creation-stat");
+        const profile_link = document.getElementById("profile-link");
 
         const rfcDate = new Date(result_parse.created_at).toUTCString();
         const dateObj = new Date(Date.parse(rfcDate));
@@ -97,6 +101,7 @@ function setStats() {
 
         email_stat.textContent = "Email: " + result_parse.email;
         join_time.textContent = "Join Date: " + formattedDate;
+        profile_link.setAttribute("href", `user?id=${result_parse.id}`);
       }
     });
 }
@@ -244,9 +249,46 @@ if (data.Valid) {
   };
 };
 
+if (window.location.pathname.includes("/user")) {
+  const urlParams = new URLSearchParams(window.location.search);
+  const user_id = urlParams.get("id");
+
+  const myHeaders = new Headers();
+  myHeaders.append("Content-Type", "application/json");
+  const requestOptions = {
+    method: "GET",
+    headers: myHeaders,
+  };
+
+  fetch(getsingle_endpoint2 + user_id, requestOptions)
+    .then((response) => response.text())
+    .then((result) => {
+      const result_parse = JSON.parse(result);
+
+      if (result_parse.email && result_parse.created_at) {
+        const user_username = document.getElementById("user-username");
+        const user_status = document.getElementById("user-status");
+        const user_joindate = document.getElementById("join-date");
+
+        const rfcDate = new Date(result_parse.created_at).toUTCString();
+        const dateObj = new Date(Date.parse(rfcDate));
+        const formattedDate = dateObj.toLocaleDateString("en-US", {
+          year: "2-digit",
+          month: "2-digit",
+          day: "2-digit",
+        });
+
+        user_username.textContent = result_parse.name;
+        user_status.textContent = result_parse.status;
+        user_joindate.textContent = formattedDate
+      }
+    });
+}
+
 if (window.location.pathname.includes("/settings")) {
   const email_button = document.getElementById("save-email");
   const password_button = document.getElementById("save-password");
+  const status_button = document.getElementById("status-button");
   const logout_button = document.getElementById("logout-profile");
 
   setStats();
@@ -257,6 +299,9 @@ if (window.location.pathname.includes("/settings")) {
   password_button.addEventListener("click", function () {
     changePasswordData();
   });
+  status_button.addEventListener("click", function() {
+    changeStatusData();
+  })
   logout_button.addEventListener("click", function () {
     logout();
   });
