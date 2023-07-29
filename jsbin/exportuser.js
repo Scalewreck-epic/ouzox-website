@@ -3,7 +3,7 @@ const change_user_email_url =
   "https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv:v1/user/edit_email/"; // + session id
 const change_user_password_url =
   "https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv:v1/user/edit_pass/"; // + session id
-const change_user_stauts_url =
+const change_user_status_url =
   "https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv/user/edit_status/"; // + session id
 
 function changeSessionData(headers, endpoint) {
@@ -106,11 +106,11 @@ export async function changeStatusData() {
       headers: myHeaders,
       body: JSON.stringify({
         session_id: data.Data,
-        stauts: new_status,
+        status: new_status,
       }),
     };
 
-    changeSessionData(requestOptions, change_user_stauts_url + data.Data);
+    changeSessionData(requestOptions, change_user_status_url + data.Data);
   }
 }
 
