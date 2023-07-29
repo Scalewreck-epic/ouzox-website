@@ -972,6 +972,7 @@ p {
   margin-bottom: 2.5rem;
   background-color: #222222;
   color: white;
+  font-family: "Secular One", sans-serif;
   border-radius: 1rem;
   box-shadow: 0 1rem 1rem black;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
