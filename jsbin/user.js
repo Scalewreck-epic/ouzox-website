@@ -269,6 +269,7 @@ if (window.location.pathname.includes("/user")) {
         const user_username = document.getElementById("user-username");
         const user_status = document.getElementById("user-status");
         const user_joindate = document.getElementById("join-date");
+        const web_title = document.getElementById("title");
 
         const rfcDate = new Date(result_parse.created_at).toUTCString();
         const dateObj = new Date(Date.parse(rfcDate));
@@ -280,7 +281,8 @@ if (window.location.pathname.includes("/user")) {
 
         user_username.textContent = result_parse.name;
         user_status.textContent = result_parse.status;
-        user_joindate.textContent = formattedDate
+        user_joindate.textContent = formattedDate;
+        web_title.textContent = `Ouzox | ${user_username}`;
       }
     });
 }
