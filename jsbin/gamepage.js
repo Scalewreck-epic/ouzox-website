@@ -167,6 +167,8 @@ const gameHandler = async (gameId) => {
     const game_price = document.getElementById("game-price");
     const game_public = document.getElementById("public");
 
+    const isChecked = game_public.checked ? "true" : "false";
+
     // main data
     game_title.textContent = gameData.name;
     game_desc.innerHTML = gameData.description;
@@ -395,7 +397,7 @@ const gameHandler = async (gameId) => {
               product: {
                 name: game_title.textContent,
                 description: game_desc.innerHTML,
-                active: game_public.checked,
+                active: isChecked,
                 metadata: {
                   summary: game_summary.textContent,
                   defaultColors: false,
