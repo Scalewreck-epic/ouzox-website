@@ -106,6 +106,7 @@ async function retrieveGameData(gameId) {
   const gameData = {
     id: rawGameData.id,
     name: rawGameData.name,
+    active: rawGameData.active,
     description: rawGameData.description,
     fontFamily: rawGameData.metadata.font,
     developer_name: rawGameData.metadata.developer_name,
@@ -167,7 +168,11 @@ const gameHandler = async (gameId) => {
     const game_price = document.getElementById("game-price");
     const game_public = document.getElementById("public");
 
-    const isChecked = game_public.checked ? "true" : "false";
+    game_public.checked = gameData.active;
+    let isChecked = gameData.active;
+    game_public.addEventListener("change", function() {
+      isChecked = game_public.checked ? "true" : "false";
+    })
 
     // main data
     game_title.textContent = gameData.name;
