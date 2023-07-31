@@ -1111,11 +1111,12 @@ p {
   border-radius: 0.5rem;
   text-align: center;
   margin: 0 auto;
-  transition: transform 0.3s ease;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .login-form:hover {
   transform: scale(1.05);
+  box-shadow: 0 1.5rem 1.5rem black;
 }
 
 .login-form ul {
@@ -1158,25 +1159,22 @@ p {
   margin-left: 2rem;
 }
 
-.profile-settings,
-.email-settings,
-.password-settings {
+.settings-category {
   width: 100%;
   background-color: #222222;
   margin-top: 1.25rem;
   padding: 0.5rem;
   box-shadow: 0 1rem 1rem black;
   border-radius: 0.5rem;
-  transition: transform 0.3s ease;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.profile-settings:hover,
-.email-settings:hover,
-.password-settings:hover {
+.settings-category:hover {
   transform: scale(1.05);
+  box-shadow: 0 1.5rem 1.5rem black;
 }
 
-.profile-settings div {
+.settings-category div {
   color: white;
   margin: 1rem;
   font-weight: bold;
