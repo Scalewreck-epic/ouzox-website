@@ -283,6 +283,8 @@ if (window.location.pathname.includes("/user")) {
         user_status.textContent = result_parse.status;
         user_joindate.textContent = formattedDate;
         web_title.textContent = `Ouzox | ${result_parse.name}`;
+      } else {
+        window.location.assign("404");
       }
     });
 }
