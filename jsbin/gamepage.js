@@ -127,8 +127,7 @@ async function retrieveGameData(gameId) {
   return gameData;
 }
 
-async function changeProduct(data, gameId) {
-  const commitChangesButton = document.createElement("button");
+async function changeProduct(data, gameId, commitChangesButton) {
   try {
     await fetch(
       update_product_url + gameId,
@@ -137,11 +136,10 @@ async function changeProduct(data, gameId) {
     commitChangesButton.innerHTML = "Success";
   } catch (error) {
     commitChangesButton.innerHTML = "An error occured";
-    console.log(
+    console.error(
       "There was an error trying to update the product:",
       error
     );
-    showError(error, false);
   }
 }
 
@@ -389,8 +387,6 @@ const gameHandler = async (gameId) => {
       commitChangesButton.addEventListener("click", async function () {
         if (!isLoading) {
           isLoading = true;
-          commitChangesButton.innerHTML = "Uploading..";
-
           const myHeaders = new Headers();
           myHeaders.append("Content-Type", "application/json");
 
@@ -433,7 +429,8 @@ const gameHandler = async (gameId) => {
             }),
           };
 
-          await changeProduct(update_product_options, realGameId);
+          commitChangesButton.innerHTML = "Uploading..";
+          await changeProduct(update_product_options, realGameId, commitChangesButton);
           isLoading = false;
         }
       });
