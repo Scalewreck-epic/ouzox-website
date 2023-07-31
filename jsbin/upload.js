@@ -41,6 +41,7 @@ uploadGame.addEventListener("submit", async function (event) {
 
     const uploader = await getUser();
     const uploader_name = uploader.name;
+    const uploader_id = uploader.id;
 
     const currency = currency_input.options[currency_input.selectedIndex].value;
     const age = age_rating.options[age_rating.selectedIndex].value;
@@ -87,6 +88,7 @@ uploadGame.addEventListener("submit", async function (event) {
               description: description_input.innerHTML,
               metadata: {
                 developer_name: uploader_name,
+                developer_id: uploader_id,
                 file_name: file.name,
                 summary: summary_input.value,
                 genre: genre_input.value.toUpperCase(),
