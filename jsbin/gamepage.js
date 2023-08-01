@@ -129,17 +129,20 @@ async function retrieveGameData(gameId) {
 
 async function changeProduct(data, gameId, commitChangesButton) {
   try {
-    await fetch(
-      update_product_url + gameId,
-      data
-    );
-    commitChangesButton.innerHTML = "Success";
+    const response = await fetch(update_product_url + gameId, data);
+
+    if (response.ok) {
+      commitChangesButton.innerHTML = "Success";
+    } else {
+      commitChangesButton.innerHTML = "An error occured";
+      console.error(
+        "There was an error trying to update the product:",
+        response.status
+      );
+    }
   } catch (error) {
     commitChangesButton.innerHTML = "An error occured";
-    console.error(
-      "There was an error trying to update the product:",
-      error
-    );
+    console.error("There was an error trying to update the product:", error);
   }
 }
 
@@ -168,9 +171,9 @@ const gameHandler = async (gameId) => {
 
     game_public.checked = gameData.active ? "true" : "false";
     let isChecked = gameData.active ? "true" : "false";
-    game_public.addEventListener("change", function() {
+    game_public.addEventListener("change", function () {
       isChecked = game_public.checked ? "true" : "false";
-    })
+    });
 
     // main data
     game_title.textContent = gameData.name;
@@ -408,8 +411,7 @@ const gameHandler = async (gameId) => {
                       .backgroundColor,
                   titleColor:
                     document.getElementById("game-title-column").style.color,
-                  descColor:
-                    document.getElementById("description").style.color,
+                  descColor: document.getElementById("description").style.color,
                   descBGColor:
                     document.getElementById("description").style
                       .backgroundColor,
@@ -430,7 +432,11 @@ const gameHandler = async (gameId) => {
           };
 
           commitChangesButton.innerHTML = "Uploading..";
-          await changeProduct(update_product_options, realGameId, commitChangesButton);
+          await changeProduct(
+            update_product_options,
+            realGameId,
+            commitChangesButton
+          );
           isLoading = false;
         }
       });
