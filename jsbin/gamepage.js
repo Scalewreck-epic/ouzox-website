@@ -166,8 +166,8 @@ const gameHandler = async (gameId) => {
     const game_price = document.getElementById("game-price");
     const game_public = document.getElementById("public");
 
-    game_public.checked = gameData.active;
-    let isChecked = gameData.active;
+    game_public.checked = gameData.active ? "true" : "false";
+    let isChecked = gameData.active ? "true" : "false";
     game_public.addEventListener("change", function() {
       isChecked = game_public.checked ? "true" : "false";
     })
