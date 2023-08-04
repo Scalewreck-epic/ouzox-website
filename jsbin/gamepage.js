@@ -110,6 +110,7 @@ async function retrieveGameData(gameId) {
     description: rawGameData.description,
     fontFamily: rawGameData.metadata.font,
     developer_name: rawGameData.metadata.developer_name,
+    developer_id: rawGameData.metadata.developer_id,
     genre: rawGameData.metadata.genre,
     summary: rawGameData.metadata.summary,
     artstyle: rawGameData.metadata.artstyle,
@@ -236,6 +237,7 @@ const gameHandler = async (gameId) => {
 
     // metadata
     developer_name.textContent = gameData.developer_name;
+    developer_name.setAttribute("href", `user?id=${gameData.developer_id}`);
     game_genre.textContent = gameData.genre.toUpperCase();
     game_summary.textContent = gameData.summary;
     game_art.textContent = gameData.artstyle.toUpperCase();
