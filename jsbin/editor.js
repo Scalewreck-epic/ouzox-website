@@ -66,7 +66,7 @@ document.getElementById("strikethrough").addEventListener("click", function () {
 });
 
 document.getElementById("link").addEventListener("click", function () {
-  createLink();
+  applyFormatting("link");
 });
 
 document
