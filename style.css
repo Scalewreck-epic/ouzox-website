@@ -452,21 +452,6 @@ p {
   background-color: #222;
 }
 
-.description {
-  display: block;
-  font-size: 1rem;
-  font-family: "Secular One", sans-serif;
-  background: black;
-  color: white;
-  padding: 1rem;
-  border-radius: 1rem;
-  margin: 1rem;
-  min-height: 21rem;
-  max-width: 31rem;
-  width: auto;
-  outline: none;
-}
-
 .checkbox {
   background: #4D0101;
   border-radius: 1.875rem;
@@ -872,6 +857,17 @@ p {
   margin-top: 0;
   color: white;
   transition: transform 0.3s ease;
+}
+
+.game-description div{
+  margin: 0.5rem 0;
+}
+
+.game-description h1,
+.game-description h2,
+.game-description h3,
+.game-description h4 {
+  margin: 0.3rem 0;
 }
 
 .game-stats:hover,
