@@ -195,16 +195,22 @@ function calculateSimilarity(a, b) {
 }
 
 function removePrivateGames() {
-  for (let i = 0; i < games.length; i++) {
-    const game = games[i];
-
-    if (game.active) {
-      continue;
-    } else {
-      let index = games.indexOf(game);
-      games.splice(index, 1);
+  return new Promise((resolve, reject) => {
+    for (let i = 0; i < games.length; i++) {
+      const game = games[i];
+  
+      if (game.active) {
+        continue;
+      } else {
+        let index = games.indexOf(game);
+        games.splice(index, 1);
+      }
     }
-  }
+    setTimeout(() => {
+      console.log("Irrelevant games removed");
+      resolve(); // Resolve the promise to indicate that the operation is complete
+    }, 1000);
+  });
 }
 
 function removeIrrelevantGames() {
@@ -490,7 +496,6 @@ async function fetchGamesRequest(isDashboard) {
 
       if (games.length > 0) {
         try {
-          await removeIrrelevantGames();
   
           if (genres.length > 0 && document.getElementById("genres-list") != null) {
             loadGenres();
@@ -499,7 +504,8 @@ async function fetchGamesRequest(isDashboard) {
           if (isDashboard) {
             loadDashboard();
           } else {
-            removePrivateGames();
+            await removePrivateGames();
+            await removeIrrelevantGames();
             loadGames();
           }
         } catch(error) {
