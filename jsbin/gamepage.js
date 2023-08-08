@@ -149,7 +149,9 @@ async function changeProduct(data, gameId, commitChangesButton) {
 
 const gameHandler = async (gameId) => {
   if (gameId != null) {
+    const user = await getUser();
     const gameData = await retrieveGameData(gameId);
+
     const realGameId = gameData.id;
 
     const game_title = document.getElementById("game-title");
@@ -237,12 +239,14 @@ const gameHandler = async (gameId) => {
 
     // metadata
     developer_name.textContent = gameData.developer_name;
-    developer_name.setAttribute("href", `user?id=${gameData.developer_id}`);
     game_genre.textContent = gameData.genre.toUpperCase();
     game_summary.textContent = gameData.summary;
     game_art.textContent = gameData.artstyle.toUpperCase();
     game_age.textContent = gameData.agerating.toUpperCase();
     game_size.textContent = `${gameData.filesize} MB`;
+
+    developer_name.setAttribute("href", `user?id=${gameData.developer_id}`);
+    game_genre.setAttribute("href", `category?n=${gameData.genre.toUpperCase()}`);
 
     if (!gameData.useDefaultColors) {
       const elements = document.getElementsByClassName("game-stat");
@@ -276,8 +280,6 @@ const gameHandler = async (gameId) => {
       const newPriceId = gameId.replace(/^price_/, "");
       window.location.assign(`download?g=${newGameId}&p=${newPriceId}`);
     });
-
-    const user = await getUser();
 
     if (user != null && user.name == gameData.developer_name) {
       game_title.contentEditable = true;
