@@ -115,13 +115,7 @@ function createGamePage(game, game_price, market) {
     gameImageContainer.appendChild(createdLabel);
 
     createdLabel.addEventListener("mouseenter", function () {
-      if (diffDaysUpdated > 1) {
-        createdText.innerHTML = `${diffDaysCreated} DAYS AGO`;
-      } else if (diffDaysUpdated == 1) {
-        createdText.innerHTML = `1 DAY AGO`;
-      } else {
-        createdText.innerHTML = "TODAY";
-      }
+      createdText.innerHTML = `${diffDaysCreated} DAY(S) AGO`;
     });
 
     createdLabel.addEventListener("mouseleave", function () {
@@ -138,13 +132,7 @@ function createGamePage(game, game_price, market) {
     gameImageContainer.appendChild(updatedLabel);
 
     updatedLabel.addEventListener("mouseenter", function () {
-      if (diffDaysUpdated > 1) {
-        updatedText.innerHTML = `${diffDaysUpdated} DAYS AGO`;
-      } else if (diffDaysUpdated == 1) {
-        updatedText.innerHTML = `1 DAY AGO`;
-      } else {
-        updatedText.innerHTML = "TODAY";
-      }
+      updatedText.innerHTML = `${diffDaysUpdated} DAY(S) AGO`;
     });
 
     updatedLabel.addEventListener("mouseleave", function () {
