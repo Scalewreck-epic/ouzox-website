@@ -67,6 +67,8 @@ function createGamePage(game, game_price, market) {
   const price = game_price.price / 100;
   const currency = game_price.currency;
 
+  const priceId = game_price.id.replace(/^price_/, "");
+
   const gamesDiv = document.createElement("div");
   gamesDiv.className = "game";
 
@@ -74,19 +76,15 @@ function createGamePage(game, game_price, market) {
   gameImage.className = "product-image";
   gameImage.setAttribute("src", game.images[0]);
 
-  const gameLink = document.createElement("a");
-  gameLink.className = "link-container";
-
-  const gameImageContainer = document.createElement("div");
+  const gameImageContainer = document.createElement("a");
   gameImageContainer.className = "product-image-container";
 
-  const priceId = game_price.id.replace(/^price_/, "");
-
-  gameLink.setAttribute("href", `game?g=${priceId}`);
-
-  const gameTitle = document.createElement("div");
+  const gameTitle = document.createElement("a");
   gameTitle.className = "product-title";
   gameTitle.textContent = game.name;
+
+  gameImageContainer.setAttribute("href", `game?g=${priceId}`);
+  gameTitle.setAttribute("href", `game?g=${priceId}`);
 
   const gameSummary = document.createElement("div");
   gameSummary.className = "product-summary";
@@ -153,9 +151,8 @@ function createGamePage(game, game_price, market) {
       updatedText.innerHTML = "UPDATED";
     });
   }
-  gameLink.appendChild(gameImageContainer);
-  gameLink.appendChild(gameTitle);
-  gamesDiv.appendChild(gameLink);
+  gamesDiv.appendChild(gameImageContainer);
+  gamesDiv.appendChild(gameTitle);
   gamesDiv.appendChild(gameSummary);
 
   market.appendChild(gamesDiv);
@@ -207,7 +204,6 @@ function removePrivateGames() {
       }
     }
     setTimeout(() => {
-      console.log("Irrelevant games removed");
       resolve(); // Resolve the promise to indicate that the operation is complete
     }, 1000);
   });
@@ -238,8 +234,6 @@ function removeIrrelevantGames() {
         const genre_name = genre.genre_name;
         const genre_similarity = calculateSimilarity(search_query, genre_name);
 
-        console.log(`Genre: ${genre_name}, Similarity: ${genre_similarity}`);
-
         if (genre_similarity < similarityThreshold) {
           const index = genres.indexOf(genre);
           genres.splice(index, 1);
@@ -261,8 +255,6 @@ function removeIrrelevantGames() {
 
         const game_similarity = (0.7 * title_similarity) + (0.3 * summary_similarity);
 
-        console.log(`Game: ${game_name}, Similarity: ${game_similarity}`);
-
         if (game_similarity < similarityThreshold) {
           const index = games.indexOf(game);
           games.splice(index, 1);
@@ -272,7 +264,6 @@ function removeIrrelevantGames() {
       }
     }
     setTimeout(() => {
-      console.log("Irrelevant games removed");
       resolve(); // Resolve the promise to indicate that the operation is complete
     }, 1000);
   });
