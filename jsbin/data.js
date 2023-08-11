@@ -234,6 +234,7 @@ function removeIrrelevantGames() {
           const index = genres.indexOf(genre);
           genres.splice(index, 1);
         } else {
+          console.log(`${genre_name} similarity: ${genre_similarity}`);
           genre.relevance = genre_similarity;
         }
       }
@@ -255,6 +256,7 @@ function removeIrrelevantGames() {
           const index = games.indexOf(game);
           games.splice(index, 1);
         } else {
+          console.log(`${game_name} similarity: ${game_similarity}`);
           game.relevance = game_similarity;
         }
       }
@@ -483,16 +485,17 @@ async function fetchGamesRequest(isDashboard) {
 
       if (games.length > 0) {
         try {
-  
-          if (genres.length > 0 && document.getElementById("genres-list") != null) {
-            loadGenres();
-          }
 
           if (isDashboard) {
             loadDashboard();
           } else {
             await removePrivateGames();
             await removeIrrelevantGames();
+
+            if (genres.length > 0 && document.getElementById("genres-list") != null) {
+              loadGenres();
+            }
+
             loadGames();
           }
         } catch(error) {
@@ -529,7 +532,7 @@ if (document.getElementById("search-query") != null) {
   search_query2.value = search_query;
   if (search_label != null) {
     if (search_query != null) {
-      search_label.textContent = `Top search results for '${search_query}'`;
+      search_label.textContent = `Results for '${search_query}'`;
     } else {
       window.location.assign("index");
     }
