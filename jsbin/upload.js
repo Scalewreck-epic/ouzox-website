@@ -2,14 +2,15 @@ const upload_product_api_url =
   "https://x8ki-letl-twmt.n7.xano.io/api:iwAsZq4E/products";
 const set_product_price_url =
   "https://x8ki-letl-twmt.n7.xano.io/api:tFdG2Vz-/prices";
-const upload_image_api_url =
-  "https://x8ki-letl-twmt.n7.xano.io/api:4A2Ya61A/storage/image";
 const get_genre_api_url =
   "https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv/genres/"; // + genre name;
 const change_genre_api_url =
   "https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv/genres/update/"; // + genre name
 const add_genre_api_url =
   "https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv/genres/create";
+
+const upload_game_api_url =
+  "https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv/games";
 
 const uploadGame = document.getElementById("upload-game");
 
@@ -65,70 +66,19 @@ uploadGame.addEventListener("submit", async function (event) {
     const myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
 
-    const uploadImageRequestOptions = {
-      method: "POST",
-      headers: myHeaders,
-      redirect: "follow",
-      body: JSON.stringify({
-        image: imageURI,
-      }),
-    };
-
-    async function uploadProduct(product_image) {
+    async function uploadProduct() {
       try {
         const uploadRequestOptions = {
           method: "POST",
           headers: myHeaders,
           redirect: "follow",
           body: JSON.stringify({
-            product: {
-              id: null,
-              name: title_input.value,
-              active: "false",
-              description: description_input.innerHTML,
-              metadata: {
-                developer_name: uploader_name,
-                developer_id: uploader_id,
-                file_name: file.name,
-                summary: summary_input.value,
-                genre: genre_input.value.toUpperCase(),
-                artstyle: art_input.value.toUpperCase(),
-                age_rating: age,
-                size: Math.round(fileSizeInMB),
-                defaultColors: true,
-                bgColor: "",
-                bg2Color: "",
-                titleColor: "",
-                descColor: "",
-                descBGColor: "",
-                buttonColor: "",
-                buttonTextColor: "",
-                statsColor: "",
-                statsBGColor: "",
-              },
-              type: null,
-              attributes: [],
-              caption: null,
-              deactivate_on: [],
-              images: [product_image.url],
-              package_dimensions: {
-                height: null,
-                length: null,
-                weight: null,
-                width: null,
-              },
-              shippable: null,
-              statement_descriptor: null,
-              unit_label: null,
-              url: null,
-            },
+            name: title_input.value,
+            active: "false",
           }),
         };
 
-        const response = await fetch(
-          upload_product_api_url,
-          uploadRequestOptions
-        );
+        const response = await fetch(upload_product_api_url, uploadRequestOptions);
         const result = await response.text();
         const result_parse = JSON.parse(result);
 
@@ -138,18 +88,49 @@ uploadGame.addEventListener("submit", async function (event) {
       }
     }
 
-    async function uploadImage() {
+    async function uploadGame(productId, free) {
       try {
-        const response = await fetch(
-          upload_image_api_url,
-          uploadImageRequestOptions
-        );
+        const uploadRequestOptions = {
+          method: "POST",
+          headers: myHeaders,
+          redirect: "follow",
+          body: JSON.stringify({
+            name: title_input.value,
+            active: "false",
+            free: free,
+            description: description_input.innerHTML,
+            developer_name: uploader_name,
+            developer_id: uploader_id,
+            file_name: file.name,
+            summary: summary_input.value,
+            genre: genre_input.value.toUpperCase(),
+            artstyle: art_input.value.toUpperCase(),
+            age_rating: age,
+            size: Math.round(fileSizeInMB),
+            defaultColors: true,
+            icon: imageURI,
+            product_id: productId,
+            metadata: {
+              bgColor: "",
+              bg2Color: "",
+              titleColor: "",
+              descColor: "",
+              descBGColor: "",
+              buttonColor: "",
+              buttonTextColor: "",
+              statsColor: "",
+              statsBGColor: "",
+            },
+          }),
+        };
+
+        const response = await fetch(upload_game_api_url, uploadRequestOptions);
         const result = await response.text();
         const result_parse = JSON.parse(result);
 
         return result_parse;
       } catch (error) {
-        warn("There was an error trying to upload an image: " + error);
+        warn("There was an error trying to upload a product: " + error);
       }
     }
 
@@ -258,29 +239,25 @@ uploadGame.addEventListener("submit", async function (event) {
     }
 
     try {
-      error_label.innerHTML = "Uploading image...";
-      const image_metadata = await uploadImage();
+      error_label.innerHTML = "Creating game page...";
 
-      if (image_metadata) {
-        error_label.innerHTML = "Creating game page...";
+      if (price_input.value > 0) {
+        const product_result = await uploadProduct();
 
-        if (price_input.value > 0) {
-          const result = await uploadProduct(image_metadata.image.image);
+        if (product_result && product_result.id) {
+          error_label.innerHTML = "Setting price...";
+          await uploadGame(product_result.id, false);
 
-          if (result && result.id) {
-            error_label.innerHTML = "Setting price...";
-            const price = await setProductPrice(result.id);
-            await updateGenre();
-            if (price && price.active) {
-              console.log("Product uploaded successfully!");
-              error_label.innerHTML = "Successfully published game!";
-            }
+          const price = await setProductPrice(product_result.id);
+
+          await updateGenre();
+          if (price && price.active) {
+            console.log("Product uploaded successfully!");
+            error_label.innerHTML = "Successfully published game!";
           }
-        } else {
-          error_label.innerHTML =
-            "Free games are not able to be put onto the platform just yet.";
-          // Handle uploading game when user sets price to free.
         }
+      } else {
+        await uploadGame("none", true);
       }
     } catch (error) {
       console.error("There was an error trying to publish game: ", error);
