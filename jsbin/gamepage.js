@@ -33,8 +33,8 @@ async function retrieveGameData(gameId) {
 
   const rawGameData = await getGameData();
 
-  const createdDate = rawGameData.created;
-  const updatedDate = rawGameData.updated;
+  const createdDate = new Date(rawGameData.created);
+  const updatedDate = new Date(rawGameData.updated);
 
   const currentDate = new Date();
 
@@ -113,7 +113,7 @@ async function retrieveGameData(gameId) {
     name: rawGameData.name,
     active: rawGameData.active,
     description: rawGameData.description,
-    fontFamily: rawGameData.metadata.font,
+    fontFamily: rawGameData.font,
     developer_name: rawGameData.developer_name,
     developer_id: rawGameData.developer_id,
     genre: rawGameData.genre,
@@ -461,7 +461,7 @@ const gameHandler = async (gameId) => {
 };
 
 if (gameIdParam != null) {
-  gameHandler(`price_${gameIdParam}`);
+  gameHandler(gameIdParam);
 } else {
   console.warn("There is no game id.");
   window.location.assign("404");
