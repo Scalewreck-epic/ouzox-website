@@ -1,10 +1,8 @@
 const games_list_api =
-  "https://x8ki-letl-twmt.n7.xano.io/api:iwAsZq4E:v1/products";
+  "https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv/games";
 const games_prices_url =
   "https://x8ki-letl-twmt.n7.xano.io/api:tFdG2Vz-/prices";
 const genre_list_url = "https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv/genres";
-const update_product_url =
-  "https://x8ki-letl-twmt.n7.xano.io/api:iwAsZq4E/products/"; // + product id
 
 const get_user_url = "https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv/user/"; // + session id
 
@@ -27,7 +25,6 @@ function getGamePrice(game_id) {
     return {
       price: result.unit_amount,
       currency: result.currency,
-      id: result.id,
     };
   }
 }
@@ -67,8 +64,6 @@ function createGamePage(game, game_price, market) {
   const price = game_price.price / 100;
   const currency = game_price.currency;
 
-  const priceId = game_price.id.replace(/^price_/, "");
-
   const gamesDiv = document.createElement("div");
   gamesDiv.className = "game";
 
@@ -83,8 +78,8 @@ function createGamePage(game, game_price, market) {
   gameTitle.className = "product-title";
   gameTitle.textContent = game.name;
 
-  gameImageContainer.setAttribute("href", `game?g=${priceId}`);
-  gameTitle.setAttribute("href", `game?g=${priceId}`);
+  gameImageContainer.setAttribute("href", `game?g=${game.id}`);
+  gameTitle.setAttribute("href", `game?g=${game.id}`);
 
   const gameSummary = document.createElement("div");
   gameSummary.className = "product-summary";
@@ -310,6 +305,12 @@ function loadGamesWithList(list, category) {
       if (game_price) {
         createGamePage(game, game_price, list);
         gamesInList += 1;
+      } else if (game.free == true) {
+        createGamePage(game, {
+          price: 0,
+          currency: "USD",
+        }, list);
+        gamesInList += 1;
       }
     }
   }
@@ -436,9 +437,6 @@ async function fetchGamesRequest(isDashboard) {
     method: "GET",
     headers: myHeaders,
     redirect: "follow",
-    params: JSON.stringify({
-      limit: 10000,
-    }),
   };
 
   const requestOptions = {
