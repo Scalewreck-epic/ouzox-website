@@ -69,7 +69,7 @@ function createGamePage(game, game_price, market) {
 
   const gameImage = document.createElement("img");
   gameImage.className = "product-image";
-  gameImage.setAttribute("src", game.images[0]);
+  gameImage.setAttribute("src", game.icon.url);
 
   const gameImageContainer = document.createElement("a");
   gameImageContainer.className = "product-image-container";
@@ -83,7 +83,7 @@ function createGamePage(game, game_price, market) {
 
   const gameSummary = document.createElement("div");
   gameSummary.className = "product-summary";
-  gameSummary.textContent = game.metadata.summary;
+  gameSummary.textContent = game.summary;
 
   const gamePrice = document.createElement("div");
   gamePrice.className = "product-price";
@@ -207,7 +207,7 @@ function removeIrrelevantGames() {
     if (category_name != null) {
       for (let i = 0; i < games.length; i++) {
         const game = games[i];
-        const game_genre = game.metadata.genre;
+        const game_genre = game.genre;
     
         if (game_genre == category_name) {
           continue;
@@ -229,7 +229,6 @@ function removeIrrelevantGames() {
           const index = genres.indexOf(genre);
           genres.splice(index, 1);
         } else {
-          console.log(`${genre_name} similarity: ${genre_similarity}`);
           genre.relevance = genre_similarity;
         }
       }
@@ -237,7 +236,7 @@ function removeIrrelevantGames() {
       for (let i = 0; i < games.length; i++) {
         const game = games[i];
         const game_name = game.name;
-        const game_summary = game.metadata.summary;
+        const game_summary = game.summary;
 
         const title_similarity = calculateSimilarity(search_query, game_name);
         const summary_similarity = calculateSimilarity(
@@ -251,7 +250,6 @@ function removeIrrelevantGames() {
           const index = games.indexOf(game);
           games.splice(index, 1);
         } else {
-          console.log(`${game_name} similarity: ${game_similarity}`);
           game.relevance = game_similarity;
         }
       }
@@ -410,7 +408,7 @@ async function loadDashboard() {
       if (game) {
         const game_price = getGamePrice(game.id.toString());
 
-        if (game_price && game.metadata.developer_name == user.name) {
+        if (game_price && game.developer_name == user.name) {
           createGamePage(game, game_price, category);
           gamesInList += 1;
         }
@@ -479,7 +477,7 @@ async function fetchGamesRequest(isDashboard) {
       const result = await response.text();
       const result_parse = JSON.parse(result);
 
-      games = result_parse;
+      games = result_parse.games;
 
       if (games.length > 0) {
         try {
