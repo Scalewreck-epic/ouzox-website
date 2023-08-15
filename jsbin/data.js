@@ -479,7 +479,7 @@ async function fetchGamesRequest(isDashboard) {
       const result = await response.text();
       const result_parse = JSON.parse(result);
 
-      games = result_parse.data;
+      games = result_parse;
 
       if (games.length > 0) {
         try {
