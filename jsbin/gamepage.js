@@ -1,6 +1,7 @@
 const update_product_url =
   "https://x8ki-letl-twmt.n7.xano.io/api:iwAsZq4E/products/"; // + product id
-const get_price_url = "https://x8ki-letl-twmt.n7.xano.io/api:tFdG2Vz-/prices/"; // + price id
+const get_game_url = "https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv/games/"; // + game id
+const get_price_url = "https://x8ki-letl-twmt.n7.xano.io/api:tFdG2Vz-/prices/" // + price id
 
 import { getUser } from "./exportuser.js";
 
@@ -17,27 +18,23 @@ async function retrieveGameData(gameId) {
     redirect: "follow",
   };
 
-  async function getPriceData() {
+  async function getGameData() {
     try {
-      const response = await fetch(get_price_url + gameId, options);
+      const response = await fetch(get_game_url + gameId, options);
       const result = await response.text();
       const result_parse = JSON.parse(result);
 
       return result_parse;
     } catch (error) {
-      console.error("There was an error trying to get price: ", error);
+      console.error("There was an error trying to get game: ", error);
       window.location.assign("404");
     }
   }
 
-  const rawPriceData = await getPriceData();
-  const rawGameData = rawPriceData.product;
+  const rawGameData = await getGameData();
 
-  const createdTimestampMs = rawGameData.created * 1000;
-  const updatedTimestampMs = rawGameData.updated * 1000;
-
-  const createdDate = new Date(createdTimestampMs);
-  const updatedDate = new Date(updatedTimestampMs);
+  const createdDate = rawGameData.created;
+  const updatedDate = rawGameData.updated;
 
   const currentDate = new Date();
 
@@ -73,19 +70,6 @@ async function retrieveGameData(gameId) {
   const publishedYearsAgo = Math.floor(publishedDaysAgo / 365);
   const updatedYearsAgo = Math.floor(updatedDaysAgo / 365);
 
-  const metadata = rawGameData.metadata;
-
-  const colors = {
-    bgColor: metadata.bgColor,
-    bg2Color: metadata.bg2Color,
-    titleColor: metadata.titleColor,
-    descColor: metadata.descColor,
-    buttonColor: metadata.buttonColor,
-    buttonTextColor: metadata.buttonTextColor,
-    statsColor: metadata.statsColor,
-    statsBGColor: metadata.statsBGColor,
-  };
-
   const datestodays = {
     publishedDaysAgo: publishedDaysAgo,
     publishedWeeksAgo: publishedWeeksAgo,
@@ -97,11 +81,32 @@ async function retrieveGameData(gameId) {
     updatedYearsAgo: updatedYearsAgo,
   };
 
-  const priceData = {
-    id: rawPriceData.id,
-    currency: rawPriceData.currency.toUpperCase(),
-    amount: parseFloat(rawPriceData.unit_amount / 100),
+  let priceData = {
+    currency: "USD",
+    amount: "0",
   };
+
+  if (!rawGameData.free) {
+    async function getPriceData() {
+      try {
+        const response = await fetch(get_price_url + rawGameData.product_id, options);
+        const result = await response.text();
+        const result_parse = JSON.parse(result);
+  
+        return result_parse;
+      } catch (error) {
+        console.error("There was an error trying to get price: ", error);
+        window.location.assign("404");
+      };
+    };
+
+    const response = await getPriceData();
+
+    priceData = {
+      currency: response.currency.toUpperCase(),
+      amount: parseFloat(response.unit_amount / 100),
+    }
+  }
 
   const gameData = {
     id: rawGameData.id,
@@ -109,19 +114,19 @@ async function retrieveGameData(gameId) {
     active: rawGameData.active,
     description: rawGameData.description,
     fontFamily: rawGameData.metadata.font,
-    developer_name: rawGameData.metadata.developer_name,
-    developer_id: rawGameData.metadata.developer_id,
-    genre: rawGameData.metadata.genre,
-    summary: rawGameData.metadata.summary,
-    artstyle: rawGameData.metadata.artstyle,
-    filesize: rawGameData.metadata.size,
-    agerating: rawGameData.metadata.age_rating,
-    icon: rawGameData.images[0],
+    developer_name: rawGameData.developer_name,
+    developer_id: rawGameData.developer_id,
+    genre: rawGameData.genre,
+    summary: rawGameData.summary,
+    artstyle: rawGameData.artstyle,
+    filesize: rawGameData.size,
+    agerating: rawGameData.age_rating,
+    icon: rawGameData.icon,
     created: createdFormattedDate,
     updated: updatedFormattedDate,
     datestodays: datestodays,
-    useDefaultColors: metadata.default,
-    colors: colors,
+    useDefaultColors: rawGameData.defaultColors,
+    colors: rawGameData.colors,
     price: priceData,
   };
 
