@@ -108,7 +108,7 @@ uploadGame.addEventListener("submit", async function (event) {
             age_rating: age,
             size: Math.round(fileSizeInMB),
             defaultColors: true,
-            icon: imageURI,
+            icon_upload: imageURI,
             product_id: productId,
             metadata: {
               bgColor: "",
