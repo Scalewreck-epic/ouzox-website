@@ -1,53 +1,24 @@
 const description = document.getElementById("description");
+const gameColumn = document.getElementById("game-column");
 
-const clipboard = navigator.clipboard;
-
-function applyFormatting(command) {
-  if (command === "bold") {
-    clipboard.writeText("**");
-  } else if (command === "italic") {
-    clipboard.writeText("*");
-  } else if (command === "underline") {
-    clipboard.writeText("_");
-  } else if (command === "strikethrough") {
-    clipboard.writeText("~~");
-  } else if (command === "link") {
-    const url = prompt("Enter the URL:");
-    const linkText = prompt("Enter the link text:");
-
-    if (url && linkText) {
-      const link = `<a href="${url}" target="_blank">${linkText}</a>`;
-      clipboard.writeText(link);
-    }
-  } else if (command === "insertUnorderedList") {
-    clipboard.writeText("* ");
-  } else if (command === "insertOrderedList") {
-    clipboard.writeText("1. ");
-  } else if (command === "justifyLeft") {
-    clipboard.writeText("align=left");
-  } else if (command === "justifyRight") {
-    clipboard.writeText("align=right");
-  } else if (command === "justifyCenter") {
-    clipboard.writeText("align=center");
-  }
-
-  clipboard.readText().then(function (text) {
-    if (description.contains(document.getSelection().focusNode)) {
-      document.execCommand(command, false, text, description);
-    }
-  });
-}
+function applyFormatting(command, value = null) {
+  document.execCommand(command, false, value);
+  description.focus();
+};
 
 function applyHeader(level) {
-  const headerCommand = "h" + level;
-  clipboard.writeText(headerCommand);
+  const headerTag = `h${level}`;
+  applyFormatting("formatBlock", headerTag);
+};
 
-  clipboard.readText().then(function (text) {
-    if (description.contains(document.getSelection().focusNode)) {
-      document.execCommand("formatBlock", false, text, description);
-    }
-  });
-}
+function createLink() {
+  const url = prompt("Enter the URL:");
+  const linkText = prompt("Enter the link text:");
+
+  if (url && linkText) {
+    applyFormatting("insertHTML", `<a href="${url}" target="_blank">${linkText}</a>`);
+  };
+};
 
 document.getElementById("bold").addEventListener("click", function () {
   applyFormatting("bold");
@@ -66,20 +37,16 @@ document.getElementById("strikethrough").addEventListener("click", function () {
 });
 
 document.getElementById("link").addEventListener("click", function () {
-  applyFormatting("link");
+  createLink();
 });
 
-document
-  .getElementById("insertUnorderedList")
-  .addEventListener("click", function () {
-    applyFormatting("insertUnorderedList");
-  });
+document.getElementById("insertUnorderedList").addEventListener("click", function () {
+  applyFormatting("insertUnorderedList");
+});
 
-document
-  .getElementById("insertOrderedList")
-  .addEventListener("click", function () {
-    applyFormatting("insertOrderedList");
-  });
+document.getElementById("insertOrderedList").addEventListener("click", function () {
+  applyFormatting("insertOrderedList");
+});
 
 document.getElementById("justifyLeft").addEventListener("click", function () {
   applyFormatting("justifyLeft");
