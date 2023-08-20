@@ -292,10 +292,10 @@ async function verifyUser() {
   }
 }
 
-function loadGamesWithList(list, category) {
+function loadGamesWithList(list, category, gameslist) {
   let gamesInList = 0;
   for (let i = 0; i < gamesPerCategory; i++) {
-    const game = games[i];
+    const game = gameslist[i];
 
     if (game && game.active) {
       const game_price = getGamePrice(game.id.toString());
@@ -365,20 +365,63 @@ function loadGames() {
     );
   } else {
     // Fresh Games
-    games.sort((a, b) => (a.created > b.created ? -1 : 1));
+    games.sort((a, b) => {
+      const scoreA = a.created * 0.7 + a.downloads * 0.3;
+      const scoreB = b.created * 0.7 + b.downloads * 0.3;
+
+      if (scoreA > scoreB) {
+        return -1;
+      } else {
+        return 1;
+      };
+    });
+
     loadGamesWithList(
       document.getElementById("fresh-games-list"),
-      document.getElementById("fresh-games")
+      document.getElementById("fresh-games"), games
     );
 
     // Hot Games
-    games.sort((a, b) => (a.downloads > b.downloads ? -1 : 1));
+    games.sort((a, b) => {
+      const scoreA = a.downloads * 0.7 + a.updated * 0.3;
+      const scoreB = b.downloads * 0.7 + b.updated * 0.3;
+
+      if (scoreA > scoreB) {
+        return -1;
+      } else {
+        return 1;
+      };
+    });
+
     loadGamesWithList(
       document.getElementById("hot-games-list"),
-      document.getElementById("hot-games")
+      document.getElementById("hot-games"), games
     );
 
+    // Bestsellers
+
     // Free Games
+    const freegames = []
+    for (let game of games) {
+      if (game.free == true) {
+        freegames.push(game);
+      }
+    }
+    freegames.sort((a, b) => {
+      const scoreA = a.downloads * 0.7 + a.updated * 0.3;
+      const scoreB = b.downloads * 0.7 + b.updated * 0.3;
+
+      if (scoreA > scoreB) {
+        return -1;
+      } else {
+        return 1;
+      };
+    });
+
+    loadGamesWithList(
+      document.getElementById("free-games-list"),
+      document.getElementById("free-games"), freegames
+    );
   }
 }
 
