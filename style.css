@@ -1174,7 +1174,7 @@ p {
   border-style: solid;
   border-width: 0;
   background-color: #46464c;
-  transition: color 0.5s ease;
+  transition: color 0.5s ease outline 0.5s ease;
 }
 
 .genre-button h4,
@@ -1199,6 +1199,7 @@ p {
 .genre-button:hover {
   text-decoration: none;
   border-bottom: 0;
+  outline: 0.125rem solid #4D0101;
 }
 
 .market {
