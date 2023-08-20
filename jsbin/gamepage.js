@@ -1,5 +1,5 @@
 const update_product_url =
-  "https://x8ki-letl-twmt.n7.xano.io/api:iwAsZq4E/products/"; // + product id
+  "https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv/games/"; // + game id
 const get_game_url = "https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv/games/"; // + game id
 const get_price_url = "https://x8ki-letl-twmt.n7.xano.io/api:tFdG2Vz-/prices/" // + price id
 
@@ -407,36 +407,33 @@ const gameHandler = async (gameId) => {
             headers: myHeaders,
             redirect: "follow",
             body: JSON.stringify({
-              product: {
-                name: game_title.textContent,
-                description: game_desc.innerHTML,
-                active: isChecked,
-                metadata: {
-                  summary: game_summary.textContent,
-                  defaultColors: false,
-                  bgColor: document.body.style.backgroundColor,
-                  bg2Color:
-                    document.getElementById("game-column").style
-                      .backgroundColor,
-                  titleColor:
-                    document.getElementById("game-title-column").style.color,
-                  descColor: document.getElementById("description").style.color,
-                  descBGColor:
-                    document.getElementById("description").style
-                      .backgroundColor,
-                  buttonColor:
-                    document.getElementById("download-button").style
-                      .backgroundColor,
-                  buttonTextColor:
-                    document.getElementById("download-button").style.color,
-                  statsColor:
-                    document.getElementsByClassName("game-stat")[0].style.color,
-                  statsBGColor:
-                    document.getElementById("game-stats").style.backgroundColor,
-                  font: document.getElementById("game-column").style.fontFamily,
-                },
+              name: game_title.textContent,
+              description: game_desc.innerHTML,
+              summary: game_summary.textContent,
+              font: document.getElementById("game-column").style.fontFamily,
+              active: isChecked,
+              defaultColors: false,
+              metadata: {
+                bgColor: document.body.style.backgroundColor,
+                bg2Color:
+                  document.getElementById("game-column").style
+                    .backgroundColor,
+                titleColor:
+                  document.getElementById("game-title-column").style.color,
+                descColor: document.getElementById("description").style.color,
+                descBGColor:
+                  document.getElementById("description").style
+                    .backgroundColor,
+                buttonColor:
+                  document.getElementById("download-button").style
+                    .backgroundColor,
+                buttonTextColor:
+                  document.getElementById("download-button").style.color,
+                statsColor:
+                  document.getElementsByClassName("game-stat")[0].style.color,
+                statsBGColor:
+                  document.getElementById("game-stats").style.backgroundColor,
               },
-              id: realGameId,
             }),
           };
 
