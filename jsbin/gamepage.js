@@ -33,8 +33,8 @@ async function retrieveGameData(gameId) {
 
   const rawGameData = await getGameData();
 
-  const createdDate = new Date(rawGameData.created);
-  const updatedDate = new Date(rawGameData.updated);
+  const createdDate = new Date(rawGameData.created_at);
+  const updatedDate = new Date(rawGameData.updated_at);
 
   const currentDate = new Date();
 
@@ -59,15 +59,13 @@ async function retrieveGameData(gameId) {
   );
 
   const publishedDaysAgo = Math.ceil(publishedDifference / (1000 * 3600 * 24));
-  const updatedDaysAgo = Math.ceil(updatedDifference / (1000 * 3600 * 24));
-
   const publishedWeeksAgo = Math.floor(publishedDaysAgo / 7);
-  const updatedWeeksAgo = Math.floor(updatedDaysAgo / 7);
-
   const publishedMonthsAgo = Math.floor(publishedDaysAgo / 31);
-  const updatedMonthsAgo = Math.floor(publishedDaysAgo / 31);
-
   const publishedYearsAgo = Math.floor(publishedDaysAgo / 365);
+
+  const updatedDaysAgo = Math.ceil(updatedDifference / (1000 * 3600 * 24));
+  const updatedWeeksAgo = Math.floor(updatedDaysAgo / 7);
+  const updatedMonthsAgo = Math.floor(publishedDaysAgo / 31);
   const updatedYearsAgo = Math.floor(updatedDaysAgo / 365);
 
   const datestodays = {
@@ -218,9 +216,9 @@ const gameHandler = async (gameId) => {
           ? `${createdOrUpdated} (1 Day Ago)`
           : publishedOrUpdatedDaysAgo > 1
           ? `${createdOrUpdated} (${publishedOrUpdatedDaysAgo} Days Ago)`
-          : "Today";
+          : false;
       } else {
-        return "Today";
+        return false;
       }
     }
 
