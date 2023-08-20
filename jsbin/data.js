@@ -322,27 +322,11 @@ function loadGamesWithList(list, category) {
   }
 }
 
-function sortList(gameSortType, list) {
-  if (gameSortType == "newest") {
-    list.sort((a, b) => (a.created > b.created ? -1 : 1));
-  } else if (gameSortType == "upToDate") {
-    list.sort((a, b) => (a.updated > b.updated ? -1 : 1));
-  } else if (gameSortType == "relevance") {
-    list.sort((a, b) => (a.relevance > b.relevance ? -1 : 1));
-  } else if (gameSortType == "price") {
-    list.sort((a, b) =>
-      getGamePrice(a.id.toString()).price > getGamePrice(b.id.toString()).price
-        ? -1
-        : 1
-    );
-  }
-}
-
 function loadGenres() {
   let genresOnList = 0;
 
   if (window.location.pathname.includes("/category")) {
-    sortList("relevance", genres);
+    genres.sort((a, b) => (a.relevance > b.relevance ? -1 : 1));
   } else {
     genres.sort((a, b) =>
       a.games_with_genre > b.games_with_genre ? 1 : -1
@@ -374,23 +358,27 @@ function loadGames() {
     window.location.pathname.includes("/search") ||
     window.location.pathname.includes("/category")
   ) {
-    sortList("relevance", games);
+    games.sort((a, b) => (a.relevance > b.relevance ? -1 : 1));
     loadGamesWithList(
       document.getElementById("relevant-games-list"),
       document.getElementById("relevant-games")
     );
   } else {
-    sortList("newest", games);
+    // Fresh Games
+    games.sort((a, b) => (a.created > b.created ? -1 : 1));
     loadGamesWithList(
-      document.getElementById("newest-games-list"),
-      document.getElementById("new-games")
-    );
-
-    sortList("upToDate", games);
-    loadGamesWithList(
-      document.getElementById("updated-games-list"),
+      document.getElementById("fresh-games-list"),
       document.getElementById("fresh-games")
     );
+
+    // Hot Games
+    games.sort((a, b) => (a.downloads > b.downloads ? -1 : 1));
+    loadGamesWithList(
+      document.getElementById("hot-games-list"),
+      document.getElementById("hot-games")
+    );
+
+    // Free Games
   }
 }
 
@@ -399,7 +387,7 @@ async function loadDashboard() {
   const user = await verifyUser();
 
   if (user != undefined) {
-    sortList("newest", games);
+    games.sort((a, b) => (a.created > b.created ? -1 : 1));
 
     let gamesInList = 0;
     for (let i = 0; i < games.length; i++) {
