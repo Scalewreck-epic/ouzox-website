@@ -815,6 +815,11 @@ p {
   box-shadow: 0 0.313rem 0.625rem black;
   object-fit: fill;
   object-position: center;
+  transition: outline 0.2s ease-in-out;
+}
+
+.product-image:hover {
+  outline: 0.125rem solid #4D0101;
 }
 
 .editing-game {
