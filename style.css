@@ -7,6 +7,7 @@ body {
 .navbar {
   background-color: #222222;
   color: white;
+  border-bottom: 1px solid #3f3f3f;
   height: 3.125rem;
   padding: 0.45rem 0;
 }
@@ -94,12 +95,13 @@ body {
 .errorpage {
   width: 45%;
   padding: 5rem;
-  border-radius: 0.5rem;
+  border-radius: 3rem;
   margin: auto;
   text-align: center;
   color: white;
   background-color: #222222;
   box-shadow: 0 1rem 1rem black;
+  outline: 1px solid #3f3f3f;
   transition: transform 0.3s ease;
 }
 
@@ -118,7 +120,7 @@ body {
 
 .errorpage:hover,
 .downloadpage:hover {
-  transform: scale(1.05);
+  transform: scale(1.015);
 }
 
 .title-block {
@@ -175,6 +177,7 @@ body {
   box-sizing: border-box;
   background-color: #0e0e0e;
   color: #64646a;
+  border-top: 1px solid #3f3f3f;
   min-height: 4rem;
   padding: 1rem 0;
   width: 100%;
@@ -210,12 +213,11 @@ body {
 }
 
 a:not(:has(img)){
-  transition: border-bottom 0.25s ease, color 0.25s ease;
+  transition: text-decoration 0.25s ease, color 0.25s ease;
 }
 
 a:not(:has(img)):hover{
-  text-decoration: none;
-  border-bottom: 0.125rem solid #4D0101;
+  text-decoration: underline;
   color: #4D0101;
 }
 
@@ -314,12 +316,13 @@ p {
   position: relative;
   display: inline-block;
   font-size: 1rem;
-  border-radius: 0.3rem;
+  border-radius: 1rem;
   padding: 0.3rem;
   font-family: "Secular One", sans-serif;
   color: white;
   background-color: #292929;
   box-shadow: 0 0.5rem 0.5rem black;
+  outline: 1px solid #3f3f3f;
   cursor: pointer;
   transition: background-color 0.3s ease-in-out;
 }
@@ -363,11 +366,10 @@ p {
   color: white;
   background-color: #292929;
   box-shadow: 0 0.5rem 0.5rem black;
-  border-radius: 0.5rem;
+  border-radius: 1rem;
+  outline: 1px solid #3f3f3f;
   cursor: text;
   transition: background-color 0.3s ease-in-out;
-  border-style: solid;
-  border-width: 0;
 }
 
 .text-box:before {
@@ -411,7 +413,7 @@ p {
   position: relative;
   width: 1rem;
   height: 1rem;
-  border: 0.063rem solid #ccc;
+  outline: 0.063rem solid #ccc;
   border-radius: 0.188rem;
   background-color: white;
 }
@@ -423,7 +425,7 @@ p {
   top: 0.063rem;
   width: 0.313rem;
   height: 0.563rem;
-  border: solid #000000;
+  outline: solid #000000;
   border-width: 0 0.125rem 0.125rem 0;
   transform: rotate(45deg);
 }
@@ -883,7 +885,7 @@ p {
   font-size: 1.125rem;
   border-radius: 0.25rem;
   margin-right: 0.625rem;
-  border: 0.063rem solid #4caf50;
+  outline: 0.063rem solid #4caf50;
   transition: border-color 0.2s ease-in-out;
 }
 
@@ -1135,16 +1137,17 @@ p {
   margin: auto;
   margin-bottom: 3rem;
   padding: 1rem;
-  border-radius: 1rem;
+  border-radius: 3.5rem;
   box-shadow: 0 1rem 1rem black;
   background-color: #222222;
+  outline: 1px solid #3f3f3f;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .category:hover,
 .user-page:hover {
   box-shadow: 0 1.5rem 1.5rem black;
-  transform: scale(1.05);
+  transform: scale(1.015);
 }
 
 .category h1,
@@ -1218,15 +1221,16 @@ p {
   width: 45%;
   background-color: #222222;
   box-shadow: 0 1rem 1rem black;
+  outline: 1px solid #3f3f3f;
   padding: 5rem;
-  border-radius: 0.5rem;
+  border-radius: 3rem;
   text-align: center;
   margin: 0 auto;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .login-form:hover {
-  transform: scale(1.05);
+  transform: scale(1.015);
   box-shadow: 0 1.5rem 1.5rem black;
 }
 
@@ -1240,7 +1244,7 @@ p {
   cursor: pointer;
   width: 1rem;
   height: 1rem;
-  border: 1px solid #ccc;
+  outline: 1px solid #ccc;
   border-radius: 50%;
   z-index: 1;
   margin: 0.75rem 0.3rem;
@@ -1277,18 +1281,18 @@ p {
   padding: 0.5rem;
   box-shadow: 0 1rem 1rem black;
   border-radius: 0.5rem;
+  outline: 1px solid #3f3f3f;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .settings-category:hover {
-  transform: scale(1.05);
+  transform: scale(1.015);
   box-shadow: 0 1.5rem 1.5rem black;
 }
 
 .settings-category div {
   color: white;
   margin: 1rem;
-  font-weight: bold;
 }
 
 .extra-buttons {
