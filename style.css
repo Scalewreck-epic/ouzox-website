@@ -425,7 +425,7 @@ p {
   top: 0.063rem;
   width: 0.313rem;
   height: 0.563rem;
-  outline: solid #000000;
+  border: solid #000000;
   border-width: 0 0.125rem 0.125rem 0;
   transform: rotate(45deg);
 }
@@ -831,11 +831,12 @@ p {
   box-shadow: 0 1rem 1rem black;
   border-radius: 1rem;
   padding: 1rem;
+  outline: 1px solid #3f3f3f;
   transition: transform 0.3s ease;
 }
 
 .editing-game:hover {
-  transform: scale(1.05);
+  transform: scale(1.015);
 }
 
 .game-setting {
@@ -956,6 +957,7 @@ p {
   width: auto;
   height: auto;
   color: white;
+  outline: 1px solid #3f3f3f;
   transition: transform 0.3s ease;
 }
 
@@ -971,6 +973,7 @@ p {
   margin: 1rem;
   margin-top: 0;
   color: white;
+  outline: 1px solid #3f3f3f;
   transition: transform 0.3s ease;
 }
 
@@ -987,7 +990,7 @@ p {
 
 .game-stats:hover,
 .game-description:hover {
-  transform: scale(1.05);
+  transform: scale(1.015);
 }
 
 .game-stats h1 {
