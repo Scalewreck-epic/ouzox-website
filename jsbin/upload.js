@@ -66,17 +66,17 @@ uploadGame.addEventListener("submit", async function (event) {
     const myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
 
-    const productRequestOptions = {
-      method: "POST",
-      headers: myHeaders,
-      redirect: "follow",
-      body: JSON.stringify({
-        name: title_input.value,
-        active: "false",
-      }),
-    };
-
     async function uploadProduct() {
+      const productRequestOptions = {
+        method: "POST",
+        headers: myHeaders,
+        redirect: "follow",
+        body: JSON.stringify({
+          name: title_input.value,
+          active: "false",
+        }),
+      };
+      
       try {
         const response = await fetch(upload_product_api_url, productRequestOptions);
         const result = await response.text();
