@@ -66,71 +66,71 @@ uploadGame.addEventListener("submit", async function (event) {
     const myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
 
+    const productRequestOptions = {
+      method: "POST",
+      headers: myHeaders,
+      redirect: "follow",
+      body: JSON.stringify({
+        name: title_input.value,
+        active: "false",
+      }),
+    };
+
     async function uploadProduct() {
       try {
-        const uploadRequestOptions = {
-          method: "POST",
-          headers: myHeaders,
-          redirect: "follow",
-          body: JSON.stringify({
-            name: title_input.value,
-            active: "false",
-          }),
-        };
-
-        const response = await fetch(upload_product_api_url, uploadRequestOptions);
+        const response = await fetch(upload_product_api_url, productRequestOptions);
         const result = await response.text();
         const result_parse = JSON.parse(result);
 
         return result_parse;
       } catch (error) {
-        warn("There was an error trying to upload a product: " + error);
+        error("Cannot upload product to stripe: " + error);
       }
     }
 
     async function uploadGame(productId, free) {
-      try {
-        const uploadRequestOptions = {
-          method: "POST",
-          headers: myHeaders,
-          redirect: "follow",
-          body: JSON.stringify({
-            name: title_input.value,
-            active: "false",
-            free: free,
-            description: description_input.innerHTML,
-            developer_name: uploader_name,
-            developer_id: uploader_id,
-            file_name: file.name,
-            summary: summary_input.value,
-            genre: genre_input.value.toUpperCase(),
-            artstyle: art_input.value.toUpperCase(),
-            age_rating: age,
-            size: Math.round(fileSizeInMB),
-            defaultColors: true,
-            icon_upload: imageURI,
-            product_id: productId,
-            metadata: {
-              bgColor: "",
-              bg2Color: "",
-              titleColor: "",
-              descColor: "",
-              descBGColor: "",
-              buttonColor: "",
-              buttonTextColor: "",
-              statsColor: "",
-              statsBGColor: "",
-            },
-          }),
-        };
+      const gameRequestOptions = {
+        method: "POST",
+        headers: myHeaders,
+        redirect: "follow",
+        body: JSON.stringify({
+          name: title_input.value,
+          active: "false",
+          free: free,
+          description: description_input.innerHTML,
+          developer_name: uploader_name,
+          developer_id: uploader_id,
+          file_name: file.name,
+          summary: summary_input.value,
+          genre: genre_input.value.toUpperCase(),
+          artstyle: art_input.value.toUpperCase(),
+          age_rating: age,
+          size: Math.round(fileSizeInMB),
+          defaultColors: true,
+          icon_upload: imageURI,
+          product_id: productId,
+          metadata: {
+            bgColor: "",
+            bg2Color: "",
+            titleColor: "",
+            descColor: "",
+            descBGColor: "",
+            buttonColor: "",
+            buttonTextColor: "",
+            statsColor: "",
+            statsBGColor: "",
+          },
+        }),
+      };
 
-        const response = await fetch(upload_game_api_url, uploadRequestOptions);
+      try {
+        const response = await fetch(upload_game_api_url, gameRequestOptions);
         const result = await response.text();
         const result_parse = JSON.parse(result);
 
         return result_parse;
       } catch (error) {
-        warn("There was an error trying to upload a product: " + error);
+        error("Cannot upload game to database: " + error);
       }
     }
 
@@ -160,7 +160,7 @@ uploadGame.addEventListener("submit", async function (event) {
           genreData = resultParse;
         }
       } catch (error) {
-        warn("There was an error trying to upload genre: " + error);
+        error("Cannot update genre to database: " + error);
       }
 
       const changeGenreOptions = {
@@ -180,7 +180,7 @@ uploadGame.addEventListener("submit", async function (event) {
 
         await fetch(endpointURL, changeGenreOptions);
       } catch (error) {
-        warn("There was an error trying to upload genre: " + error);
+        error("Cannot upload genre to database: " + error);
       }
     }
 
@@ -234,7 +234,7 @@ uploadGame.addEventListener("submit", async function (event) {
 
         return result_parse;
       } catch (error) {
-        warn("There was an error trying to set price: " + error);
+        error("Cannot set price: " + error);
       }
     }
 
