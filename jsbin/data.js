@@ -366,8 +366,8 @@ function loadGames() {
   } else {
     // Fresh Games
     games.sort((a, b) => {
-      const scoreA = a.created * 0.7 + a.downloads * 0.3;
-      const scoreB = b.created * 0.7 + b.downloads * 0.3;
+      const scoreA = a.created * 0.8 + a.downloads * 0.2;
+      const scoreB = b.created * 0.8 + b.downloads * 0.2;
 
       if (scoreA > scoreB) {
         return -1;
@@ -437,10 +437,19 @@ async function loadDashboard() {
       const game = games[i];
 
       if (game) {
-        const game_price = getGamePrice(game.id.toString());
 
-        if (game_price && game.developer_name == user.name) {
-          createGamePage(game, game_price, category);
+        if (game.developer_name == user.name) {
+          const game_price = getGamePrice(game.id.toString());
+
+          if (game_price) {
+            createGamePage(game, game_price, category);
+          } else {
+            createGamePage(game, {
+              price: 0,
+              currency: "USD",
+            }, category);
+
+          }
           gamesInList += 1;
         }
       }
