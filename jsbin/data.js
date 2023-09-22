@@ -303,7 +303,7 @@ function loadGamesWithList(list, category, gameslist) {
       if (game_price) {
         createGamePage(game, game_price, list);
         gamesInList += 1;
-      } else if (game.free == true) {
+      } else {
         createGamePage(game, {
           price: 0,
           currency: "USD",
