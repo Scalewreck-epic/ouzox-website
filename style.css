@@ -287,6 +287,7 @@ p {
   border-radius: 1rem;
   background-color: #222222;
   box-shadow: 0 1rem 1rem black;
+  outline: 1px solid #3f3f3f;
   transition: transform 0.3s ease;
 }
 
