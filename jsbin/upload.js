@@ -72,8 +72,10 @@ uploadGame.addEventListener("submit", async function (event) {
         headers: myHeaders,
         redirect: "follow",
         body: JSON.stringify({
-          name: title_input.value,
-          active: "false",
+          product: {
+            name: title_input.value,
+            active: "false",
+          }
         }),
       };
       
