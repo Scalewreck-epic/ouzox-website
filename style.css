@@ -1093,6 +1093,7 @@ p {
   font-family: "Secular One", sans-serif;
   border-radius: 1rem;
   box-shadow: 0 1rem 1rem black;
+  outline: 0.1rem solid white;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
@@ -1126,7 +1127,7 @@ p {
 .user-stat-data {
   display: flex;
   justify-content: center;
-  font-size: 1rem;
+  font-size: 1.25rem;
   margin: 0;
   opacity: 0.3;
 }
@@ -1134,7 +1135,7 @@ p {
 .user-stat-title {
   display: flex;
   justify-content: center;
-  font-size: 1rem;
+  font-size: 1.25rem;
   margin: 0;
 }
 
