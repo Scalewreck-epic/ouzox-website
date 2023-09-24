@@ -100,9 +100,11 @@ async function retrieveGameData(gameId) {
 
     const response = await getPriceData();
 
-    priceData = {
-      currency: response.currency.toUpperCase(),
-      amount: parseFloat(response.unit_amount / 100),
+    if (response.currency) {
+      priceData = {
+        currency: response.currency.toUpperCase(),
+        amount: parseFloat(response.unit_amount / 100),
+      }
     }
   }
 
@@ -173,13 +175,6 @@ const gameHandler = async (gameId) => {
     const game_age = document.getElementById("game-age");
     const game_size = document.getElementById("game-size");
     const game_price = document.getElementById("game-price");
-    const game_public = document.getElementById("public");
-
-    game_public.checked = gameData.active ? "true" : "false";
-    let isChecked = gameData.active ? "true" : "false";
-    game_public.addEventListener("change", function () {
-      isChecked = game_public.checked ? "true" : "false";
-    });
 
     // main data
     game_title.textContent = gameData.name;
@@ -285,6 +280,17 @@ const gameHandler = async (gameId) => {
     });
 
     if (user != null && user.name == gameData.developer_name) {
+    const game_public = document.getElementById("public");
+    const game_genre_input = document.getElementById("genre-input");
+    const game_age_input = document.getElementById("age-sort");
+    const game_icon_input = document.getElementById("thumbnail");
+
+    game_public.checked = gameData.active ? "true" : "false";
+    let isChecked = gameData.active ? "true" : "false";
+    game_public.addEventListener("change", function () {
+      isChecked = game_public.checked ? "true" : "false";
+    });
+
       game_title.contentEditable = true;
       game_desc.contentEditable = true;
       game_summary.contentEditable = true;
