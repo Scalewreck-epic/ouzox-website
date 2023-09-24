@@ -361,7 +361,7 @@ function loadGames() {
     games.sort((a, b) => (a.relevance > b.relevance ? -1 : 1));
     loadGamesWithList(
       document.getElementById("relevant-games-list"),
-      document.getElementById("relevant-games")
+      document.getElementById("relevant-games"), games
     );
   } else {
     // Fresh Games
@@ -521,7 +521,6 @@ async function fetchGamesRequest(isDashboard) {
 
       if (games.length > 0) {
         try {
-
           if (isDashboard) {
             loadDashboard();
           } else {
