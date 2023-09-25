@@ -30,7 +30,7 @@ function getGamePrice(game_id) {
 }
 
 function calculateDiffDays(timestamp) {
-  const createdTimestamp = new Date(timestamp * 1000);
+  const createdTimestamp = new Date(timestamp);
   const currentDate = new Date();
 
   const createdTimeDiff = Math.abs(
@@ -91,8 +91,8 @@ function createGamePage(game, game_price, market) {
   const gamePriceText = document.createElement("span");
   gamePriceText.innerHTML = `${price} ${currency.toUpperCase()}`;
 
-  const diffDaysCreated = calculateDiffDays(game.created);
-  const diffDaysUpdated = calculateDiffDays(game.updated);
+  const diffDaysCreated = calculateDiffDays(game.created_at);
+  const diffDaysUpdated = calculateDiffDays(game.updated_at);
 
   gamePrice.appendChild(gamePriceText);
 
