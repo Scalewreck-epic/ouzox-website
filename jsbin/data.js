@@ -8,11 +8,10 @@ const get_user_url = "https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv/user/"; // 
 import { getCookie } from "./exportuser.js";
 
 const urlParams = new URLSearchParams(window.location.search);
-const search_query = urlParams.get("q");
-const category_name = urlParams.get("n");
+const search_query = encodeURIComponent(urlParams.get("q") || "");
+const category_name = encodeURIComponent(urlParams.get("n") || "");
 
 let gamesPerCategory = 20;
-//let lastGame;
 
 let prices = [];
 let games = [];
@@ -199,14 +198,14 @@ function removeIrrelevantGames() {
     const relevantGenres = genres.map((genre) => {
       const similarity = calculateSimilarity(search_query, genre.genre_name);
 
-      if (similarity < similarityThreshold) {
+      if (similarity > similarityThreshold) {
         return {
           ...genre,
           relevance: similarity,
         };
       } else {
         return null;
-      }
+      };
     });
 
     const relevantGames = games.map((game) => {
@@ -215,14 +214,14 @@ function removeIrrelevantGames() {
 
       const similarity = nameSimilarity * 0.7 + summarySimilarity * 0.3;
 
-      if (similarity < similarityThreshold) {
+      if (similarity > similarityThreshold) {
         return {
           ...game,
           relevance: similarity,
         };
       } else {
         return null;
-      }
+      };
     });
 
     genres = relevantGenres.filter((genre) => genre !== null);
@@ -325,13 +324,13 @@ function loadGenres() {
   }
 }
 
-function sortGames(listId, games, sortingFunction) {
-  games.sort(sortingFunction);
+function sortGames(listId, gamesList, sortingFunction) {
+  gamesList.sort(sortingFunction);
 
   const listElement = document.getElementById(listId);
   const gamesElement = document.getElementById(listId.replace("-list", ""));
 
-  loadGamesWithList(listElement, gamesElement, games);
+  loadGamesWithList(listElement, gamesElement, gamesList);
 }
 
 function loadGames() {
