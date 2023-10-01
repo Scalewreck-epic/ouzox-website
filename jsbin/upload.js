@@ -333,25 +333,25 @@ function checkPrice() {
   }
 }
 
+function checkGenre() {
+  const genreSelect = document.getElementById('genre-input');
+  genreSelect.value = encodeURIComponent(genreSelect.value);
+}
+
 const game_thumbnail = document.getElementById("thumbnail");
 const game_price = document.getElementById("price");
+const genre_input = document.getElementById('genre-input');
 const game_isfree = document.getElementById("isfree");
 const game_title = document.getElementById("title");
 const game_summary = document.getElementById("summary");
 
 checkIsFree();
 
-game_thumbnail.onchange = function () {
-  checkThumbnail();
-};
+game_thumbnail.onchange = checkThumbnail();
+game_isfree.onchange = checkIsFree()
 
-game_isfree.onchange = function () {
-  checkIsFree();
-};
-
-game_price.addEventListener("input", function () {
-  checkPrice();
-});
+game_price.addEventListener("input", checkPrice());
+genre_input.addEventListener("input", checkGenre());
 
 game_title.addEventListener("input", function () {
   this.style.width = (this.value.length + 1) * 10 + "px";
