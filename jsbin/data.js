@@ -189,12 +189,12 @@ function removePrivateGames() {
 function removeIrrelevantGames() {
   const similarityThreshold = 0.15;
 
-  if (category_name != null) {
+  if (category_name != '') {
     const genreGames = games.filter((game) => game.genre == category_name);
     games = genreGames;
   }
 
-  if (search_query != null) {
+  if (search_query != '') {
     const relevantGenres = genres.map((genre) => {
       const similarity = calculateSimilarity(search_query, genre.genre_name);
 
@@ -205,7 +205,7 @@ function removeIrrelevantGames() {
         };
       } else {
         return null;
-      };
+      }
     });
 
     const relevantGames = games.map((game) => {
@@ -221,7 +221,7 @@ function removeIrrelevantGames() {
         };
       } else {
         return null;
-      };
+      }
     });
 
     genres = relevantGenres.filter((genre) => genre !== null);
@@ -299,9 +299,9 @@ function loadGenres() {
   let genresOnList = 0;
 
   if (window.location.pathname.includes("/category")) {
-    genres.sort((a, b) => (b.relevance - a.relevance));
+    genres.sort((a, b) => b.relevance - a.relevance);
   } else {
-    genres.sort((a, b) => (b.games_with_genre - a.games_with_genre));
+    genres.sort((a, b) => b.games_with_genre - a.games_with_genre);
   }
 
   for (let i = 0; i < 5; i++) {
@@ -338,11 +338,9 @@ function loadGames() {
     window.location.pathname.includes("/search") ||
     window.location.pathname.includes("/category")
   ) {
-    sortGames(
-      "relevant-games-list",
-      games,
-      (a, b) => {b.relevance - a.relevance}
-    );
+    sortGames("relevant-games-list", games, (a, b) => {
+      b.relevance - a.relevance;
+    });
   } else {
     // Fresh Games
     sortGames("fresh-games-list", games, (a, b) => {
@@ -384,7 +382,7 @@ async function loadDashboard() {
   const user = await verifyUser();
 
   if (user != undefined) {
-    games.sort((a, b) => (b.created - a.created));
+    games.sort((a, b) => b.created - a.created);
 
     let gamesInList = 0;
     for (let i = 0; i < games.length; i++) {
@@ -442,7 +440,7 @@ async function fetchGamesRequest(isDashboard) {
       prices = result_parse.data;
 
       if (prices.length > 0) {
-        prices.sort((a, b) => (b.unit_amount - a.unit_amount));
+        prices.sort((a, b) => b.unit_amount - a.unit_amount);
       }
     } catch (error) {
       console.error("There was an error trying to set prices: ", error);
@@ -533,12 +531,8 @@ function setSearch() {
 
 function setCategory() {
   if (window.location.pathname.includes("/category")) {
-    if (category_name != null) {
-      const search_label = document.getElementById("search-label");
-      search_label.textContent = `Top '${category_name}' Games`;
-    } else {
-      window.location.assign("index");
-    }
+    const search_label = document.getElementById("search-label");
+    search_label.textContent = `Top '${category_name}' Games`;
   }
 }
 
