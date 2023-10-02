@@ -232,10 +232,9 @@ const gameHandler = async (gameId) => {
       gameData.datestodays.updatedDaysAgo
     );
 
-    icon.setAttribute("href", gameData.icon);
+    icon.setAttribute("href", gameData.icon.url);
     navigation_title.textContent = `${gameData.name} By ${gameData.developer_name}`;
 
-    // metadata
     developer_name.textContent = gameData.developer_name;
     game_genre.textContent = gameData.genre.toUpperCase();
     game_summary.textContent = gameData.summary;
