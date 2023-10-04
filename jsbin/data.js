@@ -11,8 +11,6 @@ const urlParams = new URLSearchParams(window.location.search);
 const search_query = encodeURIComponent(urlParams.get("q") || "");
 const category_name = encodeURIComponent(urlParams.get("n") || "");
 
-let gamesPerCategory = 20;
-
 let prices = [];
 let games = [];
 let genres = [];
@@ -25,6 +23,11 @@ function getGamePrice(game_id) {
       currency: result.currency,
     };
   }
+
+  return {
+    price: 0,
+    currency: "USD",
+  };
 }
 
 function calculateDiffDays(timestamp) {
@@ -189,12 +192,12 @@ function removePrivateGames() {
 function removeIrrelevantGames() {
   const similarityThreshold = 0.15;
 
-  if (category_name != '') {
+  if (category_name != "") {
     const genreGames = games.filter((game) => game.genre == category_name);
     games = genreGames;
   }
 
-  if (search_query != '') {
+  if (search_query != "") {
     const relevantGenres = genres.map((genre) => {
       const similarity = calculateSimilarity(search_query, genre.genre_name);
 
@@ -262,31 +265,14 @@ async function verifyUser() {
 }
 
 function loadGamesWithList(list, category, gameslist) {
-  let gamesInList = 0;
-  for (let i = 0; i < gamesPerCategory; i++) {
-    const game = gameslist[i];
+  const filteredGames = gameslist.filter((game) => game && game.active);
 
-    if (game && game.active) {
-      const game_price = getGamePrice(game.id.toString());
+  filteredGames.forEach((game) => {
+    const game_price = getGamePrice(game.id.toString());
+    createGamePage(game, game_price, list);
+  });
 
-      if (game_price) {
-        createGamePage(game, game_price, list);
-        gamesInList += 1;
-      } else {
-        createGamePage(
-          game,
-          {
-            price: 0,
-            currency: "USD",
-          },
-          list
-        );
-        gamesInList += 1;
-      }
-    }
-  }
-
-  if (gamesInList > 0) {
+  if (filteredGames.length > 0) {
     const categoryNoneElement = category.querySelector(".category-none");
 
     if (categoryNoneElement) {
@@ -296,24 +282,19 @@ function loadGamesWithList(list, category, gameslist) {
 }
 
 function loadGenres() {
-  let genresOnList = 0;
+  const validGenres = genres.filter((genre) => genre.games_with_genre > 0);
 
-  if (window.location.pathname.includes("/category")) {
-    genres.sort((a, b) => b.relevance - a.relevance);
+  if (window.location.pathname.includes("/search")) {
+    validGenres.sort((a, b) => b.relevance - a.relevance);
   } else {
-    genres.sort((a, b) => b.games_with_genre - a.games_with_genre);
+    validGenres.sort((a, b) => b.games_with_genre - a.games_with_genre);
   }
 
-  for (let i = 0; i < 5; i++) {
-    const genre = genres[i];
+  validGenres.forEach((genre) => {
+    createGenrePage(genre.genre_name, genre.games_with_genre);
+  });
 
-    if (genre && genre.games_with_genre > 0) {
-      createGenrePage(genre.genre_name, genre.games_with_genre);
-      genresOnList += 1;
-    }
-  }
-
-  if (genresOnList > 0) {
+  if (validGenres.length > 0) {
     const categoryNoneElement = document
       .getElementById("genres")
       .querySelector(".category-none");
@@ -382,34 +363,15 @@ async function loadDashboard() {
   const user = await verifyUser();
 
   if (user != undefined) {
-    games.sort((a, b) => b.created - a.created);
+    const usersGames = games.filter((game) => game.developer_name == user.name);
+    usersGames.sort((a, b) => b.created - a.created);
 
-    let gamesInList = 0;
-    for (let i = 0; i < games.length; i++) {
-      const game = games[i];
+    usersGames.forEach((game) => {
+      const game_price = getGamePrice(game.id.toString());
+      createGamePage(game, game_price, category);
+    });
 
-      if (game) {
-        if (game.developer_name == user.name) {
-          const game_price = getGamePrice(game.id.toString());
-
-          if (game_price) {
-            createGamePage(game, game_price, category);
-          } else {
-            createGamePage(
-              game,
-              {
-                price: 0,
-                currency: "USD",
-              },
-              category
-            );
-          }
-          gamesInList += 1;
-        }
-      }
-    }
-
-    if (gamesInList > 0) {
+    if (usersGames.length > 0) {
       const categoryNoneElement = category.querySelector(".category-none");
 
       if (categoryNoneElement) {
@@ -505,14 +467,6 @@ async function fetchGames(isDashboard) {
   fetchGamesRequest(isDashboard);
 }
 
-function isPathDashboard() {
-  if (window.location.pathname.includes("/dashboard")) {
-    return true;
-  }
-
-  return false;
-}
-
 function setSearch() {
   if (document.getElementById("search-query") != null) {
     const search_label = document.getElementById("search-label");
@@ -538,4 +492,4 @@ function setCategory() {
 
 setSearch();
 setCategory();
-fetchGames(isPathDashboard());
+fetchGames(window.location.pathname.includes("/dashboard"));
