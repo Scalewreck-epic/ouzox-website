@@ -3,9 +3,7 @@ const games_prices_url =
   "https://x8ki-letl-twmt.n7.xano.io/api:tFdG2Vz-/prices";
 const genre_list_url = "https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv/genres";
 
-const get_user_url = "https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv/user/"; // + session id
-
-import { getCookie } from "./exportuser.js";
+import { getUser } from "./exportuser.js";
 
 const urlParams = new URLSearchParams(window.location.search);
 const search_query = encodeURIComponent(urlParams.get("q") || "");
@@ -232,38 +230,6 @@ function removeIrrelevantGames() {
   }
 }
 
-async function verifyUser() {
-  const data = getCookie("session_id");
-
-  const myHeaders = new Headers();
-  myHeaders.append("Content-Type", "application/json");
-
-  const get_user_options = {
-    method: "GET",
-    headers: myHeaders,
-    redirect: "follow",
-  };
-
-  if (data.Valid) {
-    async function get_user() {
-      try {
-        const response = await fetch(
-          get_user_url + data.Data,
-          get_user_options
-        );
-        const result = await response.text();
-        const result_parse = JSON.parse(result);
-        return result_parse;
-      } catch (error) {
-        console.error("There was an error trying to get user: ", err);
-      }
-    }
-
-    const user = await get_user();
-    return user;
-  }
-}
-
 function loadGamesWithList(list, category, gameslist) {
   const filteredGames = gameslist.filter((game) => game && game.active);
 
@@ -360,7 +326,7 @@ function loadGames() {
 
 async function loadDashboard() {
   const category = document.getElementById("dashboard-market");
-  const user = await verifyUser();
+  const user = await getUser();
 
   if (user != undefined) {
     const usersGames = games.filter((game) => game.developer_name == user.name);
