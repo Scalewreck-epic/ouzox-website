@@ -328,7 +328,6 @@ if (window.location.pathname.includes("/settings")) {
 
   login_button.setAttribute("disabled", true);
   login_form.oninput = function() {
-    console.log("input");
     if (isValidLogin()) {
       if (login_button.hasAttribute("disabled")) {
         login_button.removeAttribute("disabled");
