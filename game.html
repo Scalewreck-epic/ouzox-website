@@ -99,93 +99,120 @@
 					<h1>Game editing</h1>
 					<div class="game-settings" id="game-settings">
 						<div class="game-setting">
-							<div>Public:</div>
-							<label class="cl-checkbox">
-								<input type="checkbox" value="1" id="public">
-								<span class="cl-checkbox-box"></span>
-							</label>
+							<div class="game-setting-title">Public:</div>
+							<div class="game-setting-feature">
+								<label class="cl-checkbox">
+									<input type="checkbox" value="1" id="public">
+									<span class="cl-checkbox-box"></span>
+								</label>
+							</div>
 						</div>
 						<div class="game-setting">
-							<div>Game:</div>
-							<input type="file" id="download-file" class="upload-box" accept=".exe, .zip, .apk, .ipa" required/>
+							<div class="game-setting-title">Game:</div>
+							<div class="game-setting-feature">
+								<input type="file" id="download-file" class="upload-box" accept=".exe, .zip, .apk, .ipa" required/>
+							</div>
 						</div>
 						<div class="game-setting">
-							<div>Thumbnail:</div>
-							<input type="file" id="thumbnail" class="upload-box" accept="image/jpeg, image/png" required/>
+							<div class="game-setting-title">Thumbnail:</div>
+							<div class="game-setting-feature">
+								<input type="file" id="thumbnail" class="upload-box" accept="image/jpeg, image/png" required/>
+							</div>
 						</div>
 						<div class="game-setting">
-							<div>Genre:</div>
-							<input type="text" class="text-box" id="genre-input" placeholder="Genre" value="All" autocorrect="on" maxlength="120" minlength="1" required/>
+							<div class="game-setting-title">Genre:</div>
+							<div class="game-setting-feature">
+								<input type="text" class="text-box" id="genre-input" placeholder="Genre" value="All" autocorrect="on" maxlength="120" minlength="1" required/>
+							</div>
 						</div>
 						<div class="game-setting">
-							<div>Art Style:</div>
-							<input type="text" class="text-box" id="art-style-input" placeholder="Art" value="Realistic" autocorrect="on" maxlength="120" minlength="1" required/>
+							<div class="game-setting-title">Art Style:</div>
+							<div class="game-setting-feature">
+								<input type="text" class="text-box" id="art-style-input" placeholder="Art" value="Realistic" autocorrect="on" maxlength="120" minlength="1" required/>
+							</div>
 						</div>
 						<div class="game-setting">
-							<div>Age Rating:</div>
-							<select class="game-sort" id="age-sort">
-								<option value="everyone">Everyone</option>
-								<option value="teen">Teen</option>
-								<option value="mature">Mature</option>
-							</select>
+							<div class="game-setting-title">Age Rating:</div>
+							<div class="game-setting-feature">
+								<select class="game-sort" id="age-sort">
+									<option value="everyone">Everyone</option>
+									<option value="teen">Teen</option>
+									<option value="mature">Mature</option>
+								</select>
+							</div>
 						</div>
 						<div class="game-setting">
-							<div>Price:</div>
-							<input type="text" class="text-box" id="price" pattern="[0-9]*" placeholder="0" value="0"/>
+							<div class="game-setting-title">Price:</div>
+							<div class="game-setting-feature">
+								<input type="text" class="text-box" id="price" pattern="[0-9]*" placeholder="0" value="0"/>
+							</div>
 						</div>
 						<div class="game-setting">
-							<div>Currency:</div>
-							<select class="game-sort" id="currency-sort">
-								<option value="usd">USD</option>
-								<option value="eur">EUR</option>
-								<option value="jpy">JPY</option>
-								<option value="gbp">GBP</option>
-								<option value="aud">AUD</option>
-								<option value="cad">CAD</option>
-								<option value="cnh">CNH</option>
-								<option value="chf">CHF</option>
-								<option value="hkd">HKD</option>
-								<option value="nzd">NZD</option>
-							</select>
+							<div class="game-setting-title">Currency:</div>
+							<div class="game-setting-feature">
+								<select class="game-sort" id="currency-sort">
+									<option value="usd">USD</option>
+									<option value="eur">EUR</option>
+									<option value="jpy">JPY</option>
+									<option value="gbp">GBP</option>
+									<option value="aud">AUD</option>
+									<option value="cad">CAD</option>
+									<option value="cnh">CNH</option>
+									<option value="chf">CHF</option>
+									<option value="hkd">HKD</option>
+									<option value="nzd">NZD</option>
+								</select>
+							</div>
 						</div>
 					</div>
 				</div>
+				<div class="column-border"></div>
 				<div class="right-column">
 					<h1>Text editing</h1>
-					<div class="game-setting">
-						<div>Text:</div>
-						<button class="bold-button" id="bold" type="button">B</button>
-						<button class="italic-button" id="italic" type="button">I</button>
-						<button class="underline-button" id="underline" type="button">U</button>
-						<button class="link-button" id="link" type="button">L</button>
-						<button class="strike-through-button" id="strikethrough" type="button">ST</button>
-						<button class="order-list-button" id="insertUnorderedList" type="button">OL</button>
-						<button class="number-list-button" id="insertOrderedList" type="button">1L</button>
-					</div>
-					<div class="game-setting">
-						<div>Align:</div>
-						<button class="description-button" id="justifyLeft" type="button">L</button>
-						<button class="description-button" id="justifyRight" type="button">R</button>
-						<button class="description-button" id="justifyCenter" type="button">C</button>
-					</div>
-					<div class="game-setting">
-						<div>Header:</div>
-						<button class="description-button" id="1" type="button">1</button>
-						<button class="description-button" id="2" type="button">2</button>
-						<button class="description-button" id="3" type="button">3</button>
-						<button class="description-button" id="4" type="button">4</button>
-					</div>
-					<div class="game-setting">
-						<div>Font:</div>
-						<button class="sans-button" id="sans" type="button">Sans</button>
-						<button class="sans-serif-button" id="sans-serif" type="button">Sans Serif</button>
-						<button class="lato-button" id="lato" type="button">Lato</button>
-						<button class="anonymous-pro-button" id="anonymous-pro" type="button">Anonymous Pro</button>
-						<button class="roboto-button" id="roboto" type="button">Roboto</button>
-						<button class="montserrat-button" id="montserrat" type="button">Montserrat</button>
-						<button class="poppins-button" id="poppins" type="button">Poppins</button>
-						<button class="raleway-button" id="raleway" type="button">Raleway</button>
-						<button class="nuinto-button" id="nuinto" type="button">Nuinto</button>
+					<div class="game-settings">
+						<div class="game-setting">
+							<div class="game-setting-title">Text:</div>
+							<div class="text-options">
+								<button class="bold-button" id="bold" type="button">B</button>
+								<button class="italic-button" id="italic" type="button">I</button>
+								<button class="underline-button" id="underline" type="button">U</button>
+								<button class="link-button" id="link" type="button">L</button>
+								<button class="strike-through-button" id="strikethrough" type="button">ST</button>
+								<button class="order-list-button" id="insertUnorderedList" type="button">OL</button>
+								<button class="number-list-button" id="insertOrderedList" type="button">1L</button>
+							</div>
+						</div>
+						<div class="game-setting">
+							<div class="game-setting-title">Align:</div>
+							<div class="align-options">
+								<button class="description-button" id="justifyLeft" type="button">L</button>
+								<button class="description-button" id="justifyRight" type="button">R</button>
+								<button class="description-button" id="justifyCenter" type="button">C</button>
+							</div>
+						</div>
+						<div class="game-setting">
+							<div class="game-setting-title">Header:</div>
+							<div class="header-options">
+								<button class="description-button" id="1" type="button">1</button>
+								<button class="description-button" id="2" type="button">2</button>
+								<button class="description-button" id="3" type="button">3</button>
+								<button class="description-button" id="4" type="button">4</button>
+							</div>
+						</div>
+						<div class="game-setting">
+							<div class="game-setting-title">Font:</div>
+							<div class="font-options">
+								<button class="sans-button" id="sans" type="button">Sans</button>
+								<button class="sans-serif-button" id="sans-serif" type="button">Sans Serif</button>
+								<button class="lato-button" id="lato" type="button">Lato</button>
+								<button class="anonymous-pro-button" id="anonymous-pro" type="button">Anonymous Pro</button>
+								<button class="roboto-button" id="roboto" type="button">Roboto</button>
+								<button class="montserrat-button" id="montserrat" type="button">Montserrat</button>
+								<button class="poppins-button" id="poppins" type="button">Poppins</button>
+								<button class="raleway-button" id="raleway" type="button">Raleway</button>
+								<button class="nuinto-button" id="nuinto" type="button">Nuinto</button>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
