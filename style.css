@@ -845,14 +845,41 @@ p {
   transform: scale(1.015);
 }
 
-.game-setting {
-  font-weight: bold;
-  padding: 0.5rem 0;
+.column-border {
+  outline: white solid 0.08rem;
 }
 
-.game-setting div {
-  display: inline-block;
+.game-settings {
+  padding: 0.5rem;
+}
+
+.game-setting {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  width: 100%;
+  min-height: 2.5rem;
+  font-weight: bold;
+  padding: 0.25rem 0;
+}
+
+.game-setting-title {
+  display: flex;
   font-size: 1.5rem;
+}
+
+.game-setting-feature {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.text-options,
+.align-options,
+.header-options,
+.font-options {
+  display: block;
+  text-align: center;
+  width: 100%;
 }
 
 .game-column {
@@ -921,6 +948,11 @@ p {
   width: 45%;
   min-height: 6.25rem;
   float: right;
+}
+
+.left-column h1,
+.right-column h1 {
+  text-align: center;
 }
 
 .game-image-list {
@@ -1059,7 +1091,6 @@ p {
 }
 
 .game-sort {
-  margin: 0.188rem auto;
   text-align: center;
   font-size: 1.25rem;
   font-weight: bold;
