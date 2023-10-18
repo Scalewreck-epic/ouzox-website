@@ -76,38 +76,6 @@ document.getElementById("4").addEventListener("click", function () {
   applyHeader(4);
 });
 
-document.getElementById("sans").addEventListener("click", function() {
-  document.getElementById("game-column").style.fontFamily = "sans";
-});
-
-document.getElementById("sans-serif").addEventListener("click", function() {
-  document.getElementById("game-column").style.fontFamily = "sans-serif";
-});
-
-document.getElementById("lato").addEventListener("click", function() {
-  document.getElementById("game-column").style.fontFamily = "lato";
-});
-
-document.getElementById("anonymous-pro").addEventListener("click", function() {
-  document.getElementById("game-column").style.fontFamily = 'Anonymous Pro';
-});
-
-document.getElementById("roboto").addEventListener("click", function() {
-  document.getElementById("game-column").style.fontFamily = 'Roboto';
-});
-
-document.getElementById("montserrat").addEventListener("click", function() {
-  document.getElementById("game-column").style.fontFamily = 'Montserrat';
-});
-
-document.getElementById("poppins").addEventListener("click", function() {
-  document.getElementById("game-column").style.fontFamily = 'Poppins';
-});
-
-document.getElementById("raleway").addEventListener("click", function() {
-  document.getElementById("game-column").style.fontFamily = 'Raleway';
-});
-
-document.getElementById("nuinto").addEventListener("click", function() {
-  document.getElementById("game-column").style.fontFamily = 'Nuinto';
+document.getElementById("font-sort").addEventListener("change", function() {
+  document.getElementById("game-column").style.fontFamily = document.getElementById("font-sort").options[document.getElementById("font-sort").selectedIndex].value;
 });
