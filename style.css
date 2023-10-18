@@ -464,7 +464,7 @@ p {
   text-align: center;
   text-decoration: none;
   border-radius: 0.25rem;
-  margin-bottom: 0.3rem;
+  outline: 1px solid #3f3f3f;
   border: none;
   cursor: pointer;
   background-color: black;
@@ -1097,9 +1097,14 @@ p {
   color: white;
   background-color: black;
   border: none;
+  outline: 1px solid #3f3f3f;
   border-radius: 0.313rem;
   padding: 0.188rem;
   width: 9.375rem;
+}
+
+.game-sort:hover {
+  cursor: pointer;
 }
 
 .errorImg {
