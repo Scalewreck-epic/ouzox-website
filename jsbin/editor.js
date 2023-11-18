@@ -1,24 +1,56 @@
 const description = document.getElementById("description");
 const gameColumn = document.getElementById("game-column");
 
-function applyFormatting(command, value = null) {
-  document.execCommand(command, false, value);
-  description.focus();
-};
+description.contentEditable = true;
+
+function applyFormatting(formatType) {
+  const selection = window.getSelection();
+  const selectedText = selection.toString();
+
+  document.execCommand(formatType);
+
+  if (selection.rangeCount > 0) {
+    const range = selection.getRangeAt(0);
+    range.deleteContents();
+    range.insertNode(document.createTextNode(selectedText));
+  }
+}
 
 function applyHeader(level) {
-  const headerTag = `h${level}`;
-  applyFormatting("formatBlock", headerTag);
-};
+  const selection = window.getSelection();
+  const selectedText = selection.toString();
 
-function createLink() {
-  const url = prompt("Enter the URL:");
-  const linkText = prompt("Enter the link text:");
+  document.execCommand("formatBlock", false, "<h" + level + ">");
 
-  if (url && linkText) {
-    applyFormatting("insertHTML", `<a href="${url}" target="_blank">${linkText}</a>`);
-  };
-};
+  if (selection.rangeCount > 0) {
+    const range = selection.getRangeAt(0);
+    range.deleteContents();
+    range.insertNode(document.createTextNode(selectedText));
+  }
+}
+
+function justify(direction) {
+  document.execCommand("justify" + direction);
+}
+
+function createLink(text) {
+  const url = prompt("Enter the link URL:");
+
+  if (url) {
+    const selection = window.getSelection();
+    const selectedText = selection.toString();
+
+    const link = document.createElement("a");
+    link.href = url;
+    link.textContent = text || selectedText;
+
+    if (selection.rangeCount > 0) {
+      const range = selection.getRangeAt(0);
+      range.deleteContents();
+      range.insertNode(link);
+    }
+  }
+}
 
 document.getElementById("bold").addEventListener("click", function () {
   applyFormatting("bold");
@@ -33,7 +65,7 @@ document.getElementById("underline").addEventListener("click", function () {
 });
 
 document.getElementById("strikethrough").addEventListener("click", function () {
-  applyFormatting("strikethrough");
+  applyFormatting("strikeThrough");
 });
 
 document.getElementById("link").addEventListener("click", function () {
@@ -49,15 +81,15 @@ document.getElementById("insertOrderedList").addEventListener("click", function 
 });
 
 document.getElementById("justifyLeft").addEventListener("click", function () {
-  applyFormatting("justifyLeft");
+  justify("Left");
 });
 
 document.getElementById("justifyRight").addEventListener("click", function () {
-  applyFormatting("justifyRight");
+  justify("Right");
 });
 
 document.getElementById("justifyCenter").addEventListener("click", function () {
-  applyFormatting("justifyCenter");
+  justify("Center");
 });
 
 document.getElementById("1").addEventListener("click", function () {
