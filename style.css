@@ -1046,6 +1046,7 @@ p {
   overflow: hidden;
   word-break: break-word;
   width: 100%;
+  min-height: 5rem;
 }
 
 .game-about div{
