@@ -52,9 +52,10 @@ export function getCookie(wanted) {
 export async function changeEmailData() {
   const data = getCookie("session_id");
 
-  if (data.Valid) {
-    const new_email = document.getElementById("email_input").value;
+  const new_email = document.getElementById("email_input").value;
+  const validEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(new_email);
 
+  if (data.Valid && validEmail) {
     const myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
     const requestOptions = {
@@ -73,10 +74,12 @@ export async function changeEmailData() {
 export async function changePasswordData() {
   const data = getCookie("session_id");
 
-  if (data.Valid) {
-    const new_password = document.getElementById("password_input").value;
-    const old_password = document.getElementById("old_password_input").value;
+  const new_password = document.getElementById("password_input").value;
+  const old_password = document.getElementById("old_password_input").value;
 
+  const validPassword = new_password.length >= 8;
+
+  if (data.Valid && validPassword) {
     const myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
     const requestOptions = {
