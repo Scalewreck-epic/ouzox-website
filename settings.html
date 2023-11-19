@@ -35,29 +35,46 @@
 		</nav>
 		<div class="content">
 			<div class="settings">
+				<h1 class="settings-category-title">Profile</h1>
 				<div class="settings-category">
-					<h1>Profile Information</h1>
+					<div class="settings-title">Info</div>
 					<div id="email-stat">Email:</div>
 					<div id="creation-stat">Join Date:</div>
 				</div>
 				<div class="settings-category">
-					<h1>Email</h1>
+					<div class="settings-title">Email</div>
 					<input type="email" class="text-box" name="email" id="email_input" placeholder="New Email">
-					<button class="login-button" id="save-email"><font size="5">Save Email</font></button>
+					<button class="login-button" id="save-email">Save Email</button>
 				</div>
 				<div class="settings-category">
-					<h1>Password</h1>
+					<div class="settings-title">Password</div>
 					<input type="text" class="text-box" name="password" id="password_input" placeholder="New Password">
 					<input type="text" class="text-box" name="password" id="old_password_input" placeholder="Old Password">
-					<button class="login-button" id="save-password"><font size="5">Save Password</font></button>
+					<button class="login-button" id="save-password">Save Password</button>
 				</div>
 				<div class="settings-category">
-					<h1>Status</h1>
+					<div class="settings-title">Status</div>
 					<input type="text" class="text-box" id="status-input" placeholder="What's new?">
-					<button class="login-button" id="save-status"><font size="5">Save Status</font></button>
+					<button class="login-button" id="save-status">Save Status</button>
+				</div>
+				<h1 class="settings-category-title">Payment</h1>
+				<div class="settings-category">
+					<div class="settings-title">Credit Cards</div>
+					<div class="credit-card">
+						<div class="credit-information">
+							<input type="text" class="credit-card-name-input" name="credit-card" id="credit-card-name-input" placeholder="Full Name -- As is appears on the card">
+						</div>
+						<div class="credit-information">
+							<input type="text" class="credit-card-number-input" name="credit-card" id="credit-card-number-input" placeholder="123 456 7890">
+							<input type="text" class="credit-card-expiration-month" name="credit-card" id="credit-card-mm-input" placeholder="MM">
+							<input type="text" class="credit-card-expiration-year" name="credit-card" id="credit-card-yy-input" placeholder="YY">
+							<input type="text" class="credit-card-cvc" name="credit-card" id="credit-card-cvc-input" placeholder="CVC">
+						</div>
+					</div>
+					<button class="login-button" id="save-email">Save Card</button>
 				</div>
 				<div class="extra-buttons">
-					<button class="login-button" id="logout-profile"><font size="5">Logout</font></button>
+					<button class="login-button" id="logout-profile">Logout</button>
 					<p class="agreement">View your <a id="profile-link">Profile</a></p>
 				</div>
 				<div class="error-label" id="error-label"></div>
@@ -83,5 +100,6 @@
 			</p>
 		</footer>
 	</body>
+	<script type="module" src="jsbin/card.js"></script>
 	<script type="module" src="jsbin/user.js"></script>
 </html>
