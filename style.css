@@ -1355,12 +1355,6 @@ p {
   text-align: center;
 }
 
-.settings-title {
-  font-weight: bold;
-  font-size: 1.5rem;
-  margin-left: 1.5rem;
-}
-
 .settings-category {
   width: 100%;
   background-color: #222222;
@@ -1377,27 +1371,41 @@ p {
   box-shadow: 0 1.5rem 1.5rem black;
 }
 
+.settings-category p {
+  margin: 1rem;
+}
+
 .settings-category div {
   color: white;
+}
+
+.settings-category h1,
+.settings-category h2,
+.settings-category h3 {
   margin: 0.75rem;
+  margin-left: 2rem;
+  color: white;
 }
 
 .credit-card {
   display: block;
-  width: 30%;
+  margin: 0.75rem;
+  width: 35%;
 }
 
 .credit-information {
-  display: block;
+  display: grid;
+  grid-template-columns: 1fr 0.65fr;
+  margin: 0.75rem;
   width: 100%;
+  padding: 0.25rem;
   outline: 3px solid #3f3f3f;
 }
 
 .credit-card-number-input,
 .credit-card-expiration-month,
 .credit-card-expiration-year,
-.credit-card-cvc,
-.credit-card-name-input {
+.credit-card-cvc {
   background-color: transparent;
   color: white;
   border: none;
@@ -1408,11 +1416,32 @@ p {
 }
 
 .credit-card-name-input {
+  display: block;
+  font-family: "Secular One";
+  margin: 0.75rem;
   width: 100%;
+  padding: 0.25rem;
+  outline: 3px solid #3f3f3f;
+  background-color: transparent;
+  color: white;
+  border: none;
+  font-family: "Secular One";
+  font-size: 1rem;
 }
 
 .credit-card-number-input {
   width: 10rem;
+}
+
+.credit-main {
+  display: flex;
+  margin: 0;
+}
+
+.credit-extra {
+  display: flex;
+  justify-content: flex-end;
+  margin: 0;
 }
 
 .credit-card-expiration-month,
