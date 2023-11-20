@@ -37,41 +37,52 @@
 			<div class="settings">
 				<h1 class="settings-category-title">Profile</h1>
 				<div class="settings-category">
-					<div class="settings-title">Info</div>
+					<h2>Info</h2>
 					<div id="email-stat">Email:</div>
 					<div id="creation-stat">Join Date:</div>
 				</div>
 				<div class="settings-category">
-					<div class="settings-title">Email</div>
+					<h2>Email</h2>
 					<input type="email" class="text-box" name="email" id="email_input" placeholder="New Email">
 					<button class="login-button" id="save-email">Save Email</button>
 				</div>
 				<div class="settings-category">
-					<div class="settings-title">Password</div>
+					<h2>Password</h2>
 					<input type="text" class="text-box" name="password" id="password_input" placeholder="New Password">
 					<input type="text" class="text-box" name="password" id="old_password_input" placeholder="Old Password">
 					<button class="login-button" id="save-password">Save Password</button>
 				</div>
 				<div class="settings-category">
-					<div class="settings-title">Status</div>
+					<h2>Status</h2>
 					<input type="text" class="text-box" id="status-input" placeholder="What's new?">
 					<button class="login-button" id="save-status">Save Status</button>
 				</div>
 				<h1 class="settings-category-title">Payment</h1>
 				<div class="settings-category">
-					<div class="settings-title">Credit Cards</div>
+					<h2>Credit Cards</h2>
+					<p>Attach a credit card to your account so you can simply press "Purchase" without typing your information.</p>
 					<div class="credit-card">
+						<input type="text" class="credit-card-name-input" name="credit-card" id="credit-card-name-input" placeholder="Full Name -- As is appears on the card">
 						<div class="credit-information">
-							<input type="text" class="credit-card-name-input" name="credit-card" id="credit-card-name-input" placeholder="Full Name -- As is appears on the card">
-						</div>
-						<div class="credit-information">
-							<input type="text" class="credit-card-number-input" name="credit-card" id="credit-card-number-input" placeholder="123 456 7890">
-							<input type="text" class="credit-card-expiration-month" name="credit-card" id="credit-card-mm-input" placeholder="MM">
-							<input type="text" class="credit-card-expiration-year" name="credit-card" id="credit-card-yy-input" placeholder="YY">
-							<input type="text" class="credit-card-cvc" name="credit-card" id="credit-card-cvc-input" placeholder="CVC">
+							<div class="credit-main">
+								<input type="text" class="credit-card-number-input" name="credit-card" id="credit-card-number-input" placeholder="4000 1234 5678 9010">
+							</div>
+							<div class="credit-extra">
+								<input type="text" class="credit-card-expiration-month" name="credit-card" id="credit-card-mm-input" placeholder="MM">
+								<input type="text" class="credit-card-expiration-year" name="credit-card" id="credit-card-yy-input" placeholder="YY">
+								<input type="text" class="credit-card-cvc" name="credit-card" id="credit-card-cvc-input" placeholder="CVC">
+							</div>
 						</div>
 					</div>
 					<button class="login-button" id="save-email">Save Card</button>
+				</div>
+				<div class="settings-category">
+					<h2>Payment Processors</h2>
+					<p>Individual payment processors must be connected to your account in order to receive payments.</p>
+					<h3>Paypal</h3>
+					<button class="login-button" id="save-email">Connect to Paypal</button>
+					<h3>Stripe</h3>
+					<button class="login-button" id="save-email">Connect with Stripe</button>
 				</div>
 				<div class="extra-buttons">
 					<button class="login-button" id="logout-profile">Logout</button>
