@@ -20,11 +20,12 @@ function luhnCheck(creditCardNumber) {
 }
 
 function checkCard() {
-    credit_card_name.value = credit_card_name.value.toUpperCase();
+  credit_card_name.value = credit_card_name.value.replace(/[^a-zA-Z\s]/g, '');
+  credit_card_name.value = credit_card_name.value.toUpperCase();
 
-    credit_card_mm.value = credit_card_mm.value.replace(/[^0-9]/g, "").substr(0, 2);
-    credit_card_yy.value = credit_card_yy.value.replace(/[^0-9]/g, "").substr(0, 2);
-    credit_card_cvc.value = credit_card_cvc.value.replace(/[^0-9]/g, "").substr(0, 3);
+  credit_card_mm.value = credit_card_mm.value.replace(/[^0-9]/g, "").substr(0, 2);
+  credit_card_yy.value = credit_card_yy.value.replace(/[^0-9]/g, "").substr(0, 2);
+  credit_card_cvc.value = credit_card_cvc.value.replace(/[^0-9]/g, "").substr(0, 3);
 }
   
 function isValidCreditCard() {
@@ -58,7 +59,7 @@ function isValidCreditCard() {
 credit_card_number.addEventListener("input", function() {
     var card_number = credit_card_number.value;
     card_number = card_number.replace(/[^0-9]/g, "");
-    card_number = card_number.substr(0, 3) + " " + card_number.substr(3, 3) + " " + card_number.substr(6, 4);
+    card_number = card_number.substr(0, 4) + " " + card_number.substr(4, 4) + " " + card_number.substr(8, 4) + " " + card_number.substr(12, 4);
     credit_card_number.value = card_number;
 });
 
