@@ -178,6 +178,16 @@ const gameHandler = async (gameId) => {
   const game_size = document.getElementById("game-size");
   const game_price = document.getElementById("game-price");
 
+  const changeBGcolor = document.getElementById("bg-color");
+  const changeBG2color = document.getElementById("bg2-color");
+  const changeTitleColor = document.getElementById("title-color");
+  const changeDescColor = document.getElementById("description-color");
+  const changeDescBGColor = document.getElementById("description-bg-color");
+  const changeStatsColor = document.getElementById("game-details-color");
+  const changeStatsBGColor = document.getElementById("game-details-bg-color");
+  const changeButtonColor = document.getElementById("button-bg-color");
+  const changeButtonText = document.getElementById("button-text-color");
+
   // main data
   game_title.textContent = gameData.name;
   game_desc.innerHTML = gameData.description;
@@ -301,7 +311,7 @@ const gameHandler = async (gameId) => {
     commitChangesButton.innerHTML = "Commit Changes";
 
     game_title.addEventListener("input", function () {
-      const text = this.textContent;
+      const text = this.textContent.replace(/<[^>]*>/g, '');
 
       if (text.length > 120) {
         this.innerHTML = text.slice(0, 120);
@@ -309,7 +319,7 @@ const gameHandler = async (gameId) => {
     });
 
     game_summary.addEventListener("input", function () {
-      const text = this.innerHTML;
+      const text = this.textContent.replace(/<[^>]*>/g, '');
 
       if (text.length > 120) {
         this.innerHTML = text.slice(0, 120);
@@ -317,22 +327,12 @@ const gameHandler = async (gameId) => {
     });
 
     game_desc.addEventListener("input", function () {
-      const text = this.innerHTML;
+      const text = this.innerHTML.replace(/<[^>]*>/g, '');
 
       if (text.length > 4000) {
         this.innerHTML = text.slice(0, 4000);
       }
     });
-
-    const changeBGcolor = document.getElementById("bg-color");
-    const changeBG2color = document.getElementById("bg2-color");
-    const changeTitleColor = document.getElementById("title-color");
-    const changeDescColor = document.getElementById("description-color");
-    const changeDescBGColor = document.getElementById("description-bg-color");
-    const changeStatsColor = document.getElementById("game-details-color");
-    const changeStatsBGColor = document.getElementById("game-details-bg-color");
-    const changeButtonColor = document.getElementById("button-bg-color");
-    const changeButtonText = document.getElementById("button-text-color");
 
     changeBGcolor.onchange = function () {
       document.body.style.backgroundColor = changeBGcolor.value;
