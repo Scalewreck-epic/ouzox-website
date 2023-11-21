@@ -156,11 +156,7 @@ async function changeProduct(data, gameId, commitChangesButton) {
 }
 
 const sanitizeText = (string) => {
-  let newText = string.replace(/<!--|--!?>/g, "");
-  newText.replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/g, "");
-  newText.replace(/<|>/g, "");
-
-  return newText;
+  return string.replace(/<|>/g, "");
 }
 
 const gameHandler = async (gameId) => {
@@ -322,7 +318,7 @@ const gameHandler = async (gameId) => {
       const text = sanitizeText(this.textContent);
 
       if (text.length > 120) {
-        this.innerHTML = text.slice(0, 120);
+        this.innerHTML = text.substr(0, 120);
       }
     });
 
@@ -330,7 +326,7 @@ const gameHandler = async (gameId) => {
       const text = sanitizeText(this.textContent);
 
       if (text.length > 120) {
-        this.innerHTML = text.slice(0, 120);
+        this.innerHTML = text.substr(0, 120);
       }
     });
 
@@ -338,7 +334,7 @@ const gameHandler = async (gameId) => {
       const text = sanitizeText(this.textContent);
 
       if (text.length > 4000) {
-        this.innerHTML = text.slice(0, 4000);
+        this.innerHTML = text.substr(0, 4000);
       }
     });
 
