@@ -282,7 +282,9 @@ function checkThumbnail() {
     previewImage.src = imageUrl;
   });
 
-  reader.readAsDataURL(file);
+  if (file !== null) {
+    reader.readAsDataURL(file);
+  }
 }
 
 function checkFileSize() {
