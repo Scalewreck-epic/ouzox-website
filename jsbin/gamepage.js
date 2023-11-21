@@ -143,16 +143,24 @@ async function changeProduct(data, gameId, commitChangesButton) {
     if (response.ok) {
       commitChangesButton.innerHTML = "Success";
     } else {
-      commitChangesButton.innerHTML = "An error occured";
       console.error(
         "There was an error trying to update the product:",
         response.status
       );
+      commitChangesButton.innerHTML = "An error occured";
     }
   } catch (error) {
-    commitChangesButton.innerHTML = "An error occured";
     console.error("There was an error trying to update the product:", error);
+    commitChangesButton.innerHTML = "An error occured";
   }
+}
+
+const sanitizeText = (string) => {
+  let newText = string.replace(/<!--|--!?>/g, "");
+  newText.replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/g, "");
+  newText.replace(/<|>/g, "");
+
+  return newText;
 }
 
 const gameHandler = async (gameId) => {
@@ -311,7 +319,7 @@ const gameHandler = async (gameId) => {
     commitChangesButton.innerHTML = "Commit Changes";
 
     game_title.addEventListener("input", function () {
-      const text = this.textContent.replace(/<[^>]*>/g, '');
+      const text = sanitizeText(this.textContent);
 
       if (text.length > 120) {
         this.innerHTML = text.slice(0, 120);
@@ -319,7 +327,7 @@ const gameHandler = async (gameId) => {
     });
 
     game_summary.addEventListener("input", function () {
-      const text = this.textContent.replace(/<[^>]*>/g, '');
+      const text = sanitizeText(this.textContent);
 
       if (text.length > 120) {
         this.innerHTML = text.slice(0, 120);
@@ -327,7 +335,7 @@ const gameHandler = async (gameId) => {
     });
 
     game_desc.addEventListener("input", function () {
-      const text = this.innerHTML.replace(/<[^>]*>/g, '');
+      const text = sanitizeText(this.textContent);
 
       if (text.length > 4000) {
         this.innerHTML = text.slice(0, 4000);
