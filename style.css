@@ -1065,8 +1065,7 @@ p {
   transform: scale(1.015);
 }
 
-.game-stats h1,
-.game-description h1 {
+.game-stats h1 {
   width: auto;
   margin: 0.3rem 0 1rem;
   display: block;
