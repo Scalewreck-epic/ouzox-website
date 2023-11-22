@@ -14,7 +14,7 @@ import {
   getCookie,
   changeEmailData,
   changePasswordData,
-  changeStatusData
+  changeStatusData,
 } from "./exportuser.js";
 
 function calculateExpiration(past) {
@@ -103,6 +103,9 @@ function setStats() {
         join_time.textContent = "Join Date: " + formattedDate;
         profile_link.setAttribute("href", `user?id=${result_parse.id}`);
       }
+    })
+    .catch((error) => {
+      console.error("[1] Error trying to get user:" + error);
     });
 }
 
@@ -122,25 +125,31 @@ function clearCookieData() {
 }
 
 function isValidSignup() {
-    const username_input = document.getElementById("username_input").value;
-    const email_input = document.getElementById("email_input").value;
-    const password_input = document.getElementById("password_input").value;
+  const username_input = document.getElementById("username_input").value;
+  const email_input = document.getElementById("email_input").value;
+  const password_input = document.getElementById("password_input").value;
 
-    const validUsername = (/^[a-zA-Z0-9]+$/.test(username_input) && username_input.length >= 3 && username_input.length <= 20);
-    const validEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email_input);
-    const validPassword = password_input.length >= 8;
+  const validUsername =
+    /^[a-zA-Z0-9]+$/.test(username_input) &&
+    username_input.length >= 3 &&
+    username_input.length <= 20;
+  const validEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email_input);
+  const validPassword = password_input.length >= 8;
 
-    return (validUsername && validEmail && validPassword);
+  return validUsername && validEmail && validPassword;
 }
 
 function isValidLogin() {
   const username_input = document.getElementById("username_login").value;
   const password_input = document.getElementById("password_login").value;
 
-  const validUsername = (/^[a-zA-Z0-9]+$/.test(username_input) && username_input.length >= 3 && username_input.length <= 20);
+  const validUsername =
+    /^[a-zA-Z0-9]+$/.test(username_input) &&
+    username_input.length >= 3 &&
+    username_input.length <= 20;
   const validPassword = password_input.length >= 8;
 
-  return (validUsername && validPassword);
+  return validUsername && validPassword;
 }
 
 function createSessionData() {
@@ -183,7 +192,8 @@ function createSessionData() {
           }
         })
         .catch((error) => {
-          console.error("Error trying to create session data:", error);
+          console.error("Error trying to signup:" + error);
+          error_label.textContent = "An error occured";
         });
     } else {
       error_label.textContent = "Not secure enough.";
@@ -225,29 +235,40 @@ function getSessionData() {
             window.location.assign("index");
           } else {
             error_label.textContent = result_parse.message;
-          };
+          }
+        })
+        .catch((error) => {
+          console.error("Error trying to login:" + error);
+          error_label.textContent = "An error occured";
         });
     }
-  };
-};
+  }
+}
 
 function logout() {
   if (data.Valid) {
     clearCookieData();
-  };
+  }
 
   window.location.assign("login");
-};
+}
 
 if (data.Valid) {
-  if (window.location.pathname.includes("/login") || window.location.pathname.includes("/signup")) {
+  if (
+    window.location.pathname.includes("/login") ||
+    window.location.pathname.includes("/signup")
+  ) {
     window.location.assign("settings");
-  };
+  }
 } else {
-  if (window.location.pathname.includes("/settings") || window.location.pathname.includes("/upload") || window.location.pathname.includes("/dashboard")) {
+  if (
+    window.location.pathname.includes("/settings") ||
+    window.location.pathname.includes("/upload") ||
+    window.location.pathname.includes("/dashboard")
+  ) {
     window.location.assign("login");
-  };
-};
+  }
+}
 
 if (window.location.pathname.includes("/user")) {
   const urlParams = new URLSearchParams(window.location.search);
@@ -286,6 +307,9 @@ if (window.location.pathname.includes("/user")) {
       } else {
         window.location.assign("404");
       }
+    })
+    .catch((error) => {
+      console.error("[2] Error trying to get user:" + error);
     });
 }
 
@@ -303,9 +327,9 @@ if (window.location.pathname.includes("/settings")) {
   password_button.addEventListener("click", function () {
     changePasswordData();
   });
-  status_button.addEventListener("click", function() {
+  status_button.addEventListener("click", function () {
     changeStatusData();
-  })
+  });
   logout_button.addEventListener("click", function () {
     logout();
   });
@@ -314,20 +338,20 @@ if (window.location.pathname.includes("/settings")) {
   const login_button = document.getElementById("login-button");
   const icon = document.getElementById("show-password-icon");
 
-  icon.addEventListener("click", function() {
+  icon.addEventListener("click", function () {
     var passwordInput = document.getElementById("password_login");
 
     if (passwordInput.type === "password") {
-        passwordInput.type = "text";
-        icon.className = "show-icon";
+      passwordInput.type = "text";
+      icon.className = "show-icon";
     } else {
-        passwordInput.type = "password";
-        icon.className = "hide-icon";
+      passwordInput.type = "password";
+      icon.className = "hide-icon";
     }
-  })
+  });
 
   login_button.setAttribute("disabled", true);
-  login_form.oninput = function() {
+  login_form.oninput = function () {
     if (isValidLogin()) {
       if (login_button.hasAttribute("disabled")) {
         login_button.removeAttribute("disabled");
@@ -335,7 +359,7 @@ if (window.location.pathname.includes("/settings")) {
     } else {
       login_button.setAttribute("disabled", true);
     }
-  }
+  };
 
   login_form.onsubmit = function (event) {
     event.preventDefault();
@@ -346,17 +370,17 @@ if (window.location.pathname.includes("/settings")) {
   const signup_button = document.getElementById("signup-button");
   const icon = document.getElementById("show-password-icon");
 
-  icon.addEventListener("click", function() {
+  icon.addEventListener("click", function () {
     var passwordInput = document.getElementById("password_input");
 
     if (passwordInput.type === "password") {
-        passwordInput.type = "text";
-        icon.className = "show-icon";
+      passwordInput.type = "text";
+      icon.className = "show-icon";
     } else {
-        passwordInput.type = "password";
-        icon.className = "hide-icon";
+      passwordInput.type = "password";
+      icon.className = "hide-icon";
     }
-  })
+  });
 
   signup_button.setAttribute("disabled", true);
   signup_form.oninput = function () {
@@ -367,12 +391,12 @@ if (window.location.pathname.includes("/settings")) {
     } else {
       signup_button.setAttribute("disabled", true);
     }
-  }
+  };
 
   signup_form.onsubmit = function (event) {
     event.preventDefault();
     createSessionData();
   };
-};
+}
 
 implementUsername();
