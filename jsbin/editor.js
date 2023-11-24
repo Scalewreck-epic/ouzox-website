@@ -1,8 +1,6 @@
 const description = document.getElementById("description");
 const gameColumn = document.getElementById("game-column");
 
-description.contentEditable = true;
-
 function applyFormatting(formatType) {
   const selection = window.getSelection();
   const selectedText = selection.toString();
