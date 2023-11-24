@@ -1,4 +1,4 @@
-const update_product_url =
+const update_game_url =
   "https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv/games/"; // + game id
 const get_game_url = "https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv/games/"; // + game id
 const get_price_url = "https://x8ki-letl-twmt.n7.xano.io/api:tFdG2Vz-/prices/"; // + price id
@@ -130,6 +130,7 @@ async function retrieveGameData(gameId) {
     datestodays: datestodays,
     useDefaultColors: rawGameData.defaultColors,
     colors: rawGameData.colors,
+    features: rawGameData.features,
     price: priceData,
   };
 
@@ -138,7 +139,7 @@ async function retrieveGameData(gameId) {
 
 async function changeProduct(data, gameId, commitChangesButton) {
   try {
-    const response = await fetch(update_product_url + gameId, data);
+    const response = await fetch(update_game_url + gameId, data);
 
     if (response.ok) {
       commitChangesButton.innerHTML = "Success";
@@ -181,6 +182,7 @@ const gameHandler = async (gameId) => {
   const game_age = document.getElementById("game-age");
   const game_size = document.getElementById("game-size");
   const game_price = document.getElementById("game-price");
+  const game_features = document.getElementById("features");
 
   const changeBGcolor = document.getElementById("bg-color");
   const changeBG2color = document.getElementById("bg2-color");
@@ -261,6 +263,14 @@ const gameHandler = async (gameId) => {
   developer_name.setAttribute("href", `user?id=${gameData.developer_id}`);
   game_genre.setAttribute("href", `category?n=${gameData.genre.toUpperCase()}`);
 
+  gameData.features.forEach(function(feature) {
+    if (feature) {
+      const feature_element = document.createElement("div");
+      feature_element.className = "game-feature";
+      feature_element.textContent = feature.name;
+    }
+  });
+
   if (!gameData.useDefaultColors) {
     const elements = document.getElementsByClassName("game-stat");
 
@@ -296,14 +306,60 @@ const gameHandler = async (gameId) => {
 
   if (user != null && user.name == gameData.developer_name) {
     const game_public = document.getElementById("public");
+    const single_player = document.getElementById("single-player");
+    const multi_player = document.getElementById("multi-player");
+    const co_op = document.getElementById("co-op");
+    const achievements = document.getElementById("achievements");
+    const controller_support = document.getElementById("controller-support");
+    const saves = document.getElementById("saves");
+
     const game_genre_input = document.getElementById("genre-input");
     const game_age_input = document.getElementById("age-sort");
     const game_icon_input = document.getElementById("thumbnail");
 
-    game_public.checked = gameData.active ? "true" : "false";
-    let isChecked = gameData.active ? "true" : "false";
-    game_public.addEventListener("change", function () {
-      isChecked = game_public.checked ? "true" : "false";
+    let features = {
+      "public": {
+        "Enabled": gameData.active ? "true" : "false",
+        "Element": game_public,
+      },
+      "features": {
+        "singleplayer": {
+          "Enabled": gameData.features.Singleplayer ? "true" : "false",
+          "Element": single_player,
+        },
+        "multiplayer": {
+          "Enabled": gameData.features.Multiplayer ? "true" : "false",
+          "Element": multi_player,
+        },
+        "coop": {
+          "Enabled": gameData.features.Coop ? "true" : "false",
+          "Element": co_op,
+        },
+        "achievements": {
+          "Enabled": gameData.features.Achievements ? "true" : "false",
+          "Element": achievements,
+        },
+        "controller_support": {
+          "Enabled": gameData.features.ControllerSupport ? "true" : "false",
+          "Element": controller_support,
+        },
+        "saves": {
+          "Enabled": gameData.features.Saves ? "true" : "false",
+          "Element": saves,
+        },
+      },
+    };
+
+    features.public.Element.checked = features.public.Enabled ? "true" : "false";
+    features.public.Element.addEventListener("change", function() {
+      features.public.Enabled = features.public.Element.checked ? "true" : "false";
+    });
+
+    features.features.forEach(function(feature) {
+      feature.Element.checked = feature.Enabled ? "true" : "false";
+      feature.Element.addEventListener("change", function() {
+        feature.Enabled = feature.Element.checked ? "true" : "false";
+      });
     });
 
     game_title.contentEditable = true;
@@ -392,7 +448,7 @@ const gameHandler = async (gameId) => {
         const myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
 
-        const update_product_options = {
+        const update_game_options = {
           method: "POST",
           headers: myHeaders,
           redirect: "follow",
@@ -401,9 +457,17 @@ const gameHandler = async (gameId) => {
             description: game_desc.innerHTML,
             summary: game_summary.textContent,
             font: document.getElementById("game-column").style.fontFamily,
-            active: isChecked,
+            active: features.public,
             defaultColors: false,
-            metadata: {
+            features: {
+              Singleplayer: features.features.singleplayer,
+              Multiplayer: features.features.multiplayer,
+              Coop: features.features.coop,
+              Achievements: features.features.achievements,
+              ControllerSupport: features.features.controller_support,
+              Saves: features.features.saves,
+            },
+            colors: {
               bgColor: document.body.style.backgroundColor,
               bg2Color:
                 document.getElementById("game-column").style.backgroundColor,
@@ -427,7 +491,7 @@ const gameHandler = async (gameId) => {
 
         commitChangesButton.innerHTML = "Uploading..";
         await changeProduct(
-          update_product_options,
+          update_game_options,
           realGameId,
           commitChangesButton
         );
