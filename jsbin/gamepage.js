@@ -263,13 +263,15 @@ const gameHandler = async (gameId) => {
   developer_name.setAttribute("href", `user?id=${gameData.developer_id}`);
   game_genre.setAttribute("href", `category?n=${gameData.genre.toUpperCase()}`);
 
-  gameData.features.forEach(function(feature) {
+  for (let i = 0; i < gameData.features.length; i++) {
+    let feature = gameData.features[i];
+
     if (feature) {
       const feature_element = document.createElement("div");
       feature_element.className = "game-feature";
       feature_element.textContent = feature.name;
-    }
-  });
+    };
+  };
 
   if (!gameData.useDefaultColors) {
     const elements = document.getElementsByClassName("game-stat");
@@ -355,12 +357,14 @@ const gameHandler = async (gameId) => {
       features.public.Enabled = features.public.Element.checked ? "true" : "false";
     });
 
-    features.features.forEach(function(feature) {
+    for (let i = 0; i < features.features.length; i++) {
+      let feature = features.features[i];
+
       feature.Element.checked = feature.Enabled ? "true" : "false";
       feature.Element.addEventListener("change", function() {
         feature.Enabled = feature.Element.checked ? "true" : "false";
       });
-    });
+    };
 
     game_title.contentEditable = true;
     game_desc.contentEditable = true;
@@ -509,5 +513,5 @@ if (gameIdParam != null) {
   gameHandler(gameIdParam);
 } else {
   console.warn("There is no game id.");
-  window.location.assign("404");
+  //window.location.assign("404");
 }
