@@ -577,7 +577,8 @@ p {
 }
 
 .title-label {
-  font-size: 1.563rem;
+  font-size: 1.4rem;
+  font-weight: lighter;
   font-family: "Secular One", sans-serif;
   color: white;
 }
