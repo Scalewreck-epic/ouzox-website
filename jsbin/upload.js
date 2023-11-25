@@ -40,6 +40,13 @@ uploadGame.addEventListener("submit", async function (event) {
     const art_input = document.getElementById("art-style-input");
     const age_rating = document.getElementById("age-sort");
 
+    const single_player = document.getElementById("single-player");
+    const multi_player = document.getElementById("multi-player");
+    const co_op = document.getElementById("co-op");
+    const achievements = document.getElementById("achievements");
+    const controller_support = document.getElementById("controller-support");
+    const saves = document.getElementById("saves");
+
     const uploader = await getUser();
     const uploader_name = uploader.name;
     const uploader_id = uploader.id;
@@ -49,6 +56,27 @@ uploadGame.addEventListener("submit", async function (event) {
     const file = file_input.files[0];
 
     const fileSizeInMB = file.size / (1024 * 1024);
+
+    const game_features = [
+      {
+        "Enabled": single_player.checked ? "true" : "false",
+      },
+      {
+        "Enabled": multi_player.checked ? "true" : "false",
+      },
+      {
+        "Enabled": co_op.checked ? "true" : "false",
+      },
+      {
+        "Enabled": achievements.checked ? "true" : "false",
+      },
+      {
+        "Enabled": controller_support.checked ? "true" : "false",
+      },
+      {
+        "Enabled": saves.checked ? "true" : "false",
+      },
+    ];
 
     const image = thumbnail_input.files[0];
     const reader = new FileReader();
@@ -111,7 +139,15 @@ uploadGame.addEventListener("submit", async function (event) {
           defaultColors: true,
           icon_upload: imageURI,
           product_id: productId,
-          metadata: {
+          features: {
+            Singleplayer: game_features[1].Enabled ? "true" : "false",
+            Multiplayer: game_features[2].Enabled ? "true" : "false",
+            Coop: game_features[3].Enabled ? "true" : "false",
+            Achievements: game_features[4].Enabled ? "true" : "false",
+            ControllerSupport: game_features[5].Enabled ? "true" : "false",
+            Saves: game_features[6].Enabled ? "true" : "false",
+          },
+          colors: {
             bgColor: "",
             bg2Color: "",
             titleColor: "",
