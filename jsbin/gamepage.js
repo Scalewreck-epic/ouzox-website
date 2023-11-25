@@ -132,6 +132,7 @@ async function retrieveGameData(gameId) {
     colors: rawGameData.colors,
     features: rawGameData.features,
     price: priceData,
+    download_key: rawGameData.product_id,
   };
 
   return gameData;
@@ -263,15 +264,42 @@ const gameHandler = async (gameId) => {
   developer_name.setAttribute("href", `user?id=${gameData.developer_id}`);
   game_genre.setAttribute("href", `category?n=${gameData.genre.toUpperCase()}`);
 
-  for (let i = 0; i < gameData.features.length; i++) {
-    let feature = gameData.features[i];
+  let features = [
+    {
+      ["Name"]: "Singleplayer",
+      ["Enabled"]: gameData.features.Singleplayer,
+    },
+    {
+      ["Name"]: "Multiplayer",
+      ["Enabled"]: gameData.features.Multiplayer,
+    },
+    {
+      ["Name"]: "Co-op",
+      ["Enabled"]: gameData.features.Coop,
+    },
+    {
+      ["Name"]: "Achievements",
+      ["Enabled"]: gameData.features.Achievements,
+    },
+    {
+      ["Name"]: "Controller Support",
+      ["Enabled"]: gameData.features.ControllerSupport,
+    },
+    {
+      ["Name"]: "Saves",
+      ["Enabled"]: gameData.features.Saves,
+    },
+  ];
 
-    if (feature) {
+  features.forEach(function(feature) {
+    if (feature.Enabled) {
       const feature_element = document.createElement("div");
-      feature_element.className = "game-feature";
-      feature_element.textContent = feature.name;
+      feature_element.setAttribute("class", "game-feature");
+      feature_element.innerHTML = feature.Name;
+  
+      game_features.appendChild(feature_element);
     };
-  };
+  });
 
   if (!gameData.useDefaultColors) {
     const elements = document.getElementsByClassName("game-stat");
@@ -301,9 +329,7 @@ const gameHandler = async (gameId) => {
   }
 
   download_button.addEventListener("click", function () {
-    const newGameId = realGameId.replace(/^prod_/, "");
-    const newPriceId = gameId.replace(/^price_/, "");
-    window.location.assign(`download?g=${newGameId}&p=${newPriceId}`);
+    window.location.assign(`download?g=${gameData.download_key}`);
   });
 
   if (user != null && user.name == gameData.developer_name) {
@@ -319,52 +345,56 @@ const gameHandler = async (gameId) => {
     const game_age_input = document.getElementById("age-sort");
     const game_icon_input = document.getElementById("thumbnail");
 
-    let features = {
-      "public": {
-        "Enabled": gameData.active ? "true" : "false",
-        "Element": game_public,
-      },
-      "features": {
-        "singleplayer": {
-          "Enabled": gameData.features.Singleplayer ? "true" : "false",
-          "Element": single_player,
-        },
-        "multiplayer": {
-          "Enabled": gameData.features.Multiplayer ? "true" : "false",
-          "Element": multi_player,
-        },
-        "coop": {
-          "Enabled": gameData.features.Coop ? "true" : "false",
-          "Element": co_op,
-        },
-        "achievements": {
-          "Enabled": gameData.features.Achievements ? "true" : "false",
-          "Element": achievements,
-        },
-        "controller_support": {
-          "Enabled": gameData.features.ControllerSupport ? "true" : "false",
-          "Element": controller_support,
-        },
-        "saves": {
-          "Enabled": gameData.features.Saves ? "true" : "false",
-          "Element": saves,
-        },
-      },
-    };
+    let ispublic = {
+      "Enabled": gameData.active ? "true" : "false",
+      "Element": game_public,
+    }
 
-    features.public.Element.checked = features.public.Enabled ? "true" : "false";
-    features.public.Element.addEventListener("change", function() {
-      features.public.Enabled = features.public.Element.checked ? "true" : "false";
+    let game_features = [
+      {
+        "Name": "Singleplayer",
+        "Enabled": gameData.features.Singleplayer,
+        "Element": single_player,
+      },
+      {
+        "Name": "Multiplayer",
+        "Enabled": gameData.features.Multiplayer,
+        "Element": multi_player,
+      },
+      {
+        "Name": "Co-op",
+        "Enabled": gameData.features.Coop,
+        "Element": co_op,
+      },
+      {
+        "Name": "Achievements",
+        "Enabled": gameData.features.Achievements,
+        "Element": achievements,
+      },
+      {
+        "Name": "Controller Support",
+        "Enabled": gameData.features.ControllerSupport,
+        "Element": controller_support,
+      },
+      {
+        "Name": "Saves",
+        "Enabled": gameData.features.Saves,
+        "Element": saves,
+      },
+    ];
+
+    ispublic.Element.checked = ispublic.Enabled;
+    ispublic.Element.addEventListener("change", function() {
+      ispublic.Enabled = ispublic.Element.checked;
     });
 
-    for (let i = 0; i < features.features.length; i++) {
-      let feature = features.features[i];
-
-      feature.Element.checked = feature.Enabled ? "true" : "false";
+    game_features.forEach(function(feature) {
+      console.log(feature)
+      feature.Element.checked = feature.Enabled;
       feature.Element.addEventListener("change", function() {
-        feature.Enabled = feature.Element.checked ? "true" : "false";
+        feature.Enabled = feature.Element.checked;
       });
-    };
+    });
 
     game_title.contentEditable = true;
     game_desc.contentEditable = true;
@@ -461,15 +491,15 @@ const gameHandler = async (gameId) => {
             description: game_desc.innerHTML,
             summary: game_summary.textContent,
             font: document.getElementById("game-column").style.fontFamily,
-            active: features.public,
+            active: ispublic.Enabled ? "true" : "false",
             defaultColors: false,
             features: {
-              Singleplayer: features.features.singleplayer,
-              Multiplayer: features.features.multiplayer,
-              Coop: features.features.coop,
-              Achievements: features.features.achievements,
-              ControllerSupport: features.features.controller_support,
-              Saves: features.features.saves,
+              Singleplayer: game_features[1].Enabled ? "true" : "false",
+              Multiplayer: game_features[2].Enabled ? "true" : "false",
+              Coop: game_features[3].Enabled ? "true" : "false",
+              Achievements: game_features[4].Enabled ? "true" : "false",
+              ControllerSupport: game_features[5].Enabled ? "true" : "false",
+              Saves: game_features[6].Enabled ? "true" : "false",
             },
             colors: {
               bgColor: document.body.style.backgroundColor,
