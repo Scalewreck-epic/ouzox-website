@@ -31,7 +31,7 @@ function justify(direction) {
   document.execCommand("justify" + direction);
 }
 
-function createLink(text) {
+function createLink() {
   const url = prompt("Enter the link URL:");
 
   if (url) {
@@ -39,7 +39,8 @@ function createLink(text) {
     const selectedText = selection.toString();
 
     const link = document.createElement("a");
-    link.href = url;
+    link.setAttribute("href", url);
+    link.setAttribute("target", "_blank");
     link.textContent = text || selectedText;
 
     if (selection.rangeCount > 0) {
