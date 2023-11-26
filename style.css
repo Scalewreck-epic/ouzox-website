@@ -955,7 +955,6 @@ p {
   font: inherit;
   width: 45%;
   min-height: 6.25rem;
-  padding: 1rem;
   float: right;
 }
 
@@ -1081,8 +1080,8 @@ p {
 
 .game-stat-border {
   border-bottom: white solid 0.08rem;
-  margin: 0.5rem auto;
-  width: 95%;
+  margin: 1rem auto;
+  width: 100%;
 }
 
 .game-stat-data {
@@ -1101,6 +1100,12 @@ p {
 
 .game-features {
   display: grid;
+}
+
+.game-feature {
+  display: block;
+  margin-bottom: 0.3rem;
+  text-align: right;
 }
 
 .game-stat-feature {
