@@ -195,7 +195,6 @@ const gameHandler = async (gameId) => {
   const changeButtonColor = document.getElementById("button-bg-color");
   const changeButtonText = document.getElementById("button-text-color");
 
-  // main data
   game_title.textContent = gameData.name;
   game_desc.innerHTML = gameData.description;
   game_price.textContent = `${gameData.price.amount} ${gameData.price.currency}`;
@@ -383,22 +382,21 @@ const gameHandler = async (gameId) => {
       },
     ];
 
+    game_title.contentEditable = true;
+    game_desc.contentEditable = true;
+    game_summary.contentEditable = true;
+
     ispublic.Element.checked = ispublic.Enabled;
     ispublic.Element.addEventListener("change", function() {
       ispublic.Enabled = ispublic.Element.checked;
     });
 
     game_features.forEach(function(feature) {
-      console.log(feature)
       feature.Element.checked = feature.Enabled;
       feature.Element.addEventListener("change", function() {
         feature.Enabled = feature.Element.checked;
       });
     });
-
-    game_title.contentEditable = true;
-    game_desc.contentEditable = true;
-    game_summary.contentEditable = true;
 
     const commitChangesButton = document.createElement("button");
     commitChangesButton.className = "game-download-button";
@@ -462,14 +460,11 @@ const gameHandler = async (gameId) => {
         changeButtonText.value;
     };
 
-    changeStatsColor.value = document.getElementById("game-stats").style.color;
     changeStatsColor.onchange = function () {
       const game_stats = document.getElementById("game-stats");
       game_stats.style.color = changeStatsColor.value;
     };
 
-    changeStatsBGColor.value =
-      document.getElementById("game-stats").style.backgroundColor;
     changeStatsBGColor.onchange = function () {
       const game_stats = document.getElementById("game-stats");
       game_stats.style.backgroundColor = changeStatsBGColor.value;
@@ -494,12 +489,12 @@ const gameHandler = async (gameId) => {
             active: ispublic.Enabled ? "true" : "false",
             defaultColors: false,
             features: {
-              Singleplayer: game_features[1].Enabled ? "true" : "false",
-              Multiplayer: game_features[2].Enabled ? "true" : "false",
-              Coop: game_features[3].Enabled ? "true" : "false",
-              Achievements: game_features[4].Enabled ? "true" : "false",
-              ControllerSupport: game_features[5].Enabled ? "true" : "false",
-              Saves: game_features[6].Enabled ? "true" : "false",
+              Singleplayer: game_features[0].Enabled ? "true" : "false",
+              Multiplayer: game_features[1].Enabled ? "true" : "false",
+              Coop: game_features[2].Enabled ? "true" : "false",
+              Achievements: game_features[3].Enabled ? "true" : "false",
+              ControllerSupport: game_features[4].Enabled ? "true" : "false",
+              Saves: game_features[5].Enabled ? "true" : "false",
             },
             colors: {
               bgColor: document.body.style.backgroundColor,
@@ -543,5 +538,5 @@ if (gameIdParam != null) {
   gameHandler(gameIdParam);
 } else {
   console.warn("There is no game id.");
-  //window.location.assign("404");
+  window.location.assign("404");
 }
