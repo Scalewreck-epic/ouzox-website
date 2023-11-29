@@ -131,6 +131,7 @@ async function retrieveGameData(gameId) {
     useDefaultColors: rawGameData.defaultColors,
     colors: rawGameData.colors,
     features: rawGameData.features,
+    platforms: rawGameData.platforms,
     price: priceData,
     download_key: rawGameData.product_id,
   };
@@ -184,6 +185,7 @@ const gameHandler = async (gameId) => {
   const game_size = document.getElementById("game-size");
   const game_price = document.getElementById("game-price");
   const game_features = document.getElementById("features");
+  const game_platforms = document.getElementById("platforms");
 
   const changeBGcolor = document.getElementById("bg-color");
   const changeBG2color = document.getElementById("bg2-color");
@@ -290,6 +292,41 @@ const gameHandler = async (gameId) => {
     },
   ];
 
+  let platforms = [
+    {
+      ["Name"]: "Windows",
+      ["Enabled"]: gameData.platforms.windows,
+    },
+    {
+      ["Name"]: "Mac",
+      ["Enabled"]: gameData.platforms.mac,
+    },
+    {
+      ["Name"]: "Linux",
+      ["Enabled"]: gameData.platforms.linux,
+    },
+    {
+      ["Name"]: "Android",
+      ["Enabled"]: gameData.platforms.android,
+    },
+    {
+      ["Name"]: "IOS",
+      ["Enabled"]: gameData.platforms.ios,
+    },
+    {
+      ["Name"]: "XBOX",
+      ["Enabled"]: gameData.platforms.xbox,
+    },
+    {
+      ["Name"]: "PlayStation",
+      ["Enabled"]: gameData.platforms.playstation,
+    },
+    {
+      ["Name"]: "Oculus",
+      ["Enabled"]: gameData.platforms.oculus,
+    },
+  ]
+
   features.forEach(function(feature) {
     if (feature.Enabled) {
       const feature_element = document.createElement("div");
@@ -299,6 +336,16 @@ const gameHandler = async (gameId) => {
       game_features.appendChild(feature_element);
     };
   });
+
+  platforms.forEach(function(platform) {
+    if (platform.Enabled) {
+      const platform_element = document.createElement("div");
+      platform_element.setAttribute("class", "game-feature");
+      platform_element.innerHTML = platform.Name;
+
+      platforms.appendChild(platform_element);
+    };
+  })
 
   if (!gameData.useDefaultColors) {
     const elements = document.getElementsByClassName("game-stat");
@@ -339,6 +386,16 @@ const gameHandler = async (gameId) => {
     const achievements = document.getElementById("achievements");
     const controller_support = document.getElementById("controller-support");
     const saves = document.getElementById("saves");
+    const vr_support = document.getElementById("vr-support");
+
+    const windows = document.getElementById("windows");
+    const mac = document.getElementById("mac");
+    const linux = document.getElementById("linux");
+    const android = document.getElementById("android");
+    const ios = document.getElementById("ios");
+    const xbox = document.getElementById("xbox");
+    const playstation = document.getElementById("playstation");
+    const oculus = document.getElementById("oculus");
 
     const game_genre_input = document.getElementById("genre-input");
     const game_age_input = document.getElementById("age-sort");
@@ -379,6 +436,54 @@ const gameHandler = async (gameId) => {
         "Name": "Saves",
         "Enabled": gameData.features.Saves,
         "Element": saves,
+      },
+      {
+        "Name": "VR Support",
+        "Enabled": gameData.features.VRSupport,
+        "Element": vr_support,
+      },
+    ];
+
+    let game_platforms = [
+      {
+        "Name": "Windows",
+        "Enabled": gameData.platforms.windows,
+        "Element": windows,
+      },
+      {
+        "Name": "Mac",
+        "Enabled": gameData.platforms.mac,
+        "Element": mac,
+      },
+      {
+        "Name": "Linux",
+        "Enabled": gameData.platforms.linux,
+        "Element": linux,
+      },
+      {
+        "Name": "Android",
+        "Enabled": gameData.platforms.android,
+        "Element": android,
+      },
+      {
+        "Name": "IOS",
+        "Enabled": gameData.platforms.ios,
+        "Element": ios,
+      },
+      {
+        "Name": "XBOX",
+        "Enabled": gameData.platforms.xbox,
+        "Element": xbox,
+      },
+      {
+        "Name": "PlayStation",
+        "Enabled": gameData.platforms.playstation,
+        "Element": playstation,
+      },
+      {
+        "Name": "Oculus",
+        "Enabled": gameData.platforms.oculus,
+        "Element": oculus,
       },
     ];
 
@@ -488,6 +593,16 @@ const gameHandler = async (gameId) => {
             font: document.getElementById("game-column").style.fontFamily,
             active: ispublic.Enabled ? "true" : "false",
             defaultColors: false,
+            platforms: {
+              windows: game_platforms[0].Enabled ? "true" : "false",
+              mac: game_platforms[1].Enabled ? "true" : "false",
+              linux: game_platforms[2].Enabled ? "true" : "false",
+              android: game_platforms[3].Enabled ? "true" : "false",
+              ios: game_platforms[4].Enabled ? "true" : "false",
+              xbox: game_platforms[5].Enabled ? "true" : "false",
+              playstation: game_platforms[6].Enabled ? "true" : "false",
+              oculus: game_platforms[7].Enabled ? "true" : "false",
+            },
             features: {
               Singleplayer: game_features[0].Enabled ? "true" : "false",
               Multiplayer: game_features[1].Enabled ? "true" : "false",
@@ -495,6 +610,7 @@ const gameHandler = async (gameId) => {
               Achievements: game_features[3].Enabled ? "true" : "false",
               ControllerSupport: game_features[4].Enabled ? "true" : "false",
               Saves: game_features[5].Enabled ? "true" : "false",
+              VRSupport: game_features[6].Enabled ? "true" : "false",
             },
             colors: {
               bgColor: document.body.style.backgroundColor,
@@ -538,5 +654,5 @@ if (gameIdParam != null) {
   gameHandler(gameIdParam);
 } else {
   console.warn("There is no game id.");
-  window.location.assign("404");
+  //window.location.assign("404");
 }
