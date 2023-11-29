@@ -228,12 +228,12 @@ const gameHandler = async (gameId) => {
         : false;
     } else if (publishedOrUpdatedDaysAgo >= 1) {
       return publishedOrUpdatedDaysAgo === 1
-        ? `${createdOrUpdated} (1 Day Ago)`
+        ? `TODAY`
         : publishedOrUpdatedDaysAgo > 1
         ? `${createdOrUpdated} (${publishedOrUpdatedDaysAgo} Days Ago)`
-        : false;
+        : "else";
     } else {
-      return false;
+      return "else";
     }
   }
 
@@ -661,5 +661,5 @@ if (gameIdParam != null) {
   gameHandler(gameIdParam);
 } else {
   console.warn("There is no game id.");
-  //window.location.assign("404");
+  window.location.assign("404");
 }
