@@ -46,6 +46,15 @@ uploadGame.addEventListener("submit", async function (event) {
     const achievements = document.getElementById("achievements");
     const controller_support = document.getElementById("controller-support");
     const saves = document.getElementById("saves");
+    
+    const windows = document.getElementById("windows");
+    const mac = document.getElementById("mac");
+    const linux = document.getElementById("linux");
+    const android = document.getElementById("android");
+    const ios = document.getElementById("ios");
+    const xbox = document.getElementById("xbox");
+    const playstation = document.getElementById("playstation");
+    const oculus = document.getElementById("oculus");
 
     const uploader = await getUser();
     const uploader_name = uploader.name;
@@ -75,6 +84,33 @@ uploadGame.addEventListener("submit", async function (event) {
       },
       {
         "Enabled": saves.checked ? "true" : "false",
+      },
+    ];
+
+    const game_platforms = [
+      {
+        "Enabled": windows.checked ? "true" : "false",
+      },
+      {
+        "Enabled": mac.checked ? "true" : "false",
+      },
+      {
+        "Enabled": linux.checked ? "true" : "false",
+      },
+      {
+        "Enabled": android.checked ? "true" : "false",
+      },
+      {
+        "Enabled": ios.checked ? "true" : "false",
+      },
+      {
+        "Enabled": xbox.checked ? "true" : "false",
+      },
+      {
+        "Enabled": playstation.checked ? "true" : "false",
+      },
+      {
+        "Enabled": oculus.checked ? "true" : "false",
       },
     ];
 
@@ -139,6 +175,16 @@ uploadGame.addEventListener("submit", async function (event) {
           defaultColors: true,
           icon_upload: imageURI,
           product_id: productId,
+          platforms: {
+            windows: game_platforms[0].Enabled ? "true" : "false",
+            mac: game_platforms[1].Enabled ? "true" : "false",
+            linux: game_platforms[2].Enabled ? "true" : "false",
+            android: game_platforms[3].Enabled ? "true" : "false",
+            ios: game_platforms[4].Enabled ? "true" : "false",
+            xbox: game_platforms[5].Enabled ? "true" : "false",
+            playstation: game_platforms[6].Enabled ? "true" : "false",
+            oculus: game_platforms[7].Enabled ? "true" : "false",
+          },
           features: {
             Singleplayer: game_features[1].Enabled ? "true" : "false",
             Multiplayer: game_features[2].Enabled ? "true" : "false",
