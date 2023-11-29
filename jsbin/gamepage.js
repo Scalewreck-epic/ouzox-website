@@ -343,7 +343,7 @@ const gameHandler = async (gameId) => {
       platform_element.setAttribute("class", "game-feature");
       platform_element.innerHTML = platform.Name;
 
-      platforms.appendChild(platform_element);
+      game_platforms.appendChild(platform_element);
     };
   })
 
@@ -502,6 +502,13 @@ const gameHandler = async (gameId) => {
         feature.Enabled = feature.Element.checked;
       });
     });
+
+    game_platforms.forEach(function(platform) {
+      platform.Element.checked = platform.Enabled;
+      platform.Element.addEventListener("change", function() {
+        platform.Enabled = platform.Element.checked;
+      });
+    })
 
     const commitChangesButton = document.createElement("button");
     commitChangesButton.className = "game-download-button";
