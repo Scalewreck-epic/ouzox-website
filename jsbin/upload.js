@@ -2,13 +2,6 @@ const upload_product_api_url =
   "https://x8ki-letl-twmt.n7.xano.io/api:iwAsZq4E/products";
 const set_product_price_url =
   "https://x8ki-letl-twmt.n7.xano.io/api:tFdG2Vz-/prices";
-const get_genre_api_url =
-  "https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv/genres/"; // + genre name;
-const change_genre_api_url =
-  "https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv/genres/update/"; // + genre name
-const add_genre_api_url =
-  "https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv/genres/create";
-
 const upload_game_api_url =
   "https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv/games";
 
@@ -46,7 +39,7 @@ uploadGame.addEventListener("submit", async function (event) {
     const achievements = document.getElementById("achievements");
     const controller_support = document.getElementById("controller-support");
     const saves = document.getElementById("saves");
-    
+
     const windows = document.getElementById("windows");
     const mac = document.getElementById("mac");
     const linux = document.getElementById("linux");
@@ -68,49 +61,49 @@ uploadGame.addEventListener("submit", async function (event) {
 
     const game_features = [
       {
-        "Enabled": single_player.checked ? "true" : "false",
+        Enabled: single_player.checked ? "true" : "false",
       },
       {
-        "Enabled": multi_player.checked ? "true" : "false",
+        Enabled: multi_player.checked ? "true" : "false",
       },
       {
-        "Enabled": co_op.checked ? "true" : "false",
+        Enabled: co_op.checked ? "true" : "false",
       },
       {
-        "Enabled": achievements.checked ? "true" : "false",
+        Enabled: achievements.checked ? "true" : "false",
       },
       {
-        "Enabled": controller_support.checked ? "true" : "false",
+        Enabled: controller_support.checked ? "true" : "false",
       },
       {
-        "Enabled": saves.checked ? "true" : "false",
+        Enabled: saves.checked ? "true" : "false",
       },
     ];
 
     const game_platforms = [
       {
-        "Enabled": windows.checked ? "true" : "false",
+        Enabled: windows.checked ? "true" : "false",
       },
       {
-        "Enabled": mac.checked ? "true" : "false",
+        Enabled: mac.checked ? "true" : "false",
       },
       {
-        "Enabled": linux.checked ? "true" : "false",
+        Enabled: linux.checked ? "true" : "false",
       },
       {
-        "Enabled": android.checked ? "true" : "false",
+        Enabled: android.checked ? "true" : "false",
       },
       {
-        "Enabled": ios.checked ? "true" : "false",
+        Enabled: ios.checked ? "true" : "false",
       },
       {
-        "Enabled": xbox.checked ? "true" : "false",
+        Enabled: xbox.checked ? "true" : "false",
       },
       {
-        "Enabled": playstation.checked ? "true" : "false",
+        Enabled: playstation.checked ? "true" : "false",
       },
       {
-        "Enabled": oculus.checked ? "true" : "false",
+        Enabled: oculus.checked ? "true" : "false",
       },
     ];
 
@@ -139,12 +132,15 @@ uploadGame.addEventListener("submit", async function (event) {
           product: {
             name: title_input.value,
             active: "false",
-          }
+          },
         }),
       };
-      
+
       try {
-        const response = await fetch(upload_product_api_url, productRequestOptions);
+        const response = await fetch(
+          upload_product_api_url,
+          productRequestOptions
+        );
         const result = await response.text();
         const result_parse = JSON.parse(result);
 
@@ -215,56 +211,6 @@ uploadGame.addEventListener("submit", async function (event) {
         return result_parse;
       } catch (error) {
         error("Cannot upload game to database: " + error);
-      }
-    }
-
-    async function updateGenre() {
-      const uploadGenreOptions = {
-        method: "GET",
-        headers: myHeaders,
-        redirect: "follow",
-      };
-
-      let doesGenreExist = false;
-      let genreData = {};
-
-      try {
-        const response = await fetch(
-          get_genre_api_url + genre_input.value.toUpperCase(),
-          uploadGenreOptions
-        );
-        const result = await response.text();
-        const resultParse = JSON.parse(result);
-
-        console.log(resultParse);
-        if (resultParse.message && resultParse.message == "Not Found") {
-          doesGenreExist = false;
-        } else {
-          doesGenreExist = true;
-          genreData = resultParse;
-        }
-      } catch (error) {
-        error("Cannot update genre to database: " + error);
-      }
-
-      const changeGenreOptions = {
-        method: "POST",
-        headers: myHeaders,
-        redirect: "follow",
-        body: JSON.stringify({
-          genre_name: genre_input.value.toUpperCase(),
-          games_with_genre: doesGenreExist ? genreData.games_with_genre + 1 : 1,
-        }),
-      };
-
-      try {
-        const endpointURL = doesGenreExist
-          ? change_genre_api_url + genre_input.value.toUpperCase()
-          : add_genre_api_url;
-
-        await fetch(endpointURL, changeGenreOptions);
-      } catch (error) {
-        error("Cannot upload genre to database: " + error);
       }
     }
 
@@ -418,13 +364,13 @@ function checkPrice() {
 }
 
 function checkGenre() {
-  const genreSelect = document.getElementById('genre-input');
+  const genreSelect = document.getElementById("genre-input");
   genreSelect.value = encodeURIComponent(genreSelect.value);
 }
 
 const game_thumbnail = document.getElementById("thumbnail");
 const game_price = document.getElementById("price");
-const genre_input = document.getElementById('genre-input');
+const genre_input = document.getElementById("genre-input");
 const game_isfree = document.getElementById("isfree");
 const game_title = document.getElementById("title");
 const game_summary = document.getElementById("summary");
@@ -432,7 +378,7 @@ const game_summary = document.getElementById("summary");
 checkIsFree();
 
 game_thumbnail.onchange = checkThumbnail();
-game_isfree.onchange = checkIsFree()
+game_isfree.onchange = checkIsFree();
 
 game_price.addEventListener("input", checkPrice());
 genre_input.addEventListener("input", checkGenre());
