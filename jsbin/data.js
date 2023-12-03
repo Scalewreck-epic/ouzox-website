@@ -1,7 +1,6 @@
 const games_list_api = "https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv/games";
 const games_prices_url =
   "https://x8ki-letl-twmt.n7.xano.io/api:tFdG2Vz-/prices";
-const genre_list_url = "https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv/genres";
 
 import { getUser } from "./exportuser.js";
 
@@ -187,17 +186,12 @@ function removePrivateGames() {
   games = newGames;
 }
 
-function removeIrrelevantGames() {
+function removeIrrelevantGenres() {
   const similarityThreshold = 0.15;
-
-  if (category_name != "") {
-    const genreGames = games.filter((game) => game.genre == category_name);
-    games = genreGames;
-  }
 
   if (search_query != "") {
     const relevantGenres = genres.map((genre) => {
-      const similarity = calculateSimilarity(search_query, genre.genre_name);
+      const similarity = calculateSimilarity(search_query, genre.name);
 
       if (similarity > similarityThreshold) {
         return {
@@ -209,6 +203,19 @@ function removeIrrelevantGames() {
       }
     });
 
+    genres = relevantGenres.filter((genre) => genre !== null);
+  }
+}
+
+function removeIrrelevantGames() {
+  const similarityThreshold = 0.15;
+
+  if (category_name != "") {
+    const genreGames = games.filter((game) => game.genre == category_name);
+    games = genreGames;
+  }
+
+  if (search_query != "") {
     const relevantGames = games.map((game) => {
       const nameSimilarity = calculateSimilarity(search_query, game.name);
       const summarySimilarity = calculateSimilarity(search_query, game.summary);
@@ -225,7 +232,6 @@ function removeIrrelevantGames() {
       }
     });
 
-    genres = relevantGenres.filter((genre) => genre !== null);
     games = relevantGames.filter((game) => game !== null);
   }
 }
@@ -248,19 +254,17 @@ function loadGamesWithList(list, category, gameslist) {
 }
 
 function loadGenres() {
-  const validGenres = genres.filter((genre) => genre.games_with_genre > 0);
-
   if (window.location.pathname.includes("/search")) {
-    validGenres.sort((a, b) => b.relevance - a.relevance);
+    genres.sort((a, b) => b.relevance - a.relevance);
   } else {
-    validGenres.sort((a, b) => b.games_with_genre - a.games_with_genre);
+    genres.sort((a, b) => b.count - a.count);
   }
 
-  validGenres.forEach((genre) => {
-    createGenrePage(genre.genre_name, genre.games_with_genre);
+  genres.forEach((genre) => {
+    createGenrePage(genre.name, genre.count);
   });
 
-  if (validGenres.length > 0) {
+  if (genres.length > 0) {
     const categoryNoneElement = document
       .getElementById("genres")
       .querySelector(".category-none");
@@ -285,6 +289,13 @@ function loadGames() {
     window.location.pathname.includes("/search") ||
     window.location.pathname.includes("/category")
   ) {
+    const results_label = document.getElementById("results-label");
+    if (games.length == 1) {
+      results_label.textContent = "(" + games.length + " result)"
+    } else {
+      results_label.textContent = "(" + games.length + " results)"
+    }
+
     sortGames("relevant-games-list", games, (a, b) => {
       b.relevance - a.relevance;
     });
@@ -301,6 +312,15 @@ function loadGames() {
     sortGames("hot-games-list", games, (a, b) => {
       const scoreA = a.downloads * 0.6 + a.updated * 0.4;
       const scoreB = b.downloads * 0.6 + b.updated * 0.4;
+
+      return scoreB - scoreA;
+    });
+
+    // Sponsored Games
+    const sponsoredGames = games.filter((game) => game.sponsor_money > 0);
+    sortGames("sponsored-games-list", sponsoredGames, (a, b) => {
+      const scoreA = a.sponsor_money * 0.6 + a.downloads * 0.4;
+      const scoreB = b.sponsor_money * 0.6 + b.downloads * 0.4;
 
       return scoreB - scoreA;
     });
@@ -349,7 +369,7 @@ async function loadDashboard() {
   }
 }
 
-async function fetchGamesRequest(isDashboard) {
+async function fetchGamesRequest() {
   const myHeaders = new Headers();
   myHeaders.append("Content-Type", "application/json");
 
@@ -371,21 +391,32 @@ async function fetchGamesRequest(isDashboard) {
         prices.sort((a, b) => b.unit_amount - a.unit_amount);
       }
     } catch (error) {
-      console.error("There was an error trying to set prices: ", error);
-    }
-  }
+      console.error(`There was an error trying to set prices: ${error}`);
+    };
+  };
 
-  async function setGenres() {
-    try {
-      const response = await fetch(genre_list_url, requestOptions);
-      const result = await response.text();
-      const result_parse = JSON.parse(result);
+  function setGenres() {
+    games.forEach((game) => {
+      let found = false;
 
-      genres = result_parse;
-    } catch (error) {
-      console.error("There was an error trying to set genres: ", error);
-    }
-  }
+      for (let i = 1; i < genres.length; i++) {
+        const genre = genres[i];
+
+        if (genre.name == game.genre) {
+          genre.count++;
+          found = true;
+          break;
+        }
+      }
+
+      if (!found) {
+        genres[genres.length++] = {
+          name: game.genre,
+          count: 1,
+        };
+      }
+    });
+  };
 
   async function fetchData() {
     try {
@@ -397,40 +428,36 @@ async function fetchGamesRequest(isDashboard) {
 
       if (games.length > 0) {
         try {
-          if (isDashboard) {
+          if (window.location.pathname.includes("/dashboard")) {
             loadDashboard();
           } else {
             removePrivateGames();
             removeIrrelevantGames();
 
-            if (
-              genres.length > 0 &&
-              document.getElementById("genres-list") != null
-            ) {
-              loadGenres();
-            }
-
             loadGames();
           }
         } catch (error) {
-          console.error("Error trying to load games:", error);
-        }
-      } else {
-        console.warn("There are no games currently available for show.");
-      }
+          console.error(`Error trying to load games: ${error}`);
+        };
+      };
     } catch (error) {
-      console.error("There was an error trying to get games: ", error);
-    }
-  }
+      console.error(`Error trying to fetch games: ${error}`);
+    };
+  };
 
   await setPrices();
-  await setGenres();
   await fetchData();
+
+  setGenres();
+  if (genres.length > 0 && document.getElementById("genres-list") != null) {
+    removeIrrelevantGenres();
+    loadGenres();
+  }
 }
 
-async function fetchGames(isDashboard) {
+async function fetchGames() {
   prices = [];
-  fetchGamesRequest(isDashboard);
+  fetchGamesRequest();
 }
 
 function setSearch() {
@@ -456,6 +483,6 @@ function setCategory() {
   }
 }
 
+fetchGames();
 setSearch();
 setCategory();
-fetchGames(window.location.pathname.includes("/dashboard"));

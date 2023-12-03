@@ -1269,7 +1269,13 @@ p {
 .search-label {
   color: white;
   font-size: 3rem;
-  margin-left: 5rem;
+  margin: 0.25rem 3rem;
+}
+
+.results-label {
+  color: gray;
+  opacity: 0.5;
+  margin: 0.25rem 4rem;
 }
 
 .genre-button {

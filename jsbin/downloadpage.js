@@ -23,7 +23,7 @@ async function setGameData(gameId) {
 
       return result_parse;
     } catch (error) {
-      console.error("There was an error trying to get game data: ", error);
+      console.error(`Error trying to get game data: ${error}`);
       window.location.assign("404");
     }
   }

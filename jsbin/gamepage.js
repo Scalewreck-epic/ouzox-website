@@ -26,7 +26,7 @@ async function retrieveGameData(gameId) {
 
       return result_parse;
     } catch (error) {
-      console.error("There was an error trying to get game: ", error);
+      console.error(`Error trying to get game data: ${error}`);
       window.location.assign("404");
     }
   }
@@ -96,7 +96,7 @@ async function retrieveGameData(gameId) {
 
         return result_parse;
       } catch (error) {
-        console.error("There was an error trying to get price: ", error);
+        console.error(`Error trying to get price data: ${error}`);
         window.location.assign("404");
       }
     }
@@ -146,14 +146,11 @@ async function changeProduct(data, gameId, commitChangesButton) {
     if (response.ok) {
       commitChangesButton.innerHTML = "Success";
     } else {
-      console.error(
-        "There was an error trying to update the product:",
-        response.status
-      );
+      console.error(`Error trying to update game: ${response.status}`);
       commitChangesButton.innerHTML = "An error occured";
     }
   } catch (error) {
-    console.error("There was an error trying to update the product:", error);
+    console.error(`Error trying to update game: ${error}`);
     commitChangesButton.innerHTML = "An error occured";
   }
 }
