@@ -279,8 +279,6 @@ uploadGame.addEventListener("submit", async function (event) {
           await uploadGame(product_result.id, false);
 
           const price = await setProductPrice(product_result.id);
-
-          await updateGenre();
           if (price && price.active) {
             console.log("Product uploaded successfully!");
             error_label.innerHTML = "Successfully published game!";
@@ -310,7 +308,7 @@ function checkThumbnail() {
     previewImage.src = imageUrl;
   });
 
-  if (file !== null) {
+  if (file !== null && file instanceof Blob) {
     reader.readAsDataURL(file);
   }
 }
@@ -380,8 +378,8 @@ checkIsFree();
 game_thumbnail.onchange = checkThumbnail();
 game_isfree.onchange = checkIsFree();
 
-game_price.addEventListener("input", checkPrice());
-genre_input.addEventListener("input", checkGenre());
+game_price.addEventListener("input", checkPrice);
+genre_input.addEventListener("input", checkGenre);
 
 game_title.addEventListener("input", function () {
   this.style.width = (this.value.length + 1) * 10 + "px";
