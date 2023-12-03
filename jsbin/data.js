@@ -12,6 +12,8 @@ let prices = [];
 let games = [];
 let genres = [];
 
+let offset = 100;
+
 function getGamePrice(game_id) {
   const result = prices.find((item) => item.product === game_id);
   if (result) {
@@ -238,13 +240,14 @@ function removeIrrelevantGames() {
 
 function loadGamesWithList(list, category, gameslist) {
   const filteredGames = gameslist.filter((game) => game && game.active);
+  const slicedGames = filteredGames.slice(0, 16);
 
-  filteredGames.forEach((game) => {
+  slicedGames.forEach((game) => {
     const game_price = getGamePrice(game.id.toString());
     createGamePage(game, game_price, list);
   });
 
-  if (filteredGames.length > 0) {
+  if (slicedGames.length > 0) {
     const categoryNoneElement = category.querySelector(".category-none");
 
     if (categoryNoneElement) {
@@ -284,6 +287,13 @@ function sortGames(listId, gamesList, sortingFunction) {
   loadGamesWithList(listElement, gamesElement, gamesList);
 }
 
+const loadMoreGames = () => {
+  const slicedGames = games.slice(offset, offset + 100);
+  sortGames("relevant-games-list", slicedGames, (a, b) => {
+    b.relevance - a.relevance;
+  });
+}
+
 function loadGames() {
   if (
     window.location.pathname.includes("/search") ||
@@ -296,7 +306,7 @@ function loadGames() {
       results_label.textContent = "(" + games.length + " results)"
     }
 
-    sortGames("relevant-games-list", games, (a, b) => {
+    sortGames("relevant-games-list", games.slice(0, 100), (a, b) => {
       b.relevance - a.relevance;
     });
   } else {
@@ -480,3 +490,17 @@ function setCategory() {
 fetchGames();
 setSearch();
 setCategory();
+
+window.addEventListener("scroll", () => {
+  if (
+  window.location.pathname.includes("/search") ||
+  window.location.pathname.includes("/category")) {
+    const scrollPosition = window.scrollY + window.innerHeight;
+    const pageHeight = document.documentElement.scrollHeight;
+
+    if (scrollPosition >= pageHeight - 100) {
+      offset += 100;
+      loadMoreGames();
+    }
+  }
+})
