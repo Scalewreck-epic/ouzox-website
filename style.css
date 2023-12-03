@@ -1302,11 +1302,13 @@ p {
   display: block;
   overflow: hidden;
   text-overflow: ellipsis;
+  white-space: nowrap;
   margin: 0;
   text-align: center;
 }
 
 .genre-name {
+  max-height: 2rem;
   font-size: 1.25rem;
 }
 
@@ -1323,6 +1325,7 @@ p {
 .market {
   display: flex;
   overflow-x: auto;
+  overflow-y: hidden;
   gap: 1.25rem 1.25rem;
   padding: 1rem;
 }
