@@ -290,7 +290,7 @@ uploadGame.addEventListener("submit", async function (event) {
         await uploadGame("none", true);
       }
     } catch (error) {
-      console.error("There was an error trying to publish game: ", error);
+      console.error(`Error trying to publish game: ${error}`);
       error_label.innerHTML = "There was an error trying to upload game.";
     }
   } else {
