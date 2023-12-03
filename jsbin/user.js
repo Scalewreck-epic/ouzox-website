@@ -105,7 +105,7 @@ function setStats() {
       }
     })
     .catch((error) => {
-      console.error("[1] Error trying to get user:" + error);
+      console.error(`[1] Error trying to get user data: ${error}`);
     });
 }
 
@@ -192,7 +192,7 @@ function createSessionData() {
           }
         })
         .catch((error) => {
-          console.error("Error trying to signup:" + error);
+          console.error(`Error trying to create user profile: ${error}`);
           error_label.textContent = "An error occured";
         });
     } else {
@@ -238,7 +238,7 @@ function getSessionData() {
           }
         })
         .catch((error) => {
-          console.error("Error trying to login:" + error);
+          console.error(`Error trying to login to user profile: ${error}`);
           error_label.textContent = "An error occured";
         });
     }
@@ -309,7 +309,7 @@ if (window.location.pathname.includes("/user")) {
       }
     })
     .catch((error) => {
-      console.error("[2] Error trying to get user:" + error);
+      console.error(`[2] Error trying to get user data: ${error}`);
     });
 }
 
