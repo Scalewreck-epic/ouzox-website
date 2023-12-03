@@ -10,7 +10,6 @@ const category_name = encodeURIComponent(urlParams.get("n") || "");
 
 let prices = [];
 let games = [];
-
 let genres = [];
 
 function getGamePrice(game_id) {
@@ -187,13 +186,8 @@ function removePrivateGames() {
   games = newGames;
 }
 
-function removeIrrelevantGames() {
+function removeIrrelevantGenres() {
   const similarityThreshold = 0.15;
-
-  if (category_name != "") {
-    const genreGames = games.filter((game) => game.genre == category_name);
-    games = genreGames;
-  }
 
   if (search_query != "") {
     const relevantGenres = genres.map((genre) => {
@@ -209,6 +203,19 @@ function removeIrrelevantGames() {
       }
     });
 
+    genres = relevantGenres.filter((genre) => genre !== null);
+  }
+}
+
+function removeIrrelevantGames() {
+  const similarityThreshold = 0.15;
+
+  if (category_name != "") {
+    const genreGames = games.filter((game) => game.genre == category_name);
+    games = genreGames;
+  }
+
+  if (search_query != "") {
     const relevantGames = games.map((game) => {
       const nameSimilarity = calculateSimilarity(search_query, game.name);
       const summarySimilarity = calculateSimilarity(search_query, game.summary);
@@ -225,7 +232,6 @@ function removeIrrelevantGames() {
       }
     });
 
-    genres = relevantGenres.filter((genre) => genre !== null);
     games = relevantGames.filter((game) => game !== null);
   }
 }
@@ -283,6 +289,13 @@ function loadGames() {
     window.location.pathname.includes("/search") ||
     window.location.pathname.includes("/category")
   ) {
+    const results_label = document.getElementById("results-label");
+    if (games.length == 1) {
+      results_label.textContent = "(" + games.length + " result)"
+    } else {
+      results_label.textContent = "(" + games.length + " results)"
+    }
+
     sortGames("relevant-games-list", games, (a, b) => {
       b.relevance - a.relevance;
     });
@@ -356,7 +369,7 @@ async function loadDashboard() {
   }
 }
 
-async function fetchGamesRequest(isDashboard) {
+async function fetchGamesRequest() {
   const myHeaders = new Headers();
   myHeaders.append("Content-Type", "application/json");
 
@@ -378,9 +391,9 @@ async function fetchGamesRequest(isDashboard) {
         prices.sort((a, b) => b.unit_amount - a.unit_amount);
       }
     } catch (error) {
-      console.error("There was an error trying to set prices: ", error);
-    }
-  }
+      console.error(`There was an error trying to set prices: ${error}`);
+    };
+  };
 
   function setGenres() {
     games.forEach((game) => {
@@ -403,7 +416,7 @@ async function fetchGamesRequest(isDashboard) {
         };
       }
     });
-  }
+  };
 
   async function fetchData() {
     try {
@@ -415,7 +428,7 @@ async function fetchGamesRequest(isDashboard) {
 
       if (games.length > 0) {
         try {
-          if (isDashboard) {
+          if (window.location.pathname.includes("/dashboard")) {
             loadDashboard();
           } else {
             removePrivateGames();
@@ -424,28 +437,27 @@ async function fetchGamesRequest(isDashboard) {
             loadGames();
           }
         } catch (error) {
-          console.error("Error trying to load games:", error);
-        }
-      } else {
-        console.warn("There are no games currently available for show.");
-      }
+          console.error(`Error trying to load games: ${error}`);
+        };
+      };
     } catch (error) {
-      console.error("There was an error trying to get games: ", error);
-    }
-  }
+      console.error(`Error trying to fetch games: ${error}`);
+    };
+  };
 
   await setPrices();
   await fetchData();
 
   setGenres();
   if (genres.length > 0 && document.getElementById("genres-list") != null) {
+    removeIrrelevantGenres();
     loadGenres();
   }
 }
 
-async function fetchGames(isDashboard) {
+async function fetchGames() {
   prices = [];
-  fetchGamesRequest(isDashboard);
+  fetchGamesRequest();
 }
 
 function setSearch() {
@@ -471,6 +483,6 @@ function setCategory() {
   }
 }
 
+fetchGames();
 setSearch();
 setCategory();
-fetchGames(window.location.pathname.includes("/dashboard"));
