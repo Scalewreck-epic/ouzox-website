@@ -182,12 +182,12 @@ uploadGame.addEventListener("submit", async function (event) {
             oculus: game_platforms[7].Enabled ? "true" : "false",
           },
           features: {
-            Singleplayer: game_features[1].Enabled ? "true" : "false",
-            Multiplayer: game_features[2].Enabled ? "true" : "false",
-            Coop: game_features[3].Enabled ? "true" : "false",
-            Achievements: game_features[4].Enabled ? "true" : "false",
-            ControllerSupport: game_features[5].Enabled ? "true" : "false",
-            Saves: game_features[6].Enabled ? "true" : "false",
+            Singleplayer: game_features[0].Enabled ? "true" : "false",
+            Multiplayer: game_features[1].Enabled ? "true" : "false",
+            Coop: game_features[2].Enabled ? "true" : "false",
+            Achievements: game_features[3].Enabled ? "true" : "false",
+            ControllerSupport: game_features[4].Enabled ? "true" : "false",
+            Saves: game_features[5].Enabled ? "true" : "false",
           },
           colors: {
             bgColor: "",
