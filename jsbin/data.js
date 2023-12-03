@@ -396,26 +396,20 @@ async function fetchGamesRequest() {
   };
 
   function setGenres() {
-    games.forEach((game) => {
+    for (const game of games) {
       let found = false;
-
-      for (let i = 1; i < genres.length; i++) {
-        const genre = genres[i];
-
-        if (genre.name == game.genre) {
+      for (const genre of genres) {
+        if (genre.name === game.genre) {
           genre.count++;
           found = true;
           break;
         }
       }
-
+  
       if (!found) {
-        genres[genres.length++] = {
-          name: game.genre,
-          count: 1,
-        };
+        genres.push({ name: game.genre, count: 1 });
       }
-    });
+    }
   };
 
   async function fetchData() {
