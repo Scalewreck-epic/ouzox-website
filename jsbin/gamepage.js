@@ -395,8 +395,17 @@ const gameHandler = async (gameId) => {
     const oculus = document.getElementById("oculus");
 
     const game_genre_input = document.getElementById("genre-input");
+    const game_currency_input = document.getElementById("currency-sort");
     const game_age_input = document.getElementById("age-sort");
-    const game_icon_input = document.getElementById("thumbnail");
+
+    game_genre_input.textContent = gameData.genre;
+    game_age_input.selectedIndex = game_age_input.options[game_age_input.selectedIndex].value;
+    game_currency_input.selectedIndex = game_currency_input.options[game_currency_input.selectedIndex].value;
+
+    game_genre_input.addEventListener("input", function() {
+      const genreSelect = document.getElementById("genre-input");
+      genreSelect.value = genreSelect.value.toUpperCase();
+    });
 
     let ispublic = {
       "Enabled": gameData.active ? "true" : "false",
