@@ -146,7 +146,7 @@ uploadGame.addEventListener("submit", async function (event) {
 
         return result_parse;
       } catch (error) {
-        error("Cannot upload product to stripe: " + error);
+        console.error(`Error uploading product to stripe ${error}`);
       }
     }
 
@@ -264,7 +264,7 @@ uploadGame.addEventListener("submit", async function (event) {
 
         return result_parse;
       } catch (error) {
-        error("Cannot set price: " + error);
+        console.error(`Error setting price ${error}`)
       }
     }
 
@@ -277,8 +277,8 @@ uploadGame.addEventListener("submit", async function (event) {
         if (product_result && product_result.id) {
           error_label.innerHTML = "Setting price...";
           const game = await uploadGame(product_result.id, false);
-
           const price = await setProductPrice(product_result.id);
+
           if (price && price.active && game.game) {
             console.log("Game and product uploaded successfully!");
             error_label.innerHTML = "Successfully published game!";
@@ -325,7 +325,7 @@ function checkFileSize() {
   const warn = document.getElementById("game-file-warn");
 
   const file = input.files[0];
-  const maxFileSize = 5368709120;
+  const maxFileSize = 5000000000;
 
   if (file.size > maxFileSize) {
     warn.innerHTML = "File size too large, select a file under 5GB";
@@ -370,32 +370,44 @@ function checkPrice() {
 
 function checkGenre() {
   const genreSelect = document.getElementById("genre-input");
-  genreSelect.value = encodeURIComponent(genreSelect.value.toUpperCase());
+  genreSelect.value = genreSelect.value.toUpperCase();
+}
+
+function checkArt() {
+  const game_art = document.getElementById("art-style-input");
+  game_art.value = game_art.value.toUpperCase();
+
 }
 
 const game_thumbnail = document.getElementById("thumbnail");
 const game_price = document.getElementById("price");
 const genre_input = document.getElementById("genre-input");
 const game_isfree = document.getElementById("isfree");
-const game_title = document.getElementById("title");
-const game_summary = document.getElementById("summary");
+const game_art = document.getElementById("art-style-input");
+const download_file = document.getElementById("download-file");
 
 checkIsFree();
 
-game_thumbnail.onchange = checkThumbnail();
-game_isfree.onchange = checkIsFree();
+download_file.addEventListener("change", function() {
+  checkFileSize();
+})
+
+game_thumbnail.addEventListener("change", function() {
+  checkThumbnail();
+})
+
+game_isfree.addEventListener("change", function() {
+  checkIsFree();
+})
 
 game_price.addEventListener("input", function() {
   checkPrice();
 });
+
 genre_input.addEventListener("input", function() {
   checkGenre();
 });
 
-game_title.addEventListener("input", function () {
-  this.style.width = (this.value.length + 1) * 10 + "px";
-});
-
-game_summary.addEventListener("input", function () {
-  this.style.width = (this.value.length + 1) * 10 + "px";
+game_art.addEventListener("input", function() {
+  checkArt();
 });
