@@ -1328,6 +1328,21 @@ p {
   overflow-y: hidden;
   gap: 1.25rem 1.25rem;
   padding: 1rem;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.market::-webkit-scrollbar {
+  width: 1rem;
+}
+
+.market::-webkit-scrollbar-thumb {
+  background: #3f3f3f;
+  border-radius: 1rem;
+}
+
+.market::-webkit-scrollbar-thumb:hover {
+  outline: 0.125rem solid #4D0101;
 }
 
 .login-form {
