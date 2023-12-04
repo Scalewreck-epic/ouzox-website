@@ -276,16 +276,23 @@ uploadGame.addEventListener("submit", async function (event) {
 
         if (product_result && product_result.id) {
           error_label.innerHTML = "Setting price...";
-          await uploadGame(product_result.id, false);
+          const game = await uploadGame(product_result.id, false);
 
           const price = await setProductPrice(product_result.id);
-          if (price && price.active) {
-            console.log("Product uploaded successfully!");
+          if (price && price.active && game.game) {
+            console.log("Game and product uploaded successfully!");
             error_label.innerHTML = "Successfully published game!";
           }
         }
       } else {
-        await uploadGame("none", true);
+        const game = await uploadGame("none", true);
+
+        if (game.game) {
+          console.log("Game uploaded successfully!");
+          error_label.innerHTML = "Successfully published game!";
+        } else {
+          error_label.innerHTML = game.message;
+        }
       }
     } catch (error) {
       console.error(`Error trying to publish game: ${error}`);
@@ -363,7 +370,7 @@ function checkPrice() {
 
 function checkGenre() {
   const genreSelect = document.getElementById("genre-input");
-  genreSelect.value = encodeURIComponent(genreSelect.value);
+  genreSelect.value = encodeURIComponent(genreSelect.value.toUpperCase());
 }
 
 const game_thumbnail = document.getElementById("thumbnail");
@@ -378,8 +385,12 @@ checkIsFree();
 game_thumbnail.onchange = checkThumbnail();
 game_isfree.onchange = checkIsFree();
 
-game_price.addEventListener("input", checkPrice);
-genre_input.addEventListener("input", checkGenre);
+game_price.addEventListener("input", function() {
+  checkPrice();
+});
+genre_input.addEventListener("input", function() {
+  checkGenre();
+});
 
 game_title.addEventListener("input", function () {
   this.style.width = (this.value.length + 1) * 10 + "px";
