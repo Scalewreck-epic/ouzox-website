@@ -902,8 +902,7 @@ p {
   font-family: 'Lato';
   width: auto;
   margin: 0 auto;
-  background-color: #0a0a0a;
-  box-shadow: 0 1rem 1rem black;
+  background-color: rgba(10,10,10, 1);
 }
 
 .game-download {
@@ -1114,6 +1113,41 @@ p {
 
 .game-stat-feature {
   display: flex;
+}
+
+input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  margin: 0;
+  background-color: transparent;
+  height: 1rem;
+}
+
+input[type="range"]::-webkit-slider-runnable-track {
+  background-color: #292929;
+  border-radius: 1rem;
+  outline: solid 3px black;
+  height: 1rem;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 1.25rem;
+  height: 1.25rem;
+  outline: solid 2px black;
+  background-color: #4D0101;
+  border-radius: 50%;
+  transform: translateY(-10%);
+  cursor: pointer;
+}
+
+input[type="color"] {
+  width: 100px;
+  padding: 0.3rem;
+  outline: solid 2px black;
+  border-radius: 0.5rem;
 }
 
 .web-icon:hover {
