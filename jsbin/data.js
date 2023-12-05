@@ -290,7 +290,9 @@ function sortGames(listId, gamesList, sortingFunction) {
 const loadMoreGames = () => {
   const slicedGames = games.slice(offset, offset + 100);
   sortGames("relevant-games-list", slicedGames, (a, b) => {
-    b.relevance - a.relevance;
+    const scoreA = a.relevance * 0.7 + a.downloads * 0.3;
+    const scoreB = b.relevance * 0.7 + b.downloads * 0.3;
+    scoreA - scoreB;
   });
 }
 
