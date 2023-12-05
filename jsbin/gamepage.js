@@ -1,5 +1,4 @@
-const update_game_url =
-  "https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv/games/"; // + game id
+const update_game_url = "https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv/games/"; // + game id
 const get_game_url = "https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv/games/"; // + game id
 const get_price_url = "https://x8ki-letl-twmt.n7.xano.io/api:tFdG2Vz-/prices/"; // + price id
 
@@ -157,7 +156,7 @@ async function changeProduct(data, gameId, commitChangesButton) {
 
 const sanitizeText = (string) => {
   return string.replace(/<|>/g, "");
-}
+};
 
 const gameHandler = async (gameId) => {
   const user = await getUser();
@@ -184,15 +183,9 @@ const gameHandler = async (gameId) => {
   const game_features = document.getElementById("features");
   const game_platforms = document.getElementById("platforms");
 
-  const changeBGcolor = document.getElementById("bg-color");
-  const changeBG2color = document.getElementById("bg2-color");
-  const changeTitleColor = document.getElementById("title-color");
-  const changeDescColor = document.getElementById("description-color");
-  const changeDescBGColor = document.getElementById("description-bg-color");
-  const changeStatsColor = document.getElementById("game-details-color");
-  const changeStatsBGColor = document.getElementById("game-details-bg-color");
-  const changeButtonColor = document.getElementById("button-bg-color");
-  const changeButtonText = document.getElementById("button-text-color");
+  const game_column = document.getElementById("game-column");
+  const game_title_column = document.getElementById("game-title-column");
+  const game_stats = document.getElementById("game-stats");
 
   game_title.textContent = gameData.name;
   game_desc.innerHTML = gameData.description;
@@ -322,27 +315,27 @@ const gameHandler = async (gameId) => {
       ["Name"]: "Oculus",
       ["Enabled"]: gameData.platforms.oculus,
     },
-  ]
+  ];
 
-  features.forEach(function(feature) {
+  features.forEach(function (feature) {
     if (feature.Enabled) {
       const feature_element = document.createElement("div");
       feature_element.setAttribute("class", "game-feature");
       feature_element.innerHTML = feature.Name;
-  
+
       game_features.appendChild(feature_element);
-    };
+    }
   });
 
-  platforms.forEach(function(platform) {
+  platforms.forEach(function (platform) {
     if (platform.Enabled) {
       const platform_element = document.createElement("div");
       platform_element.setAttribute("class", "game-feature");
       platform_element.innerHTML = platform.Name;
 
       game_platforms.appendChild(platform_element);
-    };
-  })
+    }
+  });
 
   if (!gameData.useDefaultColors) {
     const elements = document.getElementsByClassName("game-stat");
@@ -352,22 +345,15 @@ const gameHandler = async (gameId) => {
     }
 
     document.body.style.backgroundColor = gameData.colors.bgColor;
-    document.getElementById("game-column").style.backgroundColor =
-      gameData.colors.bg2Color;
-    document.getElementById("game-title-column").style.color =
-      gameData.colors.titleColor;
-    document.getElementById("description").style.color =
-      gameData.colors.descColor;
-    document.getElementById("download-button").style.backgroundColor =
-      gameData.colors.buttonColor;
-    document.getElementById("download-button").style.color =
-      gameData.colors.buttonTextColor;
-    document.getElementById("game-stats").style.color =
-      gameData.colors.statsBGColor;
+    game_column.style.backgroundColor = gameData.colors.bg2Color;
+    game_title_column.style.color = gameData.colors.titleColor;
+    game_desc.style.color = gameData.colors.descColor;
+    download_button.style.backgroundColor = gameData.colors.buttonColor;
+    download_button.style.color = gameData.colors.buttonTextColor;
+    game_stats.style.color = gameData.colors.statsBGColor;
 
     if (gameData.fontFamily != undefined) {
-      document.getElementById("game-column").style.fontFamily =
-        gameData.fontFamily;
+      game_column.style.fontFamily = gameData.fontFamily;
     }
   }
 
@@ -398,98 +384,120 @@ const gameHandler = async (gameId) => {
     const game_currency_input = document.getElementById("currency-sort");
     const game_age_input = document.getElementById("age-sort");
 
-    game_genre_input.textContent = gameData.genre;
-    game_age_input.selectedIndex = game_age_input.options[game_age_input.selectedIndex].value;
-    game_currency_input.selectedIndex = game_currency_input.options[game_currency_input.selectedIndex].value;
+    const bg_color_input = document.getElementById("bg-color");
+    const bg2_color_input = document.getElementById("bg2-color");
+    const title_color_input = document.getElementById("title-color");
+    const desc_color_input = document.getElementById("description-color");
+    const desc_bg_color_input = document.getElementById("description-bg-color");
+    const details_color_input = document.getElementById("game-details-color");
+    const details_bg_color_input = document.getElementById(
+      "game-details-bg-color"
+    );
+    const button_bg_color_input = document.getElementById("button-bg-color");
+    const button_text_color_input =
+      document.getElementById("button-text-color");
+    const bg2_alpha_input = document.getElementById("bg2-alpha");
+    const description_bg_alpha_input = document.getElementById(
+      "description-bg-alpha"
+    );
+    const details_bg_alpha_input = document.getElementById(
+      "game-details-bg-alpha"
+    );
 
-    game_genre_input.addEventListener("input", function() {
+    game_genre_input.textContent = gameData.genre;
+    game_age_input.selectedIndex =
+      game_age_input.options[game_age_input.selectedIndex].value;
+    game_currency_input.selectedIndex =
+      game_currency_input.options[game_currency_input.selectedIndex].value;
+
+    game_genre_input.addEventListener("input", function () {
       const genreSelect = document.getElementById("genre-input");
       genreSelect.value = genreSelect.value.toUpperCase();
     });
 
     let ispublic = {
-      "Enabled": gameData.active ? "true" : "false",
-      "Element": game_public,
-    }
+      Enabled: gameData.active ? "true" : "false",
+      Element: game_public,
+    };
 
     let game_features = [
       {
-        "Name": "Singleplayer",
-        "Enabled": gameData.features.Singleplayer,
-        "Element": single_player,
+        Name: "Singleplayer",
+        Enabled: gameData.features.Singleplayer,
+        Element: single_player,
       },
       {
-        "Name": "Multiplayer",
-        "Enabled": gameData.features.Multiplayer,
-        "Element": multi_player,
+        Name: "Multiplayer",
+        Enabled: gameData.features.Multiplayer,
+        Element: multi_player,
       },
       {
-        "Name": "Co-op",
-        "Enabled": gameData.features.Coop,
-        "Element": co_op,
+        Name: "Co-op",
+        Enabled: gameData.features.Coop,
+        Element: co_op,
       },
       {
-        "Name": "Achievements",
-        "Enabled": gameData.features.Achievements,
-        "Element": achievements,
+        Name: "Achievements",
+        Enabled: gameData.features.Achievements,
+        Element: achievements,
       },
       {
-        "Name": "Controller Support",
-        "Enabled": gameData.features.ControllerSupport,
-        "Element": controller_support,
+        Name: "Controller Support",
+        Enabled: gameData.features.ControllerSupport,
+        Element: controller_support,
       },
       {
-        "Name": "Saves",
-        "Enabled": gameData.features.Saves,
-        "Element": saves,
+        Name: "Saves",
+        Enabled: gameData.features.Saves,
+        Element: saves,
       },
       {
-        "Name": "VR Support",
-        "Enabled": gameData.features.VRSupport,
-        "Element": vr_support,
+        Name: "VR Support",
+        Enabled: gameData.features.VRSupport,
+        Element: vr_support,
       },
     ];
 
     let game_platforms = [
       {
-        "Name": "Windows",
-        "Enabled": gameData.platforms.windows,
-        "Element": windows,
+        Name: "Windows",
+        Enabled: gameData.platforms.windows,
+        Element: windows,
       },
       {
-        "Name": "Mac",
-        "Enabled": gameData.platforms.mac,
-        "Element": mac,
+        Name: "Mac",
+        Enabled: gameData.platforms.mac,
+        Element: mac,
       },
       {
-        "Name": "Linux",
-        "Enabled": gameData.platforms.linux,
-        "Element": linux,
+        Name: "Linux",
+        Enabled: gameData.platforms.linux,
+        Element: linux,
       },
       {
-        "Name": "Android",
-        "Enabled": gameData.platforms.android,
-        "Element": android,
+        Name: "Android",
+        Enabled: gameData.platforms.android,
+        Element: android,
       },
       {
-        "Name": "IOS",
-        "Enabled": gameData.platforms.ios,
-        "Element": ios,
+        Name: "IOS",
+        Enabled: gameData.platforms.ios,
+        Element: ios,
       },
       {
-        "Name": "XBOX",
-        "Enabled": gameData.platforms.xbox,
-        "Element": xbox,
+        Name: "XBOX",
+        Enabled: gameData.platforms.xbox,
+        Element: xbox,
       },
       {
-        "Name": "PlayStation",
-        "Enabled": gameData.platforms.playstation,
-        "Element": playstation,
+        Name: "PlayStation",
+        Enabled: gameData.platforms.playstation,
+        Element: playstation,
       },
       {
-        "Name": "Oculus",
-        "Enabled": gameData.platforms.oculus,
-        "Element": oculus,
+        Name: "Oculus",
+        Enabled: gameData.platforms.oculus,
+        Element: oculus,
       },
     ];
 
@@ -498,23 +506,23 @@ const gameHandler = async (gameId) => {
     game_summary.contentEditable = true;
 
     ispublic.Element.checked = ispublic.Enabled;
-    ispublic.Element.addEventListener("change", function() {
+    ispublic.Element.addEventListener("change", function () {
       ispublic.Enabled = ispublic.Element.checked;
     });
 
-    game_features.forEach(function(feature) {
+    game_features.forEach(function (feature) {
       feature.Element.checked = feature.Enabled;
-      feature.Element.addEventListener("change", function() {
+      feature.Element.addEventListener("change", function () {
         feature.Enabled = feature.Element.checked;
       });
     });
 
-    game_platforms.forEach(function(platform) {
+    game_platforms.forEach(function (platform) {
       platform.Element.checked = platform.Enabled;
-      platform.Element.addEventListener("change", function() {
+      platform.Element.addEventListener("change", function () {
         platform.Enabled = platform.Element.checked;
       });
-    })
+    });
 
     const commitChangesButton = document.createElement("button");
     commitChangesButton.className = "game-download-button";
@@ -544,49 +552,83 @@ const gameHandler = async (gameId) => {
       }
     });
 
-    changeBGcolor.onchange = function () {
-      document.body.style.backgroundColor = changeBGcolor.value;
-    };
+    bg2_alpha_input.addEventListener("input", function () {
+      const alphaValue = bg2_alpha_input.value / 100;
+      const rgbValues = bg2_color_input.value.match(
+        /rgb\((\d+), (\d+), (\d+)\)/
+      );
+      if (rgbValues) {
+        const redValue = parseInt(rgbValues[1], 10);
+        const greenValue = parseInt(rgbValues[2], 10);
+        const blueValue = parseInt(rgbValues[3], 10);
+        const newBackgroundColor = `rgba(${redValue}, ${greenValue}, ${blueValue}, ${alphaValue})`;
+        game_column.style.backgroundColor = newBackgroundColor;
+      }
+    });
 
-    changeBG2color.onchange = function () {
-      document.getElementById("game-column").style.backgroundColor =
-        changeBG2color.value;
-    };
+    description_bg_alpha_input.addEventListener("input", function () {
+      const alphaValue = description_bg_alpha_input.value / 100;
+      const rgbValues = bg_color_input.value.match(
+        /rgb\((\d+), (\d+), (\d+)\)/
+      );
+      if (rgbValues) {
+        const redValue = parseInt(rgbValues[1], 10);
+        const greenValue = parseInt(rgbValues[2], 10);
+        const blueValue = parseInt(rgbValues[3], 10);
+        const newBackgroundColor = `rgba(${redValue}, ${greenValue}, ${blueValue}, ${alphaValue})`;
+        game_desc.style.backgroundColor = newBackgroundColor;
+      }
+    });
 
-    changeTitleColor.onchange = function () {
-      document.getElementById("game-title-column").style.color =
-        changeTitleColor.value;
-    };
+    details_bg_alpha_input.addEventListener("input", function () {
+      const alphaValue = details_bg_alpha_input.value / 100;
+      const rgbValues = details_bg_color_input.value.match(
+        /rgb\((\d+), (\d+), (\d+)\)/
+      );
+      if (rgbValues) {
+        const redValue = parseInt(rgbValues[1], 10);
+        const greenValue = parseInt(rgbValues[2], 10);
+        const blueValue = parseInt(rgbValues[3], 10);
+        const newBackgroundColor = `rgba(${redValue}, ${greenValue}, ${blueValue}, ${alphaValue})`;
+        game_desc.style.backgroundColor = newBackgroundColor;
+      }
+    });
 
-    changeDescColor.onchange = function () {
-      document.getElementById("description").style.color =
-        changeDescColor.value;
-    };
+    bg_color_input.addEventListener("input", function () {
+      document.body.style.backgroundColor = this.value;
+    });
 
-    changeDescBGColor.onchange = function () {
-      document.getElementById("description").style.backgroundColor =
-        changeDescBGColor.value;
-    };
+    bg2_color_input.addEventListener("input", function () {
+      game_column.style.backgroundColor = this.value;
+    });
 
-    changeButtonColor.onchange = function () {
-      document.getElementById("download-button").style.backgroundColor =
-        changeButtonColor.value;
-    };
+    title_color_input.addEventListener("input", function () {
+      game_title_column.style.color = this.value;
+    });
 
-    changeButtonText.onchange = function () {
-      document.getElementById("download-button").style.color =
-        changeButtonText.value;
-    };
+    desc_color_input.addEventListener("input", function () {
+      game_desc.style.color = this.value;
+    });
 
-    changeStatsColor.onchange = function () {
-      const game_stats = document.getElementById("game-stats");
-      game_stats.style.color = changeStatsColor.value;
-    };
+    desc_bg_color_input.addEventListener("input", function () {
+      game_desc.style.backgroundColor = this.value;
+    });
 
-    changeStatsBGColor.onchange = function () {
-      const game_stats = document.getElementById("game-stats");
-      game_stats.style.backgroundColor = changeStatsBGColor.value;
-    };
+    button_bg_color_input.addEventListener("input", function () {
+      download_button.style.backgroundColor = this.value;
+    });
+
+    button_text_color_input.addEventListener("input", function () {
+      download_button.style.color = this.value;
+    });
+
+    details_color_input.addEventListener("input", function () {
+      game_stats.style.color = this.value;
+    });
+
+    details_bg_color_input.addEventListener("input", function () {
+      game_stats.style.backgroundColor = this.value;
+    });
 
     let isLoading = false;
     commitChangesButton.addEventListener("click", async function () {
@@ -603,7 +645,7 @@ const gameHandler = async (gameId) => {
             name: game_title.textContent,
             description: game_desc.innerHTML,
             summary: game_summary.textContent,
-            font: document.getElementById("game-column").style.fontFamily,
+            font: game_column.style.fontFamily,
             active: ispublic.Enabled ? "true" : "false",
             defaultColors: false,
             platforms: {
@@ -627,22 +669,14 @@ const gameHandler = async (gameId) => {
             },
             colors: {
               bgColor: document.body.style.backgroundColor,
-              bg2Color:
-                document.getElementById("game-column").style.backgroundColor,
-              titleColor:
-                document.getElementById("game-title-column").style.color,
-              descColor: document.getElementById("description").style.color,
-              descBGColor:
-                document.getElementById("description").style.backgroundColor,
-              buttonColor:
-                document.getElementById("download-button").style
-                  .backgroundColor,
-              buttonTextColor:
-                document.getElementById("download-button").style.color,
-              statsColor:
-                document.getElementsByClassName("game-stat")[0].style.color,
-              statsBGColor:
-                document.getElementById("game-stats").style.backgroundColor,
+              bg2Color: game_column.style.backgroundColor,
+              titleColor: game_title_column.style.color,
+              descColor: game_desc.style.color,
+              descBGColor: game_desc.style.backgroundColor,
+              buttonColor: download_button.style.backgroundColor,
+              buttonTextColor: download_button.style.color,
+              statsColor: game_stats[0].style.color,
+              statsBGColor: game_stats.style.backgroundColor,
             },
           }),
         };
