@@ -401,7 +401,7 @@ async function fetchGamesRequest() {
         prices.sort((a, b) => b.unit_amount - a.unit_amount);
       }
     } catch (error) {
-      console.error(`There was an error trying to set prices: ${error}`);
+      throw new Error(`There was an error trying to set prices: ${error}`);
     };
   };
 
@@ -441,11 +441,11 @@ async function fetchGamesRequest() {
             loadGames();
           }
         } catch (error) {
-          console.error(`Error trying to load games: ${error}`);
+          throw new Error(`Error trying to load games: ${error}`);
         };
       };
     } catch (error) {
-      console.error(`Error trying to fetch games: ${error}`);
+      throw new Error(`Error trying to fetch games: ${error}`);
     };
   };
 
