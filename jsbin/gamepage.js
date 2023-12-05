@@ -7,6 +7,20 @@ import { getUser } from "./exportuser.js";
 const urlParams = new URLSearchParams(window.location.search);
 const gameIdParam = urlParams.get("g");
 
+function hexToRGB(hexCode) {
+  if (hexCode.startsWith('#')) {
+    hexCode = hexCode.substring(1);
+  }
+
+  if (hexCode.length !== 6) {
+    throw new Error('Invalid hex code');
+  }
+
+  const hexPairs = hexCode.match(/([A-Fa-f0-9]{2})/g);
+  const rgbComponents = hexPairs.map(hexPair => parseInt(hexPair, 16));
+  return rgbComponents;
+};
+
 async function retrieveGameData(gameId) {
   const myHeaders = new Headers();
   myHeaders.append("Content-Type", "application/json");
@@ -25,7 +39,6 @@ async function retrieveGameData(gameId) {
 
       return result_parse;
     } catch (error) {
-      console.error(`Error trying to get game data: ${error}`);
       window.location.assign("404");
     }
   }
@@ -95,7 +108,6 @@ async function retrieveGameData(gameId) {
 
         return result_parse;
       } catch (error) {
-        console.error(`Error trying to get price data: ${error}`);
         window.location.assign("404");
       }
     }
@@ -398,10 +410,10 @@ const gameHandler = async (gameId) => {
       document.getElementById("button-text-color");
     const bg2_alpha_input = document.getElementById("bg2-alpha");
     const description_bg_alpha_input = document.getElementById(
-      "description-bg-alpha"
+        "description-bg-alpha"
     );
     const details_bg_alpha_input = document.getElementById(
-      "game-details-bg-alpha"
+        "game-details-bg-alpha"
     );
 
     game_genre_input.textContent = gameData.genre;
@@ -552,46 +564,25 @@ const gameHandler = async (gameId) => {
       }
     });
 
-    bg2_alpha_input.addEventListener("input", function () {
-      const alphaValue = bg2_alpha_input.value / 100;
-      const rgbValues = bg2_color_input.value.match(
-        /rgb\((\d+), (\d+), (\d+)\)/
-      );
-      if (rgbValues) {
-        const redValue = parseInt(rgbValues[1], 10);
-        const greenValue = parseInt(rgbValues[2], 10);
-        const blueValue = parseInt(rgbValues[3], 10);
-        const newBackgroundColor = `rgba(${redValue}, ${greenValue}, ${blueValue}, ${alphaValue})`;
-        game_column.style.backgroundColor = newBackgroundColor;
-      }
+    bg2_alpha_input.addEventListener("input", (event) => {
+      const alphaValue = event.target.value / 100;
+      const rgbValues = hexToRGB(this.value);
+      const newBackgroundColor = `rgba(${rgbValues}, ${alphaValue})`;
+      game_column.style.backgroundColor = newBackgroundColor;
     });
 
-    description_bg_alpha_input.addEventListener("input", function () {
-      const alphaValue = description_bg_alpha_input.value / 100;
-      const rgbValues = bg_color_input.value.match(
-        /rgb\((\d+), (\d+), (\d+)\)/
-      );
-      if (rgbValues) {
-        const redValue = parseInt(rgbValues[1], 10);
-        const greenValue = parseInt(rgbValues[2], 10);
-        const blueValue = parseInt(rgbValues[3], 10);
-        const newBackgroundColor = `rgba(${redValue}, ${greenValue}, ${blueValue}, ${alphaValue})`;
-        game_desc.style.backgroundColor = newBackgroundColor;
-      }
+    details_bg_alpha_input.addEventListener("input", (event) => {
+      const alphaValue = event.target.value / 100;
+      const rgbValues = hexToRGB(this.value);
+      const newBackgroundColor = `rgba(${rgbValues}, ${alphaValue})`;
+      game_stats.style.backgroundColor = newBackgroundColor;
     });
 
-    details_bg_alpha_input.addEventListener("input", function () {
-      const alphaValue = details_bg_alpha_input.value / 100;
-      const rgbValues = details_bg_color_input.value.match(
-        /rgb\((\d+), (\d+), (\d+)\)/
-      );
-      if (rgbValues) {
-        const redValue = parseInt(rgbValues[1], 10);
-        const greenValue = parseInt(rgbValues[2], 10);
-        const blueValue = parseInt(rgbValues[3], 10);
-        const newBackgroundColor = `rgba(${redValue}, ${greenValue}, ${blueValue}, ${alphaValue})`;
-        game_desc.style.backgroundColor = newBackgroundColor;
-      }
+    description_bg_alpha_input.addEventListener("input", (event) => {
+      const alphaValue = event.target.value / 100;
+      const rgbValues = hexToRGB(this.value);
+      const newBackgroundColor = `rgba(${rgbValues}, ${alphaValue})`;
+      game_desc.style.backgroundColor = newBackgroundColor;
     });
 
     bg_color_input.addEventListener("input", function () {
@@ -701,5 +692,5 @@ if (gameIdParam != null) {
   gameHandler(gameIdParam);
 } else {
   console.warn("There is no game id.");
-  window.location.assign("404");
-}
+  //window.location.assign("404");
+};
