@@ -65,89 +65,90 @@ function createGamePage(game, game_price, market) {
   const price = game_price.price / 100;
   const currency = game_price.currency;
 
-  const gamesDiv = document.createElement("div");
-  gamesDiv.className = "game";
+  const game_div = document.createElement("div");
+  const game_image = document.createElement("img");
+  const game_image_container = document.createElement("a");
+  const game_title = document.createElement("a");
+  const game_summary = document.createElement("div");
+  const game_price = document.createElement("div");
+  const game_price_text = document.createElement("span");
 
-  const gameImage = document.createElement("img");
-  gameImage.className = "product-image";
-  gameImage.setAttribute("src", game.icon.url);
+  game_div.className = "game";
 
-  const gameImageContainer = document.createElement("a");
-  gameImageContainer.className = "product-image-container";
+  game_image.className = "product-image";
+  game_image.setAttribute("src", game.icon.url);
 
-  const gameTitle = document.createElement("a");
-  gameTitle.className = "product-title";
-  gameTitle.textContent = game.name;
+  game_image_container.className = "product-image-container";
 
-  gameImageContainer.setAttribute("href", `game?g=${game.id}`);
-  gameTitle.setAttribute("href", `game?g=${game.id}`);
+  game_title.className = "product-title";
+  game_title.textContent = game.name;
 
-  const gameSummary = document.createElement("div");
-  gameSummary.className = "product-summary";
-  gameSummary.textContent = game.summary;
+  game_image_container.setAttribute("href", `game?g=${game.id}`);
+  game_title.setAttribute("href", `game?g=${game.id}`);
 
-  const gamePrice = document.createElement("div");
-  gamePrice.className = "product-price";
+  game_summary.className = "product-summary";
+  game_summary.textContent = game.summary;
 
-  const gamePriceText = document.createElement("span");
-  gamePriceText.innerHTML = `${price} ${currency.toUpperCase()}`;
+  game_price.className = "product-price";
 
-  const diffDaysCreated = calculateDiffDays(game.created_at);
-  const diffDaysUpdated = calculateDiffDays(game.updated_at);
+  game_price_text.innerHTML = `${price} ${currency.toUpperCase()}`;
 
-  gamePrice.appendChild(gamePriceText);
+  const diff_days_created = calculateDiffDays(game.created_at);
+  const diff_days_updated = calculateDiffDays(game.updated_at);
 
-  gameImageContainer.appendChild(gameImage);
-  gameImageContainer.appendChild(gamePrice);
+  game_price.appendChild(game_price_text);
 
-  if (diffDaysCreated <= 7) {
-    const createdLabel = document.createElement("div");
-    createdLabel.className = "new-label";
+  game_image_container.appendChild(game_image);
+  game_image_container.appendChild(game_price);
 
-    const createdText = document.createElement("span");
-    createdText.innerHTML = "NEW";
+  if (diff_days_created <= 7) {
+    const game_created_label = document.createElement("div");
+    game_created_label.className = "new-label";
 
-    createdLabel.appendChild(createdText);
-    gameImageContainer.appendChild(createdLabel);
+    const game_created_text = document.createElement("span");
+    game_created_text.innerHTML = "NEW";
 
-    createdLabel.addEventListener("mouseenter", function () {
-      if (diffDaysCreated != 1) {
-        createdText.innerHTML = `${diffDaysCreated} DAYS AGO`;
+    game_created_label.appendChild(game_created_text);
+    game_image_container.appendChild(game_created_label);
+
+    game_created_label.addEventListener("mouseenter", function () {
+      if (diff_days_created != 1) {
+        game_created_text.innerHTML = `${diff_days_created} DAYS AGO`;
       } else {
-        createdText.innerHTML = `TODAY`;
+        game_created_text.innerHTML = `TODAY`;
       }
     });
 
-    createdLabel.addEventListener("mouseleave", function () {
-      createdText.innerHTML = "NEW";
+    game_created_label.addEventListener("mouseleave", function () {
+      game_created_text.innerHTML = "NEW";
     });
-  } else if (diffDaysUpdated <= 7) {
-    const updatedLabel = document.createElement("div");
-    updatedLabel.className = "updated-label";
+  } else if (diff_days_updated <= 7) {
+    const game_updated_label = document.createElement("div");
+    game_updated_label.className = "updated-label";
 
-    const updatedText = document.createElement("span");
-    updatedText.innerHTML = "UPDATED";
+    const game_updated_text = document.createElement("span");
+    game_updated_text.innerHTML = "UPDATED";
 
-    updatedLabel.appendChild(updatedText);
-    gameImageContainer.appendChild(updatedLabel);
+    game_updated_label.appendChild(game_updated_text);
+    game_image_container.appendChild(game_updated_label);
 
-    updatedLabel.addEventListener("mouseenter", function () {
-      if (diffDaysCreated != 1) {
-        updatedText.innerHTML = `${diffDaysUpdated} DAYS AGO`;
+    game_updated_label.addEventListener("mouseenter", function () {
+      if (diff_days_updated != 1) {
+        game_updated_text.innerHTML = `${diff_days_updated} DAYS AGO`;
       } else {
-        updatedText.innerHTML = `TODAY`;
+        game_updated_text.innerHTML = `TODAY`;
       }
     });
 
-    updatedLabel.addEventListener("mouseleave", function () {
-      updatedText.innerHTML = "UPDATED";
+    game_updated_label.addEventListener("mouseleave", function () {
+      game_updated_text.innerHTML = "UPDATED";
     });
   }
-  gamesDiv.appendChild(gameImageContainer);
-  gamesDiv.appendChild(gameTitle);
-  gamesDiv.appendChild(gameSummary);
+  game_div.appendChild(game_image_container);
+  game_div.appendChild(game_title);
+  game_div.appendChild(game_summary);
 
-  market.appendChild(gamesDiv);
+  market.appendChild(game_div);
 }
 
 function levenshteinDistance(a, b) {
@@ -303,9 +304,11 @@ function loadGames() {
   ) {
     const results_label = document.getElementById("results-label");
     if (games.length == 1) {
-      results_label.textContent = "(" + games.length + " result)"
+      results_label.textContent = "(1 result)";
+    } else if (games.length == 0) {
+      results_label.textContent = "(no results)";
     } else {
-      results_label.textContent = "(" + games.length + " results)"
+      results_label.textContent = `(${games.length} results)`;
     }
 
     sortGames("relevant-games-list", games.slice(0, 100), (a, b) => {

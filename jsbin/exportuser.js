@@ -141,7 +141,7 @@ export async function getUser() {
 
         return result_parse;
       } catch (error) {
-        showError(error, false);
+        throw new Error(`Error getting user data: ${error}`);
       }
     }
 
