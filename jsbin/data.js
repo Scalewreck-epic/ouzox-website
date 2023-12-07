@@ -70,7 +70,7 @@ function createGamePage(game, game_price, market) {
   const game_image_container = document.createElement("a");
   const game_title = document.createElement("a");
   const game_summary = document.createElement("div");
-  const game_price = document.createElement("div");
+  const game_price_div = document.createElement("div");
   const game_price_text = document.createElement("span");
 
   game_div.className = "game";
@@ -89,17 +89,17 @@ function createGamePage(game, game_price, market) {
   game_summary.className = "product-summary";
   game_summary.textContent = game.summary;
 
-  game_price.className = "product-price";
+  game_price_div.className = "product-price";
 
   game_price_text.innerHTML = `${price} ${currency.toUpperCase()}`;
 
   const diff_days_created = calculateDiffDays(game.created_at);
   const diff_days_updated = calculateDiffDays(game.updated_at);
 
-  game_price.appendChild(game_price_text);
+  game_price_div.appendChild(game_price_text);
 
   game_image_container.appendChild(game_image);
-  game_image_container.appendChild(game_price);
+  game_image_container.appendChild(game_price_div);
 
   if (diff_days_created <= 7) {
     const game_created_label = document.createElement("div");
