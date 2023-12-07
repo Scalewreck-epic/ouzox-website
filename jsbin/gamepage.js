@@ -566,21 +566,21 @@ const gameHandler = async (gameId) => {
 
     bg2_alpha_input.addEventListener("input", (event) => {
       const alphaValue = event.target.value / 100;
-      const rgbValues = hexToRGB(this.value);
+      const rgbValues = hexToRGB(bg2_alpha_input.value);
       const newBackgroundColor = `rgba(${rgbValues}, ${alphaValue})`;
       game_column.style.backgroundColor = newBackgroundColor;
     });
 
     details_bg_alpha_input.addEventListener("input", (event) => {
       const alphaValue = event.target.value / 100;
-      const rgbValues = hexToRGB(this.value);
+      const rgbValues = hexToRGB(details_bg_alpha_input.value);
       const newBackgroundColor = `rgba(${rgbValues}, ${alphaValue})`;
       game_stats.style.backgroundColor = newBackgroundColor;
     });
 
     description_bg_alpha_input.addEventListener("input", (event) => {
       const alphaValue = event.target.value / 100;
-      const rgbValues = hexToRGB(this.value);
+      const rgbValues = hexToRGB(description_bg_alpha_input.value);
       const newBackgroundColor = `rgba(${rgbValues}, ${alphaValue})`;
       game_desc.style.backgroundColor = newBackgroundColor;
     });
