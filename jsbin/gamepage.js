@@ -556,7 +556,7 @@ const gameHandler = async (gameId) => {
       }
     });
 
-    game_desc.addEventListener("input", function () {
+    document.getElementById("game-description").addEventListener("input", function () {
       const text = sanitizeText(this.textContent);
 
       if (text.length > 4000) {
