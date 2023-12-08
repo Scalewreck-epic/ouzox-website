@@ -564,59 +564,69 @@ const gameHandler = async (gameId) => {
       }
     });
 
-    bg2_alpha_input.addEventListener("input", (event) => {
-      const alphaValue = event.target.value / 100;
-      const rgbValues = hexToRGB(bg2_alpha_input.value);
+    function updateBackgroundColor(alphaInput, colorInput, styleElement) {
+      const alphaValue = alphaInput.value / 100;
+      const rgbValues = hexToRGB(colorInput.value);
       const newBackgroundColor = `rgba(${rgbValues}, ${alphaValue})`;
-      game_column.style.backgroundColor = newBackgroundColor;
+      styleElement.style.backgroundColor = newBackgroundColor;
+    }
+    
+    updateBackgroundColor(bg2_alpha_input, bg_color_input, game_column);
+    bg2_alpha_input.addEventListener("input", () => {
+      updateBackgroundColor(bg2_alpha_input, bg_color_input, game_column);
+    });
+    
+    updateBackgroundColor(details_bg_alpha_input, details_color_input, game_stats);
+    details_bg_alpha_input.addEventListener("input", () => {
+      updateBackgroundColor(details_bg_alpha_input, details_color_input, game_stats);
+    });
+    
+    updateBackgroundColor(description_bg_alpha_input, desc_color_input, game_desc);
+    description_bg_alpha_input.addEventListener("input", () => {
+      updateBackgroundColor(description_bg_alpha_input, desc_color_input, game_desc);
     });
 
-    details_bg_alpha_input.addEventListener("input", (event) => {
-      const alphaValue = event.target.value / 100;
-      const rgbValues = hexToRGB(details_bg_alpha_input.value);
-      const newBackgroundColor = `rgba(${rgbValues}, ${alphaValue})`;
-      game_stats.style.backgroundColor = newBackgroundColor;
-    });
-
-    description_bg_alpha_input.addEventListener("input", (event) => {
-      const alphaValue = event.target.value / 100;
-      const rgbValues = hexToRGB(description_bg_alpha_input.value);
-      const newBackgroundColor = `rgba(${rgbValues}, ${alphaValue})`;
-      game_desc.style.backgroundColor = newBackgroundColor;
-    });
-
+    bg_color_input.value = hexToRGB(document.body.style.background);
     bg_color_input.addEventListener("input", function () {
       document.body.style.backgroundColor = this.value;
     });
 
+    bg2_color_input.value = hexToRGB(game_column.style.background);
     bg2_color_input.addEventListener("input", function () {
       game_column.style.backgroundColor = this.value;
     });
 
+    title_color_input.value = hexToRGB(game_title_column.style.color);
     title_color_input.addEventListener("input", function () {
       game_title_column.style.color = this.value;
     });
 
+    desc_color_input.value = hexToRGB(game_desc.style.color);
     desc_color_input.addEventListener("input", function () {
       game_desc.style.color = this.value;
     });
 
+    desc_bg_color_input.value = hexToRGB(game_desc.style.backgroundColor);
     desc_bg_color_input.addEventListener("input", function () {
       game_desc.style.backgroundColor = this.value;
     });
 
+    button_bg_color_input.value = hexToRGB(download_button.style.backgroundColor);
     button_bg_color_input.addEventListener("input", function () {
       download_button.style.backgroundColor = this.value;
     });
 
+    button_text_color_input.value = hexToRGB(download_button.style.color);
     button_text_color_input.addEventListener("input", function () {
       download_button.style.color = this.value;
     });
 
+    details_color_input.value = hexToRGB(game_stats.style.color);
     details_color_input.addEventListener("input", function () {
       game_stats.style.color = this.value;
     });
 
+    details_bg_color_input.value = hexToRGB(game_stats.style.backgroundColor);
     details_bg_color_input.addEventListener("input", function () {
       game_stats.style.backgroundColor = this.value;
     });
@@ -692,5 +702,5 @@ if (gameIdParam != null) {
   gameHandler(gameIdParam);
 } else {
   console.warn("There is no game id.");
-  //window.location.assign("404");
+  window.location.assign("404");
 };
