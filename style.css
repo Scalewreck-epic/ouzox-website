@@ -1012,18 +1012,24 @@ p {
   margin-top: 0;
 }
 
+.outline-input {
+  outline: 1px solid #3f3f3f;
+}
+
+.shadow-input {
+  box-shadow: 0 1rem 1rem black;
+}
+
 .game-stats {
   display: block;
   border-radius: 1rem;
   background-color: #222222;
-  box-shadow: 0 1rem 1rem black;
   padding: 1rem;
   width: auto;
   height: auto;
   margin: 1rem;
   margin-top: 0;
   color: white;
-  outline: 1px solid #3f3f3f;
   transition: transform 0.3s ease;
 }
 
@@ -1034,12 +1040,10 @@ p {
   border-radius: 1rem;
   min-height: 10rem;
   background-color: #222222;
-  box-shadow: 0 1rem 1rem black;
   width: auto;
   margin: 1rem;
   margin-top: 0;
   color: white;
-  outline: 1px solid #3f3f3f;
   transition: transform 0.3s ease;
 }
 

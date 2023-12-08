@@ -415,6 +415,10 @@ const gameHandler = async (gameId) => {
     const details_bg_alpha_input = document.getElementById(
         "game-details-bg-alpha"
     );
+    const details_outline_checkbox = document.getElementById("game-details-outline-checkbox");
+    const details_shadow_checkbox = document.getElementById("game-details-outline-checkbox");
+    const description_outline_checkbox = document.getElementById("game-details-outline-checkbox");
+    const description_shadow_checkbox = document.getElementById("game-details-outline-checkbox");
 
     game_genre_input.textContent = gameData.genre;
     game_age_input.selectedIndex =
@@ -556,7 +560,8 @@ const gameHandler = async (gameId) => {
       }
     });
 
-    document.getElementById("game-description").addEventListener("input", function () {
+    const game_desc_background = document.getElementById("game-description")
+    game_desc_background.addEventListener("input", function () {
       const text = sanitizeText(this.textContent);
 
       if (text.length > 4000) {
@@ -584,6 +589,38 @@ const gameHandler = async (gameId) => {
     updateBackgroundColor(description_bg_alpha_input, desc_color_input, game_desc);
     description_bg_alpha_input.addEventListener("input", () => {
       updateBackgroundColor(description_bg_alpha_input, desc_color_input, game_desc);
+    });
+
+    details_outline_checkbox.addEventListener("change", function() {
+      if (this.checked) {
+        game_stats.classList.add("outline-input");
+      } else {
+        game_stats.classList.remove("outline-input");
+      }
+    });
+
+    description_outline_checkbox.addEventListener("change", function() {
+      if (this.checked) {
+        game_desc_background.classList.add("outline-input");
+      } else {
+        game_desc_background.classList.remove("outline-input");
+      }
+    });
+
+    details_shadow_checkbox.addEventListener("change", function() {
+      if (this.checked) {
+        game_stats.classList.add("shadow-input");
+      } else {
+        game_stats.classList.remove("shadow-input");
+      }
+    });
+
+    description_outline_checkbox.addEventListener("change", function() {
+      if (this.checked) {
+        game_stats.classList.add("outline-input");
+      } else {
+        game_stats.classList.remove("outline-input");
+      }
     });
 
     bg_color_input.value = hexToRGB(document.body.style.background);
@@ -702,5 +739,5 @@ if (gameIdParam != null) {
   gameHandler(gameIdParam);
 } else {
   console.warn("There is no game id.");
-  window.location.assign("404");
+  //window.location.assign("404");
 };
