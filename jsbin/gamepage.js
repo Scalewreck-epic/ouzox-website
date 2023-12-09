@@ -417,6 +417,8 @@ const gameHandler = async (gameId) => {
     const details_shadow_checkbox = document.getElementById("game-details-outline-checkbox");
     const description_outline_checkbox = document.getElementById("game-details-outline-checkbox");
     const description_shadow_checkbox = document.getElementById("game-details-outline-checkbox");
+    
+    const game_desc_background = document.getElementById("game-description");
 
     game_genre_input.textContent = gameData.genre;
     game_age_input.selectedIndex =
@@ -621,7 +623,6 @@ const gameHandler = async (gameId) => {
       }
     });
 
-    const game_desc_background = document.getElementById("game-description");
     function updateBackgroundColor(alphaInput, colorInput, styleElement) {
       const alphaValue = alphaInput.value / 100;
       const rgbValues = hexToRGB(colorInput.value);
