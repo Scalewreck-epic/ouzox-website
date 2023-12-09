@@ -660,11 +660,11 @@ const gameHandler = async (gameId) => {
       }
     });
 
-    description_outline_checkbox.addEventListener("change", function() {
+    description_shadow_checkbox.addEventListener("change", function() {
       if (this.checked) {
-        game_stats.classList.add("outline-input");
+        game_stats.classList.add("shadow-input");
       } else {
-        game_stats.classList.remove("outline-input");
+        game_stats.classList.remove("shadow-input");
       }
     });
 
