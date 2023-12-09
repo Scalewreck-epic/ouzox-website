@@ -127,7 +127,6 @@ async function retrieveGameData(gameId) {
     name: rawGameData.name,
     active: rawGameData.active,
     description: rawGameData.description,
-    fontFamily: rawGameData.font,
     developer_name: rawGameData.developer_name,
     developer_id: rawGameData.developer_id,
     genre: rawGameData.genre,
@@ -139,12 +138,11 @@ async function retrieveGameData(gameId) {
     created: createdFormattedDate,
     updated: updatedFormattedDate,
     datestodays: datestodays,
-    useDefaultColors: rawGameData.defaultColors,
-    colors: rawGameData.colors,
     features: rawGameData.features,
     platforms: rawGameData.platforms,
     price: priceData,
     download_key: rawGameData.product_id,
+    page: rawGameData.page,
   };
 
   return gameData;
@@ -349,23 +347,23 @@ const gameHandler = async (gameId) => {
     }
   });
 
-  if (!gameData.useDefaultColors) {
+  if (!gameData.page.default_colors) {
     const elements = document.getElementsByClassName("game-stat");
 
     for (let i = 0; i < elements.length; i++) {
       elements[i].style.color = gameData.colors.statsColor;
     }
 
-    document.body.style.backgroundColor = gameData.colors.bgColor;
-    game_column.style.backgroundColor = gameData.colors.bg2Color;
-    game_title_column.style.color = gameData.colors.titleColor;
-    game_desc.style.color = gameData.colors.descColor;
-    download_button.style.backgroundColor = gameData.colors.buttonColor;
-    download_button.style.color = gameData.colors.buttonTextColor;
-    game_stats.style.color = gameData.colors.statsBGColor;
+    document.body.style.backgroundColor = gameData.page.colors.bg_color;
+    game_column.style.backgroundColor = gameData.page.colors.bg2_color;
+    game_title_column.style.color = gameData.page.colors.title_color;
+    game_desc.style.color = gameData.page.colors.desc_color;
+    download_button.style.backgroundColor = gameData.page.colors.button_color;
+    download_button.style.color = gameData.page.colors.button_text_color;
+    game_stats.style.color = gameData.page.colors.stats_bg_color;
 
-    if (gameData.fontFamily != undefined) {
-      game_column.style.fontFamily = gameData.fontFamily;
+    if (gameData.page.font_family != undefined) {
+      game_column.style.fontFamily = gameData.page.font_family;
     }
   }
 
@@ -517,6 +515,61 @@ const gameHandler = async (gameId) => {
       },
     ];
 
+    let page_details_checkboxes = [
+      {
+        Name: "game_details_outline",
+        Enabled: gameData.page.game_details_outline,
+        Element: details_outline_checkbox,
+        Element_Changing: game_stats,
+        Class: "outline-input",
+      },
+      {
+        Name: "game_details_shadow",
+        Enabled: gameData.page.game_details_shadow,
+        Element: details_shadow_checkbox,
+        Element_Changing: game_stats,
+        Class: "shadow-input",
+      },
+      {
+        Name: "description_outline",
+        Enabled: gameData.page.description_outline,
+        Element: description_outline_checkbox,
+        Element_Changing: game_desc_background,
+        Class: "outline-input",
+      },
+      {
+        Name: "description_shadow",
+        Enabled: gameData.page.description_shadow,
+        Element: description_shadow_checkbox,
+        Element_Changing: game_desc_background,
+        Class: "shadow-input",
+      },
+    ];
+
+    let page_details_alphas = [
+      {
+        Name: "bg2_alpha",
+        Amount: gameData.page.bg2_alpha,
+        Element: bg2_alpha_input,
+        Element_Helping: bg_color_input,
+        Element_Changing: game_column,
+      },
+      {
+        Name: "description_bg_alpha",
+        Amount: gameData.page.description_bg_alpha,
+        Element: description_bg_alpha_input,
+        Element_Helping: details_color_input,
+        Element_Changing: game_stats,
+      },
+      {
+        Name: "game_details_bg_alpha",
+        Amount: gameData.page.game_details_bg_alpha,
+        Element: details_bg_alpha_input,
+        Element_Helping: desc_color_input,
+        Element_Changing: game_desc_background,
+      },
+    ];
+
     game_title.contentEditable = true;
     game_desc.contentEditable = true;
     game_summary.contentEditable = true;
@@ -576,12 +629,12 @@ const gameHandler = async (gameId) => {
       styleElement.style.backgroundColor = newBackgroundColor;
     };
 
-    bg_color_input.value = hexToRGB(document.body.style.background);
+    bg_color_input.value = hexToRGB(document.body.style.backgroundColor);
     bg_color_input.addEventListener("input", function () {
       document.body.style.backgroundColor = this.value;
     });
 
-    bg2_color_input.value = hexToRGB(game_column.style.background);
+    bg2_color_input.value = hexToRGB(game_column.style.backgroundColor);
     bg2_color_input.addEventListener("input", function () {
       game_column.style.backgroundColor = this.value;
     });
@@ -620,52 +673,25 @@ const gameHandler = async (gameId) => {
     details_bg_color_input.addEventListener("input", function () {
       game_stats.style.backgroundColor = this.value;
     });
-    
-    updateBackgroundColor(bg2_alpha_input, bg_color_input, game_column);
-    bg2_alpha_input.addEventListener("input", () => {
-      updateBackgroundColor(bg2_alpha_input, bg_color_input, game_column);
-    });
-    
-    updateBackgroundColor(details_bg_alpha_input, details_color_input, game_stats);
-    details_bg_alpha_input.addEventListener("input", () => {
-      updateBackgroundColor(details_bg_alpha_input, details_color_input, game_stats);
-    });
-    
-    updateBackgroundColor(description_bg_alpha_input, desc_color_input, game_desc_background);
-    description_bg_alpha_input.addEventListener("input", () => {
-      updateBackgroundColor(description_bg_alpha_input, desc_color_input, game_desc_background);
+
+    page_details_checkboxes.forEach(function (page_detail) {
+      page_detail.Element.checked = page_detail.Enabled;
+      page_detail.Element.addEventListener("change", function () {
+        page_detail.Enabled = this.checked;
+
+        if (this.checked) {
+          page_detail.Element_Changing.classList.add(page_detail.Class);
+        } else {
+          page_detail.Element_Changing.classList.remove(page_detail.Class);
+        }
+      });
     });
 
-    details_outline_checkbox.addEventListener("change", function() {
-      if (this.checked) {
-        game_stats.classList.add("outline-input");
-      } else {
-        game_stats.classList.remove("outline-input");
-      }
-    });
-
-    description_outline_checkbox.addEventListener("change", function() {
-      if (this.checked) {
-        game_desc_background.classList.add("outline-input");
-      } else {
-        game_desc_background.classList.remove("outline-input");
-      }
-    });
-
-    details_shadow_checkbox.addEventListener("change", function() {
-      if (this.checked) {
-        game_stats.classList.add("shadow-input");
-      } else {
-        game_stats.classList.remove("shadow-input");
-      }
-    });
-
-    description_shadow_checkbox.addEventListener("change", function() {
-      if (this.checked) {
-        game_stats.classList.add("shadow-input");
-      } else {
-        game_stats.classList.remove("shadow-input");
-      }
+    page_details_alphas.forEach(function (page_detail) {
+      updateBackgroundColor(page_detail.Element, page_detail.Element_Helping, page_detail.Element_Changing);
+      page_detail.Element.addEventListener("change", function () {
+        updateBackgroundColor(page_detail.Element, page_detail.Element_Helping, page_detail.Element_Changing);
+      });
     });
 
     let isLoading = false;
@@ -683,9 +709,7 @@ const gameHandler = async (gameId) => {
             name: game_title.textContent,
             description: game_desc.innerHTML,
             summary: game_summary.textContent,
-            font: game_column.style.fontFamily,
             active: ispublic.Enabled ? "true" : "false",
-            defaultColors: false,
             platforms: {
               windows: game_platforms[0].Enabled ? "true" : "false",
               mac: game_platforms[1].Enabled ? "true" : "false",
@@ -705,16 +729,27 @@ const gameHandler = async (gameId) => {
               Saves: game_features[5].Enabled ? "true" : "false",
               VRSupport: game_features[6].Enabled ? "true" : "false",
             },
-            colors: {
-              bgColor: document.body.style.backgroundColor,
-              bg2Color: game_column.style.backgroundColor,
-              titleColor: game_title_column.style.color,
-              descColor: game_desc.style.color,
-              descBGColor: game_desc.style.backgroundColor,
-              buttonColor: download_button.style.backgroundColor,
-              buttonTextColor: download_button.style.color,
-              statsColor: game_stats[0].style.color,
-              statsBGColor: game_stats.style.backgroundColor,
+            page: {
+              game_details_outline: page_details_checkboxes[0].Enabled ? "true" : "false",
+              game_details_shadow: page_details_checkboxes[1].Enabled ? "true" : "false",
+              description_outline: page_details_checkboxes[2].Enabled ? "true" : "false",
+              description_shadow: page_details_checkboxes[3].Enabled ? "true" : "false",
+              bg2_alpha: page_details_alphas[0].Enabled ? "true" : "false",
+              description_bg_alpha: page_details_alphas[1].Enabled ? "true" : "false",
+              game_details_bg_alpha: page_details_alphas[2].Enabled ? "true" : "false",
+              font_family: game_column.style.fontFamily,
+              defaultColors: false,
+              colors: {
+                bgColor: document.body.style.backgroundColor,
+                bg2Color: game_column.style.backgroundColor,
+                titleColor: game_title_column.style.color,
+                descColor: game_desc.style.color,
+                descBGColor: game_desc.style.backgroundColor,
+                buttonColor: download_button.style.backgroundColor,
+                buttonTextColor: download_button.style.color,
+                statsColor: game_stats[0].style.color,
+                statsBGColor: game_stats.style.backgroundColor,
+              },
             },
           }),
         };
@@ -739,5 +774,5 @@ if (gameIdParam != null) {
   gameHandler(gameIdParam);
 } else {
   console.warn("There is no game id.");
-  //window.location.assign("404");
+  window.location.assign("404");
 };
