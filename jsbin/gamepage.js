@@ -560,8 +560,7 @@ const gameHandler = async (gameId) => {
       }
     });
 
-    const game_desc_background = document.getElementById("game-description")
-    game_desc_background.addEventListener("input", function () {
+    game_desc.addEventListener("input", function () {
       const text = sanitizeText(this.textContent);
 
       if (text.length > 4000) {
@@ -569,59 +568,13 @@ const gameHandler = async (gameId) => {
       }
     });
 
+    const game_desc_background = document.getElementById("game-description");
     function updateBackgroundColor(alphaInput, colorInput, styleElement) {
       const alphaValue = alphaInput.value / 100;
       const rgbValues = hexToRGB(colorInput.value);
       const newBackgroundColor = `rgba(${rgbValues}, ${alphaValue})`;
       styleElement.style.backgroundColor = newBackgroundColor;
-    }
-    
-    updateBackgroundColor(bg2_alpha_input, bg_color_input, game_column);
-    bg2_alpha_input.addEventListener("input", () => {
-      updateBackgroundColor(bg2_alpha_input, bg_color_input, game_column);
-    });
-    
-    updateBackgroundColor(details_bg_alpha_input, details_color_input, game_stats);
-    details_bg_alpha_input.addEventListener("input", () => {
-      updateBackgroundColor(details_bg_alpha_input, details_color_input, game_stats);
-    });
-    
-    updateBackgroundColor(description_bg_alpha_input, desc_color_input, game_desc);
-    description_bg_alpha_input.addEventListener("input", () => {
-      updateBackgroundColor(description_bg_alpha_input, desc_color_input, game_desc);
-    });
-
-    details_outline_checkbox.addEventListener("change", function() {
-      if (this.checked) {
-        game_stats.classList.add("outline-input");
-      } else {
-        game_stats.classList.remove("outline-input");
-      }
-    });
-
-    description_outline_checkbox.addEventListener("change", function() {
-      if (this.checked) {
-        game_desc_background.classList.add("outline-input");
-      } else {
-        game_desc_background.classList.remove("outline-input");
-      }
-    });
-
-    details_shadow_checkbox.addEventListener("change", function() {
-      if (this.checked) {
-        game_stats.classList.add("shadow-input");
-      } else {
-        game_stats.classList.remove("shadow-input");
-      }
-    });
-
-    description_outline_checkbox.addEventListener("change", function() {
-      if (this.checked) {
-        game_stats.classList.add("outline-input");
-      } else {
-        game_stats.classList.remove("outline-input");
-      }
-    });
+    };
 
     bg_color_input.value = hexToRGB(document.body.style.background);
     bg_color_input.addEventListener("input", function () {
@@ -666,6 +619,53 @@ const gameHandler = async (gameId) => {
     details_bg_color_input.value = hexToRGB(game_stats.style.backgroundColor);
     details_bg_color_input.addEventListener("input", function () {
       game_stats.style.backgroundColor = this.value;
+    });
+    
+    updateBackgroundColor(bg2_alpha_input, bg_color_input, game_column);
+    bg2_alpha_input.addEventListener("input", () => {
+      updateBackgroundColor(bg2_alpha_input, bg_color_input, game_column);
+    });
+    
+    updateBackgroundColor(details_bg_alpha_input, details_color_input, game_stats);
+    details_bg_alpha_input.addEventListener("input", () => {
+      updateBackgroundColor(details_bg_alpha_input, details_color_input, game_stats);
+    });
+    
+    updateBackgroundColor(description_bg_alpha_input, desc_color_input, game_desc_background);
+    description_bg_alpha_input.addEventListener("input", () => {
+      updateBackgroundColor(description_bg_alpha_input, desc_color_input, game_desc_background);
+    });
+
+    details_outline_checkbox.addEventListener("change", function() {
+      if (this.checked) {
+        game_stats.classList.add("outline-input");
+      } else {
+        game_stats.classList.remove("outline-input");
+      }
+    });
+
+    description_outline_checkbox.addEventListener("change", function() {
+      if (this.checked) {
+        game_desc_background.classList.add("outline-input");
+      } else {
+        game_desc_background.classList.remove("outline-input");
+      }
+    });
+
+    details_shadow_checkbox.addEventListener("change", function() {
+      if (this.checked) {
+        game_stats.classList.add("shadow-input");
+      } else {
+        game_stats.classList.remove("shadow-input");
+      }
+    });
+
+    description_outline_checkbox.addEventListener("change", function() {
+      if (this.checked) {
+        game_stats.classList.add("outline-input");
+      } else {
+        game_stats.classList.remove("outline-input");
+      }
     });
 
     let isLoading = false;
