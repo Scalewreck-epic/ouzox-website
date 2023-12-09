@@ -351,7 +351,7 @@ const gameHandler = async (gameId) => {
     const elements = document.getElementsByClassName("game-stat");
 
     for (let i = 0; i < elements.length; i++) {
-      elements[i].style.color = gameData.colors.statsColor;
+      elements[i].style.color = gameData.page.colors.statsColor;
     }
 
     document.body.style.backgroundColor = gameData.page.colors.bg_color;
