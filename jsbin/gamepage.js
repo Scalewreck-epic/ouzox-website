@@ -7,20 +7,6 @@ import { getUser } from "./exportuser.js";
 const urlParams = new URLSearchParams(window.location.search);
 const gameIdParam = urlParams.get("g");
 
-function hexToRGB(hexCode) {
-  if (hexCode.startsWith('#')) {
-    hexCode = hexCode.substring(1);
-  }
-
-  if (hexCode.length !== 6) {
-    throw new Error('Invalid hex code');
-  }
-
-  const hexPairs = hexCode.match(/([A-Fa-f0-9]{2})/g);
-  const rgbComponents = hexPairs.map(hexPair => parseInt(hexPair, 16));
-  return rgbComponents;
-};
-
 async function retrieveGameData(gameId) {
   const myHeaders = new Headers();
   myHeaders.append("Content-Type", "application/json");
@@ -351,7 +337,7 @@ const gameHandler = async (gameId) => {
     const elements = document.getElementsByClassName("game-stat");
 
     for (let i = 0; i < elements.length; i++) {
-      elements[i].style.color = gameData.page.colors.statsColor;
+      elements[i].style.color = gameData.page.colors.stats_text_color;
     }
 
     document.body.style.backgroundColor = gameData.page.colors.bg_color;
@@ -360,7 +346,7 @@ const gameHandler = async (gameId) => {
     game_desc.style.color = gameData.page.colors.desc_color;
     download_button.style.backgroundColor = gameData.page.colors.button_color;
     download_button.style.color = gameData.page.colors.button_text_color;
-    game_stats.style.color = gameData.page.colors.stats_bg_color;
+    game_stats.style.backgroundColor = gameData.page.colors.stats_bg_color;
 
     if (gameData.page.font_family != undefined) {
       game_column.style.fontFamily = gameData.page.font_family;
@@ -408,16 +394,24 @@ const gameHandler = async (gameId) => {
       document.getElementById("button-text-color");
     const bg2_alpha_input = document.getElementById("bg2-alpha");
     const description_bg_alpha_input = document.getElementById(
-        "description-bg-alpha"
+      "description-bg-alpha"
     );
     const details_bg_alpha_input = document.getElementById(
-        "game-details-bg-alpha"
+      "game-details-bg-alpha"
     );
-    const details_outline_checkbox = document.getElementById("game-details-outline-checkbox");
-    const details_shadow_checkbox = document.getElementById("game-details-outline-checkbox");
-    const description_outline_checkbox = document.getElementById("game-details-outline-checkbox");
-    const description_shadow_checkbox = document.getElementById("game-details-outline-checkbox");
-    
+    const details_outline_checkbox = document.getElementById(
+      "game-details-outline-checkbox"
+    );
+    const details_shadow_checkbox = document.getElementById(
+      "game-details-outline-checkbox"
+    );
+    const description_outline_checkbox = document.getElementById(
+      "game-details-outline-checkbox"
+    );
+    const description_shadow_checkbox = document.getElementById(
+      "game-details-outline-checkbox"
+    );
+
     const game_desc_background = document.getElementById("game-description");
 
     game_genre_input.textContent = gameData.genre;
@@ -628,49 +622,49 @@ const gameHandler = async (gameId) => {
       const rgbValues = hexToRGB(colorInput.value);
       const newBackgroundColor = `rgba(${rgbValues}, ${alphaValue})`;
       styleElement.style.backgroundColor = newBackgroundColor;
-    };
+    }
 
-    bg_color_input.value = hexToRGB(document.body.style.backgroundColor);
+    bg_color_input.value = gameData.page.colors.bg_color;
     bg_color_input.addEventListener("input", function () {
       document.body.style.backgroundColor = this.value;
     });
 
-    bg2_color_input.value = hexToRGB(game_column.style.backgroundColor);
+    bg2_color_input.value = gameData.page.colors.bg2_color;
     bg2_color_input.addEventListener("input", function () {
       game_column.style.backgroundColor = this.value;
     });
 
-    title_color_input.value = hexToRGB(game_title_column.style.color);
+    title_color_input.value = gameData.page.colors.title_color;
     title_color_input.addEventListener("input", function () {
       game_title_column.style.color = this.value;
     });
 
-    desc_color_input.value = hexToRGB(game_desc.style.color);
+    desc_color_input.value = gameData.page.colors.desc_color;
     desc_color_input.addEventListener("input", function () {
       game_desc.style.color = this.value;
     });
 
-    desc_bg_color_input.value = hexToRGB(game_desc.style.backgroundColor);
+    desc_bg_color_input.value = gameData.page.colors.desc_color;
     desc_bg_color_input.addEventListener("input", function () {
       game_desc.style.backgroundColor = this.value;
     });
 
-    button_bg_color_input.value = hexToRGB(download_button.style.backgroundColor);
+    button_bg_color_input.value = gameData.page.colors.button_color;
     button_bg_color_input.addEventListener("input", function () {
       download_button.style.backgroundColor = this.value;
     });
 
-    button_text_color_input.value = hexToRGB(download_button.style.color);
+    button_text_color_input.value = gameData.page.colors.button_text_color;
     button_text_color_input.addEventListener("input", function () {
       download_button.style.color = this.value;
     });
 
-    details_color_input.value = hexToRGB(game_stats.style.color);
+    details_color_input.value = gameData.page.colors.stats_bg_color;
     details_color_input.addEventListener("input", function () {
       game_stats.style.color = this.value;
     });
 
-    details_bg_color_input.value = hexToRGB(game_stats.style.backgroundColor);
+    details_bg_color_input.value = gameData.page.colors.stats_text_color;
     details_bg_color_input.addEventListener("input", function () {
       game_stats.style.backgroundColor = this.value;
     });
@@ -689,9 +683,17 @@ const gameHandler = async (gameId) => {
     });
 
     page_details_alphas.forEach(function (page_detail) {
-      updateBackgroundColor(page_detail.Element, page_detail.Element_Helping, page_detail.Element_Changing);
+      updateBackgroundColor(
+        page_detail.Element,
+        page_detail.Element_Helping,
+        page_detail.Element_Changing
+      );
       page_detail.Element.addEventListener("change", function () {
-        updateBackgroundColor(page_detail.Element, page_detail.Element_Helping, page_detail.Element_Changing);
+        updateBackgroundColor(
+          page_detail.Element,
+          page_detail.Element_Helping,
+          page_detail.Element_Changing
+        );
       });
     });
 
@@ -731,25 +733,37 @@ const gameHandler = async (gameId) => {
               VRSupport: game_features[6].Enabled ? "true" : "false",
             },
             page: {
-              game_details_outline: page_details_checkboxes[0].Enabled ? "true" : "false",
-              game_details_shadow: page_details_checkboxes[1].Enabled ? "true" : "false",
-              description_outline: page_details_checkboxes[2].Enabled ? "true" : "false",
-              description_shadow: page_details_checkboxes[3].Enabled ? "true" : "false",
+              game_details_outline: page_details_checkboxes[0].Enabled
+                ? "true"
+                : "false",
+              game_details_shadow: page_details_checkboxes[1].Enabled
+                ? "true"
+                : "false",
+              description_outline: page_details_checkboxes[2].Enabled
+                ? "true"
+                : "false",
+              description_shadow: page_details_checkboxes[3].Enabled
+                ? "true"
+                : "false",
               bg2_alpha: page_details_alphas[0].Enabled ? "true" : "false",
-              description_bg_alpha: page_details_alphas[1].Enabled ? "true" : "false",
-              game_details_bg_alpha: page_details_alphas[2].Enabled ? "true" : "false",
+              description_bg_alpha: page_details_alphas[1].Enabled
+                ? "true"
+                : "false",
+              game_details_bg_alpha: page_details_alphas[2].Enabled
+                ? "true"
+                : "false",
               font_family: game_column.style.fontFamily,
               defaultColors: false,
               colors: {
-                bgColor: document.body.style.backgroundColor,
-                bg2Color: game_column.style.backgroundColor,
-                titleColor: game_title_column.style.color,
-                descColor: game_desc.style.color,
-                descBGColor: game_desc.style.backgroundColor,
-                buttonColor: download_button.style.backgroundColor,
-                buttonTextColor: download_button.style.color,
-                statsColor: game_stats[0].style.color,
-                statsBGColor: game_stats.style.backgroundColor,
+                bg_color: document.body.style.backgroundColor,
+                bg2_color: game_column.style.backgroundColor,
+                title_color: game_title_column.style.color,
+                desc_color: game_desc.style.color,
+                desc_bg_color: game_desc.style.backgroundColor,
+                button_color: download_button.style.backgroundColor,
+                button_text_color: download_button.style.color,
+                stats_text_color: game_stats[0].style.color,
+                stats_bg_color: game_stats.style.backgroundColor,
               },
             },
           }),
@@ -776,4 +790,4 @@ if (gameIdParam != null) {
 } else {
   console.warn("There is no game id.");
   window.location.assign("404");
-};
+}
