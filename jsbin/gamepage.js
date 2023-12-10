@@ -638,7 +638,7 @@ const gameHandler = async (gameId) => {
       styleElement.style.setProperty("background-color", newBackgroundColor);
     }
 
-    bg_color_input.value = getComputedStyle(document).getPropertyValue("background-color");
+    bg_color_input.value = getComputedStyle(document.body).getPropertyValue("background-color");
     bg_color_input.addEventListener("input", function () {
       document.body.style.setProperty("background-color", this.value);
     });
