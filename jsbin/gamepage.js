@@ -417,13 +417,13 @@ const gameHandler = async (gameId) => {
       "game-details-outline-checkbox"
     );
     const details_shadow_checkbox = document.getElementById(
-      "game-details-outline-checkbox"
+      "game-details-shadow-checkbox"
     );
     const description_outline_checkbox = document.getElementById(
-      "game-details-outline-checkbox"
+      "description-outline-checkbox"
     );
     const description_shadow_checkbox = document.getElementById(
-      "game-details-outline-checkbox"
+      "description-shadow-checkbox"
     );
 
     const game_desc_background = document.getElementById("game-description");
@@ -702,7 +702,7 @@ const gameHandler = async (gameId) => {
         page_detail.Element_Helping,
         page_detail.Element_Changing
       );
-      page_detail.Element.addEventListener("change", function () {
+      page_detail.Element.addEventListener("input", function () {
         updateBackgroundColor(
           page_detail.Element,
           page_detail.Element_Helping,
