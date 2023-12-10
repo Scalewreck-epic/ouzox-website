@@ -7,6 +7,20 @@ import { getUser } from "./exportuser.js";
 const urlParams = new URLSearchParams(window.location.search);
 const gameIdParam = urlParams.get("g");
 
+function hexToRGB(hexCode) {
+  if (hexCode.startsWith("#")) {
+    hexCode = hexCode.substring(1);
+  }
+
+  if (hexCode.length !== 6) {
+    throw new Error("Invalid hex code");
+  }
+
+  const hexPairs = hexCode.match(/([A-Fa-f0-9]{2})/g);
+  const rgbComponents = hexPairs.map((hexPair) => parseInt(hexPair, 16));
+  return rgbComponents;
+}
+
 async function retrieveGameData(gameId) {
   const myHeaders = new Headers();
   myHeaders.append("Content-Type", "application/json");
