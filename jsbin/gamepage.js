@@ -638,47 +638,65 @@ const gameHandler = async (gameId) => {
       styleElement.style.setProperty("background-color", newBackgroundColor);
     }
 
-    bg_color_input.value = getComputedStyle(document.body).getPropertyValue("background-color");
+    function rgbToHex(color) {
+      if (/^#[0-9a-fA-F]{6}$/.test(color)) {
+        return color;
+      }
+    
+      const rgbValues = color.match(/\d+/g).map(Number);
+    
+      const r = rgbValues[0];
+      const g = rgbValues[1];
+      const b = rgbValues[2];
+    
+      const hexR = r.toString(16).padStart(2, '0');
+      const hexG = g.toString(16).padStart(2, '0');
+      const hexB = b.toString(16).padStart(2, '0');
+    
+      return `#${hexR}${hexG}${hexB}`;
+    };    
+
+    bg_color_input.value = rgbToHex(getComputedStyle(document.body).getPropertyValue("background-color"));
     bg_color_input.addEventListener("input", function () {
       document.body.style.setProperty("background-color", this.value);
     });
 
-    bg2_color_input.value = getComputedStyle(game_column).getPropertyValue("background-color");
+    bg2_color_input.value = rgbToHex(getComputedStyle(game_column).getPropertyValue("background-color"));
     bg2_color_input.addEventListener("input", function () {
       game_column.style.setProperty("background-color", this.value);
     });
 
-    title_color_input.value = getComputedStyle(game_title_column).getPropertyValue("color");
+    title_color_input.value = rgbToHex(getComputedStyle(game_title_column).getPropertyValue("color"));
     title_color_input.addEventListener("input", function () {
       game_title_column.style.setProperty("color", this.value);
     });
 
-    desc_color_input.value = getComputedStyle(game_desc).getPropertyValue("color");
+    desc_color_input.value = rgbToHex(getComputedStyle(game_desc).getPropertyValue("color"));
     desc_color_input.addEventListener("input", function () {
       game_desc.style.setProperty("color", this.value);
     });
 
-    desc_bg_color_input.value = getComputedStyle(game_desc_background).getPropertyValue("background-color");
+    desc_bg_color_input.value = rgbToHex(getComputedStyle(game_desc_background).getPropertyValue("background-color"));
     desc_bg_color_input.addEventListener("input", function () {
       game_desc_background.style.setProperty("background-color", this.value);
     });
 
-    button_bg_color_input.value = getComputedStyle(download_button).getPropertyValue("background-color");
+    button_bg_color_input.value = rgbToHex(getComputedStyle(download_button).getPropertyValue("background-color"));
     button_bg_color_input.addEventListener("input", function () {
       download_button.style.setProperty("background-color", this.value);
     });
 
-    button_text_color_input.value = getComputedStyle(download_button).getPropertyValue("color");
+    button_text_color_input.value = rgbToHex(getComputedStyle(download_button).getPropertyValue("color"));
     button_text_color_input.addEventListener("input", function () {
       download_button.style.setProperty("color", this.value);
     });
 
-    details_color_input.value = getComputedStyle(game_stats).getPropertyValue("color");
+    details_color_input.value = rgbToHex(getComputedStyle(game_stats).getPropertyValue("color"));
     details_color_input.addEventListener("input", function () {
       game_stats.style.setProperty("color", this.value);
     });
 
-    details_bg_color_input.value = getComputedStyle(game_stats).getPropertyValue("background-color");
+    details_bg_color_input.value = rgbToHex(getComputedStyle(game_stats).getPropertyValue("background-color"));
     details_bg_color_input.addEventListener("input", function () {
       game_stats.style.setProperty("background-color", this.value);
     });
