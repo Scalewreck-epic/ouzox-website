@@ -34,7 +34,9 @@ function updateBackgroundColor(alphaInput, styleElement) {
 
   const rgbValues = getComputedStyle(styleElement).getPropertyValue("background-color");
   const match = rgbValues.match(/rgb\((\d+), (\d+), (\d+)\)/);
-  const [r, g, b] = match.slice(1).map(Number);
+  const r = match[1];
+  const g = match[2];
+  const b = match[3];
 
   const newBackgroundColor = `rgba(${r}, ${g}, ${b}, ${alphaValue})`;
   styleElement.style.setProperty("background-color", newBackgroundColor);
