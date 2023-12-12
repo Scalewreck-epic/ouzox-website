@@ -8,11 +8,11 @@ const urlParams = new URLSearchParams(window.location.search);
 const gameIdParam = urlParams.get("g");
 
 String.prototype.convertToHex = function() {
-  if (/^#[0-9a-fA-F]{6}$/.test(color)) {
-    return color;
+  if (/^#[0-9a-fA-F]{6}$/.test(this)) {
+    return this;
   }
 
-  const rgbValues = color.match(/\d+/g).map(Number);
+  const rgbValues = this.match(/\d+/g).map(Number);
 
   const r = rgbValues[0];
   const g = rgbValues[1];
