@@ -25,24 +25,18 @@ String.prototype.convertToHex = function() {
   return `#${hexR}${hexG}${hexB}`;
 };
 
-String.prototype.convertToRgb = function () {
-  if (/^#[0-9a-fA-F]{6}$/.test(this)) {
-    const hexValues = this.slice(1).match(/.{2}/g);
-    const rgbValues = hexValues.map(hex => parseInt(hex, 16));
-    return `(${rgbValues[0]}, ${rgbValues[1]}, ${rgbValues[2]})`;
-  }
-
-  console.error("Invalid color format. Expected hex value starting with '#'.");
-};
-
 String.prototype.sanitize = function () {
   return string.replace(/<|>/g, "");
 };
 
 function updateBackgroundColor(alphaInput, styleElement) {
   const alphaValue = alphaInput.value / 100;
-  const rgbValues = getComputedStyle(styleElement).getPropertyValue("background-color").toString();
-  const newBackgroundColor = `rgba(${rgbValues}, ${alphaValue})`;
+
+  const rgbValues = getComputedStyle(styleElement).getPropertyValue("background-color");
+  const match = rgbValues.match(/rgb\((\d+), (\d+), (\d+)\)/);
+  const [r, g, b] = match.slice(1).map(Number);
+
+  const newBackgroundColor = `rgba(${r}, ${g}, ${b}, ${alphaValue})`;
   styleElement.style.setProperty("background-color", newBackgroundColor);
 };
 
