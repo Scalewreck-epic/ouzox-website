@@ -7,19 +7,44 @@ import { getUser } from "./exportuser.js";
 const urlParams = new URLSearchParams(window.location.search);
 const gameIdParam = urlParams.get("g");
 
-String.prototype.convertToRGB = function(){
-  if(this.length != 6){
-      throw "Only six-digit hex colors are allowed.";
+String.prototype.convertToHex = function() {
+  if (/^#[0-9a-fA-F]{6}$/.test(color)) {
+    return color;
   }
 
-  var aRgbHex = this.match(/.{1,2}/g);
-  var aRgb = [
-      parseInt(aRgbHex[0], 16),
-      parseInt(aRgbHex[1], 16),
-      parseInt(aRgbHex[2], 16)
-  ];
-  return aRgb;
-}
+  const rgbValues = color.match(/\d+/g).map(Number);
+
+  const r = rgbValues[0];
+  const g = rgbValues[1];
+  const b = rgbValues[2];
+
+  const hexR = r.toString(16).padStart(2, '0');
+  const hexG = g.toString(16).padStart(2, '0');
+  const hexB = b.toString(16).padStart(2, '0');
+
+  return `#${hexR}${hexG}${hexB}`;
+};
+
+String.prototype.convertToRgb = function () {
+  if (/^#[0-9a-fA-F]{6}$/.test(this)) {
+    const hexValues = this.slice(1).match(/.{2}/g);
+    const rgbValues = hexValues.map(hex => parseInt(hex, 16));
+    return `(${rgbValues[0]}, ${rgbValues[1]}, ${rgbValues[2]})`;
+  }
+
+  console.error("Invalid color format. Expected hex value starting with '#'.");
+};
+
+String.prototype.sanitize = function () {
+  return string.replace(/<|>/g, "");
+};
+
+function updateBackgroundColor(alphaInput, styleElement) {
+  const alphaValue = alphaInput.value / 100;
+  const rgbValues = getComputedStyle(styleElement).getPropertyValue("background-color").toString();
+  const newBackgroundColor = `rgba(${rgbValues}, ${alphaValue})`;
+  styleElement.style.setProperty("background-color", newBackgroundColor);
+};
 
 async function retrieveGameData(gameId) {
   const myHeaders = new Headers();
@@ -164,10 +189,6 @@ async function changeProduct(data, gameId, commitChangesButton) {
   }
 }
 
-const sanitizeText = (string) => {
-  return string.replace(/<|>/g, "");
-};
-
 const gameHandler = async (gameId) => {
   const user = await getUser();
   const gameData = await retrieveGameData(gameId);
@@ -196,6 +217,7 @@ const gameHandler = async (gameId) => {
   const game_column = document.getElementById("game-column");
   const game_title_column = document.getElementById("game-title-column");
   const game_stats = document.getElementById("game-stats");
+  const game_desc_background = document.getElementById("game-description");
 
   game_title.textContent = gameData.name;
   game_desc.innerHTML = gameData.description;
@@ -327,6 +349,54 @@ const gameHandler = async (gameId) => {
     },
   ];
 
+  let page_outlines = [
+    {
+      Enabled: gameData.page.game_details_outline,
+      Element: game_stats,
+      Class: "outline-input",
+    },
+    {
+      Enabled: gameData.page.game_details_shadow,
+      Element: game_stats,
+      Class: "shadow-input",
+    },
+    {
+      Enabled: gameData.page.description_outline,
+      Element: game_desc_background,
+      Class: "outline-input",
+    },
+    {
+      Enabled: gameData.page.description_shadow,
+      Element: game_desc_background,
+      Class: "shadow-input",
+    },
+  ];
+
+  let page_alphas = [
+    {
+      Amount: gameData.page.bg2_alpha,
+      Element: game_column,
+    },
+    {
+      Amount: gameData.page.description_bg_alpha,
+      Element: game_desc_background,
+    },
+    {
+      Amount: gameData.page.game_details_bg_alpha,
+      Element: game_stats,
+    },
+  ];
+
+  page_outlines.forEach(function (outline) {
+    if (!outline.Enabled) {
+      outline.Element.classList.remove(outline.Class);
+    }
+  });
+
+  page_alphas.forEach(function (alpha) {
+    updateBackgroundColor(alpha.Amount, alpha.Element);
+  });
+
   features.forEach(function (feature) {
     if (feature.Enabled) {
       const feature_element = document.createElement("div");
@@ -425,8 +495,6 @@ const gameHandler = async (gameId) => {
     const description_shadow_checkbox = document.getElementById(
       "description-shadow-checkbox"
     );
-
-    const game_desc_background = document.getElementById("game-description");
 
     game_genre_input.textContent = gameData.genre;
     game_age_input.selectedIndex =
@@ -555,27 +623,24 @@ const gameHandler = async (gameId) => {
         Class: "shadow-input",
       },
     ];
-
+  
     let page_details_alphas = [
       {
         Name: "bg2_alpha",
         Amount: gameData.page.bg2_alpha,
         Element: bg2_alpha_input,
-        Element_Helping: bg2_color_input,
         Element_Changing: game_column,
       },
       {
         Name: "description_bg_alpha",
         Amount: gameData.page.description_bg_alpha,
         Element: description_bg_alpha_input,
-        Element_Helping: details_color_input,
         Element_Changing: game_desc_background,
       },
       {
         Name: "game_details_bg_alpha",
         Amount: gameData.page.game_details_bg_alpha,
         Element: details_bg_alpha_input,
-        Element_Helping: details_color_input,
         Element_Changing: game_stats,
       },
     ];
@@ -608,7 +673,7 @@ const gameHandler = async (gameId) => {
     commitChangesButton.innerHTML = "Commit Changes";
 
     game_title.addEventListener("input", function () {
-      const text = sanitizeText(this.textContent);
+      const text = this.textContent.sanitize();
 
       if (text.length > 120) {
         this.innerHTML = text.substr(0, 120);
@@ -616,7 +681,7 @@ const gameHandler = async (gameId) => {
     });
 
     game_summary.addEventListener("input", function () {
-      const text = sanitizeText(this.textContent);
+      const text = this.textContent.sanitize();
 
       if (text.length > 120) {
         this.innerHTML = text.substr(0, 120);
@@ -624,108 +689,81 @@ const gameHandler = async (gameId) => {
     });
 
     game_desc.addEventListener("input", function () {
-      const text = sanitizeText(this.textContent);
+      const text = this.textContent.sanitize();
 
       if (text.length > 4000) {
         this.innerHTML = text.substr(0, 4000);
       }
     });
 
-    function updateBackgroundColor(alphaInput, colorInput, styleElement) {
-      const alphaValue = alphaInput.value / 100;
-      const rgbValues = colorInput.value.convertToRGB();
-      const newBackgroundColor = `rgba(${rgbValues}, ${alphaValue})`;
-      styleElement.style.setProperty("background-color", newBackgroundColor);
-    }
-
-    function rgbToHex(color) {
-      if (/^#[0-9a-fA-F]{6}$/.test(color)) {
-        return color;
-      }
-    
-      const rgbValues = color.match(/\d+/g).map(Number);
-    
-      const r = rgbValues[0];
-      const g = rgbValues[1];
-      const b = rgbValues[2];
-    
-      const hexR = r.toString(16).padStart(2, '0');
-      const hexG = g.toString(16).padStart(2, '0');
-      const hexB = b.toString(16).padStart(2, '0');
-    
-      return `#${hexR}${hexG}${hexB}`;
-    };    
-
-    bg_color_input.value = rgbToHex(getComputedStyle(document.body).getPropertyValue("background-color"));
+    bg_color_input.value = getComputedStyle(document.body).getPropertyValue("background-color").toString().convertToHex()
     bg_color_input.addEventListener("input", function () {
       document.body.style.setProperty("background-color", this.value);
     });
 
-    bg2_color_input.value = rgbToHex(getComputedStyle(game_column).getPropertyValue("background-color"));
+    bg2_color_input.value = getComputedStyle(game_column).getPropertyValue("background-color").toString().convertToHex();
     bg2_color_input.addEventListener("input", function () {
       game_column.style.setProperty("background-color", this.value);
     });
 
-    title_color_input.value = rgbToHex(getComputedStyle(game_title_column).getPropertyValue("color"));
+    title_color_input.value = getComputedStyle(game_title_column).getPropertyValue("color").toString().convertToHex()
     title_color_input.addEventListener("input", function () {
       game_title_column.style.setProperty("color", this.value);
     });
 
-    desc_color_input.value = rgbToHex(getComputedStyle(game_desc).getPropertyValue("color"));
+    desc_color_input.value = getComputedStyle(game_desc).getPropertyValue("color").toString().convertToHex()
     desc_color_input.addEventListener("input", function () {
       game_desc.style.setProperty("color", this.value);
     });
 
-    desc_bg_color_input.value = rgbToHex(getComputedStyle(game_desc_background).getPropertyValue("background-color"));
+    desc_bg_color_input.value = getComputedStyle(game_desc_background).getPropertyValue("background-color").toString().convertToHex()
     desc_bg_color_input.addEventListener("input", function () {
       game_desc_background.style.setProperty("background-color", this.value);
     });
 
-    button_bg_color_input.value = rgbToHex(getComputedStyle(download_button).getPropertyValue("background-color"));
+    button_bg_color_input.value = getComputedStyle(download_button).getPropertyValue("background-color").toString().convertToHex()
     button_bg_color_input.addEventListener("input", function () {
       download_button.style.setProperty("background-color", this.value);
     });
 
-    button_text_color_input.value = rgbToHex(getComputedStyle(download_button).getPropertyValue("color"));
+    button_text_color_input.value = getComputedStyle(download_button).getPropertyValue("color").toString().convertToHex()
     button_text_color_input.addEventListener("input", function () {
       download_button.style.setProperty("color", this.value);
     });
 
-    details_color_input.value = rgbToHex(getComputedStyle(game_stats).getPropertyValue("color"));
+    details_color_input.value = getComputedStyle(game_stats).getPropertyValue("color").toString().convertToHex()
     details_color_input.addEventListener("input", function () {
       game_stats.style.setProperty("color", this.value);
     });
 
-    details_bg_color_input.value = rgbToHex(getComputedStyle(game_stats).getPropertyValue("background-color"));
+    details_bg_color_input.value = getComputedStyle(game_stats).getPropertyValue("background-color").toString().convertToHex()
     details_bg_color_input.addEventListener("input", function () {
       game_stats.style.setProperty("background-color", this.value);
-    });
-
-    page_details_checkboxes.forEach(function (page_detail) {
-      page_detail.Element.checked = page_detail.Enabled;
-      page_detail.Element.addEventListener("change", function () {
-        page_detail.Enabled = this.checked;
-
-        if (this.checked) {
-          page_detail.Element_Changing.classList.add(page_detail.Class);
-        } else {
-          page_detail.Element_Changing.classList.remove(page_detail.Class);
-        }
-      });
     });
 
     page_details_alphas.forEach(function (page_detail) {
       updateBackgroundColor(
         page_detail.Element,
-        page_detail.Element_Helping,
         page_detail.Element_Changing
       );
       page_detail.Element.addEventListener("input", function () {
         updateBackgroundColor(
           page_detail.Element,
-          page_detail.Element_Helping,
           page_detail.Element_Changing
         );
+      });
+    });
+  
+    page_details_checkboxes.forEach(function (page_detail) {
+      page_detail.Element.checked = page_detail.Enabled;
+      page_detail.Element.addEventListener("change", function () {
+        page_detail.Enabled = this.checked;
+  
+        if (this.checked) {
+          page_detail.Element_Changing.classList.add(page_detail.Class);
+        } else {
+          page_detail.Element_Changing.classList.remove(page_detail.Class);
+        }
       });
     });
 
