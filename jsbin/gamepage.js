@@ -766,6 +766,7 @@ const gameHandler = async (gameId) => {
     });
 
     page_details_alphas.forEach(function (page_detail) {
+      page_detail.Element.value = page_detail.Amount;
       page_detail.Element.addEventListener("input", function () {
         page_detail.Amount = page_detail.Element.value;
         updateBackgroundColor(
@@ -842,7 +843,8 @@ const gameHandler = async (gameId) => {
               bg2_alpha: page_details_alphas[0].Amount,
               description_bg_alpha: page_details_alphas[1].Amount,
               game_details_bg_alpha: page_details_alphas[2].Amount,
-              font_family: game_column.style.fontFamily,
+              font_family:
+                getComputedStyle(game_column).getPropertyValue("font-family"),
               defaultColors: false,
               colors: {
                 bg_color: getComputedStyle(document.body).getPropertyValue(
@@ -853,9 +855,7 @@ const gameHandler = async (gameId) => {
                     "background-color"
                   ),
                 title_color:
-                  getComputedStyle(game_title_column).getPropertyValue(
-                    "background-color"
-                  ),
+                  getComputedStyle(game_title_column).getPropertyValue("color"),
                 desc_color:
                   getComputedStyle(game_desc).getPropertyValue("color"),
                 desc_bg_color:
