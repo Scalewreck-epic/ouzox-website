@@ -766,8 +766,8 @@ const gameHandler = async (gameId) => {
     });
 
     page_details_alphas.forEach(function (page_detail) {
-      updateBackgroundColor(page_detail.Element, page_detail.Element_Changing);
       page_detail.Element.addEventListener("input", function () {
+        page_detail.Amount = page_detail.Element.value;
         updateBackgroundColor(
           page_detail.Element,
           page_detail.Element_Changing
