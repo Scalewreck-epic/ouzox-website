@@ -367,6 +367,16 @@ const gameHandler = async (gameId) => {
       Element: game_desc_background,
       Class: "shadow-input",
     },
+    {
+      Enabled: gameData.page.outlines.bg2_outline,
+      Element: game_column,
+      Class: "outline-input",
+    },
+    {
+      Enabled: gameData.page.outlines.bg2_shadow,
+      Element: game_column,
+      Class: "shadow-input",
+    },
   ];
 
   let page_alphas = [
@@ -491,6 +501,12 @@ const gameHandler = async (gameId) => {
     );
     const description_shadow_checkbox = document.getElementById(
       "description-shadow-checkbox"
+    );
+    const bg2_outline_checkbox = document.getElementById(
+      "bg2-outline-checkbox"
+    );
+    const bg2_shadow_checkbox = document.getElementById(
+      "bg2-shadow-checkbox"
     );
 
     game_genre_input.textContent = gameData.genre;
@@ -617,6 +633,20 @@ const gameHandler = async (gameId) => {
         Enabled: gameData.page.outlines.description_shadow,
         Element: description_shadow_checkbox,
         Element_Changing: game_desc_background,
+        Class: "shadow-input",
+      },
+      {
+        Name: "bg2_outline",
+        Enabled: gameData.page.outlines.bg2_outline,
+        Element: bg2_outline_checkbox,
+        Element_Changing: game_column,
+        Class: "outline-input"
+      },
+      {
+        Name: "bg2_shadow",
+        Enabled: gameData.page.outlines.bg2_shadow,
+        Element: bg2_shadow_checkbox,
+        Element_Changing: game_column,
         Class: "shadow-input",
       },
     ];
@@ -828,24 +858,30 @@ const gameHandler = async (gameId) => {
               VRSupport: game_features[6].Enabled ? "true" : "false",
             },
             page: {
-              game_details_outline: page_details_checkboxes[0].Enabled
-                ? "true"
-                : "false",
-              game_details_shadow: page_details_checkboxes[1].Enabled
-                ? "true"
-                : "false",
-              description_outline: page_details_checkboxes[2].Enabled
-                ? "true"
-                : "false",
-              description_shadow: page_details_checkboxes[3].Enabled
-                ? "true"
-                : "false",
-              bg2_alpha: page_details_alphas[0].Amount,
-              description_bg_alpha: page_details_alphas[1].Amount,
-              game_details_bg_alpha: page_details_alphas[2].Amount,
               font_family:
-                getComputedStyle(game_column).getPropertyValue("font-family"),
+                getComputedStyle(game_column).getPropertyValue("font-family").toString(),
               defaultColors: false,
+              outlines: {
+                game_details_outline: page_details_checkboxes[0].Enabled
+                  ? "true"
+                  : "false",
+                game_details_shadow: page_details_checkboxes[1].Enabled
+                  ? "true"
+                  : "false",
+                description_outline: page_details_checkboxes[2].Enabled
+                  ? "true"
+                  : "false",
+                description_shadow: page_details_checkboxes[3].Enabled
+                  ? "true"
+                  : "false",
+                  bg2_outline: page_details_alphas[4].Enabled ? "true" : "false",
+                  bg2_shadow: page_details_alphas[5].Enabled ? "true" : "false",
+              },
+              alphas: {
+                bg2_alpha: page_details_alphas[0].Amount,
+                description_bg_alpha: page_details_alphas[1].Amount,
+                game_details_bg_alpha: page_details_alphas[2].Amount,
+              },
               colors: {
                 bg_color: getComputedStyle(document.body).getPropertyValue(
                   "background-color"
