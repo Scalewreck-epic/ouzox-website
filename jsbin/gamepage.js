@@ -348,22 +348,22 @@ const gameHandler = async (gameId) => {
 
   let page_outlines = [
     {
-      Enabled: gameData.page.game_details_outline,
+      Enabled: gameData.page.outlines.game_details_outline,
       Element: game_stats,
       Class: "outline-input",
     },
     {
-      Enabled: gameData.page.game_details_shadow,
+      Enabled: gameData.page.outlines.game_details_shadow,
       Element: game_stats,
       Class: "shadow-input",
     },
     {
-      Enabled: gameData.page.description_outline,
+      Enabled: gameData.page.outlines.description_outline,
       Element: game_desc_background,
       Class: "outline-input",
     },
     {
-      Enabled: gameData.page.description_shadow,
+      Enabled: gameData.page.outlines.description_shadow,
       Element: game_desc_background,
       Class: "shadow-input",
     },
@@ -371,15 +371,15 @@ const gameHandler = async (gameId) => {
 
   let page_alphas = [
     {
-      Amount: gameData.page.bg2_alpha,
+      Amount: gameData.page.alphas.bg2_alpha,
       Element: game_column,
     },
     {
-      Amount: gameData.page.description_bg_alpha,
+      Amount: gameData.page.alphas.description_bg_alpha,
       Element: game_desc_background,
     },
     {
-      Amount: gameData.page.game_details_bg_alpha,
+      Amount: gameData.page.alphas.game_details_bg_alpha,
       Element: game_stats,
     },
   ];
@@ -593,28 +593,28 @@ const gameHandler = async (gameId) => {
     let page_details_checkboxes = [
       {
         Name: "game_details_outline",
-        Enabled: gameData.page.game_details_outline,
+        Enabled: gameData.page.outlines.game_details_outline,
         Element: details_outline_checkbox,
         Element_Changing: game_stats,
         Class: "outline-input",
       },
       {
         Name: "game_details_shadow",
-        Enabled: gameData.page.game_details_shadow,
+        Enabled: gameData.page.outlines.game_details_shadow,
         Element: details_shadow_checkbox,
         Element_Changing: game_stats,
         Class: "shadow-input",
       },
       {
         Name: "description_outline",
-        Enabled: gameData.page.description_outline,
+        Enabled: gameData.page.outlines.description_outline,
         Element: description_outline_checkbox,
         Element_Changing: game_desc_background,
         Class: "outline-input",
       },
       {
         Name: "description_shadow",
-        Enabled: gameData.page.description_shadow,
+        Enabled: gameData.page.outlines.description_shadow,
         Element: description_shadow_checkbox,
         Element_Changing: game_desc_background,
         Class: "shadow-input",
@@ -624,19 +624,19 @@ const gameHandler = async (gameId) => {
     let page_details_alphas = [
       {
         Name: "bg2_alpha",
-        Amount: gameData.page.bg2_alpha,
+        Amount: gameData.page.alphas.bg2_alpha,
         Element: bg2_alpha_input,
         Element_Changing: game_column,
       },
       {
         Name: "description_bg_alpha",
-        Amount: gameData.page.description_bg_alpha,
+        Amount: gameData.page.alphas.description_bg_alpha,
         Element: description_bg_alpha_input,
         Element_Changing: game_desc_background,
       },
       {
         Name: "game_details_bg_alpha",
-        Amount: gameData.page.game_details_bg_alpha,
+        Amount: gameData.page.alphas.game_details_bg_alpha,
         Element: details_bg_alpha_input,
         Element_Changing: game_stats,
       },
