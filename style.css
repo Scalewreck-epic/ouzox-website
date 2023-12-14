@@ -825,13 +825,23 @@ p {
 }
 
 .product-image {
-  width: 18rem;
-  height: 14.4rem;
   position: relative;
-  border-radius: 0.938rem;
+  width: 18rem;
+  height: 14rem;
+  border-radius: 1rem;
   box-shadow: 0 0.313rem 0.625rem black;
   object-fit: fill;
   object-position: center;
+  transition: outline 0.2s ease-in-out;
+}
+
+.product-image-preview {
+  display: block;
+  width: 100%;
+  max-width: 18rem;
+  height: 14rem;
+  border-radius: 1rem;
+  box-shadow: 0 0.313rem 0.625rem black;
   transition: outline 0.2s ease-in-out;
 }
 
@@ -1039,7 +1049,7 @@ p {
   font-size: 1.125rem;
   border-radius: 1rem;
   min-height: 10rem;
-  background-color: #222222;
+  background-color: #0e0e0e;
   width: auto;
   margin: 1rem;
   margin-top: 0;
