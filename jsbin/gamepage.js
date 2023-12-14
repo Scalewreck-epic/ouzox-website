@@ -505,9 +505,7 @@ const gameHandler = async (gameId) => {
     const bg2_outline_checkbox = document.getElementById(
       "bg2-outline-checkbox"
     );
-    const bg2_shadow_checkbox = document.getElementById(
-      "bg2-shadow-checkbox"
-    );
+    const bg2_shadow_checkbox = document.getElementById("bg2-shadow-checkbox");
 
     game_genre_input.textContent = gameData.genre;
     game_age_input.selectedIndex =
@@ -640,7 +638,7 @@ const gameHandler = async (gameId) => {
         Enabled: gameData.page.outlines.bg2_outline,
         Element: bg2_outline_checkbox,
         Element_Changing: game_column,
-        Class: "outline-input"
+        Class: "outline-input",
       },
       {
         Name: "bg2_shadow",
@@ -858,8 +856,9 @@ const gameHandler = async (gameId) => {
               VRSupport: game_features[6].Enabled ? "true" : "false",
             },
             page: {
-              font_family:
-                getComputedStyle(game_column).getPropertyValue("font-family").toString(),
+              font_family: getComputedStyle(game_column)
+                .getPropertyValue("font-family")
+                .toString(),
               defaultColors: false,
               outlines: {
                 game_details_outline: page_details_checkboxes[0].Enabled
@@ -874,8 +873,8 @@ const gameHandler = async (gameId) => {
                 description_shadow: page_details_checkboxes[3].Enabled
                   ? "true"
                   : "false",
-                  bg2_outline: page_details_alphas[4].Enabled ? "true" : "false",
-                  bg2_shadow: page_details_alphas[5].Enabled ? "true" : "false",
+                bg2_outline: page_details_alphas[4].Enabled ? "true" : "false",
+                bg2_shadow: page_details_alphas[5].Enabled ? "true" : "false",
               },
               alphas: {
                 bg2_alpha: page_details_alphas[0].Amount,
