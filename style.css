@@ -902,8 +902,7 @@ p {
   font-family: 'Lato';
   width: auto;
   margin: 0 auto;
-  background-color: #0a0a0a;
-  box-shadow: 0 1rem 1rem black;
+  background-color: rgba(10,10,10, 1);
 }
 
 .game-download {
@@ -1013,18 +1012,24 @@ p {
   margin-top: 0;
 }
 
+.outline-input {
+  outline: 1px solid #3f3f3f;
+}
+
+.shadow-input {
+  box-shadow: 0 1rem 1rem black;
+}
+
 .game-stats {
   display: block;
   border-radius: 1rem;
   background-color: #222222;
-  box-shadow: 0 1rem 1rem black;
   padding: 1rem;
   width: auto;
   height: auto;
   margin: 1rem;
   margin-top: 0;
   color: white;
-  outline: 1px solid #3f3f3f;
   transition: transform 0.3s ease;
 }
 
@@ -1035,12 +1040,10 @@ p {
   border-radius: 1rem;
   min-height: 10rem;
   background-color: #222222;
-  box-shadow: 0 1rem 1rem black;
   width: auto;
   margin: 1rem;
   margin-top: 0;
   color: white;
-  outline: 1px solid #3f3f3f;
   transition: transform 0.3s ease;
 }
 
@@ -1114,6 +1117,41 @@ p {
 
 .game-stat-feature {
   display: flex;
+}
+
+input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  margin: 0;
+  background-color: transparent;
+  height: 1rem;
+}
+
+input[type="range"]::-webkit-slider-runnable-track {
+  background-color: #292929;
+  border-radius: 1rem;
+  outline: solid 3px black;
+  height: 1rem;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 1.25rem;
+  height: 1.25rem;
+  outline: solid 2px black;
+  background-color: #4D0101;
+  border-radius: 50%;
+  transform: translateY(-10%);
+  cursor: pointer;
+}
+
+input[type="color"] {
+  width: 100px;
+  padding: 0.3rem;
+  outline: solid 2px black;
+  border-radius: 0.5rem;
 }
 
 .web-icon:hover {
@@ -1302,11 +1340,13 @@ p {
   display: block;
   overflow: hidden;
   text-overflow: ellipsis;
+  white-space: nowrap;
   margin: 0;
   text-align: center;
 }
 
 .genre-name {
+  max-height: 2rem;
   font-size: 1.25rem;
 }
 
@@ -1323,8 +1363,24 @@ p {
 .market {
   display: flex;
   overflow-x: auto;
+  overflow-y: hidden;
   gap: 1.25rem 1.25rem;
   padding: 1rem;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.market::-webkit-scrollbar {
+  width: 1rem;
+}
+
+.market::-webkit-scrollbar-thumb {
+  background: #3f3f3f;
+  border-radius: 1rem;
+}
+
+.market::-webkit-scrollbar-thumb:hover {
+  outline: 0.125rem solid #4D0101;
 }
 
 .login-form {

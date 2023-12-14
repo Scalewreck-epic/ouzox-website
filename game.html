@@ -52,14 +52,14 @@
 			</div>
 			<div class="columns">
 				<div class="left-column">
-					<div class="game-description">
+					<div class="game-description outline-input shadow-input" id="game-description">
 						<div class="game-about" id="description">
 							Test Description
 						</div>
 					</div>
 				</div>
 				<div class="right-column">
-					<div class="game-stats" id="game-stats">
+					<div class="game-stats outline-input shadow-input" id="game-stats">
 						<h1>Game Details</h1>
 						<div class="game-stat">
 							<div class="game-stat-title">Publisher:</div>
@@ -248,7 +248,7 @@
 						
 						<h1>Platforms</h1>
 						<div class="game-setting">
-							<div class="title-label">Windows:</div>
+							<div class="game-setting-title">Windows:</div>
 							<div class="game-setting-feature">
 								<label class="cl-checkbox">
 									<input type="checkbox" value="1" id="windows">
@@ -257,7 +257,7 @@
 							</div>
 						</div>
 						<div class="game-setting">
-							<div class="title-label">Mac:</div>
+							<div class="game-setting-title">Mac:</div>
 							<div class="game-setting-feature">
 								<label class="cl-checkbox">
 									<input type="checkbox" value="1" id="mac">
@@ -266,7 +266,7 @@
 							</div>
 						</div>
 						<div class="game-setting">
-							<div class="title-label">Linux:</div>
+							<div class="game-setting-title">Linux:</div>
 							<div class="game-setting-feature">
 								<label class="cl-checkbox">
 									<input type="checkbox" value="1" id="linux">
@@ -275,7 +275,7 @@
 							</div>
 						</div>
 						<div class="game-setting">
-							<div class="title-label">Android:</div>
+							<div class="game-setting-title">Android:</div>
 							<div class="game-setting-feature">
 								<label class="cl-checkbox">
 									<input type="checkbox" value="1" id="android">
@@ -284,7 +284,7 @@
 							</div>
 						</div>
 						<div class="game-setting">
-							<div class="title-label">IOS:</div>
+							<div class="game-setting-title">IOS:</div>
 							<div class="game-setting-feature">
 								<label class="cl-checkbox">
 									<input type="checkbox" value="1" id="ios">
@@ -293,7 +293,7 @@
 							</div>
 						</div>
 						<div class="game-setting">
-							<div class="title-label">XBOX:</div>
+							<div class="game-setting-title">XBOX:</div>
 							<div class="game-setting-feature">
 								<label class="cl-checkbox">
 									<input type="checkbox" value="1" id="xbox">
@@ -302,7 +302,7 @@
 							</div>
 						</div>
 						<div class="game-setting">
-							<div class="title-label">PlayStation:</div>
+							<div class="game-setting-title">PlayStation:</div>
 							<div class="game-setting-feature">
 								<label class="cl-checkbox">
 									<input type="checkbox" value="1" id="playstation">
@@ -311,7 +311,7 @@
 							</div>
 						</div>
 						<div class="game-setting">
-							<div class="title-label">Oculus:</div>
+							<div class="game-setting-title">Oculus:</div>
 							<div class="game-setting-feature">
 								<label class="cl-checkbox">
 									<input type="checkbox" value="1" id="oculus">
@@ -370,6 +370,54 @@
 						</div>
 					</div>
 					<h1>Page editing</h1>
+					<div class="game-setting">
+						<div class="game-setting-title">BG2 Alpha</div>
+						<input type="range" id="bg2-alpha" min="0" max="100" value="100" step="1">
+					</div>
+					<div class="game-setting">
+						<div class="game-setting-title">Description BG Alpha</div>
+						<input type="range" id="description-bg-alpha" min="0" max="100" value="100" step="1">
+					</div>
+					<div class="game-setting">
+						<div class="game-setting-title">Game Details BG Alpha</div>
+						<input type="range" id="game-details-bg-alpha" min="0" max="100" value="100" step="1">
+					</div>
+					<div class="game-setting">
+						<div class="game-setting-title">Game Details Outline</div>
+						<div class="game-setting-feature">
+							<label class="cl-checkbox">
+								<input type="checkbox" checked id="game-details-outline-checkbox">
+								<span class="cl-checkbox-box"></span>
+							</label>
+						</div>
+					</div>
+					<div class="game-setting">
+						<div class="game-setting-title">Game Details Shadow</div>
+						<div class="game-setting-feature">
+							<label class="cl-checkbox">
+								<input type="checkbox" checked id="game-details-shadow-checkbox">
+								<span class="cl-checkbox-box"></span>
+							</label>
+						</div>
+					</div>
+					<div class="game-setting">
+						<div class="game-setting-title">Description Outline</div>
+						<div class="game-setting-feature">
+							<label class="cl-checkbox">
+								<input type="checkbox" checked id="description-outline-checkbox">
+								<span class="cl-checkbox-box"></span>
+							</label>
+						</div>
+					</div>
+					<div class="game-setting">
+						<div class="game-setting-title">Description Shadow</div>
+						<div class="game-setting-feature">
+							<label class="cl-checkbox">
+								<input type="checkbox" checked id="description-shadow-checkbox">
+								<span class="cl-checkbox-box"></span>
+							</label>
+						</div>
+					</div>
 					<div class="game-setting">
 						<div class="game-setting-title">BG Color</div>
 						<input class="game-download-input" type="color" id="bg-color"></input>

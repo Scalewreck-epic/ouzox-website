@@ -146,7 +146,7 @@ uploadGame.addEventListener("submit", async function (event) {
 
         return result_parse;
       } catch (error) {
-        error("Cannot upload product to stripe: " + error);
+        console.error(`Error uploading product to stripe ${error}`);
       }
     }
 
@@ -172,22 +172,22 @@ uploadGame.addEventListener("submit", async function (event) {
           icon_upload: imageURI,
           product_id: productId,
           platforms: {
-            windows: game_platforms[0].Enabled ? "true" : "false",
-            mac: game_platforms[1].Enabled ? "true" : "false",
-            linux: game_platforms[2].Enabled ? "true" : "false",
-            android: game_platforms[3].Enabled ? "true" : "false",
-            ios: game_platforms[4].Enabled ? "true" : "false",
-            xbox: game_platforms[5].Enabled ? "true" : "false",
-            playstation: game_platforms[6].Enabled ? "true" : "false",
-            oculus: game_platforms[7].Enabled ? "true" : "false",
+            windows: game_platforms[0].Enabled,
+            mac: game_platforms[1].Enabled,
+            linux: game_platforms[2].Enabled,
+            android: game_platforms[3].Enabled,
+            ios: game_platforms[4].Enabled,
+            xbox: game_platforms[5].Enabled,
+            playstation: game_platforms[6].Enabled,
+            oculus: game_platforms[7].Enabled,
           },
           features: {
-            Singleplayer: game_features[1].Enabled ? "true" : "false",
-            Multiplayer: game_features[2].Enabled ? "true" : "false",
-            Coop: game_features[3].Enabled ? "true" : "false",
-            Achievements: game_features[4].Enabled ? "true" : "false",
-            ControllerSupport: game_features[5].Enabled ? "true" : "false",
-            Saves: game_features[6].Enabled ? "true" : "false",
+            Singleplayer: game_features[0].Enabled,
+            Multiplayer: game_features[1].Enabled,
+            Coop: game_features[2].Enabled,
+            Achievements: game_features[3].Enabled,
+            ControllerSupport: game_features[4].Enabled,
+            Saves: game_features[5].Enabled,
           },
           colors: {
             bgColor: "",
@@ -264,7 +264,7 @@ uploadGame.addEventListener("submit", async function (event) {
 
         return result_parse;
       } catch (error) {
-        error("Cannot set price: " + error);
+        console.error(`Error setting price ${error}`)
       }
     }
 
@@ -276,18 +276,23 @@ uploadGame.addEventListener("submit", async function (event) {
 
         if (product_result && product_result.id) {
           error_label.innerHTML = "Setting price...";
-          await uploadGame(product_result.id, false);
-
+          const game = await uploadGame(product_result.id, false);
           const price = await setProductPrice(product_result.id);
 
-          await updateGenre();
-          if (price && price.active) {
-            console.log("Product uploaded successfully!");
+          if (price && price.active && game.game) {
+            console.log("Game and product uploaded successfully!");
             error_label.innerHTML = "Successfully published game!";
           }
         }
       } else {
-        await uploadGame("none", true);
+        const game = await uploadGame("none", true);
+
+        if (game.game) {
+          console.log("Game uploaded successfully!");
+          error_label.innerHTML = "Successfully published game!";
+        } else {
+          error_label.innerHTML = game.message;
+        }
       }
     } catch (error) {
       console.error(`Error trying to publish game: ${error}`);
@@ -310,7 +315,7 @@ function checkThumbnail() {
     previewImage.src = imageUrl;
   });
 
-  if (file !== null) {
+  if (file !== null && file instanceof Blob) {
     reader.readAsDataURL(file);
   }
 }
@@ -320,7 +325,7 @@ function checkFileSize() {
   const warn = document.getElementById("game-file-warn");
 
   const file = input.files[0];
-  const maxFileSize = 5368709120;
+  const maxFileSize = 5000000000;
 
   if (file.size > maxFileSize) {
     warn.innerHTML = "File size too large, select a file under 5GB";
@@ -365,28 +370,44 @@ function checkPrice() {
 
 function checkGenre() {
   const genreSelect = document.getElementById("genre-input");
-  genreSelect.value = encodeURIComponent(genreSelect.value);
+  genreSelect.value = genreSelect.value.toUpperCase();
+}
+
+function checkArt() {
+  const game_art = document.getElementById("art-style-input");
+  game_art.value = game_art.value.toUpperCase();
+
 }
 
 const game_thumbnail = document.getElementById("thumbnail");
 const game_price = document.getElementById("price");
 const genre_input = document.getElementById("genre-input");
 const game_isfree = document.getElementById("isfree");
-const game_title = document.getElementById("title");
-const game_summary = document.getElementById("summary");
+const game_art = document.getElementById("art-style-input");
+const download_file = document.getElementById("download-file");
 
 checkIsFree();
 
-game_thumbnail.onchange = checkThumbnail();
-game_isfree.onchange = checkIsFree();
+download_file.addEventListener("change", function() {
+  checkFileSize();
+})
 
-game_price.addEventListener("input", checkPrice());
-genre_input.addEventListener("input", checkGenre());
+game_thumbnail.addEventListener("change", function() {
+  checkThumbnail();
+})
 
-game_title.addEventListener("input", function () {
-  this.style.width = (this.value.length + 1) * 10 + "px";
+game_isfree.addEventListener("change", function() {
+  checkIsFree();
+})
+
+game_price.addEventListener("input", function() {
+  checkPrice();
 });
 
-game_summary.addEventListener("input", function () {
-  this.style.width = (this.value.length + 1) * 10 + "px";
+genre_input.addEventListener("input", function() {
+  checkGenre();
+});
+
+game_art.addEventListener("input", function() {
+  checkArt();
 });

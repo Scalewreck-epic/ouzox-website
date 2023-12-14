@@ -105,7 +105,7 @@ function setStats() {
       }
     })
     .catch((error) => {
-      console.error(`[1] Error trying to get user data: ${error}`);
+      throw new Error(`[1] Error trying to get user data: ${error}`);
     });
 }
 
@@ -309,7 +309,7 @@ if (window.location.pathname.includes("/user")) {
       }
     })
     .catch((error) => {
-      console.error(`[2] Error trying to get user data: ${error}`);
+      throw new Error(`[2] Error trying to get user data: ${error}`);
     });
 }
 

@@ -12,6 +12,8 @@ let prices = [];
 let games = [];
 let genres = [];
 
+let offset = 100;
+
 function getGamePrice(game_id) {
   const result = prices.find((item) => item.product === game_id);
   if (result) {
@@ -63,89 +65,90 @@ function createGamePage(game, game_price, market) {
   const price = game_price.price / 100;
   const currency = game_price.currency;
 
-  const gamesDiv = document.createElement("div");
-  gamesDiv.className = "game";
+  const game_div = document.createElement("div");
+  const game_image = document.createElement("img");
+  const game_image_container = document.createElement("a");
+  const game_title = document.createElement("a");
+  const game_summary = document.createElement("div");
+  const game_price_div = document.createElement("div");
+  const game_price_text = document.createElement("span");
 
-  const gameImage = document.createElement("img");
-  gameImage.className = "product-image";
-  gameImage.setAttribute("src", game.icon.url);
+  game_div.className = "game";
 
-  const gameImageContainer = document.createElement("a");
-  gameImageContainer.className = "product-image-container";
+  game_image.className = "product-image";
+  game_image.setAttribute("src", game.icon.url);
 
-  const gameTitle = document.createElement("a");
-  gameTitle.className = "product-title";
-  gameTitle.textContent = game.name;
+  game_image_container.className = "product-image-container";
 
-  gameImageContainer.setAttribute("href", `game?g=${game.id}`);
-  gameTitle.setAttribute("href", `game?g=${game.id}`);
+  game_title.className = "product-title";
+  game_title.textContent = game.name;
 
-  const gameSummary = document.createElement("div");
-  gameSummary.className = "product-summary";
-  gameSummary.textContent = game.summary;
+  game_image_container.setAttribute("href", `game?g=${game.id}`);
+  game_title.setAttribute("href", `game?g=${game.id}`);
 
-  const gamePrice = document.createElement("div");
-  gamePrice.className = "product-price";
+  game_summary.className = "product-summary";
+  game_summary.textContent = game.summary;
 
-  const gamePriceText = document.createElement("span");
-  gamePriceText.innerHTML = `${price} ${currency.toUpperCase()}`;
+  game_price_div.className = "product-price";
 
-  const diffDaysCreated = calculateDiffDays(game.created_at);
-  const diffDaysUpdated = calculateDiffDays(game.updated_at);
+  game_price_text.innerHTML = `${price} ${currency.toUpperCase()}`;
 
-  gamePrice.appendChild(gamePriceText);
+  const diff_days_created = calculateDiffDays(game.created_at);
+  const diff_days_updated = calculateDiffDays(game.updated_at);
 
-  gameImageContainer.appendChild(gameImage);
-  gameImageContainer.appendChild(gamePrice);
+  game_price_div.appendChild(game_price_text);
 
-  if (diffDaysCreated <= 7) {
-    const createdLabel = document.createElement("div");
-    createdLabel.className = "new-label";
+  game_image_container.appendChild(game_image);
+  game_image_container.appendChild(game_price_div);
 
-    const createdText = document.createElement("span");
-    createdText.innerHTML = "NEW";
+  if (diff_days_created <= 7) {
+    const game_created_label = document.createElement("div");
+    game_created_label.className = "new-label";
 
-    createdLabel.appendChild(createdText);
-    gameImageContainer.appendChild(createdLabel);
+    const game_created_text = document.createElement("span");
+    game_created_text.innerHTML = "NEW";
 
-    createdLabel.addEventListener("mouseenter", function () {
-      if (diffDaysCreated != 1) {
-        createdText.innerHTML = `${diffDaysCreated} DAYS AGO`;
+    game_created_label.appendChild(game_created_text);
+    game_image_container.appendChild(game_created_label);
+
+    game_created_label.addEventListener("mouseenter", function () {
+      if (diff_days_created != 1) {
+        game_created_text.innerHTML = `${diff_days_created} DAYS AGO`;
       } else {
-        createdText.innerHTML = `TODAY`;
+        game_created_text.innerHTML = `TODAY`;
       }
     });
 
-    createdLabel.addEventListener("mouseleave", function () {
-      createdText.innerHTML = "NEW";
+    game_created_label.addEventListener("mouseleave", function () {
+      game_created_text.innerHTML = "NEW";
     });
-  } else if (diffDaysUpdated <= 7) {
-    const updatedLabel = document.createElement("div");
-    updatedLabel.className = "updated-label";
+  } else if (diff_days_updated <= 7) {
+    const game_updated_label = document.createElement("div");
+    game_updated_label.className = "updated-label";
 
-    const updatedText = document.createElement("span");
-    updatedText.innerHTML = "UPDATED";
+    const game_updated_text = document.createElement("span");
+    game_updated_text.innerHTML = "UPDATED";
 
-    updatedLabel.appendChild(updatedText);
-    gameImageContainer.appendChild(updatedLabel);
+    game_updated_label.appendChild(game_updated_text);
+    game_image_container.appendChild(game_updated_label);
 
-    updatedLabel.addEventListener("mouseenter", function () {
-      if (diffDaysCreated != 1) {
-        updatedText.innerHTML = `${diffDaysUpdated} DAYS AGO`;
+    game_updated_label.addEventListener("mouseenter", function () {
+      if (diff_days_updated != 1) {
+        game_updated_text.innerHTML = `${diff_days_updated} DAYS AGO`;
       } else {
-        updatedText.innerHTML = `TODAY`;
+        game_updated_text.innerHTML = `TODAY`;
       }
     });
 
-    updatedLabel.addEventListener("mouseleave", function () {
-      updatedText.innerHTML = "UPDATED";
+    game_updated_label.addEventListener("mouseleave", function () {
+      game_updated_text.innerHTML = "UPDATED";
     });
   }
-  gamesDiv.appendChild(gameImageContainer);
-  gamesDiv.appendChild(gameTitle);
-  gamesDiv.appendChild(gameSummary);
+  game_div.appendChild(game_image_container);
+  game_div.appendChild(game_title);
+  game_div.appendChild(game_summary);
 
-  market.appendChild(gamesDiv);
+  market.appendChild(game_div);
 }
 
 function levenshteinDistance(a, b) {
@@ -238,13 +241,14 @@ function removeIrrelevantGames() {
 
 function loadGamesWithList(list, category, gameslist) {
   const filteredGames = gameslist.filter((game) => game && game.active);
+  const slicedGames = filteredGames.slice(0, 16);
 
-  filteredGames.forEach((game) => {
+  slicedGames.forEach((game) => {
     const game_price = getGamePrice(game.id.toString());
     createGamePage(game, game_price, list);
   });
 
-  if (filteredGames.length > 0) {
+  if (slicedGames.length > 0) {
     const categoryNoneElement = category.querySelector(".category-none");
 
     if (categoryNoneElement) {
@@ -284,6 +288,15 @@ function sortGames(listId, gamesList, sortingFunction) {
   loadGamesWithList(listElement, gamesElement, gamesList);
 }
 
+const loadMoreGames = () => {
+  const slicedGames = games.slice(offset, offset + 100);
+  sortGames("relevant-games-list", slicedGames, (a, b) => {
+    const scoreA = a.relevance * 0.7 + a.downloads * 0.3;
+    const scoreB = b.relevance * 0.7 + b.downloads * 0.3;
+    scoreA - scoreB;
+  });
+}
+
 function loadGames() {
   if (
     window.location.pathname.includes("/search") ||
@@ -291,12 +304,14 @@ function loadGames() {
   ) {
     const results_label = document.getElementById("results-label");
     if (games.length == 1) {
-      results_label.textContent = "(" + games.length + " result)"
+      results_label.textContent = "(1 result)";
+    } else if (games.length == 0) {
+      results_label.textContent = "(no results)";
     } else {
-      results_label.textContent = "(" + games.length + " results)"
+      results_label.textContent = `(${games.length} results)`;
     }
 
-    sortGames("relevant-games-list", games, (a, b) => {
+    sortGames("relevant-games-list", games.slice(0, 100), (a, b) => {
       b.relevance - a.relevance;
     });
   } else {
@@ -391,31 +406,25 @@ async function fetchGamesRequest() {
         prices.sort((a, b) => b.unit_amount - a.unit_amount);
       }
     } catch (error) {
-      console.error(`There was an error trying to set prices: ${error}`);
+      throw new Error(`There was an error trying to set prices: ${error}`);
     };
   };
 
   function setGenres() {
-    games.forEach((game) => {
+    for (const game of games) {
       let found = false;
-
-      for (let i = 1; i < genres.length; i++) {
-        const genre = genres[i];
-
-        if (genre.name == game.genre) {
+      for (const genre of genres) {
+        if (genre.name === game.genre) {
           genre.count++;
           found = true;
           break;
         }
       }
-
+  
       if (!found) {
-        genres[genres.length++] = {
-          name: game.genre,
-          count: 1,
-        };
+        genres.push({ name: game.genre, count: 1 });
       }
-    });
+    }
   };
 
   async function fetchData() {
@@ -437,11 +446,11 @@ async function fetchGamesRequest() {
             loadGames();
           }
         } catch (error) {
-          console.error(`Error trying to load games: ${error}`);
+          throw new Error(`Error trying to load games: ${error}`);
         };
       };
     } catch (error) {
-      console.error(`Error trying to fetch games: ${error}`);
+      throw new Error(`Error trying to fetch games: ${error}`);
     };
   };
 
@@ -486,3 +495,17 @@ function setCategory() {
 fetchGames();
 setSearch();
 setCategory();
+
+window.addEventListener("scroll", () => {
+  if (
+  window.location.pathname.includes("/search") ||
+  window.location.pathname.includes("/category")) {
+    const scrollPosition = window.scrollY + window.innerHeight;
+    const pageHeight = document.documentElement.scrollHeight;
+
+    if (scrollPosition >= pageHeight - 100) {
+      offset += 100;
+      loadMoreGames();
+    }
+  }
+})
