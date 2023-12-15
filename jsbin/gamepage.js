@@ -525,18 +525,18 @@ const gameHandler = async (gameId) => {
       game_art_style_input.value = game_art_style_input.value.toUpperCase();
     });
 
-    const image = game_thumbnail_input.files[0];
-    const reader = new FileReader();
-    let imageURI;
+    //const image = game_thumbnail_input.files[0];
+    //const reader = new FileReader();
+    //let imageURI;
 
-    reader.onload = function (event) {
-      imageURI = event.target.result;
-    };
+    //reader.onload = function (event) {
+      //imageURI = event.target.result;
+    //};
 
-    await new Promise((resolve) => {
-      reader.onloadend = () => resolve();
-      reader.readAsDataURL(image);
-    });
+    //await new Promise((resolve) => {
+      //reader.onloadend = () => resolve();
+      //reader.readAsDataURL(image);
+    //});
 
     let ispublic = {
       Enabled: gameData.active ? "true" : "false",
