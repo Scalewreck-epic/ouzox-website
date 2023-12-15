@@ -468,8 +468,10 @@ const gameHandler = async (gameId) => {
     const oculus = document.getElementById("oculus");
 
     const game_genre_input = document.getElementById("genre-input");
+    const game_art_style_input = document.getElementById("art-style-input");
     const game_currency_input = document.getElementById("currency-sort");
     const game_age_input = document.getElementById("age-sort");
+    const game_thumbnail_input = document.getElementById("thumbnail-input");
 
     const bg_color_input = document.getElementById("bg-color");
     const bg2_color_input = document.getElementById("bg2-color");
@@ -508,14 +510,32 @@ const gameHandler = async (gameId) => {
     const bg2_shadow_checkbox = document.getElementById("bg2-shadow-checkbox");
 
     game_genre_input.textContent = gameData.genre;
+    game_art_style_input.textContent = gameData.artstyle;
     game_age_input.selectedIndex =
       game_age_input.options[game_age_input.selectedIndex].value;
+
     game_currency_input.selectedIndex =
       game_currency_input.options[game_currency_input.selectedIndex].value;
 
     game_genre_input.addEventListener("input", function () {
-      const genreSelect = document.getElementById("genre-input");
-      genreSelect.value = genreSelect.value.toUpperCase();
+      game_genre_input.value = game_genre_input.value.toUpperCase();
+    });
+
+    game_art_style_input.addEventListener("input", function () {
+      game_art_style_input.value = game_art_style_input.value.toUpperCase();
+    });
+
+    const image = game_thumbnail_input.files[0];
+    const reader = new FileReader();
+    let imageURI;
+
+    reader.onload = function (event) {
+      imageURI = event.target.result;
+    };
+
+    await new Promise((resolve) => {
+      reader.onloadend = () => resolve();
+      reader.readAsDataURL(image);
     });
 
     let ispublic = {
@@ -827,92 +847,101 @@ const gameHandler = async (gameId) => {
 
         const game_stat_elemts = document.getElementsByClassName("game-stat");
 
+        const update_game_options_body = {
+          name: game_title.textContent,
+          description: game_desc.innerHTML,
+          summary: game_summary.textContent,
+          genre: game_genre_input.textContent,
+          artstyle: game_art_style_input.textContent,
+          age_rating: game_age_input.options[game_age_input.selectedIndex].value,
+          active: ispublic.Enabled ? "true" : "false",
+          platforms: {
+            windows: game_platforms[0].Enabled ? "true" : "false",
+            mac: game_platforms[1].Enabled ? "true" : "false",
+            linux: game_platforms[2].Enabled ? "true" : "false",
+            android: game_platforms[3].Enabled ? "true" : "false",
+            ios: game_platforms[4].Enabled ? "true" : "false",
+            xbox: game_platforms[5].Enabled ? "true" : "false",
+            playstation: game_platforms[6].Enabled ? "true" : "false",
+            oculus: game_platforms[7].Enabled ? "true" : "false",
+          },
+          features: {
+            Singleplayer: game_features[0].Enabled ? "true" : "false",
+            Multiplayer: game_features[1].Enabled ? "true" : "false",
+            Coop: game_features[2].Enabled ? "true" : "false",
+            Achievements: game_features[3].Enabled ? "true" : "false",
+            ControllerSupport: game_features[4].Enabled ? "true" : "false",
+            Saves: game_features[5].Enabled ? "true" : "false",
+            VRSupport: game_features[6].Enabled ? "true" : "false",
+          },
+          page: {
+            font_family: getComputedStyle(game_column)
+              .getPropertyValue("font-family")
+              .toString(),
+            defaultColors: false,
+            outlines: {
+              game_details_outline: page_details_checkboxes[0].Enabled
+                ? "true"
+                : "false",
+              game_details_shadow: page_details_checkboxes[1].Enabled
+                ? "true"
+                : "false",
+              description_outline: page_details_checkboxes[2].Enabled
+                ? "true"
+                : "false",
+              description_shadow: page_details_checkboxes[3].Enabled
+                ? "true"
+                : "false",
+              bg2_outline: page_details_alphas[4].Enabled ? "true" : "false",
+              bg2_shadow: page_details_alphas[5].Enabled ? "true" : "false",
+            },
+            alphas: {
+              bg2_alpha: page_details_alphas[0].Amount,
+              description_bg_alpha: page_details_alphas[1].Amount,
+              game_details_bg_alpha: page_details_alphas[2].Amount,
+            },
+            colors: {
+              bg_color: getComputedStyle(document.body).getPropertyValue(
+                "background-color"
+              ),
+              bg2_color:
+                getComputedStyle(game_column).getPropertyValue(
+                  "background-color"
+                ),
+              title_color:
+                getComputedStyle(game_title_column).getPropertyValue("color"),
+              desc_color:
+                getComputedStyle(game_desc).getPropertyValue("color"),
+              desc_bg_color:
+                getComputedStyle(game_desc_background).getPropertyValue(
+                  "background-color"
+                ),
+              button_color:
+                getComputedStyle(download_button).getPropertyValue(
+                  "background-color"
+                ),
+              button_text_color:
+                getComputedStyle(download_button).getPropertyValue("color"),
+              stats_bg_color:
+                getComputedStyle(game_stats).getPropertyValue(
+                  "background-color"
+                ),
+              stats_text_color: getComputedStyle(
+                game_stat_elemts[0]
+              ).getPropertyValue("color"),
+            },
+          },
+        };
+
+        if (imageURI !== null) {
+          update_game_options_body.icon = imageURI;
+        }
+
         const update_game_options = {
           method: "POST",
           headers: myHeaders,
           redirect: "follow",
-          body: JSON.stringify({
-            name: game_title.textContent,
-            description: game_desc.innerHTML,
-            summary: game_summary.textContent,
-            active: ispublic.Enabled ? "true" : "false",
-            platforms: {
-              windows: game_platforms[0].Enabled ? "true" : "false",
-              mac: game_platforms[1].Enabled ? "true" : "false",
-              linux: game_platforms[2].Enabled ? "true" : "false",
-              android: game_platforms[3].Enabled ? "true" : "false",
-              ios: game_platforms[4].Enabled ? "true" : "false",
-              xbox: game_platforms[5].Enabled ? "true" : "false",
-              playstation: game_platforms[6].Enabled ? "true" : "false",
-              oculus: game_platforms[7].Enabled ? "true" : "false",
-            },
-            features: {
-              Singleplayer: game_features[0].Enabled ? "true" : "false",
-              Multiplayer: game_features[1].Enabled ? "true" : "false",
-              Coop: game_features[2].Enabled ? "true" : "false",
-              Achievements: game_features[3].Enabled ? "true" : "false",
-              ControllerSupport: game_features[4].Enabled ? "true" : "false",
-              Saves: game_features[5].Enabled ? "true" : "false",
-              VRSupport: game_features[6].Enabled ? "true" : "false",
-            },
-            page: {
-              font_family: getComputedStyle(game_column)
-                .getPropertyValue("font-family")
-                .toString(),
-              defaultColors: false,
-              outlines: {
-                game_details_outline: page_details_checkboxes[0].Enabled
-                  ? "true"
-                  : "false",
-                game_details_shadow: page_details_checkboxes[1].Enabled
-                  ? "true"
-                  : "false",
-                description_outline: page_details_checkboxes[2].Enabled
-                  ? "true"
-                  : "false",
-                description_shadow: page_details_checkboxes[3].Enabled
-                  ? "true"
-                  : "false",
-                bg2_outline: page_details_alphas[4].Enabled ? "true" : "false",
-                bg2_shadow: page_details_alphas[5].Enabled ? "true" : "false",
-              },
-              alphas: {
-                bg2_alpha: page_details_alphas[0].Amount,
-                description_bg_alpha: page_details_alphas[1].Amount,
-                game_details_bg_alpha: page_details_alphas[2].Amount,
-              },
-              colors: {
-                bg_color: getComputedStyle(document.body).getPropertyValue(
-                  "background-color"
-                ),
-                bg2_color:
-                  getComputedStyle(game_column).getPropertyValue(
-                    "background-color"
-                  ),
-                title_color:
-                  getComputedStyle(game_title_column).getPropertyValue("color"),
-                desc_color:
-                  getComputedStyle(game_desc).getPropertyValue("color"),
-                desc_bg_color:
-                  getComputedStyle(game_desc_background).getPropertyValue(
-                    "background-color"
-                  ),
-                button_color:
-                  getComputedStyle(download_button).getPropertyValue(
-                    "background-color"
-                  ),
-                button_text_color:
-                  getComputedStyle(download_button).getPropertyValue("color"),
-                stats_bg_color:
-                  getComputedStyle(game_stats).getPropertyValue(
-                    "background-color"
-                  ),
-                stats_text_color: getComputedStyle(
-                  game_stat_elemts[0]
-                ).getPropertyValue("color"),
-              },
-            },
-          }),
+          body: JSON.stringify(update_game_options_body),
         };
 
         commitChangesButton.innerHTML = "Uploading..";
