@@ -509,8 +509,8 @@ const gameHandler = async (gameId) => {
     );
     const bg2_shadow_checkbox = document.getElementById("bg2-shadow-checkbox");
 
-    game_genre_input.textContent = gameData.genre;
-    game_art_style_input.textContent = gameData.artstyle;
+    game_genre_input.value = gameData.genre;
+    game_art_style_input.value = gameData.artstyle;
     game_age_input.selectedIndex =
       game_age_input.options[game_age_input.selectedIndex].value;
 
