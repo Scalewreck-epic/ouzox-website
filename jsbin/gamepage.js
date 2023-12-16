@@ -519,13 +519,6 @@ const gameHandler = async (gameId) => {
       };
     };
 
-    for (let i = 0; i < game_currency_input.options.length; i++) {
-      if (game_currency_input.options[i].value == gameData.currency.toLowerCase()) {
-        game_currency_input.selectedIndex = i;
-        break;
-      };
-    };
-
     game_genre_input.addEventListener("input", function () {
       game_genre_input.value = game_genre_input.value.toUpperCase();
     });
