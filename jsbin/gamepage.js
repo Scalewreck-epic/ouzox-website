@@ -511,11 +511,21 @@ const gameHandler = async (gameId) => {
 
     game_genre_input.value = gameData.genre;
     game_art_style_input.value = gameData.artstyle;
-    game_age_input.selectedIndex = game_age_input.options[gameData.agerating];
 
-    game_currency_input.selectedIndex =
-      game_currency_input.options[gameData.currency];
+    for (let i = 0; i < game_age_input.options.length; i++) {
+      if (game_age_input.options[i].value == gameData.agerating) {
+        game_age_input.selectedIndex = i;
+        break;
+      };
+    };
 
+    for (let i = 0; i < game_currency_input.options.length; i++) {
+      if (game_currency_input.options[i].value == gameData.currency) {
+        game_currency_input.selectedIndex = i;
+        break;
+      };
+    };
+    
     game_genre_input.addEventListener("input", function () {
       game_genre_input.value = game_genre_input.value.toUpperCase();
     });
