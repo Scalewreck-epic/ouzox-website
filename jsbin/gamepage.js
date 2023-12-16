@@ -511,11 +511,10 @@ const gameHandler = async (gameId) => {
 
     game_genre_input.value = gameData.genre;
     game_art_style_input.value = gameData.artstyle;
-    game_age_input.selectedIndex =
-      game_age_input.options[game_age_input.selectedIndex].value;
+    game_age_input.selectedIndex = game_age_input.options[gameData.agerating];
 
     game_currency_input.selectedIndex =
-      game_currency_input.options[game_currency_input.selectedIndex].value;
+      game_currency_input.options[gameData.currency];
 
     game_genre_input.addEventListener("input", function () {
       game_genre_input.value = game_genre_input.value.toUpperCase();
@@ -524,19 +523,6 @@ const gameHandler = async (gameId) => {
     game_art_style_input.addEventListener("input", function () {
       game_art_style_input.value = game_art_style_input.value.toUpperCase();
     });
-
-    //const image = game_thumbnail_input.files[0];
-    //const reader = new FileReader();
-    //let imageURI;
-
-    //reader.onload = function (event) {
-      //imageURI = event.target.result;
-    //};
-
-    //await new Promise((resolve) => {
-      //reader.onloadend = () => resolve();
-      //reader.readAsDataURL(image);
-    //});
 
     let ispublic = {
       Enabled: gameData.active ? "true" : "false",
@@ -839,13 +825,26 @@ const gameHandler = async (gameId) => {
 
     let isLoading = false;
     commitChangesButton.addEventListener("click", async function () {
+      const game_stat_elemts = document.getElementsByClassName("game-stat");
+
       if (!isLoading) {
         isLoading = true;
 
         const myHeaders = new Headers();
         myHeaders.append("Content-Type", "application/json");
 
-        const game_stat_elemts = document.getElementsByClassName("game-stat");
+        const image = game_thumbnail_input.files[0];
+        const reader = new FileReader();
+        let imageURI;
+
+        reader.onload = function (event) {
+          imageURI = event.target.result;
+        };
+
+        await new Promise((resolve) => {
+          reader.onloadend = () => resolve();
+          reader.readAsDataURL(image);
+        });
 
         const update_game_options_body = {
           name: game_title.textContent,
@@ -853,7 +852,8 @@ const gameHandler = async (gameId) => {
           summary: game_summary.textContent,
           genre: game_genre_input.textContent,
           artstyle: game_art_style_input.textContent,
-          age_rating: game_age_input.options[game_age_input.selectedIndex].value,
+          age_rating:
+            game_age_input.options[game_age_input.selectedIndex].value,
           active: ispublic.Enabled ? "true" : "false",
           platforms: {
             windows: game_platforms[0].Enabled ? "true" : "false",
@@ -892,8 +892,10 @@ const gameHandler = async (gameId) => {
               description_shadow: page_details_checkboxes[3].Enabled
                 ? "true"
                 : "false",
-              bg2_outline: page_details_alphas[4].Enabled ? "true" : "false",
-              bg2_shadow: page_details_alphas[5].Enabled ? "true" : "false",
+              bg2_outline: page_details_checkboxes[4].Enabled
+                ? "true"
+                : "false",
+              bg2_shadow: page_details_checkboxes[5].Enabled ? "true" : "false",
             },
             alphas: {
               bg2_alpha: page_details_alphas[0].Amount,
@@ -910,8 +912,7 @@ const gameHandler = async (gameId) => {
                 ),
               title_color:
                 getComputedStyle(game_title_column).getPropertyValue("color"),
-              desc_color:
-                getComputedStyle(game_desc).getPropertyValue("color"),
+              desc_color: getComputedStyle(game_desc).getPropertyValue("color"),
               desc_bg_color:
                 getComputedStyle(game_desc_background).getPropertyValue(
                   "background-color"
