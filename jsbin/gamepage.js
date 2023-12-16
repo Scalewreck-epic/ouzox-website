@@ -513,19 +513,19 @@ const gameHandler = async (gameId) => {
     game_art_style_input.value = gameData.artstyle;
 
     for (let i = 0; i < game_age_input.options.length; i++) {
-      if (game_age_input.options[i].value == gameData.agerating) {
+      if (game_age_input.options[i].value == gameData.agerating.toLowerCase()) {
         game_age_input.selectedIndex = i;
         break;
       };
     };
 
     for (let i = 0; i < game_currency_input.options.length; i++) {
-      if (game_currency_input.options[i].value == gameData.currency) {
+      if (game_currency_input.options[i].value == gameData.currency.toLowerCase()) {
         game_currency_input.selectedIndex = i;
         break;
       };
     };
-    
+
     game_genre_input.addEventListener("input", function () {
       game_genre_input.value = game_genre_input.value.toUpperCase();
     });
