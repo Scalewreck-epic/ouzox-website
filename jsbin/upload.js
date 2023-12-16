@@ -57,7 +57,21 @@ uploadGame.addEventListener("submit", async function (event) {
     const age = age_rating.options[age_rating.selectedIndex].value;
     const file = file_input.files[0];
 
-    const fileSizeInMB = file.size / (1024 * 1024);
+    const file_size_kb = file.size / 1000;
+    const file_size_mb = file_size_kb / 1000;
+    const file_size_gb = file_size_mb / 1000;
+
+    let file_size;
+
+    if (file.size < 1000) {
+      file_size = `${file.size} BYTES`;
+    } else if (file_size_kb < 1000) {
+      file_size = `${file_size_kb} KB`;
+    } else if (file_size_mb < 1000) {
+      file_size = `${file_size_mb} MB`;
+    } else if (file_size_gb < 1000) {
+      file_size = `${file_size_mb} GB`;
+    }
 
     const game_features = [
       {
@@ -167,7 +181,7 @@ uploadGame.addEventListener("submit", async function (event) {
           genre: genre_input.value.toUpperCase(),
           artstyle: art_input.value.toUpperCase(),
           age_rating: age,
-          size: Math.round(fileSizeInMB),
+          size: Math.round(file_size),
           defaultColors: true,
           icon_upload: imageURI,
           product_id: productId,
@@ -325,9 +339,12 @@ function checkFileSize() {
   const warn = document.getElementById("game-file-warn");
 
   const file = input.files[0];
-  const maxFileSize = 5000000000;
 
-  if (file.size > maxFileSize) {
+  const file_size_kb = file.size / 1000;
+  const file_size_mb = file_size_kb / 1000;
+  const file_size_gb = file_size_mb / 1000;
+
+  if (file_size_gb > 5) {
     warn.innerHTML = "File size too large, select a file under 5GB";
     input.value = "";
   } else {

@@ -279,7 +279,7 @@ const gameHandler = async (gameId) => {
   game_summary.textContent = gameData.summary;
   game_art.textContent = gameData.artstyle.toUpperCase();
   game_age.textContent = gameData.agerating.toUpperCase();
-  game_size.textContent = `${gameData.filesize} MB`;
+  game_size.textContent = gameData.filesize;
 
   developer_name.setAttribute("href", `user?id=${gameData.developer_id}`);
   game_genre.setAttribute("href", `category?n=${gameData.genre.toUpperCase()}`);
