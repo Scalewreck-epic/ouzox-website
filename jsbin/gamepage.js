@@ -26,7 +26,7 @@ String.prototype.convertToHex = function () {
 };
 
 String.prototype.sanitize = function () {
-  return this.replace(/<|>/g, "");
+  return this.replace(/\<|>/g, "");
 };
 
 function updateBackgroundColor(alphaInput, styleElement) {
@@ -722,7 +722,7 @@ const gameHandler = async (gameId) => {
     });
 
     game_desc.addEventListener("input", function () {
-      const text = this.textContent.sanitize();
+      const text = this.innerHTML.sanitize();
 
       if (text.length > 4000) {
         this.innerHTML = text.substr(0, 4000);
