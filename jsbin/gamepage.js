@@ -839,7 +839,7 @@ const gameHandler = async (gameId) => {
         const reader = new FileReader();
         let imageURI;
 
-        if (image !== null) {
+        if (image instanceof Blob) {
           reader.onload = function (event) {
             imageURI = event.target.result;
           };
