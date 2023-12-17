@@ -298,10 +298,7 @@ const loadMoreGames = () => {
 }
 
 function loadGames() {
-  if (
-    window.location.pathname.includes("/search") ||
-    window.location.pathname.includes("/category")
-  ) {
+  if (window.location.pathname.includes("/search")) {
     const results_label = document.getElementById("results-label");
     if (games.length == 1) {
       results_label.textContent = "(1 result)";
@@ -313,6 +310,22 @@ function loadGames() {
 
     sortGames("relevant-games-list", games.slice(0, 100), (a, b) => {
       b.relevance - a.relevance;
+    });
+  } else if (window.location.pathname.includes("/category")) {
+    const results_label = document.getElementById("results-label");
+    if (games.length == 1) {
+      results_label.textContent = "(1 result)";
+    } else if (games.length == 0) {
+      results_label.textContent = "(no results)";
+    } else {
+      results_label.textContent = `(${games.length} results)`;
+    }
+
+    sortGames("genre-games-list", games.slice(0, 100), (a, b) => {
+      const scoreA = a.downloads * 0.8 + a.updated * 0.2;
+      const scoreB = b.downloads * 0.8 + b.updated * 0.2;
+
+      return scoreB - scoreA;
     });
   } else {
     // Fresh Games
