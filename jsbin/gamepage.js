@@ -25,10 +25,6 @@ String.prototype.convertToHex = function () {
   return `#${hexR}${hexG}${hexB}`;
 };
 
-String.prototype.sanitize = function () {
-  return DOMPurify.sanitize(this)
-};
-
 function updateBackgroundColor(alphaInput, styleElement) {
   const alphaValue = alphaInput.value / 100;
 
@@ -706,7 +702,7 @@ const gameHandler = async (gameId) => {
     commitChangesButton.innerHTML = "Commit Changes";
 
     game_title.addEventListener("input", function () {
-      const text = this.textContent.sanitize();
+      const text = DOMPurify.sanitize(this.textContent);
 
       if (text.length > 120) {
         this.innerHTML = text.substr(0, 120);
@@ -714,7 +710,7 @@ const gameHandler = async (gameId) => {
     });
 
     game_summary.addEventListener("input", function () {
-      const text = this.textContent.sanitize();
+      const text = DOMPurify.sanitize(this.textContent);
 
       if (text.length > 120) {
         this.innerHTML = text.substr(0, 120);
@@ -722,7 +718,7 @@ const gameHandler = async (gameId) => {
     });
 
     game_desc.addEventListener("input", function () {
-      const text = this.innerHTML.sanitize();
+      const text = DOMPurify.sanitize(this.innerHTML);
 
       if (text.length > 4000) {
         this.innerHTML = text.substr(0, 4000);

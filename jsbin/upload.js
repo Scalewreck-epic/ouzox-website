@@ -9,10 +9,6 @@ const uploadGame = document.getElementById("upload-game");
 
 import { getUser } from "./exportuser.js";
 
-String.prototype.sanitize = function () {
-  return DOMPurify.sanitize(this)
-};
-
 uploadGame.addEventListener("submit", async function (event) {
   event.preventDefault();
   const error_label = document.getElementById("error-label");
@@ -435,7 +431,7 @@ game_art.addEventListener("input", function() {
 });
 
 game_description.addEventListener("input", function() {
-  const text = this.innerHTML.sanitize();
+  const text = DOMPurify.sanitize(this.innerHTML);
   
   if (text.length > 4000) {
     this.innerHTML = text.substr(0, 4000);
