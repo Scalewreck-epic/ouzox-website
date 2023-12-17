@@ -26,7 +26,7 @@ String.prototype.convertToHex = function () {
 };
 
 String.prototype.sanitize = function () {
-  return string.replace(/<|>/g, "");
+  return this.replace(/<|>/g, "");
 };
 
 function updateBackgroundColor(alphaInput, styleElement) {
@@ -469,7 +469,6 @@ const gameHandler = async (gameId) => {
 
     const game_genre_input = document.getElementById("genre-input");
     const game_art_style_input = document.getElementById("art-style-input");
-    const game_currency_input = document.getElementById("currency-sort");
     const game_age_input = document.getElementById("age-sort");
     const game_thumbnail_input = document.getElementById("thumbnail-input");
 
@@ -840,14 +839,16 @@ const gameHandler = async (gameId) => {
         const reader = new FileReader();
         let imageURI;
 
-        reader.onload = function (event) {
-          imageURI = event.target.result;
+        if (image !== null) {
+          reader.onload = function (event) {
+            imageURI = event.target.result;
+          };
+  
+          await new Promise((resolve) => {
+            reader.onloadend = () => resolve();
+            reader.readAsDataURL(image);
+          });
         };
-
-        await new Promise((resolve) => {
-          reader.onloadend = () => resolve();
-          reader.readAsDataURL(image);
-        });
 
         const update_game_options_body = {
           name: game_title.textContent,
