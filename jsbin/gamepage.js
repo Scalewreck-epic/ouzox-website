@@ -26,7 +26,7 @@ String.prototype.convertToHex = function () {
 };
 
 String.prototype.sanitize = function () {
-  return this.replace(/\<|>/g, "");
+  return DOMPurify.sanitize(this)
 };
 
 function updateBackgroundColor(alphaInput, styleElement) {
