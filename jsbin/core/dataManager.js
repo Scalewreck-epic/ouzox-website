@@ -2,7 +2,7 @@ const games_list_api = "https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv/games";
 const games_prices_url =
   "https://x8ki-letl-twmt.n7.xano.io/api:tFdG2Vz-/prices";
 
-import { getUser } from "./exportuser.js";
+import { fetch_user } from "/jsbin/user/sessionManager.js";
 
 const urlParams = new URLSearchParams(window.location.search);
 const search_query = encodeURIComponent(urlParams.get("q") || "");
@@ -14,7 +14,7 @@ let genres = [];
 
 let offset = 100;
 
-function getGamePrice(game_id) {
+function fetch_game_price(game_id) {
   const result = prices.find((item) => item.product === game_id);
   if (result) {
     return {
@@ -29,7 +29,7 @@ function getGamePrice(game_id) {
   };
 }
 
-function calculateDiffDays(timestamp) {
+function calculate_diff_days(timestamp) {
   const createdTimestamp = new Date(timestamp);
   const currentDate = new Date();
 
@@ -41,7 +41,7 @@ function calculateDiffDays(timestamp) {
   return createdDiffDays;
 }
 
-function createGenrePage(name, amount) {
+function create_genre_page(name, amount) {
   const genre_button = document.createElement("a");
   genre_button.className = "genre-button";
 
@@ -61,7 +61,7 @@ function createGenrePage(name, amount) {
   document.getElementById("genres-list").appendChild(genre_button);
 }
 
-function createGamePage(game, game_price, market) {
+function create_game_page(game, game_price, market) {
   const price = game_price.price / 100;
   const currency = game_price.currency;
 
@@ -93,8 +93,8 @@ function createGamePage(game, game_price, market) {
 
   game_price_text.innerHTML = `${price} ${currency.toUpperCase()}`;
 
-  const diff_days_created = calculateDiffDays(game.created_at);
-  const diff_days_updated = calculateDiffDays(game.updated_at);
+  const diff_days_created = calculate_diff_days(game.created_at);
+  const diff_days_updated = calculate_diff_days(game.updated_at);
 
   game_price_div.appendChild(game_price_text);
 
@@ -151,7 +151,7 @@ function createGamePage(game, game_price, market) {
   market.appendChild(game_div);
 }
 
-function levenshteinDistance(a, b) {
+function levenshtein_distance(a, b) {
   const dp = Array(a.length + 1)
     .fill(null)
     .map(() => Array(b.length + 1).fill(null));
@@ -178,23 +178,23 @@ function levenshteinDistance(a, b) {
   return dp[a.length][b.length];
 }
 
-function calculateSimilarity(a, b) {
-  const distance = levenshteinDistance(a.toLowerCase(), b.toLowerCase());
+function calculate_similarity(a, b) {
+  const distance = levenshtein_distance(a.toLowerCase(), b.toLowerCase());
   const maxLength = Math.max(a.length, b.length);
   return 1 - distance / maxLength;
 }
 
-function removePrivateGames() {
+function remove_private_games() {
   const newGames = games.filter((game) => game.active == true);
   games = newGames;
 }
 
-function removeIrrelevantGenres() {
+function set_genre_relevancy() {
   const similarityThreshold = 0.15;
 
   if (search_query != "") {
     const relevantGenres = genres.map((genre) => {
-      const similarity = calculateSimilarity(search_query, genre.name);
+      const similarity = calculate_similarity(search_query, genre.name);
 
       if (similarity > similarityThreshold) {
         return {
@@ -210,7 +210,7 @@ function removeIrrelevantGenres() {
   }
 }
 
-function removeIrrelevantGames() {
+function set_game_relevancy() {
   const similarityThreshold = 0.15;
 
   if (category_name != "") {
@@ -220,8 +220,8 @@ function removeIrrelevantGames() {
 
   if (search_query != "") {
     const relevantGames = games.map((game) => {
-      const nameSimilarity = calculateSimilarity(search_query, game.name);
-      const summarySimilarity = calculateSimilarity(search_query, game.summary);
+      const nameSimilarity = calculate_similarity(search_query, game.name);
+      const summarySimilarity = calculate_similarity(search_query, game.summary);
 
       const similarity = nameSimilarity * 0.7 + summarySimilarity * 0.3;
 
@@ -239,13 +239,13 @@ function removeIrrelevantGames() {
   }
 }
 
-function loadGamesWithList(list, category, gameslist) {
+function load_games_with_list(list, category, gameslist) {
   const filteredGames = gameslist.filter((game) => game && game.active);
   const slicedGames = filteredGames.slice(0, 16);
 
   slicedGames.forEach((game) => {
-    const game_price = getGamePrice(game.id.toString());
-    createGamePage(game, game_price, list);
+    const game_price = fetch_game_price(game.id.toString());
+    create_game_page(game, game_price, list);
   });
 
   if (slicedGames.length > 0) {
@@ -257,7 +257,7 @@ function loadGamesWithList(list, category, gameslist) {
   }
 }
 
-function loadGenres() {
+function load_genres() {
   if (window.location.pathname.includes("/search")) {
     genres.sort((a, b) => b.relevance - a.relevance);
   } else {
@@ -265,7 +265,7 @@ function loadGenres() {
   }
 
   genres.forEach((genre) => {
-    createGenrePage(genre.name, genre.count);
+    create_genre_page(genre.name, genre.count);
   });
 
   if (genres.length > 0) {
@@ -279,25 +279,25 @@ function loadGenres() {
   }
 }
 
-function sortGames(listId, gamesList, sortingFunction) {
+function sort_games(listId, gamesList, sortingFunction) {
   gamesList.sort(sortingFunction);
 
   const listElement = document.getElementById(listId);
   const gamesElement = document.getElementById(listId.replace("-list", ""));
 
-  loadGamesWithList(listElement, gamesElement, gamesList);
+  load_games_with_list(listElement, gamesElement, gamesList);
 }
 
-const loadMoreGames = () => {
+const load_more_games = () => {
   const slicedGames = games.slice(offset, offset + 100);
-  sortGames("relevant-games-list", slicedGames, (a, b) => {
+  sort_games("relevant-games-list", slicedGames, (a, b) => {
     const scoreA = a.relevance * 0.7 + a.downloads * 0.3;
     const scoreB = b.relevance * 0.7 + b.downloads * 0.3;
     scoreA - scoreB;
   });
 }
 
-function loadGames() {
+function load_games() {
   if (window.location.pathname.includes("/search")) {
     const results_label = document.getElementById("results-label");
     if (games.length == 1) {
@@ -308,7 +308,7 @@ function loadGames() {
       results_label.textContent = `(${games.length} results)`;
     }
 
-    sortGames("relevant-games-list", games.slice(0, 100), (a, b) => {
+    sort_games("relevant-games-list", games.slice(0, 100), (a, b) => {
       b.relevance - a.relevance;
     });
   } else if (window.location.pathname.includes("/category")) {
@@ -321,7 +321,7 @@ function loadGames() {
       results_label.textContent = `(${games.length} results)`;
     }
 
-    sortGames("genre-games-list", games.slice(0, 100), (a, b) => {
+    sort_games("genre-games-list", games.slice(0, 100), (a, b) => {
       const scoreA = a.downloads * 0.8 + a.updated * 0.2;
       const scoreB = b.downloads * 0.8 + b.updated * 0.2;
 
@@ -329,7 +329,7 @@ function loadGames() {
     });
   } else {
     // Fresh Games
-    sortGames("fresh-games-list", games, (a, b) => {
+    sort_games("fresh-games-list", games, (a, b) => {
       const scoreA = a.created * 0.8 + a.downloads * 0.2;
       const scoreB = b.created * 0.8 + b.downloads * 0.2;
 
@@ -337,7 +337,7 @@ function loadGames() {
     });
 
     // Hot Games
-    sortGames("hot-games-list", games, (a, b) => {
+    sort_games("hot-games-list", games, (a, b) => {
       const scoreA = a.downloads * 0.6 + a.updated * 0.4;
       const scoreB = b.downloads * 0.6 + b.updated * 0.4;
 
@@ -346,7 +346,7 @@ function loadGames() {
 
     // Sponsored Games
     const sponsoredGames = games.filter((game) => game.sponsor_money > 0);
-    sortGames("sponsored-games-list", sponsoredGames, (a, b) => {
+    sort_games("sponsored-games-list", sponsoredGames, (a, b) => {
       const scoreA = a.sponsor_money * 0.6 + a.downloads * 0.4;
       const scoreB = b.sponsor_money * 0.6 + b.downloads * 0.4;
 
@@ -354,7 +354,7 @@ function loadGames() {
     });
 
     // Bestsellers
-    sortGames("bestseller-games-list", games, (a, b) => {
+    sort_games("bestseller-games-list", games, (a, b) => {
       const scoreA = a.downloads * 0.8 + a.updated * 0.2;
       const scoreB = b.downloads * 0.8 + b.updated * 0.2;
 
@@ -363,7 +363,7 @@ function loadGames() {
 
     // Free Games
     const freegames = games.filter((game) => game.free == true);
-    sortGames("free-games-list", freegames, (a, b) => {
+    sort_games("free-games-list", freegames, (a, b) => {
       const scoreA = a.downloads * 0.7 + a.updated * 0.3;
       const scoreB = b.downloads * 0.7 + b.updated * 0.3;
 
@@ -372,17 +372,17 @@ function loadGames() {
   }
 }
 
-async function loadDashboard() {
+async function load_dashboard() {
   const category = document.getElementById("dashboard-market");
-  const user = await getUser();
+  const user = await fetch_user();
 
   if (user != undefined) {
     const usersGames = games.filter((game) => game.developer_name == user.name);
     usersGames.sort((a, b) => b.created - a.created);
 
     usersGames.forEach((game) => {
-      const game_price = getGamePrice(game.id.toString());
-      createGamePage(game, game_price, category);
+      const game_price = fetch_game_price(game.id.toString());
+      create_game_page(game, game_price, category);
     });
 
     if (usersGames.length > 0) {
@@ -397,7 +397,7 @@ async function loadDashboard() {
   }
 }
 
-async function fetchGamesRequest() {
+async function fetch_games() {
   const myHeaders = new Headers();
   myHeaders.append("Content-Type", "application/json");
 
@@ -407,7 +407,7 @@ async function fetchGamesRequest() {
     redirect: "follow",
   };
 
-  async function setPrices() {
+  async function set_prices() {
     try {
       const response = await fetch(games_prices_url, requestOptions);
       const result = await response.text();
@@ -423,7 +423,7 @@ async function fetchGamesRequest() {
     };
   };
 
-  function setGenres() {
+  function set_genres() {
     for (const game of games) {
       let found = false;
       for (const genre of genres) {
@@ -440,7 +440,7 @@ async function fetchGamesRequest() {
     }
   };
 
-  async function fetchData() {
+  async function fetch_data() {
     try {
       const response = await fetch(games_list_api, requestOptions);
       const result = await response.text();
@@ -451,12 +451,12 @@ async function fetchGamesRequest() {
       if (games.length > 0) {
         try {
           if (window.location.pathname.includes("/dashboard")) {
-            loadDashboard();
+            load_dashboard();
           } else {
-            removePrivateGames();
-            removeIrrelevantGames();
+            remove_private_games();
+            set_game_relevancy();
 
-            loadGames();
+            load_games();
           }
         } catch (error) {
           throw new Error(`Error trying to load games: ${error}`);
@@ -467,22 +467,17 @@ async function fetchGamesRequest() {
     };
   };
 
-  await setPrices();
-  await fetchData();
+  await set_prices();
+  await fetch_data();
 
-  setGenres();
+  set_genres();
   if (genres.length > 0 && document.getElementById("genres-list") != null) {
-    removeIrrelevantGenres();
-    loadGenres();
+    set_genre_relevancy();
+    load_genres();
   }
 }
 
-async function fetchGames() {
-  prices = [];
-  fetchGamesRequest();
-}
-
-function setSearch() {
+function set_search() {
   if (document.getElementById("search-query") != null) {
     const search_label = document.getElementById("search-label");
     const search_query2 = document.getElementById("search-query");
@@ -498,16 +493,16 @@ function setSearch() {
   }
 }
 
-function setCategory() {
+function set_category() {
   if (window.location.pathname.includes("/category")) {
     const search_label = document.getElementById("search-label");
     search_label.textContent = `Top '${category_name}' Games`;
   }
 }
 
-fetchGames();
-setSearch();
-setCategory();
+fetch_games();
+set_search();
+set_category();
 
 window.addEventListener("scroll", () => {
   if (
@@ -518,7 +513,7 @@ window.addEventListener("scroll", () => {
 
     if (scrollPosition >= pageHeight - 100) {
       offset += 100;
-      loadMoreGames();
+      load_more_games();
     }
   }
 })
