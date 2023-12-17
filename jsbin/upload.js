@@ -9,6 +9,10 @@ const uploadGame = document.getElementById("upload-game");
 
 import { getUser } from "./exportuser.js";
 
+String.prototype.sanitize = function () {
+  return DOMPurify.sanitize(this)
+};
+
 uploadGame.addEventListener("submit", async function (event) {
   event.preventDefault();
   const error_label = document.getElementById("error-label");
@@ -22,10 +26,10 @@ uploadGame.addEventListener("submit", async function (event) {
 
   if (game_file_warn.innerText == "") {
     const title_input = document.getElementById("title");
+    const description_input = document.getElementById("description");
     const summary_input = document.getElementById("summary");
     const thumbnail_input = document.getElementById("thumbnail");
     const file_input = document.getElementById("download-file");
-    const description_input = document.getElementById("description");
     const price_input = document.getElementById("price");
     const currency_input = document.getElementById("currency-sort");
 
@@ -402,6 +406,7 @@ const genre_input = document.getElementById("genre-input");
 const game_isfree = document.getElementById("isfree");
 const game_art = document.getElementById("art-style-input");
 const download_file = document.getElementById("download-file");
+const game_description = document.getElementById("description");
 
 checkIsFree();
 
@@ -427,4 +432,12 @@ genre_input.addEventListener("input", function() {
 
 game_art.addEventListener("input", function() {
   checkArt();
+});
+
+game_description.addEventListener("input", function() {
+  const text = this.innerHTML.sanitize();
+  
+  if (text.length > 4000) {
+    this.innerHTML = text.substr(0, 4000);
+  }
 });
