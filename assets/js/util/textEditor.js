@@ -1,5 +1,25 @@
 const description = document.getElementById("description");
-const gameColumn = document.getElementById("game-column");
+const game_column = document.getElementById("game-column");
+
+const bold_button = document.getElementById("bold");
+const italic_button = document.getElementById("italic");
+const underline_button = document.getElementById("underline");
+const strikethrough_button = document.getElementById("strikethrough");
+const link_button = document.getElementById("link");
+
+const unorderedlist_button = document.getElementById("insertUnorderedList");
+const orderedlist_button = document.getElementById("insertOrderedList");
+
+const left_button = document.getElementById("justifyLeft");
+const right_button = document.getElementById("justifyRight");
+const center_button = document.getElementById("justifyCenter");
+
+const font_sort = document.getElementById("font-sort");
+
+const header1_button = document.getElementById("1");
+const header2_button = document.getElementById("2");
+const header3_button = document.getElementById("3");
+const header4_button = document.getElementById("4");
 
 function applyFormatting(formatType) {
   const selection = window.getSelection();
@@ -24,12 +44,12 @@ function applyHeader(level) {
     const range = selection.getRangeAt(0);
     range.deleteContents();
     range.insertNode(document.createTextNode(selectedText));
-  }
-}
+  };
+};
 
 function justify(direction) {
   document.execCommand("justify" + direction);
-}
+};
 
 function createLink() {
   const url = prompt("Enter the link URL:");
@@ -47,66 +67,66 @@ function createLink() {
       const range = selection.getRangeAt(0);
       range.deleteContents();
       range.insertNode(link);
-    }
-  }
-}
+    };
+  };
+};
 
-document.getElementById("bold").addEventListener("click", function () {
+bold_button.addEventListener("click", function () {
   applyFormatting("bold");
 });
 
-document.getElementById("italic").addEventListener("click", function () {
+italic_button.addEventListener("click", function () {
   applyFormatting("italic");
 });
 
-document.getElementById("underline").addEventListener("click", function () {
+underline_button.addEventListener("click", function () {
   applyFormatting("underline");
 });
 
-document.getElementById("strikethrough").addEventListener("click", function () {
+strikethrough_button.addEventListener("click", function () {
   applyFormatting("strikeThrough");
 });
 
-document.getElementById("link").addEventListener("click", function () {
+link_button.addEventListener("click", function () {
   createLink();
 });
 
-document.getElementById("insertUnorderedList").addEventListener("click", function () {
+unorderedlist_button.addEventListener("click", function () {
   applyFormatting("insertUnorderedList");
 });
 
-document.getElementById("insertOrderedList").addEventListener("click", function () {
+orderedlist_button.addEventListener("click", function () {
   applyFormatting("insertOrderedList");
 });
 
-document.getElementById("justifyLeft").addEventListener("click", function () {
+left_button.addEventListener("click", function () {
   justify("Left");
 });
 
-document.getElementById("justifyRight").addEventListener("click", function () {
+right_button.addEventListener("click", function () {
   justify("Right");
 });
 
-document.getElementById("justifyCenter").addEventListener("click", function () {
+center_button.addEventListener("click", function () {
   justify("Center");
 });
 
-document.getElementById("1").addEventListener("click", function () {
+header1_button.addEventListener("click", function () {
   applyHeader(1);
 });
 
-document.getElementById("2").addEventListener("click", function () {
+header2_button.addEventListener("click", function () {
   applyHeader(2);
 });
 
-document.getElementById("3").addEventListener("click", function () {
+header3_button.addEventListener("click", function () {
   applyHeader(3);
 });
 
-document.getElementById("4").addEventListener("click", function () {
+header4_button.addEventListener("click", function () {
   applyHeader(4);
 });
 
-document.getElementById("font-sort").addEventListener("change", function() {
-  document.getElementById("game-column").style.fontFamily = document.getElementById("font-sort").options[document.getElementById("font-sort").selectedIndex].value;
+font_sort.addEventListener("change", function() {
+  game_column.style.fontFamily = font_sort.options[font_sort.selectedIndex].value;
 });
