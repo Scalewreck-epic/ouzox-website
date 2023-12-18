@@ -1,7 +1,9 @@
 # Ouzox
 A platform for game developers.
 We made our website open source so others can learn and benefit from the code we provide!
+
 Just kidding, I just didn't want to pay for web services. Feel free to have a look though.
+
 This website was created by one person, I just say "we" because it's me and the project
 
 ## Support
