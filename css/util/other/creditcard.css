@@ -1,0 +1,62 @@
+.credit-card {
+  display: block;
+  margin: 0.75rem;
+  width: 35%;
+}
+
+.credit-information {
+  display: grid;
+  grid-template-columns: 1fr 0.65fr;
+  margin: 0.75rem;
+  width: 100%;
+  padding: 0.25rem;
+  outline: 3px solid #3f3f3f;
+}
+
+.credit-card-number-input,
+.credit-card-expiration-month,
+.credit-card-expiration-year,
+.credit-card-cvc {
+  background-color: transparent;
+  color: white;
+  border: none;
+  margin: 0;
+  padding: 0;
+  font-family: "Secular One";
+  font-size: 1rem;
+}
+
+.credit-card-name-input {
+  display: block;
+  font-family: "Secular One";
+  margin: 0.75rem;
+  width: 100%;
+  padding: 0.25rem;
+  outline: 3px solid #3f3f3f;
+  background-color: transparent;
+  color: white;
+  border: none;
+  font-family: "Secular One";
+  font-size: 1rem;
+}
+
+.credit-card-number-input {
+  width: 10rem;
+}
+
+.credit-main {
+  display: flex;
+  margin: 0;
+}
+
+.credit-extra {
+  display: flex;
+  justify-content: flex-end;
+  margin: 0;
+}
+
+.credit-card-expiration-month,
+.credit-card-expiration-year,
+.credit-card-cvc {
+  width: 2rem;
+}

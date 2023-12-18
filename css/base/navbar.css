@@ -1,0 +1,78 @@
+nav ul {
+  display: inline-block;
+  list-style-type: none;
+}
+
+.navbar {
+  background-color: #222222;
+  color: white;
+  border-bottom: 1px solid #3f3f3f;
+  height: 3.125rem;
+  padding: 0.45rem 0;
+}
+
+.grid {
+  padding: 0 1.5rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+}
+
+.push-left,
+.push-right {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.push-left {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.push-left a {
+  color: white;
+  text-decoration: none;
+}
+
+.web-icon {
+  margin: 0;
+}
+
+.push-left .web-icon {
+  width: auto;
+  height: 3.125rem;
+  vertical-align: middle;
+}
+
+.push-left ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.push-left ul a {
+  color: white;
+  text-decoration: none;
+}
+
+.push-right {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  height: 3.125rem;
+}
+
+.username {
+  margin: 0 1rem;
+  color: white;
+}
+
+.web-icon {
+  transition: transform 0.2s ease-in-out;
+}
+
+.web-thumbnail {
+  display: block;
+  width: 100%;
+}

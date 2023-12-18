@@ -1,0 +1,122 @@
+.bold-button,
+.italic-button,
+.underline-button,
+.strike-through-button,
+.link-button,
+.order-list-button,
+.number-list-button,
+.sans-button,
+.sans-serif-button,
+.lato-button,
+.anonymous-pro-button,
+.roboto-button,
+.montserrat-button,
+.poppins-button,
+.raleway-button,
+.nuinto-button,
+.description-button {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  font-weight: bold;
+  text-align: center;
+  text-decoration: none;
+  border-radius: 0.25rem;
+  outline: 1px solid #3f3f3f;
+  border: none;
+  cursor: pointer;
+  background-color: black;
+  color: white;
+}
+
+.bold-button:hover,
+.italic-button:hover,
+.underline-button:hover,
+.strike-through-button:hover,
+.link-button:hover,
+.order-list-button:hover,
+.number-list-button:hover,
+.sans-button:hover,
+.sans-serif-button:hover,
+.lato-button:hover,
+.anonymous-pro-button:hover,
+.roboto-button:hover,
+.montserrat-button:hover,
+.poppins-button:hover,
+.raleway-button:hover,
+.nuinto-button:hover,
+.description-button:hover {
+  background-color: #333;
+}
+
+.bold-button:active,
+.italic-button:active,
+.underline-button:active,
+.strike-through-button:active,
+.link-button:active,
+.order-list-button:active,
+.number-list-button:active,
+.sans-button:active,
+.sans-serif-button:active,
+.lato-button:active,
+.anonymous-pro-button:active,
+.roboto-button:active,
+.montserrat-button:active,
+.poppins-button:active,
+.raleway-button:active,
+.nuinto-button:active,
+.description-button:active {
+  background-color: #222;
+}
+
+.bold-button {
+  font-weight: bold;
+}
+
+.italic-button {
+  font-style: italic;
+}
+
+.underline-button {
+  text-decoration: underline;
+}
+
+.strike-through-button {
+  text-decoration: line-through;
+}
+
+.sans-button {
+  font-family: sans;
+}
+
+.sans-serif-button {
+  font-family: sans-serif;
+}
+
+.lato-button {
+  font-family: lato;
+}
+
+.anonymous-pro-button {
+  font-family: "Anonymous Pro";
+}
+
+.roboto-button {
+  font-family: Roboto;
+}
+
+.montserrat-button {
+  font-family: Montserrat;
+}
+
+.poppins-button {
+  font-family: Poppins;
+}
+
+.raleway-button {
+  font-family: Raleway;
+}
+
+.nuinto-button {
+  font-family: Nuinto;
+}

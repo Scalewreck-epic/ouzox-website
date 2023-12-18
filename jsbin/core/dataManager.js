@@ -2,7 +2,7 @@ const games_list_api = "https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv/games";
 const games_prices_url =
   "https://x8ki-letl-twmt.n7.xano.io/api:tFdG2Vz-/prices";
 
-import { fetch_user } from "/jsbin/user/sessionManager.js";
+import { fetch_user} from "/jsbin/user/sessionManager.js";
 
 const urlParams = new URLSearchParams(window.location.search);
 const search_query = encodeURIComponent(urlParams.get("q") || "");

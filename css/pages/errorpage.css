@@ -1,0 +1,47 @@
+.errorpage {
+  width: 45%;
+  padding: 5rem;
+  border-radius: 3rem;
+  margin: auto;
+  text-align: center;
+  color: white;
+  background-color: #222222;
+  box-shadow: 0 1rem 1rem black;
+  outline: 1px solid #3f3f3f;
+  transition: transform 0.3s ease;
+}
+
+.errorpage:hover {
+  transform: scale(1.015);
+}
+
+.errorpage h1 {
+  width: 100%;
+  font-weight: bold;
+  font-size: 10rem;
+  margin: 0;
+}
+
+.errorpage h2 {
+  width: 100%;
+  font-weight: bold;
+  font-size: 2rem;
+  margin: 0;
+  margin-top: 3rem;
+}
+
+.errorpage p {
+  width: 100%;
+  font-size: 1.25rem;
+  margin: 0;
+  margin-top: 0.5rem;
+  margin-bottom: 2rem;
+}
+
+.errorpage a {
+  width: 100%;
+  font-size: 1.25rem;
+  font-weight: bold;
+  margin: 0;
+  color: #4d0101;
+}

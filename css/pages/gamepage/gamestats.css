@@ -1,0 +1,55 @@
+.game-stats {
+  display: block;
+  border-radius: 1rem;
+  background-color: #222222;
+  padding: 1rem;
+  width: auto;
+  height: auto;
+  margin: 1rem;
+  margin-top: 0;
+  color: white;
+  transition: transform 0.3s ease;
+}
+
+.game-stats:hover,
+.game-description:hover {
+  transform: scale(1.015);
+}
+
+.game-stats h1 {
+  width: auto;
+  margin: 0.3rem 0 1rem;
+  display: block;
+}
+
+.game-stat {
+  display: grid;
+  grid-template-columns: 0.65fr 1fr;
+  width: 100%;
+  margin: 0.3rem auto;
+  height: auto;
+}
+
+.game-stat-border {
+  border-bottom: white solid 0.08rem;
+  margin: 1rem auto;
+  width: 100%;
+}
+
+.game-stat-data {
+  display: flex;
+  justify-content: flex-end;
+  font-size: 1rem;
+  margin: 0;
+  opacity: 0.3;
+}
+
+.game-stat-title {
+  display: flex;
+  font-size: 1rem;
+  margin: 0;
+}
+
+.game-stat-feature {
+  display: flex;
+}

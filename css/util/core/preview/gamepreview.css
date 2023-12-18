@@ -1,0 +1,95 @@
+.new-label,
+.updated-label {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  color: white;
+  background-color: #000d;
+  border-radius: 0.35rem;
+  padding: 0 0.25rem;
+}
+
+.new-label span,
+.updated-label span {
+  font-size: 1rem;
+  font-weight: 300;
+  font-family: "Secular One", sans-serif;
+}
+
+.game {
+  width: 18rem;
+  height: auto;
+  transition: transform 0.3s ease;
+}
+
+.product-title {
+  display: inline-block;
+  width: auto;
+  max-width: 18rem;
+  margin: 0 auto;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: white;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: color 0.5s ease;
+}
+
+.product-title:hover {
+  color: #4d0101;
+  border: 0;
+}
+
+.product-summary {
+  display: inline-block;
+  width: 18rem;
+  margin: auto;
+  font-size: 1rem;
+  font-family: "Secular One", sans-serif;
+  color: white;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  opacity: 0.4;
+  line-height: 1.1;
+}
+
+.product-price {
+  position: absolute;
+  top: 0.5rem;
+  left: 0.5rem;
+  background-color: black;
+  border-radius: 0.35rem;
+  padding: 0 0.25rem;
+}
+
+.product-price span {
+  font-size: 1rem;
+  font-weight: 600;
+  font-family: "Secular One", sans-serif;
+  color: #4d0101;
+}
+
+.product-image-container {
+  position: relative;
+  display: inline-block;
+  transition: transform 0.2s ease-in-out;
+}
+
+.product-image-container:hover {
+  transform: scale(1.02);
+}
+
+.product-image {
+  position: relative;
+  width: 18rem;
+  height: 14rem;
+  border-radius: 1rem;
+  box-shadow: 0 0.313rem 0.625rem black;
+  object-fit: fill;
+  object-position: center;
+  transition: outline 0.2s ease-in-out;
+}
+
+.product-image:hover {
+  outline: 0.125rem solid #4d0101;
+}

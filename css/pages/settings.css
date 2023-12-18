@@ -1,0 +1,51 @@
+.settings {
+  width: 80%;
+  margin: 0 auto;
+  margin-bottom: 9.375rem;
+}
+
+.settings-category-title {
+  color: white;
+  font-size: 2rem;
+  text-align: center;
+}
+
+.settings-category {
+  width: 100%;
+  background-color: #222222;
+  margin-top: 1.25rem;
+  padding: 0.5rem;
+  box-shadow: 0 1rem 1rem black;
+  border-radius: 0.5rem;
+  outline: 1px solid #3f3f3f;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.settings-category:hover {
+  transform: scale(1.01);
+  box-shadow: 0 1.5rem 1.5rem black;
+}
+
+.settings-category p {
+  margin: 1rem;
+}
+
+.settings-category div {
+  color: white;
+}
+
+.settings-category h1,
+.settings-category h2,
+.settings-category h3 {
+  margin: 0.75rem;
+  margin-left: 2rem;
+  color: white;
+}
+
+.settings ul {
+  display: inline-block;
+  list-style-type: none;
+  margin: auto;
+  padding: 0;
+  font-family: "Secular One", sans-serif;
+}

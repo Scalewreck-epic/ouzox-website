@@ -7,7 +7,7 @@ const upload_game_api_url =
 
 const uploadGame = document.getElementById("upload-game");
 
-import { fetch_user } from "/jsbin/user/sessionManager.js";
+import { fetch_user} from "/jsbin/user/sessionManager.js";
 
 uploadGame.addEventListener("submit", async function (event) {
   event.preventDefault();

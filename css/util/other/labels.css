@@ -1,0 +1,31 @@
+.title-label {
+  font-size: 1.4rem;
+  font-weight: lighter;
+  font-family: "Secular One", sans-serif;
+  color: white;
+}
+
+.error-label {
+  font-size: 1.25rem;
+  font-family: "Secular One", sans-serif;
+  color: red;
+}
+
+.acceptance-label {
+  display: block;
+  font-size: 1.25rem;
+  color: white;
+  margin: 0.313rem;
+}
+
+.socal-nag {
+  display: block;
+  font-size: 1.1rem;
+  color: white;
+  margin: 0.3rem 0.938rem;
+}
+
+.acceptance-label a,
+.socal-nag a {
+  color: #4d0101;
+}

@@ -1,0 +1,231 @@
+body {
+  font-family: "Alata", sans-serif;
+  background: #121212;
+  margin: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+.content {
+  padding-top: 3.125rem;
+  padding-bottom: 12.5rem;
+  margin: 0 auto;
+  overflow: auto;
+}
+
+.title-block {
+  margin-bottom: 3rem;
+}
+
+a:not(:has(img)){
+  transition: text-decoration 0.25s ease, color 0.25s ease;
+}
+
+a:not(:has(img)):hover{
+  text-decoration: underline;
+  color: #4D0101;
+}
+
+.a-button:hover {
+  text-decoration: none;
+  border-bottom: 0;
+  color: white;
+}
+
+.divider {
+  margin: 0.938rem auto;
+  width: 95%;
+  border-bottom: white solid 0.125rem;
+}
+
+.search-bar {
+  flex: 1;
+  text-align: center;
+}
+
+a {
+  text-decoration: none;
+  color: white;
+}
+
+p {
+  text-decoration: none;
+  color: white;
+}
+
+.header {
+  display: flex;
+  padding: 0.125rem;
+}
+
+.editing-game {
+  display: flex;
+  color: white;
+  background-color: #222222;
+  box-shadow: 0 1rem 1rem black;
+  border-radius: 1rem;
+  padding: 1rem;
+  outline: 1px solid #3f3f3f;
+  transition: transform 0.3s ease;
+}
+
+.editing-game:hover {
+  transform: scale(1.015);
+}
+
+.column-border {
+  outline: white solid 0.08rem;
+}
+
+.game-settings {
+  padding: 0.5rem;
+}
+
+.game-setting {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  width: 100%;
+  min-height: 2.5rem;
+  font-weight: bold;
+  padding: 0.25rem 0;
+}
+
+.game-setting-title {
+  display: flex;
+  font-size: 1.25rem;
+}
+
+.game-setting-feature {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.text-options,
+.align-options,
+.header-options,
+.font-options {
+  display: block;
+  text-align: center;
+  width: 100%;
+}
+
+.game-about {
+  display: block;
+  overflow: hidden;
+  word-break: break-word;
+  width: 100%;
+  min-height: 5rem;
+}
+
+.game-about div{
+  margin: 0.5rem 0;
+}
+
+.game-features {
+  display: grid;
+}
+
+.game-feature {
+  display: block;
+  margin-bottom: 0.3rem;
+  text-align: right;
+}
+
+input[type="color"] {
+  width: 100px;
+  padding: 0.3rem;
+  outline: solid 2px black;
+  border-radius: 0.5rem;
+}
+
+.web-icon:hover {
+  transform: scale(1.1);
+}
+
+.desc {
+  color: white;
+  margin-left: 1.25rem;
+}
+
+.selections {
+  width: 10rem;
+  float: left;
+  text-align: center;
+  border-right: 0.125rem solid black;
+}
+
+.selections h1 {
+  color: white;
+  margin: 0;
+}
+
+.game-sort {
+  text-align: center;
+  font-size: 1.25rem;
+  font-weight: bold;
+  color: white;
+  background-color: black;
+  border: none;
+  outline: 1px solid #3f3f3f;
+  border-radius: 0.313rem;
+  padding: 0.188rem;
+  width: 9.375rem;
+}
+
+.game-sort:hover {
+  cursor: pointer;
+}
+
+.errorImg {
+  width: 15.625rem;
+  height: 15.625rem;
+}
+
+.error-title,
+.error-caption {
+  font-family: "Secular One", sans-serif;
+  outline: #000;
+  color: white;
+  width: auto;
+  overflow: hidden;
+  word-break: break-all;
+}
+
+.error-title {
+  font-size: 1.563rem;
+}
+
+.error-caption {
+  font-size: 1.25rem;
+}
+
+.search-label {
+  color: white;
+  font-size: 3rem;
+  margin: 0.25rem 3rem;
+}
+
+.results-label {
+  color: gray;
+  opacity: 0.5;
+  margin: 0.25rem 4rem;
+}
+
+.extra-buttons {
+  margin-top: 5rem;
+  width: 100%;
+  text-align: center;
+}
+
+.agreement {
+  display: block;
+  color: grey;
+  opacity: 0.5;
+}
+
+.agreement a {
+  color: white;
+}

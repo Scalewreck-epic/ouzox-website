@@ -1,0 +1,33 @@
+.game-developer-name {
+  display: block;
+  font-size: 1.25rem;
+  font-weight: bold;
+}
+
+.game-summary {
+  display: block;
+  font-size: 1.3rem;
+  opacity: 0.5;
+}
+
+.game-title {
+  display: block;
+  font-size: 3rem;
+  font-weight: bold;
+  margin-top: 0;
+}
+
+.game-title-column {
+  margin: 1.25rem;
+  margin-top: 0;
+  font: inherit;
+  color: white;
+}
+
+.game-price {
+  display: inline-block;
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: white;
+  opacity: 0.3;
+}

@@ -1,0 +1,39 @@
+.downloadpage {
+  width: 45%;
+  height: 16rem;
+  padding: 3rem;
+  border-radius: 0.5rem;
+  margin: auto;
+  margin-bottom: 3.5rem;
+  color: white;
+  background-color: #222222;
+  box-shadow: 0 1rem 1rem black;
+  transition: transform 0.3s ease;
+}
+
+.downloadpage:hover {
+  transform: scale(1.015);
+}
+
+.title-block {
+  margin-bottom: 3rem;
+}
+
+.downloadpage h1 {
+  width: 100%;
+  font-weight: bold;
+  margin: 0;
+}
+
+.downloadpage h2 {
+  width: 100%;
+  margin: 0;
+}
+
+.downloadpage a {
+  width: 100%;
+  font-size: 1.25rem;
+  font-weight: bold;
+  margin: 0;
+  color: #4d0101;
+}

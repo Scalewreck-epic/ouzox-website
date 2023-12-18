@@ -1,0 +1,43 @@
+.genre-button {
+  display: inline-block;
+  color: white;
+  font-weight: bold;
+  padding: 0.5rem 0.5rem;
+  border-radius: 1rem;
+  margin: 0;
+  width: 10rem;
+  min-width: 10rem;
+  height: 3rem;
+  box-shadow: 0 0.25rem 0.5rem black;
+  border-style: solid;
+  border-width: 0;
+  background-color: #46464c;
+  transition: color 0.5s ease outline 0.5s ease;
+}
+
+.genre-button h4,
+.genre-name {
+  text-shadow: 0.2rem 0.2rem black;
+  font-family: "Secular One", sans-serif;
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  margin: 0;
+  text-align: center;
+}
+
+.genre-name {
+  max-height: 2rem;
+  font-size: 1.25rem;
+}
+
+.genre-button h4 {
+  opacity: 0.5;
+}
+
+.genre-button:hover {
+  text-decoration: none;
+  border-bottom: 0;
+  outline: 0.125rem solid #4d0101;
+}

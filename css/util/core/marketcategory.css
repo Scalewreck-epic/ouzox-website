@@ -1,0 +1,31 @@
+.category {
+  width: 80%;
+  min-height: 1rem;
+  margin: auto;
+  margin-bottom: 3rem;
+  padding: 1rem;
+  border-radius: 3.5rem;
+  box-shadow: 0 1rem 1rem black;
+  background-color: #222222;
+  outline: 1px solid #3f3f3f;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.category:hover,
+.user-page:hover {
+  box-shadow: 0 1.5rem 1.5rem black;
+  transform: scale(1.015);
+}
+
+.category h1,
+.category h4 {
+  margin: 0.5rem 1rem;
+  color: white;
+  text-shadow: 0.5rem 0.5rem 0.5rem black;
+}
+
+.category-none {
+  opacity: 0.25;
+  text-align: center;
+  font-size: 5rem;
+}

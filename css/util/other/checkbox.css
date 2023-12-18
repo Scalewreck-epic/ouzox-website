@@ -1,0 +1,30 @@
+.cl-checkbox input[type="checkbox"] {
+  position: absolute;
+  opacity: 0;
+}
+
+.cl-checkbox-box:hover {
+  cursor: pointer;
+}
+
+.cl-checkbox .cl-checkbox-box {
+  display: inline-block;
+  position: relative;
+  width: 1rem;
+  height: 1rem;
+  outline: 0.063rem solid #ccc;
+  border-radius: 0.188rem;
+  background-color: white;
+}
+
+.cl-checkbox input[type="checkbox"]:checked + .cl-checkbox-box::after {
+  content: "";
+  position: absolute;
+  left: 0.25rem;
+  top: 0.063rem;
+  width: 0.313rem;
+  height: 0.563rem;
+  border: solid #000000;
+  border-width: 0 0.125rem 0.125rem 0;
+  transform: rotate(45deg);
+}
