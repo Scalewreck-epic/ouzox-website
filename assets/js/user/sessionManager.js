@@ -50,7 +50,7 @@ export function fetch_cookie(wanted) {
 }
 
 export async function change_email_data() {
-  const data = getCookie("session_id");
+  const data = fetch_cookie("session_id");
 
   const new_email = document.getElementById("email_input").value;
   const validEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(new_email);
@@ -97,7 +97,7 @@ export async function change_password_data() {
 }
 
 export async function change_status_data() {
-  const data = getCookie("session_id");
+  const data = fetch_cookie("session_id");
 
   if (data.Valid) {
     const new_status = document.getElementById("status-input").value;
@@ -118,7 +118,7 @@ export async function change_status_data() {
 }
 
 export async function fetch_user() {
-  const data = getCookie("session_id");
+  const data = fetch_cookie("session_id");
 
   const myHeaders = new Headers();
   myHeaders.append("Content-Type", "application/json");
