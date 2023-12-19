@@ -8,7 +8,7 @@ const getsingle_endpoint2 =
   "https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv/users/"; // + user id
 
 const annualExpiration = 1;
-const data = fetch_cookie("session_id");
+const cookie_data = fetch_cookie("session_id");
 
 import {
   fetch_cookie,
@@ -37,8 +37,8 @@ function add_username() {
   const dashboard_btn = document.getElementById("dashboard-btn");
   const upload_btn = document.getElementById("upload-btn");
 
-  if (data.Valid) {
-    const url = getsingle_endpoint + data.Data;
+  if (cookie_data.Valid) {
+    const url = getsingle_endpoint + cookie_data.Data;
 
     login_btn.remove();
     signup_btn.remove();
@@ -59,7 +59,7 @@ function add_username() {
           username.textContent = result_parse.name;
         } else if (result_parse.message) {
           if ((result_parse.message = "Not Found")) {
-            clearCookieData();
+            clear_cookie();
             window.location.assign("login");
           }
         }
@@ -72,7 +72,7 @@ function add_username() {
 }
 
 function setStats() {
-  const url = getsingle_endpoint + data.Data;
+  const url = getsingle_endpoint + cookie_data.Data;
 
   const myHeaders = new Headers();
   myHeaders.append("Content-Type", "application/json");
@@ -109,18 +109,18 @@ function setStats() {
     });
 }
 
-function createCookieData(authToken) {
+function create_cookie(cookie_name, token) {
   const expiration = calculateExpiration(false).toUTCString();
-  document.cookie = "session_id=" + authToken + "; expires=" + expiration + ";";
+  document.cookie = `${cookie_name}=${token}; expires=${expiration};`;
 }
 
-function clearCookieData() {
+function clear_cookie() {
   const expiration = calculateExpiration(true).toUTCString();
   const cookies = document.cookie.split(";");
 
   cookies.forEach(function (cookie) {
     const name = cookie.split("=")[0].trim();
-    document.cookie = name + "=; expires=" + expiration + ";";
+    document.cookie = `${name}=; expires=${expiration};`;
   });
 }
 
@@ -153,7 +153,7 @@ function isValidLogin() {
 }
 
 function createSessionData() {
-  if (!data.Valid) {
+  if (!cookie_data.Valid) {
     const username_input = document.getElementById("username_input").value;
     const email_input = document.getElementById("email_input").value;
     const password_input = document.getElementById("password_input").value;
@@ -184,7 +184,7 @@ function createSessionData() {
         .then((result) => {
           const result_parse = JSON.parse(result);
           if (result_parse.authToken) {
-            createCookieData(result_parse.authToken);
+            create_cookie("session_id", result_parse.authToken);
             error_label.textContent = "Successfully created account!";
             window.location.assign("index");
           } else {
@@ -202,7 +202,7 @@ function createSessionData() {
 }
 
 function getSessionData() {
-  if (!data.Valid) {
+  if (!cookie_data.Valid) {
     const username_input = document.getElementById("username_login").value;
     const password_input = document.getElementById("password_login").value;
 
@@ -230,7 +230,7 @@ function getSessionData() {
           const result_parse = JSON.parse(result);
 
           if (result_parse.authToken) {
-            createCookieData(result_parse.authToken);
+            create_cookie("session_id", result_parse.authToken);
             error_label.textContent = "Successfully logged in!";
             window.location.assign("index");
           } else {
@@ -246,14 +246,14 @@ function getSessionData() {
 }
 
 function logout() {
-  if (data.Valid) {
-    clearCookieData();
+  if (cookie_data.Valid) {
+    clear_cookie();
   }
 
   window.location.assign("login");
 }
 
-if (data.Valid) {
+if (cookie_data.Valid) {
   if (
     window.location.pathname.includes("/login") ||
     window.location.pathname.includes("/signup")
@@ -350,21 +350,22 @@ if (window.location.pathname.includes("/settings")) {
     }
   });
 
-  login_button.setAttribute("disabled", true);
-  login_form.oninput = function () {
+  login_form.addEventListener("input", function() {
     if (isValidLogin()) {
       if (login_button.hasAttribute("disabled")) {
         login_button.removeAttribute("disabled");
-      }
+      };
     } else {
       login_button.setAttribute("disabled", true);
-    }
-  };
+    };
+  });
 
-  login_form.onsubmit = function (event) {
+  login_form.addEventListener("submit", function(event) {
     event.preventDefault();
     getSessionData();
-  };
+  })
+
+  login_button.setAttribute("disabled", true);
 } else if (window.location.pathname.includes("/signup")) {
   const signup_form = document.getElementById("signup-form");
   const signup_button = document.getElementById("signup-button");
@@ -382,21 +383,23 @@ if (window.location.pathname.includes("/settings")) {
     }
   });
 
-  signup_button.setAttribute("disabled", true);
-  signup_form.oninput = function () {
+  signup_form.addEventListener("input", function() {
     if (isValidSignup()) {
       if (signup_button.hasAttribute("disabled")) {
         signup_button.removeAttribute("disabled");
       }
     } else {
       signup_button.setAttribute("disabled", true);
-    }
-  };
+    };
+  });
 
-  signup_form.onsubmit = function (event) {
+  signup_form.addEventListener("submit", function(event) {
     event.preventDefault();
     createSessionData();
-  };
-}
+
+  })
+
+  signup_button.setAttribute("disabled", true);
+};
 
 add_username();
