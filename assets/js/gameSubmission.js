@@ -155,12 +155,17 @@ uploadGame.addEventListener("submit", async function (event) {
           upload_product_api_url,
           productRequestOptions
         );
+
+        if (!response.ok) {
+          throw new Error(`Unable to upload product to stripe: ${response.status}`);
+        }
+
         const result = await response.text();
         const result_parse = JSON.parse(result);
 
         return result_parse;
       } catch (error) {
-        console.error(`Error uploading product to stripe ${error}`);
+        throw new Error(`Unable to upload product to stripe: ${error}`);
       }
     }
 
@@ -219,6 +224,11 @@ uploadGame.addEventListener("submit", async function (event) {
 
       try {
         const response = await fetch(upload_game_api_url, gameRequestOptions);
+
+        if (!response.ok) {
+          throw new Error(`Unable to upload game to database: ${response.status}`);
+        }
+
         const result = await response.text();
         const result_parse = JSON.parse(result);
 
@@ -273,12 +283,17 @@ uploadGame.addEventListener("submit", async function (event) {
           set_product_price_url,
           priceRequestOptions
         );
+
+        if (!response.ok) {
+          throw new Error(`Unable to set price: ${response.status}`);
+        }
+
         const result = await response.text();
         const result_parse = JSON.parse(result);
 
         return result_parse;
       } catch (error) {
-        console.error(`Error setting price ${error}`)
+        throw new Error(`Unable to set price: ${error}`);
       }
     }
 

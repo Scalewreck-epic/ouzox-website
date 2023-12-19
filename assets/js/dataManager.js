@@ -446,16 +446,16 @@ async function fetch_games() {
   async function set_prices() {
     try {
       const response = await fetch(games_prices_url, requestOptions);
-      if (response.ok) {
-        const result = await response.text();
-        const result_parse = JSON.parse(result);
 
-        prices = result_parse.data;
-      } else {
+      if (!response.ok) {
         window.location.assign(`404?er=${response.status}`);
       }
+      const result = await response.text();
+      const result_parse = JSON.parse(result);
+
+      prices = result_parse.data;
     } catch (error) {
-      throw new Error(`Unable to fetch prices: ${error}`);
+      throw new Error(`Unable to fetch games: ${error.message}`);
     }
   }
 
@@ -463,17 +463,16 @@ async function fetch_games() {
     try {
       const response = await fetch(games_list_api, requestOptions);
 
-      if (response.ok) {
-        const result = await response.text();
-        const result_parse = JSON.parse(result);
-  
-        games = result_parse.games;
-      } else {
-        console.log(response);
+      if (!response.ok) {
         window.location.assign(`404?er=${response.status}`);
       }
+
+      const result = await response.text();
+      const result_parse = JSON.parse(result);
+
+      games = result_parse.games;
     } catch (error) {
-      throw new Error(`Unable to fetch games: ${error}`);
+      throw new Error(`Unable to fetch games: ${error.message}`);
     }
   }
 

@@ -53,14 +53,14 @@ async function retrieveGameData(gameId) {
     try {
       const response = await fetch(get_game_url + gameId, options);
 
-      if (response.ok) {
-        const result = await response.text();
-        const result_parse = JSON.parse(result);
-
-        return result_parse;
-      } else {
+      if (!response.ok) {
         window.location.assign(`404?er=${response.status}`);
       }
+
+      const result = await response.text();
+      const result_parse = JSON.parse(result);
+
+      return result_parse;
     } catch (error) {
       window.location.assign("404?er=404");
     }
@@ -127,14 +127,14 @@ async function retrieveGameData(gameId) {
           options
         );
 
-        if (response.ok) {
-          const result = await response.text();
-          const result_parse = JSON.parse(result);
-
-          return result_parse;
-        } else {
+        if (!response.ok) {
           window.location.assign(`404?er=${response.status}`);
         }
+        
+        const result = await response.text();
+        const result_parse = JSON.parse(result);
+
+        return result_parse;
       } catch (error) {
         window.location.assign("404?er=404");
       }

@@ -37,4 +37,9 @@ switch (error_code) {
     message.textContent =
       "I don't even know what you're doing to get this error.";
     break;
+  default:
+    errorcode.textContent = "404";
+    message_header.textContent = "Not Found";
+    message.textContent = "You're navigating somewhere beyond our territory.";
+
 }
