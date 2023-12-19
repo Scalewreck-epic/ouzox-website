@@ -165,7 +165,7 @@ uploadGame.addEventListener("submit", async function (event) {
 
         return result_parse;
       } catch (error) {
-        throw new Error(`Unable to upload product to stripe: ${error}`);
+        throw new Error(`Unable to upload product to stripe: ${error.message}`);
       }
     }
 
@@ -234,7 +234,7 @@ uploadGame.addEventListener("submit", async function (event) {
 
         return result_parse;
       } catch (error) {
-        throw new Error(`Unable to upload game to database: ${error}`);
+        throw new Error(`Unable to upload game to database: ${error.message}`);
       }
     }
 
@@ -293,7 +293,7 @@ uploadGame.addEventListener("submit", async function (event) {
 
         return result_parse;
       } catch (error) {
-        throw new Error(`Unable to set price: ${error}`);
+        throw new Error(`Unable to set price: ${error.message}`);
       }
     }
 

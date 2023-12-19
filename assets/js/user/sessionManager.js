@@ -23,7 +23,7 @@ async function change_session_data(headers, endpoint) {
     }
   } catch (error) {
     error_label.innerHTML = "Error changing session data";
-    console.error(`Unable to change session data: ${error}`);
+    console.error(`Unable to change session data: ${error.message}`);
   }
 }
 
@@ -145,7 +145,7 @@ export async function fetch_user() {
 
         return result_parse;
       } catch (error) {
-        throw new Error(`Error getting user data: ${error}`);
+        throw new Error(`Error getting user data: ${error.message}`);
       }
     }
 

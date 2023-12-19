@@ -60,7 +60,7 @@ function add_username() {
         username.textContent = result_parse.name;
       }
     } catch (error) {
-      console.error(`Unable to add username: ${error}`);
+      console.error(`Unable to add username: ${error.message}`);
     }
   } else {
     dashboard_btn.remove();
@@ -103,7 +103,7 @@ async function setStats() {
       profile_link.setAttribute("href", `user?id=${result_parse.id}`);
     }
   } catch (error) {
-    throw new Error(`[1] Error trying to get user data: ${error}`);
+    throw new Error(`[1] Error trying to get user data: ${error.message}`);
   }
 }
 
@@ -191,7 +191,7 @@ async function createSessionData() {
           error_label.textContent = result_parse.message;
         }
       } catch (error) {
-        console.error(`Unable to signup: ${error}`);
+        console.error(`Unable to signup: ${error.message}`);
         error_label.textContent = "An error occured";
       }
     } else {
@@ -237,7 +237,7 @@ async function getSessionData() {
           error_label.textContent = result_parse.message;
         }
       } catch (error) {
-        console.error(`Unable to login: ${error}`);
+        console.error(`Unable to login: ${error.message}`);
         error_label.textContent = "An error occured";
       }
     }
@@ -308,7 +308,7 @@ if (window.location.pathname.includes("/user")) {
       window.location.assign(`404?er=${response.status}`);
     }
   } catch (error) {
-    throw new Error(`[2] Error trying to get user data: ${error}`);
+    throw new Error(`[2] Error trying to get user data: ${error.message}`);
   }
 }
 

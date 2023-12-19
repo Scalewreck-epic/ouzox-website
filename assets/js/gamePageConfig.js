@@ -187,7 +187,7 @@ async function changeProduct(data, gameId, commitChangesButton) {
       commitChangesButton.innerHTML = "An error occured";
     }
   } catch (error) {
-    console.error(`Error trying to update game: ${error}`);
+    console.error(`Error trying to update game: ${error.message}`);
     commitChangesButton.innerHTML = "An error occured";
   }
 }
