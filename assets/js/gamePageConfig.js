@@ -427,6 +427,7 @@ const gameHandler = async (gameId) => {
     game_column.style.backgroundColor = gameData.page.colors.bg2_color;
     game_title_column.style.color = gameData.page.colors.title_color;
     game_desc.style.color = gameData.page.colors.desc_color;
+    game_desc_background.style.backgroundColor = gameData.page.colors.desc_bg_color;
     download_button.style.backgroundColor = gameData.page.colors.button_color;
     download_button.style.color = gameData.page.colors.button_text_color;
     game_stats.style.backgroundColor = gameData.page.colors.stats_bg_color;
