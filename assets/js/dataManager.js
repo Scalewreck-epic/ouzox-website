@@ -14,6 +14,19 @@ let genres = [];
 
 let offset = 100;
 
+const search_algorithm = (a, b) => {
+  const scoreA = a.relevance * 0.7 + a.downloads * 0.3;
+  const scoreB = b.relevance * 0.7 + b.downloads * 0.3;
+  scoreA - scoreB;
+};
+
+const category_algorithm = (a, b) => {
+  const scoreA = a.downloads * 0.8 + a.updated * 0.2;
+  const scoreB = b.downloads * 0.8 + b.updated * 0.2;
+
+  return scoreB - scoreA;
+};
+
 function fetch_game_price(game_id) {
   const result = prices.find((item) => item.product === game_id);
   if (result) {
@@ -290,11 +303,12 @@ function sort_games(listId, gamesList, sortingFunction) {
 
 const load_more_games = () => {
   const slicedGames = games.slice(offset, offset + 100);
-  sort_games("relevant-games-list", slicedGames, (a, b) => {
-    const scoreA = a.relevance * 0.7 + a.downloads * 0.3;
-    const scoreB = b.relevance * 0.7 + b.downloads * 0.3;
-    scoreA - scoreB;
-  });
+  
+  if (window.location.pathname.includes("/search")) {
+    sort_games("relevant-games-list", slicedGames, search_algorithm);
+  } else if (window.location.pathname.includes("/category")) {
+    sort_games("genre-games-list", slicedGames, category_algorithm);
+  }
 }
 
 function load_games() {
@@ -306,11 +320,9 @@ function load_games() {
       results_label.textContent = "(no results)";
     } else {
       results_label.textContent = `(${games.length} results)`;
-    }
+    };
 
-    sort_games("relevant-games-list", games.slice(0, 100), (a, b) => {
-      b.relevance - a.relevance;
-    });
+    sort_games("relevant-games-list", games.slice(0, 100), search_algorithm);
   } else if (window.location.pathname.includes("/category")) {
     const results_label = document.getElementById("results-label");
     if (games.length == 1) {
@@ -321,15 +333,10 @@ function load_games() {
       results_label.textContent = `(${games.length} results)`;
     }
 
-    sort_games("genre-games-list", games.slice(0, 100), (a, b) => {
-      const scoreA = a.downloads * 0.8 + a.updated * 0.2;
-      const scoreB = b.downloads * 0.8 + b.updated * 0.2;
-
-      return scoreB - scoreA;
-    });
+    sort_games("genre-games-list", games.slice(0, 100), category_algorithm);
   } else {
     // Fresh Games
-    sort_games("fresh-games-list", games, (a, b) => {
+    sort_games("fresh-games-list", games.slice(0, 30), (a, b) => {
       const scoreA = a.created * 0.8 + a.downloads * 0.2;
       const scoreB = b.created * 0.8 + b.downloads * 0.2;
 
@@ -337,7 +344,7 @@ function load_games() {
     });
 
     // Hot Games
-    sort_games("hot-games-list", games, (a, b) => {
+    sort_games("hot-games-list", games.slice(0, 30), (a, b) => {
       const scoreA = a.downloads * 0.6 + a.updated * 0.4;
       const scoreB = b.downloads * 0.6 + b.updated * 0.4;
 
@@ -346,7 +353,7 @@ function load_games() {
 
     // Sponsored Games
     const sponsoredGames = games.filter((game) => game.sponsor_money > 0);
-    sort_games("sponsored-games-list", sponsoredGames, (a, b) => {
+    sort_games("sponsored-games-list", sponsoredGames.slice(0, 30), (a, b) => {
       const scoreA = a.sponsor_money * 0.6 + a.downloads * 0.4;
       const scoreB = b.sponsor_money * 0.6 + b.downloads * 0.4;
 
@@ -354,7 +361,7 @@ function load_games() {
     });
 
     // Bestsellers
-    sort_games("bestseller-games-list", games, (a, b) => {
+    sort_games("bestseller-games-list", games.slice(0, 30), (a, b) => {
       const scoreA = a.downloads * 0.8 + a.updated * 0.2;
       const scoreB = b.downloads * 0.8 + b.updated * 0.2;
 
@@ -363,7 +370,7 @@ function load_games() {
 
     // Free Games
     const freegames = games.filter((game) => game.free == true);
-    sort_games("free-games-list", freegames, (a, b) => {
+    sort_games("free-games-list", freegames.slice(0, 30), (a, b) => {
       const scoreA = a.downloads * 0.7 + a.updated * 0.3;
       const scoreB = b.downloads * 0.7 + b.updated * 0.3;
 
