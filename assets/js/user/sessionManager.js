@@ -6,21 +6,25 @@ const change_user_password_url =
 const change_user_status_url =
   "https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv/user/edit_status/"; // + session id
 
-function change_session_data(headers, endpoint) {
+async function change_session_data(headers, endpoint) {
   const error_label = document.getElementById("error-label");
   error_label.innerHTML = "Changing settings...";
 
-  fetch(endpoint, headers)
-    .then((response) => response.text())
-    .then((result) => {
+  try {
+    const response = await fetch(endpoint, headers);
+
+    if (response.ok) {
+      const result = await response.text();
       const result_parse = JSON.parse(result);
 
-      if (result_parse.message) {
-        error_label.textContent = result_parse.message;
-      } else {
-        error_label.innerHTML = "Successfully changed settings!";
-      }
-    });
+      error_label.textContent = result_parse.message;
+    } else {
+      error_label.textContent = "Error changing session data";
+    }
+  } catch (error) {
+    error_label.innerHTML = "Error changing session data";
+    console.error(`Unable to change session data: ${error}`);
+  }
 }
 
 export function fetch_cookie(wanted) {
@@ -67,7 +71,7 @@ export async function change_email_data() {
       }),
     };
 
-    change_session_data(requestOptions, change_user_email_url + data.Data);
+    await change_session_data(requestOptions, change_user_email_url + data.Data);
   }
 }
 
@@ -92,7 +96,7 @@ export async function change_password_data() {
       }),
     };
 
-    change_session_data(requestOptions, change_user_password_url + data.Data);
+    await change_session_data(requestOptions, change_user_password_url + data.Data);
   }
 }
 
@@ -113,7 +117,7 @@ export async function change_status_data() {
       }),
     };
 
-    change_session_data(requestOptions, change_user_status_url + data.Data);
+    await change_session_data(requestOptions, change_user_status_url + data.Data);
   }
 }
 

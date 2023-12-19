@@ -50,20 +50,18 @@ function add_username() {
       headers: myHeaders,
     };
 
-    fetch(url, requestOptions)
-      .then((response) => response.text())
-      .then((result) => {
+    try {
+      const response = fetch(url, requestOptions);
+
+      if (response.ok) {
+        const result = response.text();
         const result_parse = JSON.parse(result);
 
-        if (result_parse.name) {
-          username.textContent = result_parse.name;
-        } else if (result_parse.message) {
-          if ((result_parse.message = "Not Found")) {
-            clear_cookie();
-            window.location.assign("login");
-          }
-        }
-      });
+        username.textContent = result_parse.name;
+      }
+    } catch (error) {
+      console.error(`Unable to add username: ${error}`);
+    }
   } else {
     dashboard_btn.remove();
     upload_btn.remove();
@@ -71,7 +69,7 @@ function add_username() {
   }
 }
 
-function setStats() {
+async function setStats() {
   const url = getsingle_endpoint + cookie_data.Data;
 
   const myHeaders = new Headers();
@@ -81,32 +79,32 @@ function setStats() {
     headers: myHeaders,
   };
 
-  fetch(url, requestOptions)
-    .then((response) => response.text())
-    .then((result) => {
+  try {
+    const response = await fetch(url, requestOptions);
+
+    if (response.ok) {
+      const result = await response.text();
       const result_parse = JSON.parse(result);
 
-      if (result_parse.email && result_parse.created_at) {
-        const email_stat = document.getElementById("email-stat");
-        const join_time = document.getElementById("creation-stat");
-        const profile_link = document.getElementById("profile-link");
+      const email_stat = document.getElementById("email-stat");
+      const join_time = document.getElementById("creation-stat");
+      const profile_link = document.getElementById("profile-link");
 
-        const rfcDate = new Date(result_parse.created_at).toUTCString();
-        const dateObj = new Date(Date.parse(rfcDate));
-        const formattedDate = dateObj.toLocaleDateString("en-US", {
-          year: "2-digit",
-          month: "2-digit",
-          day: "2-digit",
-        });
+      const rfcDate = new Date(result_parse.created_at).toUTCString();
+      const dateObj = new Date(Date.parse(rfcDate));
+      const formattedDate = dateObj.toLocaleDateString("en-US", {
+        year: "2-digit",
+        month: "2-digit",
+        day: "2-digit",
+      });
 
-        email_stat.textContent = `Email: ${result_parse.email}`
-        join_time.textContent = `Creation: ${formattedDate}`
-        profile_link.setAttribute("href", `user?id=${result_parse.id}`);
-      }
-    })
-    .catch((error) => {
-      throw new Error(`[1] Error trying to get user data: ${error}`);
-    });
+      email_stat.textContent = `Email: ${result_parse.email}`;
+      join_time.textContent = `Creation: ${formattedDate}`;
+      profile_link.setAttribute("href", `user?id=${result_parse.id}`);
+    }
+  } catch (error) {
+    throw new Error(`[1] Error trying to get user data: ${error}`);
+  }
 }
 
 function create_cookie(cookie_name, token) {
@@ -152,7 +150,7 @@ function isValidLogin() {
   return validUsername && validPassword;
 }
 
-function createSessionData() {
+async function createSessionData() {
   if (!cookie_data.Valid) {
     const username_input = document.getElementById("username_input").value;
     const email_input = document.getElementById("email_input").value;
@@ -179,29 +177,30 @@ function createSessionData() {
 
       error_label.textContent = "Creating account...";
 
-      fetch(signup_endpoint, requestOptions)
-        .then((response) => response.text())
-        .then((result) => {
+      try {
+        const response = await fetch(signup_endpoint, requestOptions);
+
+        if (response.ok) {
+          const result = await response.text();
           const result_parse = JSON.parse(result);
-          if (result_parse.authToken) {
-            create_cookie("session_id", result_parse.authToken);
-            error_label.textContent = "Successfully created account!";
-            window.location.assign("index");
-          } else {
-            error_label.textContent = result_parse.message;
-          }
-        })
-        .catch((error) => {
-          console.error(`Error trying to create user profile: ${error}`);
-          error_label.textContent = "An error occured";
-        });
+
+          create_cookie("session_id", result_parse.authToken);
+          error_label.textContent = "Successfully created account!";
+          window.location.assign("index");
+        } else {
+          error_label.textContent = result_parse.message;
+        }
+      } catch (error) {
+        console.error(`Unable to signup: ${error}`);
+        error_label.textContent = "An error occured";
+      }
     } else {
       error_label.textContent = "Not secure enough.";
     }
   }
 }
 
-function getSessionData() {
+async function getSessionData() {
   if (!cookie_data.Valid) {
     const username_input = document.getElementById("username_login").value;
     const password_input = document.getElementById("password_login").value;
@@ -224,23 +223,23 @@ function getSessionData() {
       const error_label = document.getElementById("error-label");
       error_label.textContent = "Logging you in...";
 
-      fetch(login_endpoint, requestOptions)
-        .then((response) => response.text())
-        .then((result) => {
+      try {
+        const response = await fetch(login_endpoint, requestOptions);
+
+        if (response.ok) {
+          const result = await response.text();
           const result_parse = JSON.parse(result);
 
-          if (result_parse.authToken) {
-            create_cookie("session_id", result_parse.authToken);
-            error_label.textContent = "Successfully logged in!";
-            window.location.assign("index");
-          } else {
-            error_label.textContent = result_parse.message;
-          }
-        })
-        .catch((error) => {
-          console.error(`Error trying to login to user profile: ${error}`);
-          error_label.textContent = "An error occured";
-        });
+          create_cookie("session_id", result_parse.authToken);
+          error_label.textContent = "Successfully logged in!";
+          window.location.assign("index");
+        } else {
+          error_label.textContent = result_parse.message;
+        }
+      } catch (error) {
+        console.error(`Unable to login: ${error}`);
+        error_label.textContent = "An error occured";
+      }
     }
   }
 }
@@ -281,36 +280,36 @@ if (window.location.pathname.includes("/user")) {
     headers: myHeaders,
   };
 
-  fetch(getsingle_endpoint2 + user_id, requestOptions)
-    .then((response) => response.text())
-    .then((result) => {
+  try {
+    const response = await fetch(getsingle_endpoint2 + user_id, requestOptions);
+
+    if (response.ok) {
+      const result = await response.text();
       const result_parse = JSON.parse(result);
 
-      if (result_parse.email && result_parse.created_at) {
-        const user_username = document.getElementById("user-username");
-        const user_status = document.getElementById("user-status");
-        const user_joindate = document.getElementById("join-date");
-        const web_title = document.getElementById("title");
+      const user_username = document.getElementById("user-username");
+      const user_status = document.getElementById("user-status");
+      const user_joindate = document.getElementById("join-date");
+      const web_title = document.getElementById("title");
 
-        const rfcDate = new Date(result_parse.created_at).toUTCString();
-        const dateObj = new Date(Date.parse(rfcDate));
-        const formattedDate = dateObj.toLocaleDateString("en-US", {
-          year: "2-digit",
-          month: "2-digit",
-          day: "2-digit",
-        });
+      const rfcDate = new Date(result_parse.created_at).toUTCString();
+      const dateObj = new Date(Date.parse(rfcDate));
+      const formattedDate = dateObj.toLocaleDateString("en-US", {
+        year: "2-digit",
+        month: "2-digit",
+        day: "2-digit",
+      });
 
-        user_username.textContent = result_parse.name;
-        user_status.textContent = result_parse.status;
-        user_joindate.textContent = formattedDate;
-        web_title.textContent = `Ouzox | ${result_parse.name}`;
-      } else {
-        window.location.assign("404");
-      }
-    })
-    .catch((error) => {
-      throw new Error(`[2] Error trying to get user data: ${error}`);
-    });
+      user_username.textContent = result_parse.name;
+      user_status.textContent = result_parse.status;
+      user_joindate.textContent = formattedDate;
+      web_title.textContent = `Ouzox | ${result_parse.name}`;
+    } else {
+      window.location.assign(`404?er=${response.status}`);
+    }
+  } catch (error) {
+    throw new Error(`[2] Error trying to get user data: ${error}`);
+  }
 }
 
 if (window.location.pathname.includes("/settings")) {
@@ -350,20 +349,20 @@ if (window.location.pathname.includes("/settings")) {
     }
   });
 
-  login_form.addEventListener("input", function() {
+  login_form.addEventListener("input", function () {
     if (isValidLogin()) {
       if (login_button.hasAttribute("disabled")) {
         login_button.removeAttribute("disabled");
-      };
+      }
     } else {
       login_button.setAttribute("disabled", true);
-    };
+    }
   });
 
-  login_form.addEventListener("submit", function(event) {
+  login_form.addEventListener("submit", function (event) {
     event.preventDefault();
     getSessionData();
-  })
+  });
 
   login_button.setAttribute("disabled", true);
 } else if (window.location.pathname.includes("/signup")) {
@@ -383,23 +382,22 @@ if (window.location.pathname.includes("/settings")) {
     }
   });
 
-  signup_form.addEventListener("input", function() {
+  signup_form.addEventListener("input", function () {
     if (isValidSignup()) {
       if (signup_button.hasAttribute("disabled")) {
         signup_button.removeAttribute("disabled");
       }
     } else {
       signup_button.setAttribute("disabled", true);
-    };
+    }
   });
 
-  signup_form.addEventListener("submit", function(event) {
+  signup_form.addEventListener("submit", function (event) {
     event.preventDefault();
     createSessionData();
-
-  })
+  });
 
   signup_button.setAttribute("disabled", true);
-};
+}
 
 add_username();

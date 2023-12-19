@@ -18,12 +18,18 @@ async function set_game_data(gameId) {
   async function fetch_game_data() {
     try {
       const response = await fetch(get_product_url + gameId, options);
-      const result = await response.text();
-      const result_parse = JSON.parse(result);
+      
+      if (response.ok) {
+        const result = await response.text();
+        const result_parse = JSON.parse(result);
+        
+        return result_parse;
+      } else {
+        window.location.assign(`404?er=${response.status}`);
+      }
 
-      return result_parse;
     } catch (error) {
-      window.location.assign("404");
+      window.location.assign("404?er=404");
     }
   }
 
@@ -46,5 +52,5 @@ if (gameIdParam && priceIdParam) {
   set_game_data(`prod_${gameIdParam}`);
 } else {
   console.warn("There are no params.");
-  window.location.assign("404");
+  window.location.assign("404?er=404");
 }

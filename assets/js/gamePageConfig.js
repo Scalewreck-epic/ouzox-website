@@ -52,12 +52,17 @@ async function retrieveGameData(gameId) {
   async function getGameData() {
     try {
       const response = await fetch(get_game_url + gameId, options);
-      const result = await response.text();
-      const result_parse = JSON.parse(result);
 
-      return result_parse;
+      if (response.ok) {
+        const result = await response.text();
+        const result_parse = JSON.parse(result);
+
+        return result_parse;
+      } else {
+        window.location.assign(`404?er=${response.status}`);
+      }
     } catch (error) {
-      window.location.assign("404");
+      window.location.assign("404?er=404");
     }
   }
 
@@ -121,12 +126,17 @@ async function retrieveGameData(gameId) {
           get_price_url + rawGameData.product_id,
           options
         );
-        const result = await response.text();
-        const result_parse = JSON.parse(result);
 
-        return result_parse;
+        if (response.ok) {
+          const result = await response.text();
+          const result_parse = JSON.parse(result);
+
+          return result_parse;
+        } else {
+          window.location.assign(`404?er=${response.status}`);
+        }
       } catch (error) {
-        window.location.assign("404");
+        window.location.assign("404?er=404");
       }
     }
 
@@ -427,7 +437,8 @@ const gameHandler = async (gameId) => {
     game_column.style.backgroundColor = gameData.page.colors.bg2_color;
     game_title_column.style.color = gameData.page.colors.title_color;
     game_desc.style.color = gameData.page.colors.desc_color;
-    game_desc_background.style.backgroundColor = gameData.page.colors.desc_bg_color;
+    game_desc_background.style.backgroundColor =
+      gameData.page.colors.desc_bg_color;
     download_button.style.backgroundColor = gameData.page.colors.button_color;
     download_button.style.color = gameData.page.colors.button_text_color;
     game_stats.style.backgroundColor = gameData.page.colors.stats_bg_color;
@@ -512,8 +523,8 @@ const gameHandler = async (gameId) => {
       if (game_age_input.options[i].value == gameData.agerating.toLowerCase()) {
         game_age_input.selectedIndex = i;
         break;
-      };
-    };
+      }
+    }
 
     game_genre_input.addEventListener("input", function () {
       game_genre_input.value = game_genre_input.value.toUpperCase();
@@ -840,12 +851,12 @@ const gameHandler = async (gameId) => {
           reader.onload = function (event) {
             imageURI = event.target.result;
           };
-  
+
           await new Promise((resolve) => {
             reader.onloadend = () => resolve();
             reader.readAsDataURL(image);
           });
-        };
+        }
 
         const update_game_options_body = {
           name: game_title.textContent,
