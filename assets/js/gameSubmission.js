@@ -224,7 +224,7 @@ uploadGame.addEventListener("submit", async function (event) {
 
         return result_parse;
       } catch (error) {
-        error("Cannot upload game to database: " + error);
+        throw new Error(`Unable to upload game to database: ${error}`);
       }
     }
 

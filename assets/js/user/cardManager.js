@@ -59,7 +59,7 @@ function isValidCreditCard() {
 credit_card_number.addEventListener("input", function() {
     var card_number = credit_card_number.value;
     card_number = card_number.replace(/[^0-9]/g, "");
-    card_number = card_number.substr(0, 4) + " " + card_number.substr(4, 4) + " " + card_number.substr(8, 4) + " " + card_number.substr(12, 4);
+    card_number = `${card_number.substr(0, 4)} ${card_number.substr(4,4)} ${card_number.substr(8, 4)} ${card_number.substr(12, 4)}`;
     credit_card_number.value = card_number;
 });
 

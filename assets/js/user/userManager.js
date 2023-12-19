@@ -3,9 +3,9 @@ const signup_endpoint =
 const login_endpoint =
   "https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv:v1/auth/login";
 const getsingle_endpoint =
-  "https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv/user/"; // + user session
+  "https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv/user/";
 const getsingle_endpoint2 =
-  "https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv/users/"; // + user id
+  "https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv/users/";
 
 const annualExpiration = 1;
 const cookie_data = fetch_cookie("session_id");
@@ -99,8 +99,8 @@ function setStats() {
           day: "2-digit",
         });
 
-        email_stat.textContent = "Email: " + result_parse.email;
-        join_time.textContent = "Join Date: " + formattedDate;
+        email_stat.textContent = `Email: ${result_parse.email}`
+        join_time.textContent = `Creation: ${formattedDate}`
         profile_link.setAttribute("href", `user?id=${result_parse.id}`);
       }
     })

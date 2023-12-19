@@ -38,7 +38,7 @@ function applyHeader(level) {
   const selection = window.getSelection();
   const selectedText = selection.toString();
 
-  document.execCommand("formatBlock", false, "<h" + level + ">");
+  document.execCommand("formatBlock", false, `<h${level}>`)
 
   if (selection.rangeCount > 0) {
     const range = selection.getRangeAt(0);
