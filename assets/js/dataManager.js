@@ -462,12 +462,14 @@ async function fetch_games() {
   async function fetch_data() {
     try {
       const response = await fetch(games_list_api, requestOptions);
+
       if (response.ok) {
         const result = await response.text();
         const result_parse = JSON.parse(result);
-
+  
         games = result_parse.games;
       } else {
+        console.log(response);
         window.location.assign(`404?er=${response.status}`);
       }
     } catch (error) {
