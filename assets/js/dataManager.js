@@ -303,6 +303,15 @@ function sort_games(listId, gamesList, sortingFunction) {
 
 const load_more_games = () => {
   const slicedGames = games.slice(offset, offset + 100);
+  const results_label = document.getElementById("results-label");
+  
+  if (games.length == 1) {
+    results_label.textContent = "(1 result)";
+  } else if (games.length == 0) {
+    results_label.textContent = "(no results)";
+  } else {
+    results_label.textContent = `(${games.length} results)`;
+  }
   
   if (window.location.pathname.includes("/search")) {
     sort_games("relevant-games-list", slicedGames, search_algorithm);
