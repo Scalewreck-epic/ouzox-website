@@ -37,6 +37,7 @@ nav ul {
 
 .web-icon {
   margin: 0;
+  border-radius: 0.5rem;
 }
 
 .push-left .web-icon {
@@ -74,5 +75,7 @@ nav ul {
 
 .web-thumbnail {
   display: block;
+  border-radius: 1.5rem;
+  margin: 1rem;
   width: 100%;
 }
