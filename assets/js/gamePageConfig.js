@@ -229,9 +229,7 @@ const gameHandler = async (gameId) => {
   function format_time_single(timeago, option, unit) {
     return timeago === 1
       ? `${option} (1 ${unit} Ago)`
-      : timeago > 1
-      ? `${option} (${timeago} ${unit}s Ago)`
-      : false;
+      : `${option} (${timeago} ${unit}s Ago)`;
   }
 
   function format_time(
@@ -243,28 +241,13 @@ const gameHandler = async (gameId) => {
   ) {
     switch (true) {
       case years_ago >= 1:
-        return format_time_single(
-          years_ago,
-          created_or_updated,
-          "Years"
-        );
+        return format_time_single(years_ago, created_or_updated, "Years");
       case months_ago >= 1:
-        return format_time_single(
-          months_ago,
-          created_or_updated,
-          "Months"
-        );
+        return format_time_single(months_ago, created_or_updated, "Months");
       case weeks_ago >= 1:
-        return (
-          format_time_single(weeks_ago, created_or_updated),
-          "Weeks"
-        );
+        return format_time_single(weeks_ago, created_or_updated, "Weeks");
       case days_ago >= 1:
-        return format_time_single(
-          days_ago,
-          created_or_updated,
-          "Days"
-        );
+        return format_time_single(days_ago, created_or_updated, "Days");
       default:
         return "Just Now";
     }
