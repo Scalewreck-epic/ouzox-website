@@ -29,7 +29,7 @@ function calculateExpiration(past) {
   return currentDate;
 }
 
-function add_username() {
+async function add_username() {
   const username = document.getElementById("username");
 
   const login_btn = document.getElementById("login-btn");
@@ -51,8 +51,8 @@ function add_username() {
     };
 
     try {
-      const response = fetch(url, requestOptions);
-      const result = response.text();
+      const response = await fetch(url, requestOptions);
+      const result = await response.text();
       const result_parse = JSON.parse(result);
 
       username.textContent = result_parse.name;

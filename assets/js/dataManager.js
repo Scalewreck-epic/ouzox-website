@@ -297,7 +297,7 @@ function load_genres() {
 
 function sort_games(listId, gamesList, sortingFunction, min, max) {
   gamesList.sort(sortingFunction);
-  gameslist.slice(min, max);
+  gamesList.slice(min, max);
 
   const listElement = document.getElementById(listId);
   const gamesElement = document.getElementById(listId.replace("-list", ""));
