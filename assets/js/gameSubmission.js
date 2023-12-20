@@ -165,7 +165,8 @@ uploadGame.addEventListener("submit", async function (event) {
 
         return result_parse;
       } catch (error) {
-        throw new Error(`Unable to upload product to stripe: ${error.message}`);
+        // Unable to fetch prices. Redirect them to error page.
+        window.location.assign(`404?er=${error.status ? error.status : 500}`);
       }
     }
 
@@ -234,7 +235,8 @@ uploadGame.addEventListener("submit", async function (event) {
 
         return result_parse;
       } catch (error) {
-        throw new Error(`Unable to upload game to database: ${error.message}`);
+        // Unable to fetch prices. Redirect them to error page.
+        window.location.assign(`404?er=${error.status ? error.status : 500}`);
       }
     }
 
@@ -293,7 +295,8 @@ uploadGame.addEventListener("submit", async function (event) {
 
         return result_parse;
       } catch (error) {
-        throw new Error(`Unable to set price: ${error.message}`);
+        // Unable to fetch prices. Redirect them to error page.
+        window.location.assign(`404?er=${error.status ? error.status : 500}`);
       }
     }
 

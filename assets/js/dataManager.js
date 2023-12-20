@@ -455,7 +455,8 @@ async function fetch_games() {
 
       prices = result_parse.data;
     } catch (error) {
-      throw new Error(`Unable to fetch games: ${error.message}`);
+      // Unable to fetch prices. Redirect them to error page.
+      window.location.assign(`404?er=${error.status ? error.status : 500}`);
     }
   }
 
@@ -472,7 +473,8 @@ async function fetch_games() {
 
       games = result_parse.games;
     } catch (error) {
-      throw new Error(`Unable to fetch games: ${error.message}`);
+      // Unable to fetch games. Redirect them to error page.
+      window.location.assign(`404?er=${error.status ? error.status : 500}`);
     }
   }
 
