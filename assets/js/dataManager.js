@@ -295,8 +295,9 @@ function load_genres() {
   }
 }
 
-function sort_games(listId, gamesList, sortingFunction) {
+function sort_games(listId, gamesList, sortingFunction, min, max) {
   gamesList.sort(sortingFunction);
+  gameslist.slice(min, max);
 
   const listElement = document.getElementById(listId);
   const gamesElement = document.getElementById(listId.replace("-list", ""));
@@ -305,7 +306,6 @@ function sort_games(listId, gamesList, sortingFunction) {
 }
 
 const load_more_games = () => {
-  const slicedGames = games.slice(offset, offset + 100);
   const results_label = document.getElementById("results-label");
 
   if (games.length == 1) {
@@ -317,9 +317,9 @@ const load_more_games = () => {
   }
 
   if (window.location.pathname.includes("/search")) {
-    sort_games("relevant-games-list", slicedGames, search_algorithm);
+    sort_games("relevant-games-list", slicedGames, search_algorithm, offset, offset + 100);
   } else if (window.location.pathname.includes("/category")) {
-    sort_games("genre-games-list", slicedGames, category_algorithm);
+    sort_games("genre-games-list", slicedGames, category_algorithm, offset, offset + 100);
   }
 };
 
@@ -334,7 +334,7 @@ function load_games() {
       results_label.textContent = `(${games.length} results)`;
     }
 
-    sort_games("relevant-games-list", games.slice(0, 100), search_algorithm);
+    sort_games("relevant-games-list", games, search_algorithm, 0, 100);
   } else if (window.location.pathname.includes("/category")) {
     const results_label = document.getElementById("results-label");
     if (games.length == 1) {
@@ -345,49 +345,49 @@ function load_games() {
       results_label.textContent = `(${games.length} results)`;
     }
 
-    sort_games("genre-games-list", games.slice(0, 100), category_algorithm);
+    sort_games("genre-games-list", games, category_algorithm, 0, 100);
   } else {
     // Fresh Games
-    sort_games("fresh-games-list", games.slice(0, 30), (a, b) => {
+    sort_games("fresh-games-list", games, (a, b) => {
       const scoreA = a.created * 0.8 + a.downloads * 0.2;
       const scoreB = b.created * 0.8 + b.downloads * 0.2;
 
       return scoreB - scoreA;
-    });
+    }, 0, 30);
 
     // Hot Games
-    sort_games("hot-games-list", games.slice(0, 30), (a, b) => {
+    sort_games("hot-games-list", games, (a, b) => {
       const scoreA = a.downloads * 0.6 + a.updated * 0.4;
       const scoreB = b.downloads * 0.6 + b.updated * 0.4;
 
       return scoreB - scoreA;
-    });
+    }, 0, 30);
 
     // Sponsored Games
     const sponsoredGames = games.filter((game) => game.sponsor_money > 0);
-    sort_games("sponsored-games-list", sponsoredGames.slice(0, 30), (a, b) => {
+    sort_games("sponsored-games-list", sponsoredGames, (a, b) => {
       const scoreA = a.sponsor_money * 0.6 + a.downloads * 0.4;
       const scoreB = b.sponsor_money * 0.6 + b.downloads * 0.4;
 
       return scoreB - scoreA;
-    });
+    }, 0, 30);
 
     // Bestsellers
-    sort_games("bestseller-games-list", games.slice(0, 30), (a, b) => {
+    sort_games("bestseller-games-list", games, (a, b) => {
       const scoreA = a.downloads * 0.8 + a.updated * 0.2;
       const scoreB = b.downloads * 0.8 + b.updated * 0.2;
 
       return scoreB - scoreA;
-    });
+    }, 0, 30);
 
     // Free Games
     const freegames = games.filter((game) => game.free == true);
-    sort_games("free-games-list", freegames.slice(0, 30), (a, b) => {
+    sort_games("free-games-list", freegames, (a, b) => {
       const scoreA = a.downloads * 0.7 + a.updated * 0.3;
       const scoreB = b.downloads * 0.7 + b.updated * 0.3;
 
       return scoreB - scoreA;
-    });
+    }, 0, 30);
   }
 }
 
