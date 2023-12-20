@@ -52,16 +52,10 @@ function add_username() {
 
     try {
       const response = fetch(url, requestOptions);
+      const result = response.text();
+      const result_parse = JSON.parse(result);
 
-      if (response.ok) {
-        const result = response.text();
-        const result_parse = JSON.parse(result);
-
-        username.textContent = result_parse.name;
-      } else {
-        username.textContent = "error";
-        console.error(response);
-      }
+      username.textContent = result_parse.name;
     } catch (error) {
       console.error(`Unable to add username: ${error.message}`);
     }
