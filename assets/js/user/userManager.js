@@ -58,6 +58,9 @@ function add_username() {
         const result_parse = JSON.parse(result);
 
         username.textContent = result_parse.name;
+      } else {
+        username.textContent = "error";
+        console.error(response);
       }
     } catch (error) {
       console.error(`Unable to add username: ${error.message}`);
