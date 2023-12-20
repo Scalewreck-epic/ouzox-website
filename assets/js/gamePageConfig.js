@@ -130,7 +130,7 @@ async function retrieveGameData(gameId) {
         if (!response.ok) {
           window.location.assign(`404?er=${response.status}`);
         }
-        
+
         const result = await response.text();
         const result_parse = JSON.parse(result);
 
@@ -226,50 +226,58 @@ const gameHandler = async (gameId) => {
   game_desc.innerHTML = gameData.description;
   game_price.textContent = `${gameData.price.amount} ${gameData.price.currency}`;
 
-  function formatTimeAgo(
-    createdOrUpdated,
-    publishedOrUpdatedYearsAgo,
-    publishedOrUpdatedMonthsAgo,
-    publishedOrUpdatedWeeksAgo,
-    publishedOrUpdatedDaysAgo
+  function format_time_single(timeago, option, unit) {
+    return timeago === 1
+      ? `${option} (1 ${unit} Ago)`
+      : timeago > 1
+      ? `${option} (${timeago} ${unit}s Ago)`
+      : false;
+  }
+
+  function format_time(
+    created_or_updated,
+    years_ago,
+    months_ago,
+    weeks_ago,
+    days_ago
   ) {
-    if (publishedOrUpdatedYearsAgo >= 1) {
-      return publishedOrUpdatedYearsAgo === 1
-        ? `${createdOrUpdated} (1 Year Ago)`
-        : publishedOrUpdatedYearsAgo > 1
-        ? `${createdOrUpdated} (${publishedOrUpdatedYearsAgo} Years Ago)`
-        : false;
-    } else if (publishedOrUpdatedMonthsAgo >= 1) {
-      return publishedOrUpdatedMonthsAgo === 1
-        ? `${createdOrUpdated} (1 Month Ago)`
-        : publishedOrUpdatedMonthsAgo > 1
-        ? `${createdOrUpdated} (${publishedOrUpdatedMonthsAgo} Months Ago)`
-        : false;
-    } else if (publishedOrUpdatedWeeksAgo >= 1) {
-      return publishedOrUpdatedWeeksAgo === 1
-        ? `${createdOrUpdated} (1 Week Ago)`
-        : publishedOrUpdatedWeeksAgo > 1
-        ? `${createdOrUpdated} (${publishedOrUpdatedWeeksAgo} Weeks Ago)`
-        : false;
-    } else if (publishedOrUpdatedDaysAgo >= 1) {
-      return publishedOrUpdatedDaysAgo === 1
-        ? `TODAY`
-        : publishedOrUpdatedDaysAgo > 1
-        ? `${createdOrUpdated} (${publishedOrUpdatedDaysAgo} Days Ago)`
-        : "else";
-    } else {
-      return "else";
+    switch (true) {
+      case years_ago >= 1:
+        return format_time_single(
+          years_ago,
+          created_or_updated,
+          "Years"
+        );
+      case months_ago >= 1:
+        return format_time_single(
+          months_ago,
+          created_or_updated,
+          "Months"
+        );
+      case weeks_ago >= 1:
+        return (
+          format_time_single(weeks_ago, created_or_updated),
+          "Weeks"
+        );
+      case days_ago >= 1:
+        return format_time_single(
+          days_ago,
+          created_or_updated,
+          "Days"
+        );
+      default:
+        return "Just Now";
     }
   }
 
-  created.innerHTML = formatTimeAgo(
+  created.innerHTML = format_time(
     gameData.created,
     gameData.datestodays.publishedYearsAgo,
     gameData.datestodays.publishedMonthsAgo,
     gameData.datestodays.publishedWeeksAgo,
     gameData.datestodays.publishedDaysAgo
   );
-  updated.innerHTML = formatTimeAgo(
+  updated.innerHTML = format_time(
     gameData.updated,
     gameData.datestodays.updatedYearsAgo,
     gameData.datestodays.updatedMonthsAgo,
