@@ -241,13 +241,13 @@ const gameHandler = async (gameId) => {
   ) {
     switch (true) {
       case years_ago >= 1:
-        return format_time_single(years_ago, created_or_updated, "Years");
+        return format_time_single(years_ago, created_or_updated, "Year");
       case months_ago >= 1:
-        return format_time_single(months_ago, created_or_updated, "Months");
+        return format_time_single(months_ago, created_or_updated, "Month");
       case weeks_ago >= 1:
-        return format_time_single(weeks_ago, created_or_updated, "Weeks");
+        return format_time_single(weeks_ago, created_or_updated, "Week");
       case days_ago >= 1:
-        return format_time_single(days_ago, created_or_updated, "Days");
+        return format_time_single(days_ago, created_or_updated, "Day");
       default:
         return "Just Now";
     }
