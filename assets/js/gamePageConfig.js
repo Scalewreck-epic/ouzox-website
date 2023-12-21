@@ -62,7 +62,7 @@ async function retrieveGameData(gameId) {
 
       return result_parse;
     } catch (error) {
-      window.location.assign("404?er=404");
+      window.location.assign(`404?er=${error.response.status ? error.response.status : 500}`);
     }
   }
 
@@ -136,7 +136,7 @@ async function retrieveGameData(gameId) {
 
         return result_parse;
       } catch (error) {
-        window.location.assign("404?er=404");
+        window.location.assign(`404?er=${error.response.status ? error.response.status : 500}`);
       }
     }
 

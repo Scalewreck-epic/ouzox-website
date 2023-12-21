@@ -100,8 +100,7 @@ async function setStats() {
       profile_link.setAttribute("href", `user?id=${result_parse.id}`);
     }
   } catch (error) {
-    // Unable to fetch prices. Redirect them to error page.
-    window.location.assign(`404?er=${error.status ? error.status : 500}`);
+    window.location.assign(`404?er=${error.response.status ? error.response.status : 500}`);
   }
 }
 
@@ -306,8 +305,7 @@ if (window.location.pathname.includes("/user")) {
       window.location.assign(`404?er=${response.status}`);
     }
   } catch (error) {
-    // Unable to fetch prices. Redirect them to error page.
-    window.location.assign(`404?er=${error.status ? error.status : 500}`);
+    window.location.assign(`404?er=${error.response.status ? error.response.status : 500}`);
   }
 }
 

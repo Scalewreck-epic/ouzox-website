@@ -145,8 +145,7 @@ export async function fetch_user() {
 
         return result_parse;
       } catch (error) {
-        // Unable to fetch prices. Redirect them to error page.
-        window.location.assign(`404?er=${error.status ? error.status : 500}`);
+        window.location.assign(`404?er=${error.response.status ? error.response.status : 500}`);
       }
     }
 

@@ -165,8 +165,7 @@ uploadGame.addEventListener("submit", async function (event) {
 
         return result_parse;
       } catch (error) {
-        // Unable to fetch prices. Redirect them to error page.
-        window.location.assign(`404?er=${error.status ? error.status : 500}`);
+        window.location.assign(`404?er=${error.response.status ? error.response.status : 500}`);
       }
     }
 
@@ -235,8 +234,7 @@ uploadGame.addEventListener("submit", async function (event) {
 
         return result_parse;
       } catch (error) {
-        // Unable to fetch prices. Redirect them to error page.
-        window.location.assign(`404?er=${error.status ? error.status : 500}`);
+        window.location.assign(`404?er=${error.response.status ? error.response.status : 500}`);
       }
     }
 
@@ -295,8 +293,7 @@ uploadGame.addEventListener("submit", async function (event) {
 
         return result_parse;
       } catch (error) {
-        // Unable to fetch prices. Redirect them to error page.
-        window.location.assign(`404?er=${error.status ? error.status : 500}`);
+        window.location.assign(`404?er=${error.response.status ? error.response.status : 500}`);
       }
     }
 
