@@ -206,7 +206,7 @@ async function getSessionData() {
       const error_label = document.getElementById("error-label");
       error_label.textContent = "Logging you in...";
 
-      const result = await response(auth_login, requestOptions, false);
+      const result = await request(auth_login, requestOptions, false);
 
       if (result.Success) {
         create_cookie("session_id", result.Result.authToken);
