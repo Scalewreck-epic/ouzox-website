@@ -319,7 +319,7 @@ const load_more_games = () => {
   if (window.location.pathname.includes("/search")) {
     sort_games(
       "relevant-games-list",
-      slicedGames,
+      games,
       search_algorithm,
       offset,
       offset + 100
@@ -327,7 +327,7 @@ const load_more_games = () => {
   } else if (window.location.pathname.includes("/category")) {
     sort_games(
       "genre-games-list",
-      slicedGames,
+      games,
       category_algorithm,
       offset,
       offset + 100
