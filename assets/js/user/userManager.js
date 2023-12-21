@@ -15,7 +15,7 @@ import {
   change_password_data,
   change_status_data,
 } from "./sessionManager.js";
-import { request } from "./apiManager.js";
+import { request } from "../base/apiManager.js";
 
 function calculateExpiration(past) {
   const currentDate = new Date();

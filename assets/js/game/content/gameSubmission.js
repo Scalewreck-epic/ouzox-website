@@ -7,8 +7,8 @@ const create_game =
 
 const uploadGame = document.getElementById("upload-game");
 
-import { fetch_user } from "./user/sessionManager.js";
-import { request } from "./user/apiManager.js";
+import { fetch_user } from "../../user/sessionManager.js";
+import { request } from "../../user/apiManager.js";
 
 uploadGame.addEventListener("submit", async function (event) {
   event.preventDefault();

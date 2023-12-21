@@ -2,8 +2,8 @@ const update_game = "https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv/games/";
 const get_game = "https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv/games/";
 const get_price = "https://x8ki-letl-twmt.n7.xano.io/api:tFdG2Vz-/prices/";
 
-import { fetch_user } from "./user/sessionManager.js";
-import { request } from "./user/apiManager.js";
+import { fetch_user } from "../../user/sessionManager.js";
+import { request } from "../../user/apiManager.js";
 
 const urlParams = new URLSearchParams(window.location.search);
 const gameIdParam = urlParams.get("g");

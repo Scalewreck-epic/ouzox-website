@@ -6,7 +6,7 @@ const edit_user_pass =
 const edit_user_status =
   "https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv/user/edit_status/";
 
-import { request } from "./apiManager.js";
+import { request } from "../base/apiManager.js";
 
 async function change_session_data(headers, endpoint) {
   const error_label = document.getElementById("error-label");

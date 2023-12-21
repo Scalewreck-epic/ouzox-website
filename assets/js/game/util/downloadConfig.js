@@ -5,7 +5,7 @@ const urlParams = new URLSearchParams(window.location.search);
 const gameIdParam = urlParams.get("g");
 const priceIdParam = urlParams.get("p");
 
-import { request } from "../user/apiManager.js";
+import { request } from "../../base/apiManager";
 
 async function set_game_data(gameId) {
   const myHeaders = new Headers();
