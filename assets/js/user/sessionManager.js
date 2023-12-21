@@ -1,10 +1,10 @@
-const get_user_url = "https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv/user/"; // + session id
-const change_user_email_url =
-  "https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv:v1/user/edit_email/"; // + session id
-const change_user_password_url =
-  "https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv:v1/user/edit_pass/"; // + session id
-const change_user_status_url =
-  "https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv/user/edit_status/"; // + session id
+const get_user = "https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv/user/";
+const edit_user_email =
+  "https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv:v1/user/edit_email/";
+const edit_user_pass =
+  "https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv:v1/user/edit_pass/";
+const edit_user_status =
+  "https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv/user/edit_status/";
 
 async function change_session_data(headers, endpoint) {
   const error_label = document.getElementById("error-label");
@@ -71,7 +71,7 @@ export async function change_email_data() {
       }),
     };
 
-    await change_session_data(requestOptions, change_user_email_url + data.Data);
+    await change_session_data(requestOptions, `${edit_user_email}${data.Data}`);
   }
 }
 
@@ -96,7 +96,7 @@ export async function change_password_data() {
       }),
     };
 
-    await change_session_data(requestOptions, change_user_password_url + data.Data);
+    await change_session_data(requestOptions, `${edit_user_pass}${data.Data}`);
   }
 }
 
@@ -117,7 +117,7 @@ export async function change_status_data() {
       }),
     };
 
-    await change_session_data(requestOptions, change_user_status_url + data.Data);
+    await change_session_data(requestOptions, `${edit_user_status}${data.Data}`);
   }
 }
 
@@ -137,7 +137,7 @@ export async function fetch_user() {
     async function get_user() {
       try {
         const response = await fetch(
-          get_user_url + data.Data,
+          `${get_user}${data.Data}`,
           get_user_options
         );
         const result = await response.text();

@@ -1,6 +1,6 @@
-const update_game_url = "https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv/games/"; // + game id
-const get_game_url = "https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv/games/"; // + game id
-const get_price_url = "https://x8ki-letl-twmt.n7.xano.io/api:tFdG2Vz-/prices/"; // + price id
+const update_game = "https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv/games/";
+const get_game = "https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv/games/";
+const get_price = "https://x8ki-letl-twmt.n7.xano.io/api:tFdG2Vz-/prices/";
 
 import { fetch_user } from "./user/sessionManager.js";
 
@@ -51,7 +51,7 @@ async function retrieveGameData(gameId) {
 
   async function getGameData() {
     try {
-      const response = await fetch(get_game_url + gameId, options);
+      const response = await fetch(`${get_game}${gameId}`, options);
 
       if (!response.ok) {
         window.location.assign(`404?er=${response.status}`);
@@ -123,7 +123,7 @@ async function retrieveGameData(gameId) {
     async function getPriceData() {
       try {
         const response = await fetch(
-          get_price_url + rawGameData.product_id,
+          `${get_price}${rawGameData.product_id}`,
           options
         );
 
@@ -178,7 +178,7 @@ async function retrieveGameData(gameId) {
 
 async function changeProduct(data, gameId, commitChangesButton) {
   try {
-    const response = await fetch(update_game_url + gameId, data);
+    const response = await fetch(`${update_game}${gameId}`, data);
 
     if (response.ok) {
       commitChangesButton.innerHTML = "Success";

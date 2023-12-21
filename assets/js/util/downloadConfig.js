@@ -1,5 +1,5 @@
-const get_product_url =
-  "https://x8ki-letl-twmt.n7.xano.io/api:iwAsZq4E/products/"; // + price id
+const get_product =
+  "https://x8ki-letl-twmt.n7.xano.io/api:iwAsZq4E/products/";
 
 const urlParams = new URLSearchParams(window.location.search);
 const gameIdParam = urlParams.get("g");
@@ -17,7 +17,7 @@ async function set_game_data(gameId) {
 
   async function fetch_game_data() {
     try {
-      const response = await fetch(get_product_url + gameId, options);
+      const response = await fetch(`${get_product}${gameId}`, options);
       
       if (response.ok) {
         const result = await response.text();
@@ -52,5 +52,5 @@ if (gameIdParam && priceIdParam) {
   set_game_data(`prod_${gameIdParam}`);
 } else {
   console.warn("There are no params.");
-  window.location.assign("404?er=404");
+  window.location.assign(`404?er=${error.response.status ? error.response.status : 500}`);
 }

@@ -1,5 +1,5 @@
-const games_list_api = "https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv/games";
-const games_prices_url =
+const get_games = "https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv/games";
+const get_prices =
   "https://x8ki-letl-twmt.n7.xano.io/api:tFdG2Vz-/prices";
 
 import { fetch_user } from "./user/sessionManager.js";
@@ -445,7 +445,7 @@ async function fetch_games() {
 
   async function set_prices() {
     try {
-      const response = await fetch(games_prices_url, requestOptions);
+      const response = await fetch(get_prices, requestOptions);
 
       if (!response.ok) {
         window.location.assign(`404?er=${response.status}`);
@@ -461,7 +461,7 @@ async function fetch_games() {
 
   async function fetch_data() {
     try {
-      const response = await fetch(games_list_api, requestOptions);
+      const response = await fetch(get_games, requestOptions);
 
       if (!response.ok) {
         window.location.assign(`404?er=${response.status}`);

@@ -1,11 +1,11 @@
-const signup_endpoint =
+const auth_signup =
   "https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv:v1/auth/signup";
-const login_endpoint =
+const auth_login =
   "https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv:v1/auth/login";
-const getsingle_endpoint =
-  "https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv/user/";
-const getsingle_endpoint2 =
-  "https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv/users/";
+const get_user =
+  "https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv/user/id/";
+const get_user_2 =
+  "https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv/user/session/";
 
 const annualExpiration = 1;
 const cookie_data = fetch_cookie("session_id");
@@ -38,7 +38,7 @@ async function add_username() {
   const upload_btn = document.getElementById("upload-btn");
 
   if (cookie_data.Valid) {
-    const url = getsingle_endpoint + cookie_data.Data;
+    const url = `${get_user}${cookie_data.Data}`;
 
     login_btn.remove();
     signup_btn.remove();
@@ -67,7 +67,7 @@ async function add_username() {
 }
 
 async function setStats() {
-  const url = getsingle_endpoint + cookie_data.Data;
+  const url = `${get_user}${cookie_data.Data}`;
 
   const myHeaders = new Headers();
   myHeaders.append("Content-Type", "application/json");
@@ -175,7 +175,7 @@ async function createSessionData() {
       error_label.textContent = "Creating account...";
 
       try {
-        const response = await fetch(signup_endpoint, requestOptions);
+        const response = await fetch(auth_signup, requestOptions);
 
         if (response.ok) {
           const result = await response.text();
@@ -221,7 +221,7 @@ async function getSessionData() {
       error_label.textContent = "Logging you in...";
 
       try {
-        const response = await fetch(login_endpoint, requestOptions);
+        const response = await fetch(auth_login, requestOptions);
 
         if (response.ok) {
           const result = await response.text();
@@ -278,7 +278,7 @@ if (window.location.pathname.includes("/user")) {
   };
 
   try {
-    const response = await fetch(getsingle_endpoint2 + user_id, requestOptions);
+    const response = await fetch(`${get_user_2}${user_id}`, requestOptions);
 
     if (response.ok) {
       const result = await response.text();

@@ -1,8 +1,8 @@
-const upload_product_api_url =
+const create_product =
   "https://x8ki-letl-twmt.n7.xano.io/api:iwAsZq4E/products";
-const set_product_price_url =
+const set_price =
   "https://x8ki-letl-twmt.n7.xano.io/api:tFdG2Vz-/prices";
-const upload_game_api_url =
+const create_game =
   "https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv/games";
 
 const uploadGame = document.getElementById("upload-game");
@@ -152,7 +152,7 @@ uploadGame.addEventListener("submit", async function (event) {
 
       try {
         const response = await fetch(
-          upload_product_api_url,
+          create_product,
           productRequestOptions
         );
 
@@ -223,7 +223,7 @@ uploadGame.addEventListener("submit", async function (event) {
       };
 
       try {
-        const response = await fetch(upload_game_api_url, gameRequestOptions);
+        const response = await fetch(create_game, gameRequestOptions);
 
         if (!response.ok) {
           throw new Error(`Unable to upload game to database: ${response.status}`);
@@ -280,7 +280,7 @@ uploadGame.addEventListener("submit", async function (event) {
 
       try {
         const response = await fetch(
-          set_product_price_url,
+          set_price,
           priceRequestOptions
         );
 
