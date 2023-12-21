@@ -6,24 +6,19 @@ const edit_user_pass =
 const edit_user_status =
   "https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv/user/edit_status/";
 
+import { request } from "./apiManager.js";
+
 async function change_session_data(headers, endpoint) {
   const error_label = document.getElementById("error-label");
   error_label.innerHTML = "Changing settings...";
 
-  try {
-    const response = await fetch(endpoint, headers);
+  const result = await request(endpoint, headers, false);
 
-    if (response.ok) {
-      const result = await response.text();
-      const result_parse = JSON.parse(result);
-
-      error_label.textContent = result_parse.message;
-    } else {
-      error_label.textContent = "Error changing session data";
-    }
-  } catch (error) {
-    error_label.innerHTML = "Error changing session data";
-    console.error(`Unable to change session data: ${error.message}`);
+  if (result.Success) {
+    error_label.textContent = result.Result.message;
+  } else {
+    error_label.textContent = "Error changing session data.";
+    console.error(`Unable to change session data: ${result.Result}`);
   }
 }
 
@@ -117,7 +112,10 @@ export async function change_status_data() {
       }),
     };
 
-    await change_session_data(requestOptions, `${edit_user_status}${data.Data}`);
+    await change_session_data(
+      requestOptions,
+      `${edit_user_status}${data.Data}`
+    );
   }
 }
 
@@ -135,17 +133,16 @@ export async function fetch_user() {
 
   if (data.Valid) {
     async function get_user() {
-      try {
-        const response = await fetch(
-          `${get_user}${data.Data}`,
-          get_user_options
-        );
-        const result = await response.text();
-        const result_parse = JSON.parse(result);
+      const result = await request(
+        `${get_user}${data.Data}`,
+        get_user_options,
+        true
+      );
 
-        return result_parse;
-      } catch (error) {
-        window.location.assign(`404?er=${error.response.status ? error.response.status : 500}`);
+      if (result.Success) {
+        return result.Result;
+      } else {
+        throw new Error(`Unable to get user: ${result.Result}`);
       }
     }
 

@@ -2,8 +2,7 @@ const auth_signup =
   "https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv:v1/auth/signup";
 const auth_login =
   "https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv:v1/auth/login";
-const get_user =
-  "https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv/user/id/";
+const get_user = "https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv/user/id/";
 const get_user_2 =
   "https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv/user/session/";
 
@@ -16,6 +15,7 @@ import {
   change_password_data,
   change_status_data,
 } from "./sessionManager.js";
+import { request } from "./apiManager.js";
 
 function calculateExpiration(past) {
   const currentDate = new Date();
@@ -50,14 +50,12 @@ async function add_username() {
       headers: myHeaders,
     };
 
-    try {
-      const response = await fetch(url, requestOptions);
-      const result = await response.text();
-      const result_parse = JSON.parse(result);
+    const result = await request(url, requestOptions, false);
 
-      username.textContent = result_parse.name;
-    } catch (error) {
-      console.error(`Unable to add username: ${error.message}`);
+    if (result.Success) {
+      username.textContent = result.Result.name;
+    } else {
+      console.error(`Unable to add username: ${result.Result}`);
     }
   } else {
     dashboard_btn.remove();
@@ -76,31 +74,26 @@ async function setStats() {
     headers: myHeaders,
   };
 
-  try {
-    const response = await fetch(url, requestOptions);
+  const result = await request(url, requestOptions, true);
 
-    if (response.ok) {
-      const result = await response.text();
-      const result_parse = JSON.parse(result);
+  if (result.Success) {
+    const email_stat = document.getElementById("email-stat");
+    const join_time = document.getElementById("creation-stat");
+    const profile_link = document.getElementById("profile-link");
 
-      const email_stat = document.getElementById("email-stat");
-      const join_time = document.getElementById("creation-stat");
-      const profile_link = document.getElementById("profile-link");
+    const rfcDate = new Date(result.Result.created_at).toUTCString();
+    const dateObj = new Date(Date.parse(rfcDate));
+    const formattedDate = dateObj.toLocaleDateString("en-US", {
+      year: "2-digit",
+      month: "2-digit",
+      day: "2-digit",
+    });
 
-      const rfcDate = new Date(result_parse.created_at).toUTCString();
-      const dateObj = new Date(Date.parse(rfcDate));
-      const formattedDate = dateObj.toLocaleDateString("en-US", {
-        year: "2-digit",
-        month: "2-digit",
-        day: "2-digit",
-      });
-
-      email_stat.textContent = `Email: ${result_parse.email}`;
-      join_time.textContent = `Creation: ${formattedDate}`;
-      profile_link.setAttribute("href", `user?id=${result_parse.id}`);
-    }
-  } catch (error) {
-    window.location.assign(`404?er=${error.response.status ? error.response.status : 500}`);
+    email_stat.textContent = `Email: ${result.Result.email}`;
+    join_time.textContent = `Creation: ${formattedDate}`;
+    profile_link.setAttribute("href", `user?id=${result.Result.id}`);
+  } else {
+    throw new Error(result.Result);
   }
 }
 
@@ -174,20 +167,13 @@ async function createSessionData() {
 
       error_label.textContent = "Creating account...";
 
-      try {
-        const response = await fetch(auth_signup, requestOptions);
+      const result = await request(auth_signup, requestOptions, false);
 
-        if (response.ok) {
-          const result = await response.text();
-          const result_parse = JSON.parse(result);
-
-          create_cookie("session_id", result_parse.authToken);
-          error_label.textContent = "Successfully created account!";
-          window.location.assign("index");
-        } else {
-          error_label.textContent = result_parse.message;
-        }
-      } catch (error) {
+      if (result.Success) {
+        create_cookie("session_id", result.Result.authToken);
+        error_label.textContent = "Successfully created account!";
+        window.location.assign("index");
+      } else {
         console.error(`Unable to signup: ${error.message}`);
         error_label.textContent = "An error occured";
       }
@@ -220,20 +206,13 @@ async function getSessionData() {
       const error_label = document.getElementById("error-label");
       error_label.textContent = "Logging you in...";
 
-      try {
-        const response = await fetch(auth_login, requestOptions);
+      const result = await response(auth_login, requestOptions, false);
 
-        if (response.ok) {
-          const result = await response.text();
-          const result_parse = JSON.parse(result);
-
-          create_cookie("session_id", result_parse.authToken);
-          error_label.textContent = "Successfully logged in!";
-          window.location.assign("index");
-        } else {
-          error_label.textContent = result_parse.message;
-        }
-      } catch (error) {
+      if (result.Success) {
+        create_cookie("session_id", result.Result.authToken);
+        error_label.textContent = "Successfully logged in!";
+        window.location.assign("index");
+      } else {
         console.error(`Unable to login: ${error.message}`);
         error_label.textContent = "An error occured";
       }
@@ -277,35 +256,28 @@ if (window.location.pathname.includes("/user")) {
     headers: myHeaders,
   };
 
-  try {
-    const response = await fetch(`${get_user_2}${user_id}`, requestOptions);
+  const result = await response(`${get_user_2}${user_id}`, requestOptions, true);
 
-    if (response.ok) {
-      const result = await response.text();
-      const result_parse = JSON.parse(result);
+  if (result.Success) {
+    const user_username = document.getElementById("user-username");
+    const user_status = document.getElementById("user-status");
+    const user_joindate = document.getElementById("join-date");
+    const web_title = document.getElementById("title");
 
-      const user_username = document.getElementById("user-username");
-      const user_status = document.getElementById("user-status");
-      const user_joindate = document.getElementById("join-date");
-      const web_title = document.getElementById("title");
+    const rfcDate = new Date(result.Result.created_at).toUTCString();
+    const dateObj = new Date(Date.parse(rfcDate));
+    const formattedDate = dateObj.toLocaleDateString("en-US", {
+      year: "2-digit",
+      month: "2-digit",
+      day: "2-digit",
+    });
 
-      const rfcDate = new Date(result_parse.created_at).toUTCString();
-      const dateObj = new Date(Date.parse(rfcDate));
-      const formattedDate = dateObj.toLocaleDateString("en-US", {
-        year: "2-digit",
-        month: "2-digit",
-        day: "2-digit",
-      });
-
-      user_username.textContent = result_parse.name;
-      user_status.textContent = result_parse.status;
-      user_joindate.textContent = formattedDate;
-      web_title.textContent = `Ouzox | ${result_parse.name}`;
-    } else {
-      window.location.assign(`404?er=${response.status}`);
-    }
-  } catch (error) {
-    window.location.assign(`404?er=${error.response.status ? error.response.status : 500}`);
+    user_username.textContent = result.Result.name;
+    user_status.textContent = result.Result.status;
+    user_joindate.textContent = formattedDate;
+    web_title.textContent = `Ouzox | ${result.Result.name}`;
+  } else {
+    throw new Error(`Unable to get user data: ${result.Result}`)
   }
 }
 

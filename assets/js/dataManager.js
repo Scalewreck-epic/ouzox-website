@@ -1,8 +1,8 @@
 const get_games = "https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv/games";
-const get_prices =
-  "https://x8ki-letl-twmt.n7.xano.io/api:tFdG2Vz-/prices";
+const get_prices = "https://x8ki-letl-twmt.n7.xano.io/api:tFdG2Vz-/prices";
 
 import { fetch_user } from "./user/sessionManager.js";
+import { request } from "./user/apiManager.js";
 
 const urlParams = new URLSearchParams(window.location.search);
 const search_query = encodeURIComponent(urlParams.get("q") || "");
@@ -317,9 +317,21 @@ const load_more_games = () => {
   }
 
   if (window.location.pathname.includes("/search")) {
-    sort_games("relevant-games-list", slicedGames, search_algorithm, offset, offset + 100);
+    sort_games(
+      "relevant-games-list",
+      slicedGames,
+      search_algorithm,
+      offset,
+      offset + 100
+    );
   } else if (window.location.pathname.includes("/category")) {
-    sort_games("genre-games-list", slicedGames, category_algorithm, offset, offset + 100);
+    sort_games(
+      "genre-games-list",
+      slicedGames,
+      category_algorithm,
+      offset,
+      offset + 100
+    );
   }
 };
 
@@ -348,46 +360,76 @@ function load_games() {
     sort_games("genre-games-list", games, category_algorithm, 0, 100);
   } else {
     // Fresh Games
-    sort_games("fresh-games-list", games, (a, b) => {
-      const scoreA = a.created * 0.8 + a.downloads * 0.2;
-      const scoreB = b.created * 0.8 + b.downloads * 0.2;
+    sort_games(
+      "fresh-games-list",
+      games,
+      (a, b) => {
+        const scoreA = a.created * 0.8 + a.downloads * 0.2;
+        const scoreB = b.created * 0.8 + b.downloads * 0.2;
 
-      return scoreB - scoreA;
-    }, 0, 30);
+        return scoreB - scoreA;
+      },
+      0,
+      30
+    );
 
     // Hot Games
-    sort_games("hot-games-list", games, (a, b) => {
-      const scoreA = a.downloads * 0.6 + a.updated * 0.4;
-      const scoreB = b.downloads * 0.6 + b.updated * 0.4;
+    sort_games(
+      "hot-games-list",
+      games,
+      (a, b) => {
+        const scoreA = a.downloads * 0.6 + a.updated * 0.4;
+        const scoreB = b.downloads * 0.6 + b.updated * 0.4;
 
-      return scoreB - scoreA;
-    }, 0, 30);
+        return scoreB - scoreA;
+      },
+      0,
+      30
+    );
 
     // Sponsored Games
     const sponsoredGames = games.filter((game) => game.sponsor_money > 0);
-    sort_games("sponsored-games-list", sponsoredGames, (a, b) => {
-      const scoreA = a.sponsor_money * 0.6 + a.downloads * 0.4;
-      const scoreB = b.sponsor_money * 0.6 + b.downloads * 0.4;
+    sort_games(
+      "sponsored-games-list",
+      sponsoredGames,
+      (a, b) => {
+        const scoreA = a.sponsor_money * 0.6 + a.downloads * 0.4;
+        const scoreB = b.sponsor_money * 0.6 + b.downloads * 0.4;
 
-      return scoreB - scoreA;
-    }, 0, 30);
+        return scoreB - scoreA;
+      },
+      0,
+      30
+    );
 
     // Bestsellers
-    sort_games("bestseller-games-list", games, (a, b) => {
-      const scoreA = a.downloads * 0.8 + a.updated * 0.2;
-      const scoreB = b.downloads * 0.8 + b.updated * 0.2;
+    sort_games(
+      "bestseller-games-list",
+      games,
+      (a, b) => {
+        const scoreA = a.downloads * 0.8 + a.updated * 0.2;
+        const scoreB = b.downloads * 0.8 + b.updated * 0.2;
 
-      return scoreB - scoreA;
-    }, 0, 30);
+        return scoreB - scoreA;
+      },
+      0,
+      30
+    );
 
     // Free Games
     const freegames = games.filter((game) => game.free == true);
-    sort_games("free-games-list", freegames, (a, b) => {
-      const scoreA = a.downloads * 0.7 + a.updated * 0.3;
-      const scoreB = b.downloads * 0.7 + b.updated * 0.3;
+    sort_games(
+      "free-games-list",
+      freegames,
+      (a, b) => {
+        const scoreA = a.downloads * 0.7 + a.updated * 0.3;
+        const scoreB = b.downloads * 0.7 + b.updated * 0.3;
 
-      return scoreB - scoreA;
-    }, 0, 30);
+        return scoreB - scoreA;
+      },
+      0,
+      30
+    );
   }
 }
 
@@ -444,35 +486,22 @@ async function fetch_games() {
   }
 
   async function set_prices() {
-    try {
-      const response = await fetch(get_prices, requestOptions);
+    const result = await request(get_prices, requestOptions, true);
 
-      if (!response.ok) {
-        window.location.assign(`404?er=${response.status}`);
-      }
-      const result = await response.text();
-      const result_parse = JSON.parse(result);
-
-      prices = result_parse.data;
-    } catch (error) {
-      window.location.assign(`404?er=${error.response.status ? error.response.status : 500}`);
+    if (result.Success) {
+      prices = result.Result.data;
+    } else {
+      throw new Error(result.Result);
     }
   }
 
   async function fetch_data() {
-    try {
-      const response = await fetch(get_games, requestOptions);
+    const result = await request(get_games, requestOptions, true);
 
-      if (!response.ok) {
-        window.location.assign(`404?er=${response.status}`);
-      }
-
-      const result = await response.text();
-      const result_parse = JSON.parse(result);
-
-      games = result_parse.games;
-    } catch (error) {
-      window.location.assign(`404?er=${error.response.status ? error.response.status : 500}`);
+    if (result.Success) {
+      games = result.Result.games;
+    } else {
+      throw new Error(result.Result);
     }
   }
 

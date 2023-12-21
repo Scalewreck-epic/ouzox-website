@@ -8,6 +8,7 @@ const create_game =
 const uploadGame = document.getElementById("upload-game");
 
 import { fetch_user } from "./user/sessionManager.js";
+import { request } from "./user/apiManager.js";
 
 uploadGame.addEventListener("submit", async function (event) {
   event.preventDefault();
@@ -150,22 +151,12 @@ uploadGame.addEventListener("submit", async function (event) {
         }),
       };
 
-      try {
-        const response = await fetch(
-          create_product,
-          productRequestOptions
-        );
+      const result = await response(create_product, productRequestOptions, true);
 
-        if (!response.ok) {
-          throw new Error(`Unable to upload product to stripe: ${response.status}`);
-        }
-
-        const result = await response.text();
-        const result_parse = JSON.parse(result);
-
-        return result_parse;
-      } catch (error) {
-        window.location.assign(`404?er=${error.response.status ? error.response.status : 500}`);
+      if (result.Success) {
+        return result.Result;
+      } else {
+        throw new Error(`Unable to create product: ${result.Result}`);
       }
     }
 
@@ -222,19 +213,12 @@ uploadGame.addEventListener("submit", async function (event) {
         }),
       };
 
-      try {
-        const response = await fetch(create_game, gameRequestOptions);
+      const result = await request(create_game, gameRequestOptions, true);
 
-        if (!response.ok) {
-          throw new Error(`Unable to upload game to database: ${response.status}`);
-        }
-
-        const result = await response.text();
-        const result_parse = JSON.parse(result);
-
-        return result_parse;
-      } catch (error) {
-        window.location.assign(`404?er=${error.response.status ? error.response.status : 500}`);
+      if (result.Success) {
+        return result.Result;
+      } else {
+        throw new Error(`Unable to create game: ${result.Result}`);
       }
     }
 
@@ -278,54 +262,39 @@ uploadGame.addEventListener("submit", async function (event) {
         }),
       };
 
-      try {
-        const response = await fetch(
-          set_price,
-          priceRequestOptions
-        );
+      const result = await response(set_price, priceRequestOptions, true);
 
-        if (!response.ok) {
-          throw new Error(`Unable to set price: ${response.status}`);
-        }
-
-        const result = await response.text();
-        const result_parse = JSON.parse(result);
-
-        return result_parse;
-      } catch (error) {
-        window.location.assign(`404?er=${error.response.status ? error.response.status : 500}`);
+      if (result.Success) {
+        return result.Result;
+      } else {
+        throw new Error(`Unable to ser price: ${result.Result}`);
       }
     }
 
-    try {
-      error_label.innerHTML = "Creating game page...";
+    error_label.textContent = "Creating game page...";
 
-      if (price_input.value > 0) {
-        const product_result = await uploadProduct();
+    if (price_input.value > 0) {
+      const product_result = await uploadProduct();
 
-        if (product_result && product_result.id) {
-          error_label.innerHTML = "Setting price...";
-          const game = await uploadGame(product_result.id, false);
-          const price = await setProductPrice(product_result.id);
+      if (product_result && product_result.id) {
+        error_label.textContent = "Setting price...";
+        const game = await uploadGame(product_result.id, false);
+        const price = await setProductPrice(product_result.id);
 
-          if (price && price.active && game.game) {
-            console.log("Game and product uploaded successfully!");
-            error_label.innerHTML = "Successfully published game!";
-          }
-        }
-      } else {
-        const game = await uploadGame("none", true);
-
-        if (game.game) {
-          console.log("Game uploaded successfully!");
-          error_label.innerHTML = "Successfully published game!";
-        } else {
-          error_label.innerHTML = game.message;
+        if (price && price.active && game.game) {
+          console.log("Game and product created successfully");
+          error_label.textContent = "Successfully published game!";
         }
       }
-    } catch (error) {
-      console.error(`Error trying to publish game: ${error}`);
-      error_label.innerHTML = "There was an error trying to upload game.";
+    } else {
+      const game = await uploadGame("none", true);
+
+      if (game.game) {
+        console.log("Game uploaded successfully");
+        error_label.textContent = "Successfully published game!";
+      } else {
+        error_label.textContent = game.message;
+      }
     }
   } else {
     error_label.innerHTML = "Incomplete form.";

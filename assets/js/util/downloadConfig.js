@@ -5,6 +5,8 @@ const urlParams = new URLSearchParams(window.location.search);
 const gameIdParam = urlParams.get("g");
 const priceIdParam = urlParams.get("p");
 
+import { request } from "../user/apiManager.js";
+
 async function set_game_data(gameId) {
   const myHeaders = new Headers();
   myHeaders.append("Content-Type", "application/json");
@@ -16,20 +18,12 @@ async function set_game_data(gameId) {
   };
 
   async function fetch_game_data() {
-    try {
-      const response = await fetch(`${get_product}${gameId}`, options);
-      
-      if (response.ok) {
-        const result = await response.text();
-        const result_parse = JSON.parse(result);
-        
-        return result_parse;
-      } else {
-        window.location.assign(`404?er=${response.status}`);
-      }
+    const result = await request(`${get_product}${gameId}`, options, true);
 
-    } catch (error) {
-      window.location.assign("404?er=404");
+    if (result.Success) {
+      return result.Result;
+    } else {
+      throw new Error(`Unable to fetch game data: ${result.Result}`);
     }
   }
 
