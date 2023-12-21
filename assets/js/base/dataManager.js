@@ -437,23 +437,39 @@ async function load_dashboard() {
   const category = document.getElementById("dashboard-market");
   const user = await fetch_user();
 
+  const requestOptions = {
+    method: "GET",
+    headers: myHeaders,
+    redirect: "follow",
+    body: JSON.stringify({
+      page: 0,
+      per_page: 100,
+      offset: 0,
+      orderBy: "desc",
+      sortColumn: "created_at"
+    })
+  };
+
   if (user != undefined) {
-    const usersGames = games.filter((game) => game.developer_name == user.name);
-    usersGames.sort((a, b) => b.created - a.created);
+    const result = await request(get_games, requestOptions, true, "dashboard games");
 
-    usersGames.forEach((game) => {
-      const game_price = fetch_game_price(game.id.toString());
-      create_game_page(game, game_price, category);
-    });
+    if (result.Success) {
+      const games = result.Result.games.items;
 
-    if (usersGames.length > 0) {
-      const categoryNoneElement = category.querySelector(".category-none");
+      games.forEach((game) => {
+        const game_price = fetch_game_price(game.product_id.toString());
+        create_game_page(game, game_price, category);
+      });
 
-      if (categoryNoneElement) {
-        categoryNoneElement.remove();
+      if (games.length > 0) {
+        const categoryNoneElement = category.querySelector(".category-none");
+  
+        if (categoryNoneElement) {
+          categoryNoneElement.remove();
+        }
       }
     } else {
-      console.info("User has no available games remaining.");
+      throw new Error(`Unable to load games from user: ${result.Result}`);
     }
   }
 }
@@ -462,7 +478,7 @@ async function fetch_games() {
   const myHeaders = new Headers();
   myHeaders.append("Content-Type", "application/json");
 
-  const requestOptions = {
+  const game_request_options = {
     method: "GET",
     headers: myHeaders,
     redirect: "follow",
@@ -486,7 +502,7 @@ async function fetch_games() {
   }
 
   async function set_prices() {
-    const result = await request(get_prices, requestOptions, true, "prices");
+    const result = await request(get_prices, game_request_options, true, "prices");
 
     if (result.Success) {
       prices = result.Result.data;
@@ -496,7 +512,7 @@ async function fetch_games() {
   }
 
   async function fetch_data() {
-    const result = await request(get_games, requestOptions, true, "games");
+    const result = await request(get_games, game_request_options, true, "games");
 
     if (result.Success) {
       games = result.Result.games;
@@ -506,27 +522,24 @@ async function fetch_games() {
   }
 
   await set_prices();
-  await fetch_data();
+  if (window.location.pathname.includes("/dashboard")) {
+    load_dashboard();
+  } else {
+    await fetch_data();
 
-  set_genres();
-  if (genres.length > 0 && document.getElementById("genres-list") != null) {
-    set_genre_relevancy();
-    load_genres();
+    set_genres();
+    remove_private_games();
+    set_game_relevancy();
+    load_games();
+
+    if (genres.length > 0 && document.getElementById("genres-list") != null) {
+      set_genre_relevancy();
+      load_genres();
+    }
   }
 
   if (prices.length > 0) {
     prices.sort((a, b) => b.unit_amount - a.unit_amount);
-  }
-
-  if (games.length > 0) {
-    if (window.location.pathname.includes("/dashboard")) {
-      load_dashboard();
-    } else {
-      remove_private_games();
-      set_game_relevancy();
-
-      load_games();
-    }
   }
 }
 
