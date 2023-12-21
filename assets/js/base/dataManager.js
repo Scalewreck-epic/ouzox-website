@@ -1,8 +1,8 @@
 const get_games = "https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv/games";
 const get_prices = "https://x8ki-letl-twmt.n7.xano.io/api:tFdG2Vz-/prices";
 
-import { fetch_user } from "../user/sessionManager";
-import { request } from "./apiManager";
+import { fetch_user } from "../user/sessionManager.js";
+import { request } from "./apiManager.js";
 
 const urlParams = new URLSearchParams(window.location.search);
 const search_query = encodeURIComponent(urlParams.get("q") || "");
