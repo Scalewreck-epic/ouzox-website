@@ -50,7 +50,7 @@ async function add_username() {
       headers: myHeaders,
     };
 
-    const result = await request(url, requestOptions, false);
+    const result = await request(url, requestOptions, false, "get user");
 
     if (result.Success) {
       username.textContent = result.Result.name;
@@ -74,7 +74,7 @@ async function setStats() {
     headers: myHeaders,
   };
 
-  const result = await request(url, requestOptions, true);
+  const result = await request(url, requestOptions, true, "get user");
 
   if (result.Success) {
     const email_stat = document.getElementById("email-stat");
@@ -167,7 +167,7 @@ async function createSessionData() {
 
       error_label.textContent = "Creating account...";
 
-      const result = await request(auth_signup, requestOptions, false);
+      const result = await request(auth_signup, requestOptions, false, "signup");
 
       if (result.Success) {
         create_cookie("session_id", result.Result.authToken);
@@ -206,7 +206,7 @@ async function getSessionData() {
       const error_label = document.getElementById("error-label");
       error_label.textContent = "Logging you in...";
 
-      const result = await request(auth_login, requestOptions, false);
+      const result = await request(auth_login, requestOptions, false, "login");
 
       if (result.Success) {
         create_cookie("session_id", result.Result.authToken);
@@ -256,7 +256,7 @@ if (window.location.pathname.includes("/user")) {
     headers: myHeaders,
   };
 
-  const result = await response(`${get_user_2}${user_id}`, requestOptions, true);
+  const result = await request(`${get_user_2}${user_id}`, requestOptions, true, "get user 2");
 
   if (result.Success) {
     const user_username = document.getElementById("user-username");

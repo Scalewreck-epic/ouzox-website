@@ -486,7 +486,7 @@ async function fetch_games() {
   }
 
   async function set_prices() {
-    const result = await request(get_prices, requestOptions, true);
+    const result = await request(get_prices, requestOptions, true, "prices");
 
     if (result.Success) {
       prices = result.Result.data;
@@ -496,7 +496,7 @@ async function fetch_games() {
   }
 
   async function fetch_data() {
-    const result = await request(get_games, requestOptions, true);
+    const result = await request(get_games, requestOptions, true, "games");
 
     if (result.Success) {
       games = result.Result.games;

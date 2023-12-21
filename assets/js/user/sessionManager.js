@@ -12,7 +12,7 @@ async function change_session_data(headers, endpoint) {
   const error_label = document.getElementById("error-label");
   error_label.innerHTML = "Changing settings...";
 
-  const result = await request(endpoint, headers, false);
+  const result = await request(endpoint, headers, false, "change session data");
 
   if (result.Success) {
     error_label.textContent = result.Result.message;
@@ -136,7 +136,7 @@ export async function fetch_user() {
       const result = await request(
         `${get_user}${data.Data}`,
         get_user_options,
-        true
+        true, "get user"
       );
 
       if (result.Success) {

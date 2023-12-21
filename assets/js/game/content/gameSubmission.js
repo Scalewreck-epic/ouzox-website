@@ -151,7 +151,7 @@ uploadGame.addEventListener("submit", async function (event) {
         }),
       };
 
-      const result = await response(create_product, productRequestOptions, true);
+      const result = await request(create_product, productRequestOptions, true, "product upload");
 
       if (result.Success) {
         return result.Result;
@@ -213,7 +213,7 @@ uploadGame.addEventListener("submit", async function (event) {
         }),
       };
 
-      const result = await request(create_game, gameRequestOptions, true);
+      const result = await request(create_game, gameRequestOptions, true, "game upload");
 
       if (result.Success) {
         return result.Result;
@@ -262,7 +262,7 @@ uploadGame.addEventListener("submit", async function (event) {
         }),
       };
 
-      const result = await response(set_price, priceRequestOptions, true);
+      const result = await request(set_price, priceRequestOptions, true, "price creation");
 
       if (result.Success) {
         return result.Result;

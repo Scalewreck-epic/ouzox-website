@@ -18,7 +18,7 @@ async function set_game_data(gameId) {
   };
 
   async function fetch_game_data() {
-    const result = await request(`${get_product}${gameId}`, options, true);
+    const result = await request(`${get_product}${gameId}`, options, true, "game data");
 
     if (result.Success) {
       return result.Result;

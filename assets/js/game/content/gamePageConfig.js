@@ -51,7 +51,12 @@ async function retrieveGameData(gameId) {
   };
 
   async function getGameData() {
-    const result = await request(`${get_game}${gameId}`, options, true);
+    const result = await request(
+      `${get_game}${gameId}`,
+      options,
+      true,
+      "game data"
+    );
 
     if (result.Success) {
       return result.Result;
@@ -115,22 +120,17 @@ async function retrieveGameData(gameId) {
 
   if (!rawGameData.free) {
     async function getPriceData() {
-      try {
-        const response = await fetch(
-          `${get_price}${rawGameData.product_id}`,
-          options
-        );
+      const result = await request(
+        `${get_price}${rawGameData.product_id}`,
+        options,
+        true,
+        "price data"
+      );
 
-        if (!response.ok) {
-          window.location.assign(`404?er=${response.status}`);
-        }
-
-        const result = await response.text();
-        const result_parse = JSON.parse(result);
-
-        return result_parse;
-      } catch (error) {
-        window.location.assign(`404?er=${error.response.status ? error.response.status : 500}`);
+      if (result.Success) {
+        return result.Result;
+      } else {
+        throw new Error(`Unable to get price data: ${result.Result}`);
       }
     }
 
@@ -171,17 +171,12 @@ async function retrieveGameData(gameId) {
 }
 
 async function changeProduct(data, gameId, commitChangesButton) {
-  try {
-    const response = await fetch(`${update_game}${gameId}`, data);
+  const result = await request(`${update_game}${gameId}`, data, false);
 
-    if (response.ok) {
-      commitChangesButton.innerHTML = "Success";
-    } else {
-      console.error(`Error trying to update game: ${response.status}`);
-      commitChangesButton.innerHTML = "An error occured";
-    }
-  } catch (error) {
-    console.error(`Error trying to update game: ${error.message}`);
+  if (result.Success) {
+    commitChangesButton.textContent = "Success";
+  } else {
+    console.error(`Error trying to update game: ${result.Result}`);
     commitChangesButton.innerHTML = "An error occured";
   }
 }
