@@ -68,7 +68,7 @@ async function retrieveGameData(gameId) {
   const rawGameData = await getGameData();
 
   const createdDate = new Date(rawGameData.created_at);
-  const updatedDate = new Date(rawGameData.updated_at);
+  const updatedDate = new Date(rawGameData.updated);
 
   const currentDate = new Date();
 
