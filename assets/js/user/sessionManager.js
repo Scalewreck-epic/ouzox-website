@@ -1,4 +1,5 @@
-const get_user = "https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv/user/";
+const get_user_with_session = 
+  "https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv/user/session/";
 const edit_user_email =
   "https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv:v1/user/edit_email/";
 const edit_user_pass =
@@ -134,7 +135,7 @@ export async function fetch_user() {
   if (data.Valid) {
     async function get_user() {
       const result = await request(
-        `${get_user}${data.Data}`,
+        `${get_user_with_session}${data.Data}`,
         get_user_options,
         true, "get user"
       );

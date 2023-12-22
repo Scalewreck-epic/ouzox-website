@@ -2,15 +2,15 @@ const auth_signup =
   "https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv:v1/auth/signup";
 const auth_login =
   "https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv:v1/auth/login";
-const get_user = "https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv/user/id/";
 const get_user_2 =
-  "https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv/user/session/";
+  "https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv/user/id/";
 
 const annualExpiration = 1;
 const cookie_data = fetch_cookie("session_id");
 
 import {
   fetch_cookie,
+  fetch_user,
   change_email_data,
   change_password_data,
   change_status_data,
@@ -38,25 +38,11 @@ async function add_username() {
   const upload_btn = document.getElementById("upload-btn");
 
   if (cookie_data.Valid) {
-    const url = `${get_user}${cookie_data.Data}`;
+    const user = fetch_user();
+    username.textContent = user.name;
 
     login_btn.remove();
     signup_btn.remove();
-
-    const myHeaders = new Headers();
-    myHeaders.append("Content-Type", "application/json");
-    const requestOptions = {
-      method: "GET",
-      headers: myHeaders,
-    };
-
-    const result = await request(url, requestOptions, false, "get user");
-
-    if (result.Success) {
-      username.textContent = result.Result.name;
-    } else {
-      console.error(`Unable to add username: ${result.Result}`);
-    }
   } else {
     dashboard_btn.remove();
     upload_btn.remove();
@@ -65,36 +51,23 @@ async function add_username() {
 }
 
 async function setStats() {
-  const url = `${get_user}${cookie_data.Data}`;
+  const user = fetch_user();
 
-  const myHeaders = new Headers();
-  myHeaders.append("Content-Type", "application/json");
-  const requestOptions = {
-    method: "GET",
-    headers: myHeaders,
-  };
+  const email_stat = document.getElementById("email-stat");
+  const join_time = document.getElementById("creation-stat");
+  const profile_link = document.getElementById("profile-link");
 
-  const result = await request(url, requestOptions, true, "get user");
+  const rfcDate = new Date(user.created_at).toUTCString();
+  const dateObj = new Date(Date.parse(rfcDate));
+  const formattedDate = dateObj.toLocaleDateString("en-US", {
+    year: "2-digit",
+    month: "2-digit",
+    day: "2-digit",
+  });
 
-  if (result.Success) {
-    const email_stat = document.getElementById("email-stat");
-    const join_time = document.getElementById("creation-stat");
-    const profile_link = document.getElementById("profile-link");
-
-    const rfcDate = new Date(result.Result.created_at).toUTCString();
-    const dateObj = new Date(Date.parse(rfcDate));
-    const formattedDate = dateObj.toLocaleDateString("en-US", {
-      year: "2-digit",
-      month: "2-digit",
-      day: "2-digit",
-    });
-
-    email_stat.textContent = `Email: ${result.Result.email}`;
-    join_time.textContent = `Creation: ${formattedDate}`;
-    profile_link.setAttribute("href", `user?id=${result.Result.id}`);
-  } else {
-    throw new Error(result.Result);
-  }
+  email_stat.textContent = `Email: ${user.email}`;
+  join_time.textContent = `Creation: ${formattedDate}`;
+  profile_link.setAttribute("href", `user?id=${user.id}`);
 }
 
 function create_cookie(cookie_name, token) {
@@ -213,7 +186,7 @@ async function getSessionData() {
         error_label.textContent = "Successfully logged in!";
         window.location.assign("index");
       } else {
-        console.error(`Unable to login: ${error.message}`);
+        console.error(`Unable to login: ${result.Result}`);
         error_label.textContent = "An error occured";
       }
     }
