@@ -1,11 +1,34 @@
-# Ouzox
-Ouzox is open-source so we can inspire others to build their own platforms in the future.
+# Welcome to Ouzox!
 
-Additionally, it's also cost-effective for a platform that makes little to no revenue and safe for code.
+Ouzox is an open-source platform where independent game developers can showcase their creations and gamers can discover unique gaming experiences.
 
-## Support
-If you encounter any issues or have any questions, please contact our support team at scalewreck@protonmail.com.
+We're passionate about fostering a community that celebrates creativity, diversity, and collaboration within the indie game development scene.
 
-If you want to support this project further, you can donate to our [Patreon](https://patreon.com/ouzox)
+# Why is Ouzox Open-source?
 
-For more information on how to use Ouzox, please refer to our [documentation](https://ouzox-games.gitbook.io/ouzox-docs/)
+Ouzox wants the community to contribute to the code to find possible vulnerabilities and suggest better code for the platform.
+
+Additionally, developers can learn from the platform's code and how it works.
+
+## Documentation:
+
+Find detailed information on how to use Ouzox, contribute to the codebase, and more in our [documentation](https://ouzox-games.gitbook.io/ouzox-docs/)
+
+## Contributing:
+
+We welcome contributions! Whether you're a developer, designer, or just a passionate gamer, there are many ways to get involved.
+
+To contribute, you can suggest features, report bugs, report security vulnerabilities, and more.
+
+## Security:
+
+We take security seriously. Read our security policy for details on how we protect the platform and its users
+
+## License:
+
+Ouzox is licensed under the MIT License. See the LICENSE file for details
+
+## Community:
+
+Join us on [Discord](https://discord.gg/ksS2RXe26v)! Connect with fellow developers and gamers, share ideas, and get involved in the community!
+Here, you can suggest features, report bugs, and vote on new updates. Don't miss out!
