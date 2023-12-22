@@ -6,7 +6,6 @@ const get_user_2 =
   "https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv/user/id/";
 
 const annualExpiration = 1;
-const cookie_data = fetch_cookie("session_id");
 
 import {
   fetch_cookie,
@@ -16,6 +15,9 @@ import {
   change_status_data,
 } from "./sessionManager.js";
 import { request } from "../base/apiManager.js";
+
+const cookie_data = fetch_cookie("session_id");
+const user = await fetch_user();
 
 function calculateExpiration(past) {
   const currentDate = new Date();
@@ -38,7 +40,6 @@ async function add_username() {
   const upload_btn = document.getElementById("upload-btn");
 
   if (cookie_data.Valid) {
-    const user = await fetch_user();
     username.textContent = user.name;
 
     login_btn.remove();
@@ -51,8 +52,6 @@ async function add_username() {
 }
 
 async function setStats() {
-  const user = await fetch_user();
-
   const email_stat = document.getElementById("email-stat");
   const join_time = document.getElementById("creation-stat");
   const profile_link = document.getElementById("profile-link");
