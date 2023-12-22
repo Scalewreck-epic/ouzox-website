@@ -31,9 +31,9 @@ export async function request(endpoint, options, redirect, name) {
         Success: true,
       };
     } else {
-      handleError(response, redirect);
+      return handleError(response, redirect);
     }
   } catch (error) {
-    handleError(error.response, redirect);
+    return handleError(error, redirect);
   }
 }
