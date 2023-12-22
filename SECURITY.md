@@ -4,7 +4,7 @@ Protecting the integrity and security of Ouzox's codebase is paramount. This doc
 
 ## Reporting Security Issues:
 
-If you discover a potential security vulnerability, please report it responsibly using our dedicated [Security Vulnerability Reporting Form](https://forms.gle/QY98NyQuBvqCgEVf8)
+If you discover a potential security vulnerability, please report it responsibly using our dedicated [Security Vulnerability Reporting Form](https://forms.gle/Qrn8UCbQ2jJsNCc6A)
 
 Do not publicly disclose vulnerabilities until they have been fixed.
 
