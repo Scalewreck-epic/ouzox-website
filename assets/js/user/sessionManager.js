@@ -1,4 +1,4 @@
-const get_user_with_session = 
+const get_user_with_session =
   "https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv/user/session/";
 const edit_user_email =
   "https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv:v1/user/edit_email/";
@@ -24,29 +24,14 @@ async function change_session_data(headers, endpoint) {
 }
 
 export function fetch_cookie(wanted) {
-  const cookies = document.cookie;
-  const cookieArray = cookies.split(";");
+  const cookiePairs = document.cookie
+    .split(";")
+    .map((pair) => pair.trim().split("="));
+  const matchingCookie = cookiePairs.find(([name]) => name === wanted);
 
-  if (cookies != "") {
-    for (let i = 0; i < cookieArray.length; i++) {
-      const cookie = cookieArray[i];
-      const [name, value] = cookie.split("=");
-
-      const cookieName = name.trim();
-
-      if (cookieName === wanted) {
-        return {
-          Data: value.toString(),
-          Valid: true,
-        };
-      }
-    }
-  } else {
-    return {
-      Data: "no data.",
-      Valid: false,
-    };
-  }
+  return matchingCookie
+    ? { Data: matchingCookie[1], Valid: true }
+    : { Data: "no data", Valid: false };
 }
 
 export async function change_email_data() {
@@ -137,7 +122,8 @@ export async function fetch_user() {
       const result = await request(
         `${get_user_with_session}${data.Data}`,
         get_user_options,
-        true, "get user"
+        true,
+        "get user"
       );
 
       if (result.Success) {

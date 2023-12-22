@@ -10,6 +10,16 @@ const uploadGame = document.getElementById("upload-game");
 import { fetch_user } from "../../user/sessionManager.js";
 import { request } from "../../base/apiManager.js";
 
+function formatFileSize(fileSizeInBytes) {
+  if (fileSizeInBytes < Math.pow(1024, 2)) {
+      return `${(fileSizeInBytes / Math.pow(1024, 1)).toFixed(2)} KB`;
+  } else if (fileSizeInBytes < Math.pow(1024, 3)) {
+      return `${(fileSizeInBytes / Math.pow(1024, 2)).toFixed(2)} MB`;
+  } else {
+      return `${(fileSizeInBytes / Math.pow(1024, 3)).toFixed(2)} GB`;
+  }
+}
+
 uploadGame.addEventListener("submit", async function (event) {
   event.preventDefault();
   const error_label = document.getElementById("error-label");
@@ -58,21 +68,7 @@ uploadGame.addEventListener("submit", async function (event) {
     const age = age_rating.options[age_rating.selectedIndex].value;
     const file = file_input.files[0];
 
-    const file_size_kb = file.size / 1000;
-    const file_size_mb = file_size_kb / 1000;
-    const file_size_gb = file_size_mb / 1000;
-
-    let file_size;
-
-    if (file.size < 1000) {
-      file_size = `${file.size} BYTES`;
-    } else if (file_size_kb < 1000) {
-      file_size = `${file_size_kb} KB`;
-    } else if (file_size_mb < 1000) {
-      file_size = `${file_size_mb} MB`;
-    } else if (file_size_gb < 1000) {
-      file_size = `${file_size_mb} GB`;
-    }
+    const file_size = formatFileSize(file.size);
 
     const game_features = [
       {
@@ -323,12 +319,9 @@ function checkFileSize() {
   const warn = document.getElementById("game-file-warn");
 
   const file = input.files[0];
+  const file_size = file.size / Math.pow(1024, 3);
 
-  const file_size_kb = file.size / 1000;
-  const file_size_mb = file_size_kb / 1000;
-  const file_size_gb = file_size_mb / 1000;
-
-  if (file_size_gb > 5) {
+  if (file_size > 5) {
     warn.innerHTML = "File size too large, select a file under 5GB";
     input.value = "";
   } else {

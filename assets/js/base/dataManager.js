@@ -471,20 +471,10 @@ async function fetch_games() {
   }
 
   function set_genres() {
-    for (const game of games) {
-      let found = false;
-      for (const genre of genres) {
-        if (genre.name === game.genre) {
-          genre.count++;
-          found = true;
-          break;
-        }
-      }
-
-      if (!found) {
-        genres.push({ name: game.genre, count: 1 });
-      }
-    }
+    games.forEach(game => {
+      const genre = genres.find(genre => genre.name === game.genre)
+      genre ? genre.count++ : genres.push({name: game.genre, count: 1});
+    });
   }
 
   async function set_prices() {
