@@ -38,7 +38,7 @@ async function add_username() {
   const upload_btn = document.getElementById("upload-btn");
 
   if (cookie_data.Valid) {
-    const user = fetch_user();
+    const user = await fetch_user();
     username.textContent = user.name;
 
     login_btn.remove();
@@ -51,7 +51,7 @@ async function add_username() {
 }
 
 async function setStats() {
-  const user = fetch_user();
+  const user = await fetch_user();
 
   const email_stat = document.getElementById("email-stat");
   const join_time = document.getElementById("creation-stat");
