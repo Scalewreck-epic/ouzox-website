@@ -41,5 +41,4 @@ switch (error_code) {
     errorcode.textContent = "404";
     message_header.textContent = "Not Found";
     message.textContent = "You're navigating somewhere beyond our territory.";
-
 }
