@@ -55,7 +55,6 @@ function createLink() {
   const url = prompt("Enter the link URL:");
 
   if (url) {
-    const cleanURL = sanitizeUrl(url);
     const selection = window.getSelection();
     const selectedText = selection.toString();
 
