@@ -21,7 +21,7 @@ const header2_button = document.getElementById("2");
 const header3_button = document.getElementById("3");
 const header4_button = document.getElementById("4");
 
-import normalizeUrl from 'normalize-url';
+import { sanitizeUrl } from "@braintree/sanitize-url";
 
 function applyFormatting(formatType) {
   const selection = window.getSelection();
@@ -57,7 +57,7 @@ function createLink() {
   const url = prompt("Enter the link URL:");
 
   if (url) {
-    const cleanURL = normalizeUrl(url);
+    const cleanURL = sanitizeUrl(url);
     const selection = window.getSelection();
     const selectedText = selection.toString();
 
