@@ -2,7 +2,7 @@
   "name": "ouzox-website",
   "version": "1.0.0",
   "description": "Ouzox is an open-source platform where independent game developers can showcase their creations and gamers can discover unique gaming experiences.",
-  "main": "index.js",
+  "main": "dataManager.js",
   "scripts": {
     "test": "test"
   },
