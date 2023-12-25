@@ -177,7 +177,7 @@ async function changeProduct(data, gameId, commitChangesButton) {
     commitChangesButton.textContent = "Success";
   } else {
     console.error(`Error trying to update game: ${result.Result}`);
-    commitChangesButton.innerHTML = "An error occured";
+    commitChangesButton.textContent = "An error occured";
   }
 }
 
@@ -212,7 +212,7 @@ const gameHandler = async (gameId) => {
   const game_desc_background = document.getElementById("game-description");
 
   game_title.textContent = gameData.name;
-  game_desc.innerHTML = gameData.description;
+  game_desc.innerHTML = DOMPurify.sanitize(gameData.description);
   game_price.textContent = `${gameData.price.amount} ${gameData.price.currency}`;
 
   function format_time_single(timeago, option, unit) {
@@ -242,14 +242,14 @@ const gameHandler = async (gameId) => {
     }
   }
 
-  created.innerHTML = format_time(
+  created.textContent = format_time(
     gameData.created,
     gameData.datestodays.publishedYearsAgo,
     gameData.datestodays.publishedMonthsAgo,
     gameData.datestodays.publishedWeeksAgo,
     gameData.datestodays.publishedDaysAgo
   );
-  updated.innerHTML = format_time(
+  updated.textContent = format_time(
     gameData.updated,
     gameData.datestodays.updatedYearsAgo,
     gameData.datestodays.updatedMonthsAgo,
@@ -394,7 +394,7 @@ const gameHandler = async (gameId) => {
     if (feature.Enabled) {
       const feature_element = document.createElement("div");
       feature_element.setAttribute("class", "game-feature");
-      feature_element.innerHTML = feature.Name;
+      feature_element.textContent = feature.Name;
 
       game_features.appendChild(feature_element);
     }
@@ -404,7 +404,7 @@ const gameHandler = async (gameId) => {
     if (platform.Enabled) {
       const platform_element = document.createElement("div");
       platform_element.setAttribute("class", "game-feature");
-      platform_element.innerHTML = platform.Name;
+      platform_element.textContent = platform.Name;
 
       game_platforms.appendChild(platform_element);
     }
@@ -691,13 +691,13 @@ const gameHandler = async (gameId) => {
 
     const commitChangesButton = document.createElement("button");
     commitChangesButton.className = "game-download-button";
-    commitChangesButton.innerHTML = "Commit Changes";
+    commitChangesButton.textContent = "Commit Changes";
 
     game_title.addEventListener("input", function () {
       const text = DOMPurify.sanitize(this.textContent);
 
       if (text.length > 120) {
-        this.innerHTML = text.substr(0, 120);
+        this.textContent = text.substr(0, 120);
       }
     });
 
@@ -705,7 +705,7 @@ const gameHandler = async (gameId) => {
       const text = DOMPurify.sanitize(this.textContent);
 
       if (text.length > 120) {
-        this.innerHTML = text.substr(0, 120);
+        this.textContent = text.substr(0, 120);
       }
     });
 
@@ -937,7 +937,7 @@ const gameHandler = async (gameId) => {
           body: JSON.stringify(update_game_options_body),
         };
 
-        commitChangesButton.innerHTML = "Uploading..";
+        commitChangesButton.textContent = "Uploading..";
         await changeProduct(
           update_game_options,
           realGameId,
