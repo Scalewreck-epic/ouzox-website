@@ -1,7 +1,9 @@
 function handleError(response, redirect) {
   if (redirect) {
-    const statusCode = response.status ? response.status : 500;
-    window.location.assign(`404?er=${response.status}`);
+    if (!window.location.pathname.includes("404")) {
+      const statusCode = response.status ? response.status : 500;
+      window.location.assign(`404?er=${statusCode}`);
+    }
   } else {
     return {
       Result: response,
