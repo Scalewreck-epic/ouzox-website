@@ -21,7 +21,7 @@ const header2_button = document.getElementById("2");
 const header3_button = document.getElementById("3");
 const header4_button = document.getElementById("4");
 
-import { sanitizeUrl } from "@braintree/sanitize-url";
+import sanitizeUrl from '@braintree/sanitize-url';
 
 function applyFormatting(formatType) {
   const selection = window.getSelection();
