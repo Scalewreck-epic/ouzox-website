@@ -1,5 +1,5 @@
 const urlParams = new URLSearchParams(window.location.search);
-const error_code = encodeURIComponent(urlParams.get("er") || "");
+const error_code = encodeURIComponent(urlParams.get("err") || "");
 
 const errorcode = document.getElementById("errorcode");
 const message_header = document.getElementById("messageheader");
@@ -11,7 +11,6 @@ navigation_title.textContent = `Ouzox | ${error_code} Error`;
 
 switch (error_code) {
   default:
-    errorcode.textContent = "404";
     message_header.textContent = "Not Found";
     message.textContent = "You're navigating somewhere beyond our territory.";
   case 500:
