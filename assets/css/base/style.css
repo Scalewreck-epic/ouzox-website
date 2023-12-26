@@ -4,10 +4,6 @@ body {
   margin: 0;
 }
 
-html {
-  scroll-behavior: smooth;
-}
-
 .content {
   padding-top: 3.125rem;
   padding-bottom: 12.5rem;
@@ -17,6 +13,10 @@ html {
 
 .title-block {
   margin-bottom: 3rem;
+}
+
+* {
+  box-sizing: border-box;
 }
 
 a:not(:has(img)){
