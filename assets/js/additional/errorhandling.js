@@ -10,6 +10,10 @@ errorcode.textContent = error_code;
 navigation_title.textContent = `Ouzox | ${error_code} Error`;
 
 switch (error_code) {
+  default:
+    errorcode.textContent = "404";
+    message_header.textContent = "Not Found";
+    message.textContent = "You're navigating somewhere beyond our territory.";
   case 500:
     message_header.textContent = "Internal Server Error";
     message.textContent =
@@ -37,8 +41,4 @@ switch (error_code) {
     message.textContent =
       "I don't even know what you're doing to get this error.";
     break;
-  default:
-    errorcode.textContent = "404";
-    message_header.textContent = "Not Found";
-    message.textContent = "You're navigating somewhere beyond our territory.";
 }
