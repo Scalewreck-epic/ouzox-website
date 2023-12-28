@@ -2,14 +2,14 @@ const auth_signup =
   "https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv:v1/auth/signup";
 const auth_login =
   "https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv:v1/auth/login";
-const get_user_2 =
-  "https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv/user/id/";
+const get_user_2 = "https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv/user/id/";
 
 const annualExpiration = 1;
 
 import {
   fetch_cookie,
   fetch_user,
+  fetch_alternative_user,
   change_email_data,
   change_password_data,
   change_status_data,
@@ -139,7 +139,12 @@ async function createSessionData() {
 
       error_label.textContent = "Creating account...";
 
-      const result = await request(auth_signup, requestOptions, false, "signup");
+      const result = await request(
+        auth_signup,
+        requestOptions,
+        false,
+        "signup"
+      );
 
       if (result.Success) {
         create_cookie("session_id", result.Result.authToken);
@@ -218,6 +223,11 @@ if (cookie_data.Valid) {
 }
 
 if (window.location.pathname.includes("/user")) {
+  const user_username = document.getElementById("user-username");
+  const user_status = document.getElementById("user-status");
+  const user_joindate = document.getElementById("join-date");
+  const web_title = document.getElementById("title");
+
   const urlParams = new URLSearchParams(window.location.search);
   const user_id = urlParams.get("id");
 
@@ -228,29 +238,20 @@ if (window.location.pathname.includes("/user")) {
     headers: myHeaders,
   };
 
-  const result = await request(`${get_user_2}${user_id}`, requestOptions, true, "get user 2");
+  const other_user = await fetch_alternative_user(user_id);
 
-  if (result.Success) {
-    const user_username = document.getElementById("user-username");
-    const user_status = document.getElementById("user-status");
-    const user_joindate = document.getElementById("join-date");
-    const web_title = document.getElementById("title");
+  const rfcDate = new Date(other_user.created_at).toUTCString();
+  const dateObj = new Date(Date.parse(rfcDate));
+  const formattedDate = dateObj.toLocaleDateString("en-US", {
+    year: "2-digit",
+    month: "2-digit",
+    day: "2-digit",
+  });
 
-    const rfcDate = new Date(result.Result.created_at).toUTCString();
-    const dateObj = new Date(Date.parse(rfcDate));
-    const formattedDate = dateObj.toLocaleDateString("en-US", {
-      year: "2-digit",
-      month: "2-digit",
-      day: "2-digit",
-    });
-
-    user_username.textContent = result.Result.name;
-    user_status.textContent = result.Result.status;
-    user_joindate.textContent = formattedDate;
-    web_title.textContent = `Ouzox | ${result.Result.name}`;
-  } else {
-    throw new Error(`Unable to get user data: ${result.Result}`)
-  }
+  user_username.textContent = other_user.name;
+  user_status.textContent = other_user.status;
+  user_joindate.textContent = formattedDate;
+  web_title.textContent = `Ouzox | ${other_user.name}`;
 }
 
 if (window.location.pathname.includes("/settings")) {

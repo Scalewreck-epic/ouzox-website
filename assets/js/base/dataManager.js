@@ -1,7 +1,7 @@
 const get_games = "https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv/games";
 const get_prices = "https://x8ki-letl-twmt.n7.xano.io/api:tFdG2Vz-/prices";
 
-import { fetch_user } from "../user/sessionManager.js";
+import { fetch_user, fetch_alternative_user } from "../user/sessionManager.js";
 import { request } from "./apiManager.js";
 
 const urlParams = new URLSearchParams(window.location.search);
@@ -259,26 +259,36 @@ function set_game_relevancy() {
   }
 }
 
+async function filter_games(user, category) {
+  const user_games = games.filter((game) => game.developer_name == user.name);
+  user_games.sort(category_algorithm);
+
+  user_games.forEach((game) => {
+    const game_price = fetch_game_price(game.product_id.toString());
+    create_game_page(game, game_price, category);
+  });
+
+  if (user_games.length > 0) {
+    const categoryNoneElement = category.querySelector(".category-none");
+
+    if (categoryNoneElement) {
+      categoryNoneElement.remove();
+    }
+  }
+}
+
+async function load_user_games(user_id) {
+  const category = document.getElementById("user-games");
+  const user = await fetch_alternative_user(user_id);
+
+  filter_games(user, category);
+}
+
 async function load_dashboard() {
   const category = document.getElementById("dashboard-market");
   const user = await fetch_user();
 
-  if (user != undefined) {
-    const user_games = games.filter((game) => game.developer_name == user.name);
-
-    user_games.forEach((game) => {
-      const game_price = fetch_game_price(game.product_id.toString());
-      create_game_page(game, game_price, category);
-    });
-
-    if (user_games.length > 0) {
-      const categoryNoneElement = category.querySelector(".category-none");
-  
-      if (categoryNoneElement) {
-        categoryNoneElement.remove();
-      }
-    }
-  }
+  filter_games(user, category);
 }
 
 function load_games_with_list(list, category, gameslist) {
@@ -472,17 +482,22 @@ async function fetch_games() {
     method: "GET",
     headers: myHeaders,
     redirect: "follow",
-  }
+  };
 
   function set_genres() {
-    games.forEach(game => {
-      const genre = genres.find(genre => genre.name === game.genre)
-      genre ? genre.count++ : genres.push({name: game.genre, count: 1});
+    games.forEach((game) => {
+      const genre = genres.find((genre) => genre.name === game.genre);
+      genre ? genre.count++ : genres.push({ name: game.genre, count: 1 });
     });
   }
 
   async function set_prices() {
-    const result = await request(get_prices, price_request_options, true, "prices");
+    const result = await request(
+      get_prices,
+      price_request_options,
+      true,
+      "prices"
+    );
 
     if (result.Success) {
       prices = result.Result.data;
@@ -492,7 +507,12 @@ async function fetch_games() {
   }
 
   async function fetch_data() {
-    const result = await request(get_games, game_request_options, false, "games");
+    const result = await request(
+      get_games,
+      game_request_options,
+      false,
+      "games"
+    );
 
     if (result.Success) {
       games = result.Result.games;
@@ -506,6 +526,9 @@ async function fetch_games() {
 
   if (window.location.pathname.includes("/dashboard")) {
     load_dashboard();
+  } else if (window.location.pathname.includes("/user")) {
+    const user_id = urlParams.get("id");
+    load_user_games(user_id);
   } else {
     set_genres();
     remove_private_games();
