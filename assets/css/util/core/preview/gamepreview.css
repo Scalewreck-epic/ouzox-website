@@ -79,6 +79,11 @@
   transform: scale(1.02);
 }
 
+.product-image-container:hover .product-image {
+  outline: 0.125rem solid #4d0101;
+
+}
+
 .product-image {
   position: relative;
   width: 18rem;
@@ -88,8 +93,4 @@
   object-fit: fill;
   object-position: center;
   transition: outline 0.2s ease-in-out;
-}
-
-.product-image:hover {
-  outline: 0.125rem solid #4d0101;
 }

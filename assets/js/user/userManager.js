@@ -2,7 +2,6 @@ const auth_signup =
   "https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv:v1/auth/signup";
 const auth_login =
   "https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv:v1/auth/login";
-const get_user_2 = "https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv/user/id/";
 
 const annualExpiration = 1;
 
