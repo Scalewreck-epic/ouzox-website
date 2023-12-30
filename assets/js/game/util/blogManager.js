@@ -53,8 +53,12 @@ const post_request = await request(
 );
 const posts = post_request.Result.response.result.posts;
 
-console.log(posts);
+posts.sort((a, b) => {
+  new Date(b.created_at) - new Date(a.created_at)
+});
 
 posts.forEach((post) => {
-  create_blog_post(post);
+  if (post.visibility == "public") {
+    create_blog_post(post);
+  }
 });

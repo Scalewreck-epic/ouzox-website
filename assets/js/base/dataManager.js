@@ -17,7 +17,7 @@ let offset = 30;
 const search_algorithm = (a, b) => {
   const scoreA = a.relevance * 0.7 + a.downloads * 0.3;
   const scoreB = b.relevance * 0.7 + b.downloads * 0.3;
-  scoreA - scoreB;
+  scoreB - scoreA;
 };
 
 const category_algorithm = (a, b) => {
