@@ -279,9 +279,30 @@ async function filter_games(user, category) {
 
 async function load_user_games(user_id) {
   const category = document.getElementById("user-games");
+  const game_downloads = document.getElementById("game-downloads");
+
   const user = await fetch_alternative_user(user_id);
 
-  filter_games(user, category);
+  const user_games = games.filter((game) => game.developer_name == user.name);
+  user_games.sort(category_algorithm);
+
+  let total_downloads = 0;
+
+  user_games.forEach((game) => {
+    const game_price = fetch_game_price(game.product_id.toString());
+    create_game_page(game, game_price, category);
+
+    total_downloads += game.downloads;
+    game_downloads.textContent = toString(total_downloads);
+  });
+
+  if (user_games.length > 0) {
+    const categoryNoneElement = category.querySelector(".category-none");
+
+    if (categoryNoneElement) {
+      categoryNoneElement.remove();
+    }
+  }
 }
 
 async function load_dashboard() {
