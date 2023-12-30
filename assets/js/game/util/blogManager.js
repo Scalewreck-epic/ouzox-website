@@ -26,9 +26,9 @@ function create_blog_post(post) {
   blog_date.setAttribute("class", "blog-date");
 
   blog_card.setAttribute("href", post.url);
-  const blog_created = new Date(post.created_at);
+  blog_card.setAttribute("target", "_blank");
 
-  const createdFormattedDate = blog_created.toLocaleDateString("en-US", {
+  const blog_format_date = new Date(post.created_at).toLocaleDateString("en-US", {
     year: "2-digit",
     month: "2-digit",
     day: "2-digit",
@@ -36,7 +36,7 @@ function create_blog_post(post) {
 
   blog_image.setAttribute("src", post.feature_image);
   blog_title.textContent = post.title;
-  blog_date.textContent = createdFormattedDate;
+  blog_date.textContent = blog_format_date;
 
   blog_column.appendChild(blog_title);
   blog_column.appendChild(blog_date);

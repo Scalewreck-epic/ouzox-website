@@ -60,13 +60,13 @@ function calculate_diff_days(timestamp) {
 
 function create_genre_page(name, amount) {
   const genre_button = document.createElement("a");
-  genre_button.className = "genre-button";
-
   const genre_name = document.createElement("div");
   const genre_games_amount = document.createElement("h4");
 
+  genre_button.setAttribute("class", "genre-button");
+  genre_name.setAttribute("class", "genre-name");
+
   genre_name.textContent = name;
-  genre_name.className = "genre-name";
   genre_button.setAttribute("href", `category?n=${name}`);
 
   genre_games_amount.textContent =
@@ -90,23 +90,19 @@ function create_game_page(game, game_price, market) {
   const game_price_div = document.createElement("div");
   const game_price_text = document.createElement("span");
 
-  game_div.className = "game";
+  game_div.setAttribute("class", "game");
+  game_image.setAttribute("class", "product-image");
+  game_image_container.setAttribute("class", "product-image-container");
+  game_title.setAttribute("class", "product-title");
+  game_summary.setAttribute("class", "product-summary");
+  game_price_div.setAttribute("class", "product-price");
 
-  game_image.className = "product-image";
   game_image.setAttribute("src", game.icon.url);
-
-  game_image_container.className = "product-image-container";
-
-  game_title.className = "product-title";
-  game_title.textContent = game.name;
-
   game_image_container.setAttribute("href", `game?g=${game.id}`);
   game_title.setAttribute("href", `game?g=${game.id}`);
 
-  game_summary.className = "product-summary";
+  game_title.textContent = game.name;
   game_summary.textContent = game.summary;
-
-  game_price_div.className = "product-price";
 
   game_price_text.innerHTML = `${price} ${currency.toUpperCase()}`;
 
@@ -120,7 +116,7 @@ function create_game_page(game, game_price, market) {
 
   if (diff_days_created <= 7) {
     const game_created_label = document.createElement("div");
-    game_created_label.className = "new-label";
+    game_created_label.setAttribute("class", "new-label");
 
     const game_created_text = document.createElement("span");
     game_created_text.innerHTML = "NEW";
@@ -141,7 +137,7 @@ function create_game_page(game, game_price, market) {
     });
   } else if (diff_days_updated <= 7) {
     const game_updated_label = document.createElement("div");
-    game_updated_label.className = "updated-label";
+    game_created_label.setAttribute("class", "updated-label");
 
     const game_updated_text = document.createElement("span");
     game_updated_text.innerHTML = "UPDATED";

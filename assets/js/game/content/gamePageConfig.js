@@ -690,7 +690,7 @@ const gameHandler = async (gameId) => {
     });
 
     const commitChangesButton = document.createElement("button");
-    commitChangesButton.className = "game-download-button";
+    commitChangesButton.setAttribute("class", "game-download-button");
     commitChangesButton.textContent = "Commit Changes";
 
     game_title.addEventListener("input", function () {

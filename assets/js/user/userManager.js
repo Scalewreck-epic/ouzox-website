@@ -283,10 +283,10 @@ if (window.location.pathname.includes("/settings")) {
 
     if (passwordInput.type === "password") {
       passwordInput.type = "text";
-      icon.className = "show-icon";
+      icon.setAttribute("class", "show-icon");
     } else {
       passwordInput.type = "password";
-      icon.className = "hide-icon";
+      icon.setAttribute("class", "hide-icon");
     }
   });
 
@@ -316,10 +316,10 @@ if (window.location.pathname.includes("/settings")) {
 
     if (passwordInput.type === "password") {
       passwordInput.type = "text";
-      icon.className = "show-icon";
+      icon.setAttribute("class", "show-icon");
     } else {
       passwordInput.type = "password";
-      icon.className = "hide-icon";
+      icon.setAttribute("class", "hide-icon");
     }
   });
 
