@@ -1,54 +1,65 @@
 const description = document.getElementById("description");
 const game_column = document.getElementById("game-column");
 
-const bold_button = document.getElementById("bold");
-const italic_button = document.getElementById("italic");
-const underline_button = document.getElementById("underline");
-const strikethrough_button = document.getElementById("strikethrough");
-const link_button = document.getElementById("link");
+const formattingButtons = {
+  bold: document.getElementById("bold"),
+  italic: document.getElementById("italic"),
+  underline: document.getElementById("underline"),
+  strikethrough: document.getElementById("strikethrough"),
+ };
 
-const unorderedlist_button = document.getElementById("insertUnorderedList");
-const orderedlist_button = document.getElementById("insertOrderedList");
+const listButtons = {
+  unorderedlist: document.getElementById("insertUnorderedList"),
+  orderedlist: document.getElementById("insertOrderedList"),
+};
 
-const left_button = document.getElementById("justifyLeft");
-const right_button = document.getElementById("justifyRight");
-const center_button = document.getElementById("justifyCenter");
+const alignmentButtons = {
+  left: document.getElementById("Left"),
+  right: document.getElementById("Right"),
+  center: document.getElementById("Center"),
+};
+
+const headerButtons = {
+  1: document.getElementById("1"),
+  2: document.getElementById("2"),
+  3: document.getElementById("3"),
+  4: document.getElementById("4"),
+};
 
 const font_sort = document.getElementById("font-sort");
+const link = document.getElementById("link")
 
-const header1_button = document.getElementById("1");
-const header2_button = document.getElementById("2");
-const header3_button = document.getElementById("3");
-const header4_button = document.getElementById("4");
-
-function applyFormatting(formatType) {
+function applyFormatting(button) {
+  const formatType = button.id;
   const selection = window.getSelection();
   const selectedText = selection.toString();
-
+ 
   document.execCommand(formatType);
-
+ 
   if (selection.rangeCount > 0) {
-    const range = selection.getRangeAt(0);
-    range.deleteContents();
-    range.insertNode(document.createTextNode(selectedText));
+     const range = selection.getRangeAt(0);
+     range.deleteContents();
+     range.insertNode(document.createTextNode(selectedText));
   }
 }
 
-function applyHeader(level) {
+function applyHeader(button) {
+  const level = button.id;
   const selection = window.getSelection();
   const selectedText = selection.toString();
-
+ 
   document.execCommand("formatBlock", false, `<h${level}>`)
-
+ 
   if (selection.rangeCount > 0) {
-    const range = selection.getRangeAt(0);
-    range.deleteContents();
-    range.insertNode(document.createTextNode(selectedText));
+     const range = selection.getRangeAt(0);
+     range.deleteContents();
+     range.insertNode(document.createTextNode(selectedText));
   };
 };
 
-function justify(direction) {
-  document.execCommand("justify" + direction);
+function justify(button) {
+  const level = button.id;
+  document.execCommand("justify" + level);
 };
 
 function createLink() {
@@ -72,62 +83,13 @@ function createLink() {
   };
 };
 
-bold_button.addEventListener("click", function () {
-  applyFormatting("bold");
-});
-
-italic_button.addEventListener("click", function () {
-  applyFormatting("italic");
-});
-
-underline_button.addEventListener("click", function () {
-  applyFormatting("underline");
-});
-
-strikethrough_button.addEventListener("click", function () {
-  applyFormatting("strikeThrough");
-});
-
-link_button.addEventListener("click", function () {
-  createLink();
-});
-
-unorderedlist_button.addEventListener("click", function () {
-  applyFormatting("insertUnorderedList");
-});
-
-orderedlist_button.addEventListener("click", function () {
-  applyFormatting("insertOrderedList");
-});
-
-left_button.addEventListener("click", function () {
-  justify("Left");
-});
-
-right_button.addEventListener("click", function () {
-  justify("Right");
-});
-
-center_button.addEventListener("click", function () {
-  justify("Center");
-});
-
-header1_button.addEventListener("click", function () {
-  applyHeader(1);
-});
-
-header2_button.addEventListener("click", function () {
-  applyHeader(2);
-});
-
-header3_button.addEventListener("click", function () {
-  applyHeader(3);
-});
-
-header4_button.addEventListener("click", function () {
-  applyHeader(4);
-});
-
 font_sort.addEventListener("change", function() {
   game_column.style.fontFamily = font_sort.options[font_sort.selectedIndex].value;
 });
+
+link.addEventListener("click", () => createLink());
+
+Object.values(formattingButtons).forEach(button => button.addEventListener("click", () => applyFormatting(button)));
+Object.values(listButtons).forEach(button => button.addEventListener("click", () => applyFormatting(button)));
+Object.values(alignmentButtons).forEach(button => button.addEventListener("click", () => justify(button)));
+Object.values(headerButtons).forEach(button => button.addEventListener("click", () => applyHeader(button)));
