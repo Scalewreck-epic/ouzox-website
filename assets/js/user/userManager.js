@@ -261,18 +261,10 @@ if (window.location.pathname.includes("/settings")) {
 
   setStats();
 
-  email_button.addEventListener("click", function () {
-    change_email_data();
-  });
-  password_button.addEventListener("click", function () {
-    change_password_data();
-  });
-  status_button.addEventListener("click", function () {
-    change_status_data();
-  });
-  logout_button.addEventListener("click", function () {
-    logout();
-  });
+  email_button.addEventListener("click", () => change_email_data());
+  password_button.addEventListener("click", () => change_password_data());
+  status_button.addEventListener("click", () => change_status_data());
+  logout_button.addEventListener("click", () => logout());
 } else if (window.location.pathname.includes("/login")) {
   const login_form = document.getElementById("login-form");
   const login_button = document.getElementById("login-button");

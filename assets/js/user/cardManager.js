@@ -63,18 +63,7 @@ credit_card_number.addEventListener("input", function() {
     credit_card_number.value = card_number;
 });
 
-credit_card_mm.addEventListener("input", function() {
-    checkCard();
-});
-
-credit_card_yy.addEventListener("input", function() {
-    checkCard();
-});
-
-credit_card_cvc.addEventListener("input", function() {
-    checkCard();
-});
-
-credit_card_name.addEventListener("input", function() {
-    checkCard();
-})
+credit_card_mm.addEventListener("input", () => checkCard());
+credit_card_yy.addEventListener("input", () => checkCard());
+credit_card_cvc.addEventListener("input", () => checkCard());
+credit_card_name.addEventListener("input", () => checkCard());

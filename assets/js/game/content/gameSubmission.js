@@ -382,30 +382,12 @@ const download_file = document.getElementById("download-file");
 const game_description = document.getElementById("description");
 
 checkIsFree();
-
-download_file.addEventListener("change", function() {
-  checkFileSize();
-})
-
-game_thumbnail.addEventListener("change", function() {
-  checkThumbnail();
-})
-
-game_isfree.addEventListener("change", function() {
-  checkIsFree();
-})
-
-game_price.addEventListener("input", function() {
-  checkPrice();
-});
-
-genre_input.addEventListener("input", function() {
-  checkGenre();
-});
-
-game_art.addEventListener("input", function() {
-  checkArt();
-});
+download_file.addEventListener("change", () => checkFileSize());
+game_thumbnail.addEventListener("change", () => checkThumbnail());
+game_isfree.addEventListener("change", () => checkIsFree());
+game_price.addEventListener("change", () => checkPrice());
+genre_input.addEventListener("change", () => checkGenre());
+game_art.addEventListener("change", () => checkArt());
 
 game_description.addEventListener("input", function() {
   const text = DOMPurify.sanitize(this.innerHTML);
