@@ -6,7 +6,7 @@ const formattingButtons = {
   italic: document.getElementById("italic"),
   underline: document.getElementById("underline"),
   strikethrough: document.getElementById("strikethrough"),
- };
+};
 
 const listButtons = {
   unorderedlist: document.getElementById("insertUnorderedList"),
@@ -27,19 +27,19 @@ const headerButtons = {
 };
 
 const font_sort = document.getElementById("font-sort");
-const link = document.getElementById("link")
+const link = document.getElementById("link");
 
 function applyFormatting(button) {
   const formatType = button.id;
   const selection = window.getSelection();
   const selectedText = selection.toString();
- 
+
   document.execCommand(formatType);
- 
+
   if (selection.rangeCount > 0) {
-     const range = selection.getRangeAt(0);
-     range.deleteContents();
-     range.insertNode(document.createTextNode(selectedText));
+    const range = selection.getRangeAt(0);
+    range.deleteContents();
+    range.insertNode(document.createTextNode(selectedText));
   }
 }
 
@@ -47,20 +47,20 @@ function applyHeader(button) {
   const level = button.id;
   const selection = window.getSelection();
   const selectedText = selection.toString();
- 
-  document.execCommand("formatBlock", false, `<h${level}>`)
- 
+
+  document.execCommand("formatBlock", false, `<h${level}>`);
+
   if (selection.rangeCount > 0) {
-     const range = selection.getRangeAt(0);
-     range.deleteContents();
-     range.insertNode(document.createTextNode(selectedText));
-  };
-};
+    const range = selection.getRangeAt(0);
+    range.deleteContents();
+    range.insertNode(document.createTextNode(selectedText));
+  }
+}
 
 function justify(button) {
   const level = button.id;
   document.execCommand("justify" + level);
-};
+}
 
 function createLink() {
   const url = prompt("Enter the link URL:");
@@ -79,17 +79,28 @@ function createLink() {
       const range = selection.getRangeAt(0);
       range.deleteContents();
       range.insertNode(link);
-    };
-  };
-};
+    }
+  }
+}
 
-font_sort.addEventListener("change", function() {
-  game_column.style.fontFamily = font_sort.options[font_sort.selectedIndex].value;
-});
+if (font_sort) {
+  font_sort.addEventListener("change", function () {
+    game_column.style.fontFamily =
+      font_sort.options[font_sort.selectedIndex].value;
+  });
+}
 
 link.addEventListener("click", () => createLink());
 
-Object.values(formattingButtons).forEach(button => button.addEventListener("click", () => applyFormatting(button)));
-Object.values(listButtons).forEach(button => button.addEventListener("click", () => applyFormatting(button)));
-Object.values(alignmentButtons).forEach(button => button.addEventListener("click", () => justify(button)));
-Object.values(headerButtons).forEach(button => button.addEventListener("click", () => applyHeader(button)));
+Object.values(formattingButtons).forEach((button) =>
+  button.addEventListener("click", () => applyFormatting(button))
+);
+Object.values(listButtons).forEach((button) =>
+  button.addEventListener("click", () => applyFormatting(button))
+);
+Object.values(alignmentButtons).forEach((button) =>
+  button.addEventListener("click", () => justify(button))
+);
+Object.values(headerButtons).forEach((button) =>
+  button.addEventListener("click", () => applyHeader(button))
+);
