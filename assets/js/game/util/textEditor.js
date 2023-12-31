@@ -73,7 +73,7 @@ function createLink() {
     const link = document.createElement("a");
     link.setAttribute("href", cleanURL);
     link.setAttribute("target", "_blank");
-    link.textContent = text || selectedText;
+    link.textContent = selectedText;
 
     if (selection.rangeCount > 0) {
       const range = selection.getRangeAt(0);
