@@ -18,6 +18,9 @@ import { request } from "../base/apiManager.js";
 const cookie_data = fetch_cookie("session_id");
 const user = await fetch_user();
 
+const restrictedPaths = ["/settings", "/upload", "/dashboard"];
+const loginPaths = ["/login", "/signup"];
+
 function calculateExpiration(past) {
   const currentDate = new Date();
 
@@ -205,20 +208,13 @@ function logout() {
 }
 
 if (cookie_data.Valid) {
-  if (
-    window.location.pathname.includes("/login") ||
-    window.location.pathname.includes("/signup")
-  ) {
+ if (loginPaths.some(path => window.location.pathname.includes(path))) {
     window.location.assign("settings");
-  }
+ }
 } else {
-  if (
-    window.location.pathname.includes("/settings") ||
-    window.location.pathname.includes("/upload") ||
-    window.location.pathname.includes("/dashboard")
-  ) {
+ if (restrictedPaths.some(path => window.location.pathname.includes(path))) {
     window.location.assign("login");
-  }
+ }
 }
 
 if (window.location.pathname.includes("/user")) {
@@ -265,7 +261,9 @@ if (window.location.pathname.includes("/settings")) {
   password_button.addEventListener("click", () => change_password_data());
   status_button.addEventListener("click", () => change_status_data());
   logout_button.addEventListener("click", () => logout());
-} else if (window.location.pathname.includes("/login")) {
+}
+
+if (window.location.pathname.includes("/login")) {
   const login_form = document.getElementById("login-form");
   const login_button = document.getElementById("login-button");
   const icon = document.getElementById("show-password-icon");
