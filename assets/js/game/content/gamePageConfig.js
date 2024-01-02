@@ -171,7 +171,7 @@ async function retrieveGameData(gameId) {
 }
 
 async function changeProduct(data, gameId, commitChangesButton) {
-  const result = await request(`${update_game}${gameId}`, data, false);
+  const result = await request(`${update_game}${gameId}`, data, false, "configure game");
 
   if (result.Success) {
     commitChangesButton.textContent = "Success";
