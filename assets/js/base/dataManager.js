@@ -137,7 +137,7 @@ function create_game_page(game, game_price, market) {
     });
   } else if (diff_days_updated <= 7) {
     const game_updated_label = document.createElement("div");
-    game_created_label.setAttribute("class", "updated-label");
+    game_updated_label.setAttribute("class", "updated-label");
 
     const game_updated_text = document.createElement("span");
     game_updated_text.innerHTML = "UPDATED";
