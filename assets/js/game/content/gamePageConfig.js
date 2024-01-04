@@ -957,5 +957,5 @@ if (gameIdParam != null) {
   gameHandler(gameIdParam);
 } else {
   console.warn("There is no game id.");
-  //window.location.assign("404");
+  window.location.assign("404");
 }
