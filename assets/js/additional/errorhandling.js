@@ -6,13 +6,16 @@ const message_header = document.getElementById("messageheader");
 const message = document.getElementById("message");
 const navigation_title = document.getElementById("navigation-title");
 
-errorcode.textContent = error_code;
-navigation_title.textContent = `Ouzox | ${error_code} Error`;
+if (error_code) {
+  errorcode.textContent = error_code;
+  navigation_title.textContent = `Ouzox | ${error_code} Error`;
+}
 
 switch (error_code) {
   default:
     message_header.textContent = "Not Found";
     message.textContent = "You're navigating somewhere beyond our territory.";
+    break;
   case 500:
     message_header.textContent = "Internal Server Error";
     message.textContent =

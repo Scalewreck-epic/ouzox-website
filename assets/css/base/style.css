@@ -19,19 +19,13 @@ body {
   box-sizing: border-box;
 }
 
-a:not(:has(img)){
+a:not(:has(img)):not(button > a){
   transition: text-decoration 0.25s ease, color 0.25s ease;
 }
 
-a:not(:has(img)):hover{
+a:not(:has(img)):not(button > a):hover{
   text-decoration: underline;
   color: #4D0101;
-}
-
-.a-button:hover {
-  text-decoration: none;
-  border-bottom: 0;
-  color: white;
 }
 
 .divider {

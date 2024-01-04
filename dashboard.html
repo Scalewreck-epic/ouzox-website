@@ -8,8 +8,10 @@
 		<link rel="stylesheet" href="assets/css/base/footer.css">
 		<link rel="stylesheet" href="assets/css/base/navbar.css">
 		<link rel="stylesheet" href="assets/css/util/core/preview/gamepreview.css">
+		<link rel="stylesheet" href="assets/css/util/core/preview/blogpreview.css">
 		<link rel="stylesheet" href="assets/css/util/core/market.css">
 		<link rel="stylesheet" href="assets/css/util/core/marketcategory.css">
+		<link rel="stylesheet" href="assets/css/util/core/buttonstyle.css">
 		<link rel="stylesheet" href="assets/css/util/other/labels.css">
 		<link rel="preconnect" href="https://fonts.googleapis.com">
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -45,8 +47,12 @@
 				<div class="market" id="dashboard-market">
 					<h1 class="category-none">No games here...</h1>
 				</div>
-				<button class="load-button"><a href="upload" class="a-button">Create a new project</a></button>
+				<button class="upload-button"><a href="upload">Create a new project</a></button>
 				<p class="socal-nag">Follow Ouzox on <a href="https://twitter.com/scalewrecktweak" target="_blank">Twitter</a></p>
+			</div>
+			<div class="category">
+				<div class="market" id="blog-posts">
+				</div>
 			</div>
 		</div>
 		<footer class="footer">
@@ -69,6 +75,7 @@
 			</p>
 		</footer>
 	</body>
+	<script type="module" src="assets/js/game/util/blogManager.js"></script>
 	<script type="module" src="assets/js/user/userManager.js"></script>
 	<script type="module" src="assets/js/base/dataManager.js"></script>
 </html>

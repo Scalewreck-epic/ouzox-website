@@ -1,7 +1,7 @@
 const get_games = "https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv/games";
 const get_prices = "https://x8ki-letl-twmt.n7.xano.io/api:tFdG2Vz-/prices";
 
-import { fetch_user } from "../user/sessionManager.js";
+import { fetch_user, fetch_alternative_user } from "../user/sessionManager.js";
 import { request } from "./apiManager.js";
 
 const urlParams = new URLSearchParams(window.location.search);
@@ -17,7 +17,7 @@ let offset = 30;
 const search_algorithm = (a, b) => {
   const scoreA = a.relevance * 0.7 + a.downloads * 0.3;
   const scoreB = b.relevance * 0.7 + b.downloads * 0.3;
-  scoreA - scoreB;
+  scoreB - scoreA;
 };
 
 const category_algorithm = (a, b) => {
@@ -60,13 +60,13 @@ function calculate_diff_days(timestamp) {
 
 function create_genre_page(name, amount) {
   const genre_button = document.createElement("a");
-  genre_button.className = "genre-button";
-
   const genre_name = document.createElement("div");
   const genre_games_amount = document.createElement("h4");
 
+  genre_button.setAttribute("class", "genre-button");
+  genre_name.setAttribute("class", "genre-name");
+
   genre_name.textContent = name;
-  genre_name.className = "genre-name";
   genre_button.setAttribute("href", `category?n=${name}`);
 
   genre_games_amount.textContent =
@@ -90,23 +90,19 @@ function create_game_page(game, game_price, market) {
   const game_price_div = document.createElement("div");
   const game_price_text = document.createElement("span");
 
-  game_div.className = "game";
+  game_div.setAttribute("class", "game");
+  game_image.setAttribute("class", "product-image");
+  game_image_container.setAttribute("class", "product-image-container");
+  game_title.setAttribute("class", "product-title");
+  game_summary.setAttribute("class", "product-summary");
+  game_price_div.setAttribute("class", "product-price");
 
-  game_image.className = "product-image";
   game_image.setAttribute("src", game.icon.url);
-
-  game_image_container.className = "product-image-container";
-
-  game_title.className = "product-title";
-  game_title.textContent = game.name;
-
   game_image_container.setAttribute("href", `game?g=${game.id}`);
   game_title.setAttribute("href", `game?g=${game.id}`);
 
-  game_summary.className = "product-summary";
+  game_title.textContent = game.name;
   game_summary.textContent = game.summary;
-
-  game_price_div.className = "product-price";
 
   game_price_text.innerHTML = `${price} ${currency.toUpperCase()}`;
 
@@ -120,7 +116,7 @@ function create_game_page(game, game_price, market) {
 
   if (diff_days_created <= 7) {
     const game_created_label = document.createElement("div");
-    game_created_label.className = "new-label";
+    game_created_label.setAttribute("class", "new-label");
 
     const game_created_text = document.createElement("span");
     game_created_text.innerHTML = "NEW";
@@ -141,7 +137,7 @@ function create_game_page(game, game_price, market) {
     });
   } else if (diff_days_updated <= 7) {
     const game_updated_label = document.createElement("div");
-    game_updated_label.className = "updated-label";
+    game_created_label.setAttribute("class", "updated-label");
 
     const game_updated_text = document.createElement("span");
     game_updated_text.innerHTML = "UPDATED";
@@ -259,26 +255,57 @@ function set_game_relevancy() {
   }
 }
 
+async function filter_games(user, category) {
+  const user_games = games.filter((game) => game.developer_name == user.name);
+  user_games.sort(category_algorithm);
+
+  user_games.forEach((game) => {
+    const game_price = fetch_game_price(game.product_id.toString());
+    create_game_page(game, game_price, category);
+  });
+
+  if (user_games.length > 0) {
+    const categoryNoneElement = category.querySelector(".category-none");
+
+    if (categoryNoneElement) {
+      categoryNoneElement.remove();
+    }
+  }
+}
+
+async function load_user_games(user_id) {
+  const category = document.getElementById("user-games");
+  const game_downloads = document.getElementById("game-downloads");
+
+  const user = await fetch_alternative_user(user_id);
+
+  const user_games = games.filter((game) => game.developer_name == user.name);
+  user_games.sort(category_algorithm);
+
+  let total_downloads = 0;
+
+  user_games.forEach((game) => {
+    const game_price = fetch_game_price(game.product_id.toString());
+    create_game_page(game, game_price, category);
+
+    total_downloads += game.downloads;
+    game_downloads.textContent = toString(total_downloads);
+  });
+
+  if (user_games.length > 0) {
+    const categoryNoneElement = category.querySelector(".category-none");
+
+    if (categoryNoneElement) {
+      categoryNoneElement.remove();
+    }
+  }
+}
+
 async function load_dashboard() {
   const category = document.getElementById("dashboard-market");
   const user = await fetch_user();
 
-  if (user != undefined) {
-    const user_games = games.filter((game) => game.developer_name == user.name);
-
-    user_games.forEach((game) => {
-      const game_price = fetch_game_price(game.product_id.toString());
-      create_game_page(game, game_price, category);
-    });
-
-    if (user_games.length > 0) {
-      const categoryNoneElement = category.querySelector(".category-none");
-  
-      if (categoryNoneElement) {
-        categoryNoneElement.remove();
-      }
-    }
-  }
+  filter_games(user, category);
 }
 
 function load_games_with_list(list, category, gameslist) {
@@ -472,17 +499,22 @@ async function fetch_games() {
     method: "GET",
     headers: myHeaders,
     redirect: "follow",
-  }
+  };
 
   function set_genres() {
-    games.forEach(game => {
-      const genre = genres.find(genre => genre.name === game.genre)
-      genre ? genre.count++ : genres.push({name: game.genre, count: 1});
+    games.forEach((game) => {
+      const genre = genres.find((genre) => genre.name === game.genre);
+      genre ? genre.count++ : genres.push({ name: game.genre, count: 1 });
     });
   }
 
   async function set_prices() {
-    const result = await request(get_prices, price_request_options, true, "prices");
+    const result = await request(
+      get_prices,
+      price_request_options,
+      true,
+      "prices"
+    );
 
     if (result.Success) {
       prices = result.Result.data;
@@ -492,7 +524,12 @@ async function fetch_games() {
   }
 
   async function fetch_data() {
-    const result = await request(get_games, game_request_options, false, "games");
+    const result = await request(
+      get_games,
+      game_request_options,
+      false,
+      "games"
+    );
 
     if (result.Success) {
       games = result.Result.games;
@@ -506,6 +543,9 @@ async function fetch_games() {
 
   if (window.location.pathname.includes("/dashboard")) {
     load_dashboard();
+  } else if (window.location.pathname.includes("/user")) {
+    const user_id = urlParams.get("id");
+    load_user_games(user_id);
   } else {
     set_genres();
     remove_private_games();

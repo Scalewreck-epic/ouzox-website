@@ -171,7 +171,7 @@ async function retrieveGameData(gameId) {
 }
 
 async function changeProduct(data, gameId, commitChangesButton) {
-  const result = await request(`${update_game}${gameId}`, data, false);
+  const result = await request(`${update_game}${gameId}`, data, false, "configure game");
 
   if (result.Success) {
     commitChangesButton.textContent = "Success";
@@ -690,7 +690,7 @@ const gameHandler = async (gameId) => {
     });
 
     const commitChangesButton = document.createElement("button");
-    commitChangesButton.className = "game-download-button";
+    commitChangesButton.setAttribute("class", "game-download-button");
     commitChangesButton.textContent = "Commit Changes";
 
     game_title.addEventListener("input", function () {
