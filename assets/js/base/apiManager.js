@@ -3,7 +3,7 @@ function handleError(response, redirect) {
 
   if (redirect && !window.location.pathname.includes("404")) {
     const encodedStatusCode = encodeURIComponent(statusCode);
-    window.location.assign(`404?er=${encodedStatusCode}`);
+    window.location.assign(`404?code=${encodedStatusCode}`);
   } else {
     return {
       Result: response,
@@ -37,10 +37,10 @@ export async function request(endpoint, options, redirect, name) {
       throw new Error("Invalid Content-Type");
     }
 
-    const result = await response.json();
-    
     calculateDuration(startTime, performance.now(), name);
 
+    const result = await response.json();
+    
     return {
       Result: result,
       Success: true,
