@@ -92,12 +92,12 @@ async function retrieveGameData(gameId) {
     currentDate.getTime() - updatedDate.getTime()
   );
 
-  const publishedDaysAgo = Math.ceil(publishedDifference / (1000 * 3600 * 24));
+  const publishedDaysAgo = Math.ceil(publishedDifference / (1000 * 60 * 60 * 24));
   const publishedWeeksAgo = Math.floor(publishedDaysAgo / 7);
   const publishedMonthsAgo = Math.floor(publishedDaysAgo / 31);
   const publishedYearsAgo = Math.floor(publishedDaysAgo / 365);
 
-  const updatedDaysAgo = Math.ceil(updatedDifference / (1000 * 3600 * 24));
+  const updatedDaysAgo = Math.ceil(publishedDifference / (1000 * 60 * 60 * 24));
   const updatedWeeksAgo = Math.floor(updatedDaysAgo / 7);
   const updatedMonthsAgo = Math.floor(publishedDaysAgo / 31);
   const updatedYearsAgo = Math.floor(updatedDaysAgo / 365);
