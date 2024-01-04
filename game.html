@@ -11,6 +11,7 @@
 		<link rel="stylesheet" href="assets/css/pages/gamepage/gamedownload.css">
 		<link rel="stylesheet" href="assets/css/pages/gamepage/gamestats.css">
 		<link rel="stylesheet" href="assets/css/pages/gamepage/gametext.css">
+		<link rel="stylesheet" href="assets/css/pages/gamepage/editinggame.css">
 		<link rel="stylesheet" href="assets/css/util/other/checkbox.css">
 		<link rel="stylesheet" href="assets/css/util/other/fontbuttons.css">
 		<link rel="stylesheet" href="assets/css/util/other/textbox.css">
@@ -337,7 +338,7 @@
 					<h1>Text editing</h1>
 					<div class="game-settings">
 						<div class="game-setting">
-							<div class="title-label">Text:</div>
+							<div class="game-setting-title">Text:</div>
 							<div class="text-options">
 								<button class="bold-button" id="bold" type="button">B</button>
 								<button class="italic-button" id="italic" type="button">I</button>
@@ -349,20 +350,11 @@
 							</div>
 						</div>
 						<div class="game-setting">
-							<div class="title-label">Align:</div>
+							<div class="game-setting-title">Align:</div>
 							<div class="align-options">
 								<button class="description-button" id="Left" type="button">L</button>
 								<button class="description-button" id="Right" type="button">R</button>
 								<button class="description-button" id="Center" type="button">C</button>
-							</div>
-						</div>
-						<div class="game-setting">
-							<div class="title-label">Header:</div>
-							<div class="header-options">
-								<button class="description-button" id="1" type="button">1</button>
-								<button class="description-button" id="2" type="button">2</button>
-								<button class="description-button" id="3" type="button">3</button>
-								<button class="description-button" id="4" type="button">4</button>
 							</div>
 						</div>
 						<div class="game-setting">
@@ -391,19 +383,19 @@
 					</div>
 					<h1>Page editing</h1>
 					<div class="game-setting">
-						<div class="game-setting-title">BG2 Alpha</div>
+						<div class="game-setting-title">BG2 Alpha:</div>
 						<input type="range" id="bg2-alpha" min="0" max="100" value="100" step="1">
 					</div>
 					<div class="game-setting">
-						<div class="game-setting-title">Description BG Alpha</div>
+						<div class="game-setting-title">Description BG Alpha:</div>
 						<input type="range" id="description-bg-alpha" min="0" max="100" value="100" step="1">
 					</div>
 					<div class="game-setting">
-						<div class="game-setting-title">Game Details BG Alpha</div>
+						<div class="game-setting-title">Game Details BG Alpha:</div>
 						<input type="range" id="game-details-bg-alpha" min="0" max="100" value="100" step="1">
 					</div>
 					<div class="game-setting">
-						<div class="game-setting-title">Game Details Outline</div>
+						<div class="game-setting-title">Game Details Outline:</div>
 						<div class="game-setting-feature">
 							<label class="cl-checkbox">
 								<input type="checkbox" checked id="game-details-outline-checkbox">
@@ -412,7 +404,7 @@
 						</div>
 					</div>
 					<div class="game-setting">
-						<div class="game-setting-title">Game Details Shadow</div>
+						<div class="game-setting-title">Game Details Shadow:</div>
 						<div class="game-setting-feature">
 							<label class="cl-checkbox">
 								<input type="checkbox" checked id="game-details-shadow-checkbox">
@@ -421,7 +413,7 @@
 						</div>
 					</div>
 					<div class="game-setting">
-						<div class="game-setting-title">Description Outline</div>
+						<div class="game-setting-title">Description Outline:</div>
 						<div class="game-setting-feature">
 							<label class="cl-checkbox">
 								<input type="checkbox" checked id="description-outline-checkbox">
@@ -430,7 +422,7 @@
 						</div>
 					</div>
 					<div class="game-setting">
-						<div class="game-setting-title">Description Shadow</div>
+						<div class="game-setting-title">Description Shadow:</div>
 						<div class="game-setting-feature">
 							<label class="cl-checkbox">
 								<input type="checkbox" checked id="description-shadow-checkbox">
@@ -439,7 +431,7 @@
 						</div>
 					</div>
 					<div class="game-setting">
-						<div class="game-setting-title">BG2 Outline</div>
+						<div class="game-setting-title">BG2 Outline:</div>
 						<div class="game-setting-feature">
 							<label class="cl-checkbox">
 								<input type="checkbox" checked id="bg2-outline-checkbox">
@@ -448,7 +440,7 @@
 						</div>
 					</div>
 					<div class="game-setting">
-						<div class="game-setting-title">BG2 Shadow</div>
+						<div class="game-setting-title">BG2 Shadow:</div>
 						<div class="game-setting-feature">
 							<label class="cl-checkbox">
 								<input type="checkbox" checked id="bg2-shadow-checkbox">
@@ -457,39 +449,39 @@
 						</div>
 					</div>
 					<div class="game-setting">
-						<div class="game-setting-title">BG Color</div>
+						<div class="game-setting-title">BG Color:</div>
 						<input class="game-download-input" type="color" id="bg-color"></input>
 					</div>
 					<div class="game-setting">
-						<div class="game-setting-title">BG2 Color</div>
+						<div class="game-setting-title">BG2 Color:</div>
 						<input class="game-download-input" type="color" id="bg2-color"></input>
 					</div>
 					<div class="game-setting">
-						<div class="game-setting-title">Title Color</div>
+						<div class="game-setting-title">Title Color:</div>
 						<input class="game-download-input" type="color" id="title-color"></input>
 					</div>
 					<div class="game-setting">
-						<div class="game-setting-title">Description Color</div>
+						<div class="game-setting-title">Description Color:</div>
 						<input class="game-download-input" type="color" id="description-color"></input>
 					</div>
 					<div class="game-setting">
-						<div class="game-setting-title">Description BG Color</div>
+						<div class="game-setting-title">Description BG Color:</div>
 						<input class="game-download-input" type="color" id="description-bg-color"></input>
 					</div>
 					<div class="game-setting">
-						<div class="game-setting-title">Game Details Color</div>
+						<div class="game-setting-title">Game Details Color:</div>
 						<input class="game-download-input" type="color" id="game-details-color"></input>
 					</div>
 					<div class="game-setting">
-						<div class="game-setting-title">Game Details BG Color</div>
+						<div class="game-setting-title">Game Details BG Color:</div>
 						<input class="game-download-input" type="color" id="game-details-bg-color"></input>
 					</div>
 					<div class="game-setting">
-						<div class="game-setting-title">Button BG Color</div>
+						<div class="game-setting-title">Button BG Color:</div>
 						<input class="game-download-input" type="color" id="button-bg-color"></input>
 					</div>
 					<div class="game-setting">
-						<div class="game-setting-title">Button Text Color</div>
+						<div class="game-setting-title">Button Text Color:</div>
 						<input class="game-download-input" type="color" id="button-text-color"></input>
 					</div>
 				</div>

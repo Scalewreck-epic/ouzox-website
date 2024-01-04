@@ -1,0 +1,38 @@
+.editing-game {
+  display: flex;
+  color: white;
+  background-color: #222222;
+  box-shadow: 0 1rem 1rem black;
+  border-radius: 1rem;
+  padding: 1rem;
+  outline: 1px solid #3f3f3f;
+  transition: transform 0.3s ease;
+}
+
+.editing-game:hover {
+  transform: scale(1.015);
+}
+
+.game-settings {
+  padding: 0.5rem;
+}
+
+.game-setting {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  width: 100%;
+  min-height: 2.5rem;
+  font-weight: bold;
+  padding: 0.25rem 0;
+}
+
+.game-setting-title {
+  display: flex;
+  font-size: 1.25rem;
+}
+
+.game-setting-feature {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
