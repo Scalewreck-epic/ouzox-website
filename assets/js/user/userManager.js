@@ -90,16 +90,16 @@ function isValidSignup() {
   const username_input = document.getElementById("username_input").value;
   const email_input = document.getElementById("email_input").value;
   const password_input = document.getElementById("password_input").value;
-
+ 
   const validUsername =
-    /^[a-zA-Z0-9]+$/.test(username_input) &&
-    username_input.length >= 3 &&
-    username_input.length <= 20;
+     /^[a-zA-Z0-9]+$/.test(username_input) &&
+     username_input.length >= 3 &&
+     username_input.length <= 20;
   const validEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email_input);
-  const validPassword = password_input.length >= 8;
-
+  const validPassword = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()]).{8,}$/.test(password_input);
+ 
   return validUsername && validEmail && validPassword;
-}
+ }
 
 function isValidLogin() {
   const username_input = document.getElementById("username_login").value;

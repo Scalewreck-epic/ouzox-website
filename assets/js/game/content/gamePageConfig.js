@@ -261,14 +261,14 @@ const gameHandler = async (gameId) => {
   navigation_title.textContent = `${gameData.name} By ${gameData.developer_name}`;
 
   developer_name.textContent = gameData.developer_name;
-  game_genre.textContent = gameData.genre.toUpperCase();
+  game_genre.textContent = DOMPurify.sanitize(gameData.genre).toUpperCase();
   game_summary.textContent = gameData.summary;
-  game_art.textContent = gameData.artstyle.toUpperCase();
+  game_art.textContent = DOMPurify.sanitize(gameData.artstyle).toUpperCase();
   game_age.textContent = gameData.agerating.toUpperCase();
   game_size.textContent = gameData.filesize;
 
   developer_name.setAttribute("href", `user?id=${gameData.developer_id}`);
-  game_genre.setAttribute("href", `category?n=${gameData.genre.toUpperCase()}`);
+  game_genre.setAttribute("href", `category?n=${DOMPurify.sanitize(gameData.genre).toUpperCase()}`);
 
   let features = [
     {
