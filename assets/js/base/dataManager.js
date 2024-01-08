@@ -27,6 +27,20 @@ const category_algorithm = (a, b) => {
   return scoreB - scoreA;
 };
 
+class Game {
+  constructor(game) {
+    this.id = game.id;
+    this.created = game.created;
+    this.updated = game.updated;
+    this.free = game.free;
+    this.active = game.active;
+    this.name = game.name;
+    this.icon = game.icon;
+    this.summary = game.summary;
+    this.genre = game.genre;
+  }
+}
+
 function fetch_game_price(game_id) {
   const result = prices.find((item) => item.product === game_id);
   if (result) {
@@ -97,7 +111,7 @@ function create_game_page(game, game_price, market) {
   game_summary.setAttribute("class", "product-summary");
   game_price_div.setAttribute("class", "product-price");
 
-  game_image.setAttribute("src", game.icon.url);
+  game_image.setAttribute("src", game.icon);
   game_image_container.setAttribute("href", `game?g=${game.id}`);
   game_title.setAttribute("href", `game?g=${game.id}`);
 
@@ -532,7 +546,22 @@ async function fetch_games() {
     );
 
     if (result.Success) {
-      games = result.Result.games;
+      result.Result.games.forEach((game) => {
+        const properties = {
+          id: game.id,
+          created: game.created_at,
+          updated: game.updated,
+          free: game.free,
+          active: game.active,
+          name: game.name,
+          icon: game.icon.url,
+          summary: game.summary,
+          genre: game.genre,
+        };
+        
+        const newGame = new Game(properties);
+        games.push(newGame);
+      });
     } else {
       throw new Error(result.Result);
     }

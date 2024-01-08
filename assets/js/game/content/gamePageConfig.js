@@ -8,6 +8,31 @@ import { request } from "../../base/apiManager.js";
 const urlParams = new URLSearchParams(window.location.search);
 const gameIdParam = urlParams.get("g");
 
+class GameData {
+  constructor(rawGameData, priceData, createdFormattedDate, updatedFormattedDate, datestodays) {
+     this.id = rawGameData.id;
+     this.name = rawGameData.name;
+     this.active = rawGameData.active;
+     this.description = rawGameData.description;
+     this.developer_name = rawGameData.developer_name;
+     this.developer_id = rawGameData.developer_id;
+     this.genre = rawGameData.genre;
+     this.summary = rawGameData.summary;
+     this.artstyle = rawGameData.artstyle;
+     this.filesize = rawGameData.size;
+     this.agerating = rawGameData.age_rating;
+     this.icon = rawGameData.icon;
+     this.created = createdFormattedDate;
+     this.updated = updatedFormattedDate;
+     this.datestodays = datestodays;
+     this.features = rawGameData.features;
+     this.platforms = rawGameData.platforms;
+     this.price = priceData;
+     this.download_key = rawGameData.product_id;
+     this.page = rawGameData.page;
+  }
+ }
+
 String.prototype.convertToHex = function () {
   if (/^#[0-9a-fA-F]{6}$/.test(this)) {
     return this;
@@ -144,28 +169,7 @@ async function retrieveGameData(gameId) {
     }
   }
 
-  const gameData = {
-    id: rawGameData.id,
-    name: rawGameData.name,
-    active: rawGameData.active,
-    description: rawGameData.description,
-    developer_name: rawGameData.developer_name,
-    developer_id: rawGameData.developer_id,
-    genre: rawGameData.genre,
-    summary: rawGameData.summary,
-    artstyle: rawGameData.artstyle,
-    filesize: rawGameData.size,
-    agerating: rawGameData.age_rating,
-    icon: rawGameData.icon,
-    created: createdFormattedDate,
-    updated: updatedFormattedDate,
-    datestodays: datestodays,
-    features: rawGameData.features,
-    platforms: rawGameData.platforms,
-    price: priceData,
-    download_key: rawGameData.product_id,
-    page: rawGameData.page,
-  };
+  const gameData = new GameData(rawGameData, priceData, createdFormattedDate, updatedFormattedDate, datestodays);
 
   return gameData;
 }
