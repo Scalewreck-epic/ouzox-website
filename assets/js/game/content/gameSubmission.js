@@ -10,7 +10,7 @@ const uploadGame = document.getElementById("upload-game");
 import { fetch_user } from "../../user/sessionManager.js";
 import { request } from "../../base/apiManager.js";
 
-function formatFileSize(fileSizeInBytes) {
+function format_file_size(fileSizeInBytes) {
   if (fileSizeInBytes < Math.pow(1024, 2)) {
       return `${(fileSizeInBytes / Math.pow(1024, 1)).toFixed(2)} KB`;
   } else if (fileSizeInBytes < Math.pow(1024, 3)) {
@@ -26,10 +26,9 @@ uploadGame.addEventListener("submit", async function (event) {
 
   const game_file_warn = document.getElementById("game-file-warn");
 
-  checkThumbnail();
-  checkFileSize();
-  checkPrice();
-  checkPrice();
+  update_thumbnail();
+  update_file_size();
+  update_price();
 
   if (game_file_warn.innerText == "") {
     const title_input = document.getElementById("title");
@@ -68,7 +67,7 @@ uploadGame.addEventListener("submit", async function (event) {
     const age = age_rating.options[age_rating.selectedIndex].value;
     const file = file_input.files[0];
 
-    const file_size = formatFileSize(file.size);
+    const file_size = format_file_size(file.size);
 
     const game_features = [
       {
@@ -297,7 +296,7 @@ uploadGame.addEventListener("submit", async function (event) {
   }
 });
 
-function checkThumbnail() {
+function update_thumbnail() {
   const input = document.getElementById("thumbnail");
   const previewImage = document.getElementById("previewImage");
 
@@ -314,7 +313,7 @@ function checkThumbnail() {
   }
 }
 
-function checkFileSize() {
+function update_file_size() {
   const input = document.getElementById("download-file");
   const warn = document.getElementById("game-file-warn");
 
@@ -329,18 +328,18 @@ function checkFileSize() {
   }
 }
 
-function checkIsFree() {
+function update_free() {
   const isfree = document.getElementById("isfree");
   const input = document.getElementById("price");
 
   if (!isfree.checked) {
-    checkPrice();
+    update_price();
   } else {
     input.value = 0;
   }
 }
 
-function checkPrice() {
+function update_price() {
   const input = document.getElementById("price");
   const isfree = document.getElementById("isfree");
 
@@ -362,12 +361,12 @@ function checkPrice() {
   }
 }
 
-function checkGenre() {
+function update_genre() {
   const genreSelect = document.getElementById("genre-input");
   genreSelect.value = genreSelect.value.toUpperCase();
 }
 
-function checkArt() {
+function update_art() {
   const game_art = document.getElementById("art-style-input");
   game_art.value = game_art.value.toUpperCase();
 
@@ -381,13 +380,13 @@ const game_art = document.getElementById("art-style-input");
 const download_file = document.getElementById("download-file");
 const game_description = document.getElementById("description");
 
-checkIsFree();
-download_file.addEventListener("change", () => checkFileSize());
-game_thumbnail.addEventListener("change", () => checkThumbnail());
-game_isfree.addEventListener("change", () => checkIsFree());
-game_price.addEventListener("input", () => checkPrice());
-genre_input.addEventListener("input", () => checkGenre());
-game_art.addEventListener("input", () => checkArt());
+update_free();
+download_file.addEventListener("change", () => update_file_size());
+game_thumbnail.addEventListener("change", () => update_thumbnail());
+game_isfree.addEventListener("change", () => update_free());
+game_price.addEventListener("input", () => update_price());
+genre_input.addEventListener("input", () => update_genre());
+game_art.addEventListener("input", () => update_art());
 
 game_description.addEventListener("input", function() {
   const text = DOMPurify.sanitize(this.innerHTML);

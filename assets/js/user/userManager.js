@@ -2,8 +2,9 @@ const auth_signup =
   "https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv:v1/auth/signup";
 const auth_login =
   "https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv:v1/auth/login";
-
 const annualExpiration = 1;
+const restrictedPaths = ["/settings", "/upload", "/dashboard"];
+const loginPaths = ["/login", "/signup"];
 
 import {
   fetch_cookie,
@@ -18,10 +19,7 @@ import { request } from "../base/apiManager.js";
 const cookie_data = fetch_cookie("session_id");
 const user = await fetch_user();
 
-const restrictedPaths = ["/settings", "/upload", "/dashboard"];
-const loginPaths = ["/login", "/signup"];
-
-function calculateExpiration(past) {
+function calculate_expiration(past) {
   const currentDate = new Date();
 
   if (past == true) {
@@ -33,7 +31,7 @@ function calculateExpiration(past) {
   return currentDate;
 }
 
-async function add_username() {
+async function update_username() {
   const username = document.getElementById("username");
 
   const login_btn = document.getElementById("login-btn");
@@ -53,7 +51,7 @@ async function add_username() {
   }
 }
 
-async function setStats() {
+async function update_user_stats() {
   const email_stat = document.getElementById("email-stat");
   const join_time = document.getElementById("creation-stat");
   const profile_link = document.getElementById("profile-link");
@@ -72,12 +70,12 @@ async function setStats() {
 }
 
 function create_cookie(cookie_name, token) {
-  const expiration = calculateExpiration(false).toUTCString();
+  const expiration = calculate_expiration(false).toUTCString();
   document.cookie = `${cookie_name}=${token}; expires=${expiration};`;
 }
 
 function clear_cookie() {
-  const expiration = calculateExpiration(true).toUTCString();
+  const expiration = calculate_expiration(true).toUTCString();
   const cookies = document.cookie.split(";");
 
   cookies.forEach(function (cookie) {
@@ -86,22 +84,25 @@ function clear_cookie() {
   });
 }
 
-function isValidSignup() {
+function is_valid_signup() {
   const username_input = document.getElementById("username_input").value;
   const email_input = document.getElementById("email_input").value;
   const password_input = document.getElementById("password_input").value;
- 
-  const validUsername =
-     /^[a-zA-Z0-9]+$/.test(username_input) &&
-     username_input.length >= 3 &&
-     username_input.length <= 20;
-  const validEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email_input);
-  const validPassword = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()]).{8,}$/.test(password_input);
- 
-  return validUsername && validEmail && validPassword;
- }
 
-function isValidLogin() {
+  const validUsername =
+    /^[a-zA-Z0-9]+$/.test(username_input) &&
+    username_input.length >= 3 &&
+    username_input.length <= 20;
+  const validEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email_input);
+  const validPassword =
+    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()]).{8,}$/.test(
+      password_input
+    );
+
+  return validUsername && validEmail && validPassword;
+}
+
+function is_valid_login() {
   const username_input = document.getElementById("username_login").value;
   const password_input = document.getElementById("password_login").value;
 
@@ -114,7 +115,7 @@ function isValidLogin() {
   return validUsername && validPassword;
 }
 
-async function createSessionData() {
+async function create_session_data() {
   if (!cookie_data.Valid) {
     const username_input = document.getElementById("username_input").value;
     const email_input = document.getElementById("email_input").value;
@@ -122,7 +123,7 @@ async function createSessionData() {
 
     const error_label = document.getElementById("error-label");
 
-    if (isValidSignup()) {
+    if (is_valid_signup()) {
       const username = username_input.toString();
       const password = password_input.toString();
       const email = email_input.toString();
@@ -162,12 +163,12 @@ async function createSessionData() {
   }
 }
 
-async function getSessionData() {
+async function fetch_session_data() {
   if (!cookie_data.Valid) {
     const username_input = document.getElementById("username_login").value;
     const password_input = document.getElementById("password_login").value;
 
-    if (isValidLogin()) {
+    if (is_valid_login()) {
       const username = username_input.toString();
       const password = password_input.toString();
 
@@ -208,13 +209,13 @@ function logout() {
 }
 
 if (cookie_data.Valid) {
- if (loginPaths.some(path => window.location.pathname.includes(path))) {
+  if (loginPaths.some((path) => window.location.pathname.includes(path))) {
     window.location.assign("settings");
- }
+  }
 } else {
- if (restrictedPaths.some(path => window.location.pathname.includes(path))) {
+  if (restrictedPaths.some((path) => window.location.pathname.includes(path))) {
     window.location.assign("login");
- }
+  }
 }
 
 if (window.location.pathname.includes("/user")) {
@@ -249,13 +250,23 @@ if (window.location.pathname.includes("/user")) {
   web_title.textContent = `Ouzox | ${other_user.name}`;
 }
 
+function update_login_buttons(is_valid, button) {
+  if (is_valid) {
+    if (button.hasAttribute("disabled")) {
+      button.removeAttribute("disabled");
+    }
+  } else {
+    button.setAttribute("disabled", true);
+  }
+}
+
 if (window.location.pathname.includes("/settings")) {
   const email_button = document.getElementById("save-email");
   const password_button = document.getElementById("save-password");
   const status_button = document.getElementById("save-status");
   const logout_button = document.getElementById("logout-profile");
 
-  setStats();
+  update_user_stats();
 
   email_button.addEventListener("click", () => change_email_data());
   password_button.addEventListener("click", () => change_password_data());
@@ -269,7 +280,7 @@ if (window.location.pathname.includes("/login")) {
   const icon = document.getElementById("show-password-icon");
 
   icon.addEventListener("click", function () {
-    var passwordInput = document.getElementById("password_login");
+    const passwordInput = document.getElementById("password_login");
 
     if (passwordInput.type === "password") {
       passwordInput.type = "text";
@@ -280,19 +291,10 @@ if (window.location.pathname.includes("/login")) {
     }
   });
 
-  login_form.addEventListener("input", function () {
-    if (isValidLogin()) {
-      if (login_button.hasAttribute("disabled")) {
-        login_button.removeAttribute("disabled");
-      }
-    } else {
-      login_button.setAttribute("disabled", true);
-    }
-  });
-
+  login_form.addEventListener("input", () => update_login_buttons(is_valid_login(), login_button));
   login_form.addEventListener("submit", function (event) {
     event.preventDefault();
-    getSessionData();
+    fetch_session_data();
   });
 
   login_button.setAttribute("disabled", true);
@@ -302,7 +304,7 @@ if (window.location.pathname.includes("/login")) {
   const icon = document.getElementById("show-password-icon");
 
   icon.addEventListener("click", function () {
-    var passwordInput = document.getElementById("password_input");
+    const passwordInput = document.getElementById("password_input");
 
     if (passwordInput.type === "password") {
       passwordInput.type = "text";
@@ -313,22 +315,13 @@ if (window.location.pathname.includes("/login")) {
     }
   });
 
-  signup_form.addEventListener("input", function () {
-    if (isValidSignup()) {
-      if (signup_button.hasAttribute("disabled")) {
-        signup_button.removeAttribute("disabled");
-      }
-    } else {
-      signup_button.setAttribute("disabled", true);
-    }
-  });
-
+  signup_form.addEventListener("input", () => update_login_buttons(is_valid_signup(), signup_button));
   signup_form.addEventListener("submit", function (event) {
     event.preventDefault();
-    createSessionData();
+    create_session_data();
   });
 
   signup_button.setAttribute("disabled", true);
 }
 
-add_username();
+update_username();

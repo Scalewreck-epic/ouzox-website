@@ -51,7 +51,7 @@ String.prototype.convertToHex = function () {
   return `#${hexR}${hexG}${hexB}`;
 };
 
-function updateBackgroundColor(alphaInput, styleElement) {
+function update_background_color(alphaInput, styleElement) {
   const alphaValue = alphaInput.value / 100;
 
   const rgbValues =
@@ -65,7 +65,7 @@ function updateBackgroundColor(alphaInput, styleElement) {
   styleElement.style.setProperty("background-color", newBackgroundColor);
 }
 
-async function retrieveGameData(gameId) {
+async function fetch_game_data(gameId) {
   const myHeaders = new Headers();
   myHeaders.append("Content-Type", "application/json");
 
@@ -144,7 +144,7 @@ async function retrieveGameData(gameId) {
   };
 
   if (!rawGameData.free) {
-    async function getPriceData() {
+    async function fetch_price_data() {
       const result = await request(
         `${get_price}${rawGameData.product_id}`,
         options,
@@ -159,7 +159,7 @@ async function retrieveGameData(gameId) {
       }
     }
 
-    const response = await getPriceData();
+    const response = await fetch_price_data();
 
     if (response.currency) {
       priceData = {
@@ -174,7 +174,7 @@ async function retrieveGameData(gameId) {
   return gameData;
 }
 
-async function changeProduct(data, gameId, commitChangesButton) {
+async function update_product(data, gameId, commitChangesButton) {
   const result = await request(`${update_game}${gameId}`, data, false, "configure game");
 
   if (result.Success) {
@@ -185,9 +185,9 @@ async function changeProduct(data, gameId, commitChangesButton) {
   }
 }
 
-const gameHandler = async (gameId) => {
+const game_handler = async (gameId) => {
   const user = await fetch_user();
-  const gameData = await retrieveGameData(gameId);
+  const gameData = await fetch_game_data(gameId);
 
   const realGameId = gameData.id;
 
@@ -391,7 +391,7 @@ const gameHandler = async (gameId) => {
   });
 
   page_alphas.forEach(function (alpha) {
-    updateBackgroundColor(alpha.Amount, alpha.Element);
+    update_background_color(alpha.Amount, alpha.Element);
   });
 
   features.forEach(function (feature) {
@@ -797,7 +797,7 @@ const gameHandler = async (gameId) => {
       page_detail.Element.value = page_detail.Amount;
       page_detail.Element.addEventListener("input", function () {
         page_detail.Amount = page_detail.Element.value;
-        updateBackgroundColor(
+        update_background_color(
           page_detail.Element,
           page_detail.Element_Changing
         );
@@ -942,7 +942,7 @@ const gameHandler = async (gameId) => {
         };
 
         commitChangesButton.textContent = "Uploading..";
-        await changeProduct(
+        await update_product(
           update_game_options,
           realGameId,
           commitChangesButton
@@ -958,7 +958,7 @@ const gameHandler = async (gameId) => {
 };
 
 if (gameIdParam != null) {
-  gameHandler(gameIdParam);
+  game_handler(gameIdParam);
 } else {
   console.warn("There is no game id.");
   window.location.assign("404");

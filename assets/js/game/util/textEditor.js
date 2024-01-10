@@ -29,7 +29,7 @@ const headerButtons = {
 const font_sort = document.getElementById("font-sort");
 const link = document.getElementById("link");
 
-function applyFormatting(button) {
+function apply_formatting(button) {
   const formatType = button.id;
   const selection = window.getSelection();
   const selectedText = selection.toString();
@@ -43,7 +43,7 @@ function applyFormatting(button) {
   }
 }
 
-function applyHeader(button) {
+function apply_header(button) {
   const level = button.id;
   const selection = window.getSelection();
   const selectedText = selection.toString();
@@ -62,7 +62,7 @@ function justify(button) {
   document.execCommand("justify" + level);
 }
 
-function createLink() {
+function create_link() {
   const url = prompt("Enter the link URL:");
 
   if (url) {
@@ -90,17 +90,17 @@ if (font_sort) {
   });
 }
 
-link.addEventListener("click", () => createLink());
+link.addEventListener("click", () => create_link());
 
 Object.values(formattingButtons).forEach((button) =>
-  button.addEventListener("click", () => applyFormatting(button))
+  button.addEventListener("click", () => apply_formatting(button))
 );
 Object.values(listButtons).forEach((button) =>
-  button.addEventListener("click", () => applyFormatting(button))
+  button.addEventListener("click", () => apply_formatting(button))
 );
 Object.values(alignmentButtons).forEach((button) =>
   button.addEventListener("click", () => justify(button))
 );
 Object.values(headerButtons).forEach((button) =>
-  button.addEventListener("click", () => applyHeader(button))
+  button.addEventListener("click", () => apply_header(button))
 );

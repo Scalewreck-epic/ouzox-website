@@ -1,4 +1,4 @@
-function handleError(response, redirect) {
+function handle_error(response, redirect) {
   const statusCode = response.status ? response.status : 500;
 
   if (redirect && !window.location.pathname.includes("404")) {
@@ -12,7 +12,7 @@ function handleError(response, redirect) {
   }
 }
 
-function calculateDuration(startTime, endTime, name) {
+function calculate_duration(startTime, endTime, name) {
   const duration = endTime - startTime;
   console.info(`${name} request duration: ${duration}ms`);
 };
@@ -28,7 +28,7 @@ export async function request(endpoint, options, redirect, name) {
     const response = await fetch(endpoint, options);
 
     if (!response.ok) {
-      return handleError(response, redirect);
+      return handle_error(response, redirect);
     }
 
     const contentType = response.headers.get("Content-Type");
@@ -37,7 +37,7 @@ export async function request(endpoint, options, redirect, name) {
       throw new Error("Invalid Content-Type");
     }
 
-    calculateDuration(startTime, performance.now(), name);
+    calculate_duration(startTime, performance.now(), name);
 
     const result = await response.json();
     
@@ -48,9 +48,9 @@ export async function request(endpoint, options, redirect, name) {
   } catch (error) {
     if (error.response) {
       // The request was made and the server responded with a status code that falls out of the range of 2xx
-      return handleError(error.response, redirect);
+      return handle_error(error.response, redirect);
     }
 
-    return handleError(error, redirect);
+    return handle_error(error, redirect);
   }
 }
