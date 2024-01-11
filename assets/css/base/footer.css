@@ -53,3 +53,8 @@
   margin-bottom: 1.25rem;
   position: relative;
 }
+
+.footer-copyright a {
+  color: white;
+  font-size: 1rem;
+}
