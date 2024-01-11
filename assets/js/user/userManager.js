@@ -84,6 +84,20 @@ function clear_cookie() {
   });
 }
 
+function is_valid_password(password_input) {
+  const lowerCaseLetter = /[a-z]/;
+  const upperCaseLetter = /[A-Z]/;
+  const specialCharacter = /[!@#$%^&*(),.?":{}|<>]/;
+
+  const validPassword =
+    password_input.length >= 8 &&
+    lowerCaseLetter.test(password_input) &&
+    upperCaseLetter.test(password_input) &&
+    specialCharacter.test(password_input);
+  
+  return validPassword;
+}
+
 function is_valid_signup() {
   const username_input = document.getElementById("username_input").value;
   const email_input = document.getElementById("email_input").value;
@@ -94,10 +108,7 @@ function is_valid_signup() {
     username_input.length >= 3 &&
     username_input.length <= 20;
   const validEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email_input);
-  const validPassword =
-    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()]).{8,}$/.test(
-      password_input
-    );
+  const validPassword = is_valid_password(password_input);
 
   return validUsername && validEmail && validPassword;
 }
@@ -110,7 +121,7 @@ function is_valid_login() {
     /^[a-zA-Z0-9]+$/.test(username_input) &&
     username_input.length >= 3 &&
     username_input.length <= 20;
-  const validPassword = password_input.length >= 8;
+  const validPassword = is_valid_password(password_input);
 
   return validUsername && validPassword;
 }
@@ -260,6 +271,16 @@ function update_login_buttons(is_valid, button) {
   }
 }
 
+function toggle_password_visiblity(passwordInput, icon) {
+  if (passwordInput.type === "password") {
+    passwordInput.type = "text";
+    icon.setAttribute("class", "show-icon");
+  } else {
+    passwordInput.type = "password";
+    icon.setAttribute("class", "hide-icon");
+  }
+}
+
 if (window.location.pathname.includes("/settings")) {
   const email_button = document.getElementById("save-email");
   const password_button = document.getElementById("save-password");
@@ -281,41 +302,33 @@ if (window.location.pathname.includes("/login")) {
 
   icon.addEventListener("click", function () {
     const passwordInput = document.getElementById("password_login");
-
-    if (passwordInput.type === "password") {
-      passwordInput.type = "text";
-      icon.setAttribute("class", "show-icon");
-    } else {
-      passwordInput.type = "password";
-      icon.setAttribute("class", "hide-icon");
-    }
+    toggle_password_visiblity(passwordInput, icon);
   });
 
-  login_form.addEventListener("input", () => update_login_buttons(is_valid_login(), login_button));
+  login_form.addEventListener("input", () =>
+    update_login_buttons(is_valid_login(), login_button)
+  );
   login_form.addEventListener("submit", function (event) {
     event.preventDefault();
     fetch_session_data();
   });
 
   login_button.setAttribute("disabled", true);
-} else if (window.location.pathname.includes("/signup")) {
+}
+
+if (window.location.pathname.includes("/signup")) {
   const signup_form = document.getElementById("signup-form");
   const signup_button = document.getElementById("signup-button");
   const icon = document.getElementById("show-password-icon");
 
   icon.addEventListener("click", function () {
     const passwordInput = document.getElementById("password_input");
-
-    if (passwordInput.type === "password") {
-      passwordInput.type = "text";
-      icon.setAttribute("class", "show-icon");
-    } else {
-      passwordInput.type = "password";
-      icon.setAttribute("class", "hide-icon");
-    }
+    toggle_password_visiblity(passwordInput, icon);
   });
 
-  signup_form.addEventListener("input", () => update_login_buttons(is_valid_signup(), signup_button));
+  signup_form.addEventListener("input", () =>
+    update_login_buttons(is_valid_signup(), signup_button)
+  );
   signup_form.addEventListener("submit", function (event) {
     event.preventDefault();
     create_session_data();
