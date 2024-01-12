@@ -39,6 +39,7 @@ async function update_username() {
   const dashboard_btn = document.getElementById("dashboard-btn");
   const upload_btn = document.getElementById("upload-btn");
 
+  document.getElementById("copyright-year").textContent = new Date().getFullYear().toString();
   if (cookie_data.Valid) {
     username.textContent = user.name;
 
