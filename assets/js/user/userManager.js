@@ -19,7 +19,7 @@ import { request } from "../base/apiManager.js";
 const cookie_data = fetch_cookie("session_id");
 const user = await fetch_user();
 
-function calculate_expiration(past) {
+const calculate_expiration = (past) => {
   const currentDate = new Date();
 
   if (past == true) {
@@ -29,9 +29,9 @@ function calculate_expiration(past) {
   }
 
   return currentDate;
-}
+};
 
-async function update_username() {
+const update_username = () => {
   const username = document.getElementById("username");
 
   const login_btn = document.getElementById("login-btn");
@@ -39,7 +39,9 @@ async function update_username() {
   const dashboard_btn = document.getElementById("dashboard-btn");
   const upload_btn = document.getElementById("upload-btn");
 
-  document.getElementById("copyright-year").textContent = new Date().getFullYear().toString();
+  document.getElementById("copyright-year").textContent = new Date()
+    .getFullYear()
+    .toString();
   if (cookie_data.Valid) {
     username.textContent = user.name;
 
@@ -50,9 +52,9 @@ async function update_username() {
     upload_btn.remove();
     username.textContent = "";
   }
-}
+};
 
-async function update_user_stats() {
+const update_user_stats = async () => {
   const email_stat = document.getElementById("email-stat");
   const join_time = document.getElementById("creation-stat");
   const profile_link = document.getElementById("profile-link");
@@ -68,14 +70,14 @@ async function update_user_stats() {
   email_stat.textContent = `Email: ${user.email}`;
   join_time.textContent = `Creation: ${formattedDate}`;
   profile_link.setAttribute("href", `user?id=${user.id}`);
-}
+};
 
-function create_cookie(cookie_name, token) {
+const create_cookie = (cookie_name, token) => {
   const expiration = calculate_expiration(false).toUTCString();
   document.cookie = `${cookie_name}=${token}; expires=${expiration};`;
-}
+};
 
-function clear_cookie() {
+const clear_cookie = () => {
   const expiration = calculate_expiration(true).toUTCString();
   const cookies = document.cookie.split(";");
 
@@ -83,9 +85,9 @@ function clear_cookie() {
     const name = cookie.split("=")[0].trim();
     document.cookie = `${name}=; expires=${expiration};`;
   });
-}
+};
 
-function is_valid_password(password_input) {
+const is_valid_password = (password_input) => {
   const lowerCaseLetter = /[a-z]/;
   const upperCaseLetter = /[A-Z]/;
   const specialCharacter = /[!@#$%^&*(),.?":{}|<>]/;
@@ -95,11 +97,11 @@ function is_valid_password(password_input) {
     lowerCaseLetter.test(password_input) &&
     upperCaseLetter.test(password_input) &&
     specialCharacter.test(password_input);
-  
-  return validPassword;
-}
 
-function is_valid_signup() {
+  return validPassword;
+};
+
+const is_valid_signup = () => {
   const username_input = document.getElementById("username_input").value;
   const email_input = document.getElementById("email_input").value;
   const password_input = document.getElementById("password_input").value;
@@ -112,9 +114,9 @@ function is_valid_signup() {
   const validPassword = is_valid_password(password_input);
 
   return validUsername && validEmail && validPassword;
-}
+};
 
-function is_valid_login() {
+const is_valid_login = () => {
   const username_input = document.getElementById("username_login").value;
   const password_input = document.getElementById("password_login").value;
 
@@ -125,9 +127,9 @@ function is_valid_login() {
   const validPassword = is_valid_password(password_input);
 
   return validUsername && validPassword;
-}
+};
 
-async function create_session_data() {
+const create_session_data = async () => {
   if (!cookie_data.Valid) {
     const username_input = document.getElementById("username_input").value;
     const email_input = document.getElementById("email_input").value;
@@ -173,9 +175,9 @@ async function create_session_data() {
       error_label.textContent = "Not secure enough.";
     }
   }
-}
+};
 
-async function fetch_session_data() {
+const fetch_session_data = async () => {
   if (!cookie_data.Valid) {
     const username_input = document.getElementById("username_login").value;
     const password_input = document.getElementById("password_login").value;
@@ -210,15 +212,15 @@ async function fetch_session_data() {
       }
     }
   }
-}
+};
 
-function logout() {
+const logout = () => {
   if (cookie_data.Valid) {
     clear_cookie();
   }
 
   window.location.assign("login");
-}
+};
 
 if (cookie_data.Valid) {
   if (loginPaths.some((path) => window.location.pathname.includes(path))) {
@@ -262,7 +264,7 @@ if (window.location.pathname.includes("/user")) {
   web_title.textContent = `Ouzox | ${other_user.name}`;
 }
 
-function update_login_buttons(is_valid, button) {
+const update_login_buttons = (is_valid, button) => {
   if (is_valid) {
     if (button.hasAttribute("disabled")) {
       button.removeAttribute("disabled");
@@ -270,9 +272,9 @@ function update_login_buttons(is_valid, button) {
   } else {
     button.setAttribute("disabled", true);
   }
-}
+};
 
-function toggle_password_visiblity(passwordInput, icon) {
+const toggle_password_visiblity = (passwordInput, icon) => {
   if (passwordInput.type === "password") {
     passwordInput.type = "text";
     icon.setAttribute("class", "show-icon");
@@ -280,7 +282,7 @@ function toggle_password_visiblity(passwordInput, icon) {
     passwordInput.type = "password";
     icon.setAttribute("class", "hide-icon");
   }
-}
+};
 
 if (window.location.pathname.includes("/settings")) {
   const email_button = document.getElementById("save-email");

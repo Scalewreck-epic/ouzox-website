@@ -1,23 +1,29 @@
-function handle_error(response, redirect) {
-  const statusCode = response.status ? response.status : 500;
+const handle_error = (responseOrError, redirect) => {
+  let statusCode;
+
+  if (responseOrError instanceof Response) {
+    statusCode = responseOrError.status ? responseOrError.status : 500;
+  } else {
+    statusCode = 500;
+  }
 
   if (redirect && !window.location.pathname.includes("404")) {
     const encodedStatusCode = encodeURIComponent(statusCode);
     window.location.assign(`404?code=${encodedStatusCode}`);
   } else {
     return {
-      Result: response,
+      Result: responseOrError,
       Success: false,
-    }
+    };
   }
-}
+};
 
-function calculate_duration(startTime, endTime, name) {
+const calculate_duration = (startTime, endTime, name) => {
   const duration = endTime - startTime;
   console.info(`${name} request duration: ${duration}ms`);
 };
 
-export async function request(endpoint, options, redirect, name) {
+export const request = async (endpoint, options, redirect, name) => {
   if (!["GET", "POST", "DELETE"].includes(options.method)) {
     throw new Error(`Invalid request method: ${options.method}`);
   }
@@ -40,7 +46,7 @@ export async function request(endpoint, options, redirect, name) {
     calculate_duration(startTime, performance.now(), name);
 
     const result = await response.json();
-    
+
     return {
       Result: result,
       Success: true,
@@ -53,4 +59,4 @@ export async function request(endpoint, options, redirect, name) {
 
     return handle_error(error, redirect);
   }
-}
+};

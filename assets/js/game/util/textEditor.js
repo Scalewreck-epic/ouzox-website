@@ -29,7 +29,7 @@ const headerButtons = {
 const font_sort = document.getElementById("font-sort");
 const link = document.getElementById("link");
 
-function apply_formatting(button) {
+const apply_formatting = (button) => {
   const formatType = button.id;
   const selection = window.getSelection();
   const selectedText = selection.toString();
@@ -41,9 +41,9 @@ function apply_formatting(button) {
     range.deleteContents();
     range.insertNode(document.createTextNode(selectedText));
   }
-}
+};
 
-function apply_header(button) {
+const apply_header = (button) => {
   const level = button.id;
   const selection = window.getSelection();
   const selectedText = selection.toString();
@@ -55,14 +55,14 @@ function apply_header(button) {
     range.deleteContents();
     range.insertNode(document.createTextNode(selectedText));
   }
-}
+};
 
-function justify(button) {
+const justify = (button) => {
   const level = button.id;
   document.execCommand("justify" + level);
-}
+};
 
-function create_link() {
+const create_link = () => {
   const url = prompt("Enter the link URL:");
 
   if (url) {
@@ -81,7 +81,7 @@ function create_link() {
       range.insertNode(link);
     }
   }
-}
+};
 
 if (font_sort) {
   font_sort.addEventListener("change", function () {

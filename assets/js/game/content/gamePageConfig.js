@@ -9,29 +9,35 @@ const urlParams = new URLSearchParams(window.location.search);
 const gameIdParam = urlParams.get("g");
 
 class GameData {
-  constructor(rawGameData, priceData, createdFormattedDate, updatedFormattedDate, datestodays) {
-     this.id = rawGameData.id;
-     this.name = rawGameData.name;
-     this.active = rawGameData.active;
-     this.description = rawGameData.description;
-     this.developer_name = rawGameData.developer_name;
-     this.developer_id = rawGameData.developer_id;
-     this.genre = rawGameData.genre;
-     this.summary = rawGameData.summary;
-     this.artstyle = rawGameData.artstyle;
-     this.filesize = rawGameData.size;
-     this.agerating = rawGameData.age_rating;
-     this.icon = rawGameData.icon;
-     this.created = createdFormattedDate;
-     this.updated = updatedFormattedDate;
-     this.datestodays = datestodays;
-     this.features = rawGameData.features;
-     this.platforms = rawGameData.platforms;
-     this.price = priceData;
-     this.download_key = rawGameData.product_id;
-     this.page = rawGameData.page;
+  constructor(
+    rawGameData,
+    priceData,
+    createdFormattedDate,
+    updatedFormattedDate,
+    datestodays
+  ) {
+    this.id = rawGameData.id;
+    this.name = rawGameData.name;
+    this.active = rawGameData.active;
+    this.description = rawGameData.description;
+    this.developer_name = rawGameData.developer_name;
+    this.developer_id = rawGameData.developer_id;
+    this.genre = rawGameData.genre;
+    this.summary = rawGameData.summary;
+    this.artstyle = rawGameData.artstyle;
+    this.filesize = rawGameData.size;
+    this.agerating = rawGameData.age_rating;
+    this.icon = rawGameData.icon;
+    this.created = createdFormattedDate;
+    this.updated = updatedFormattedDate;
+    this.datestodays = datestodays;
+    this.features = rawGameData.features;
+    this.platforms = rawGameData.platforms;
+    this.price = priceData;
+    this.download_key = rawGameData.product_id;
+    this.page = rawGameData.page;
   }
- }
+}
 
 String.prototype.convertToHex = function () {
   if (/^#[0-9a-fA-F]{6}$/.test(this)) {
@@ -51,7 +57,7 @@ String.prototype.convertToHex = function () {
   return `#${hexR}${hexG}${hexB}`;
 };
 
-function update_background_color(alphaInput, styleElement) {
+const update_background_color = (alphaInput, styleElement) => {
   const alphaValue = alphaInput.value / 100;
 
   const rgbValues =
@@ -63,9 +69,38 @@ function update_background_color(alphaInput, styleElement) {
 
   const newBackgroundColor = `rgba(${r}, ${g}, ${b}, ${alphaValue})`;
   styleElement.style.setProperty("background-color", newBackgroundColor);
-}
+};
 
-async function fetch_game_data(gameId) {
+const get_game_data = async (gameId) => {
+  const result = await request(
+    `${get_game}${gameId}`,
+    options,
+    true,
+    "game data"
+  );
+
+  if (result.Success) {
+    return result.Result;
+  } else {
+    throw new Error(`Unable to get game data: ${result.Result}`);
+  }
+};
+const fetch_price_data = async () => {
+  const result = await request(
+    `${get_price}${rawGameData.product_id}`,
+    options,
+    true,
+    "price data"
+  );
+
+  if (result.Success) {
+    return result.Result;
+  } else {
+    throw new Error(`Unable to get price data: ${result.Result}`);
+  }
+};
+
+const fetch_game_data = async (gameId) => {
   const myHeaders = new Headers();
   myHeaders.append("Content-Type", "application/json");
 
@@ -75,22 +110,7 @@ async function fetch_game_data(gameId) {
     redirect: "follow",
   };
 
-  async function getGameData() {
-    const result = await request(
-      `${get_game}${gameId}`,
-      options,
-      true,
-      "game data"
-    );
-
-    if (result.Success) {
-      return result.Result;
-    } else {
-      throw new Error(`Unable to get game data: ${result.Result}`);
-    }
-  }
-
-  const rawGameData = await getGameData();
+  const rawGameData = await get_game_data(gameId);
 
   const createdDate = new Date(rawGameData.created_at);
   const updatedDate = new Date(rawGameData.updated);
@@ -117,7 +137,9 @@ async function fetch_game_data(gameId) {
     currentDate.getTime() - updatedDate.getTime()
   );
 
-  const publishedDaysAgo = Math.ceil(publishedDifference / (1000 * 60 * 60 * 24));
+  const publishedDaysAgo = Math.ceil(
+    publishedDifference / (1000 * 60 * 60 * 24)
+  );
   const publishedWeeksAgo = Math.floor(publishedDaysAgo / 7);
   const publishedMonthsAgo = Math.floor(publishedDaysAgo / 31);
   const publishedYearsAgo = Math.floor(publishedDaysAgo / 365);
@@ -144,21 +166,6 @@ async function fetch_game_data(gameId) {
   };
 
   if (!rawGameData.free) {
-    async function fetch_price_data() {
-      const result = await request(
-        `${get_price}${rawGameData.product_id}`,
-        options,
-        true,
-        "price data"
-      );
-
-      if (result.Success) {
-        return result.Result;
-      } else {
-        throw new Error(`Unable to get price data: ${result.Result}`);
-      }
-    }
-
     const response = await fetch_price_data();
 
     if (response.currency) {
@@ -169,13 +176,23 @@ async function fetch_game_data(gameId) {
     }
   }
 
-  const gameData = new GameData(rawGameData, priceData, createdFormattedDate, updatedFormattedDate, datestodays);
+  const gameData = new GameData(
+    rawGameData,
+    priceData,
+    createdFormattedDate,
+    updatedFormattedDate,
+    datestodays
+  );
 
   return gameData;
-}
-
-async function update_product(data, gameId, commitChangesButton) {
-  const result = await request(`${update_game}${gameId}`, data, false, "configure game");
+};
+const update_product = async (data, gameId, commitChangesButton) => {
+  const result = await request(
+    `${update_game}${gameId}`,
+    data,
+    false,
+    "configure game"
+  );
 
   if (result.Success) {
     commitChangesButton.textContent = "Success";
@@ -183,7 +200,33 @@ async function update_product(data, gameId, commitChangesButton) {
     console.error(`Error trying to update game: ${result.Result}`);
     commitChangesButton.textContent = "An error occured";
   }
-}
+};
+
+const format_time_single = (timeago, option, unit) => {
+  return timeago === 1
+    ? `${option} (1 ${unit} Ago)`
+    : `${option} (${timeago} ${unit}s Ago)`;
+};
+const format_time = (
+  created_or_updated,
+  years_ago,
+  months_ago,
+  weeks_ago,
+  days_ago
+) => {
+  switch (true) {
+    case years_ago >= 1:
+      return format_time_single(years_ago, created_or_updated, "Year");
+    case months_ago >= 1:
+      return format_time_single(months_ago, created_or_updated, "Month");
+    case weeks_ago >= 1:
+      return format_time_single(weeks_ago, created_or_updated, "Week");
+    case days_ago >= 1:
+      return format_time_single(days_ago, created_or_updated, "Day");
+    default:
+      return "Just Now";
+  }
+};
 
 const game_handler = async (gameId) => {
   const user = await fetch_user();
@@ -219,33 +262,6 @@ const game_handler = async (gameId) => {
   game_desc.innerHTML = DOMPurify.sanitize(gameData.description);
   game_price.textContent = `${gameData.price.amount} ${gameData.price.currency}`;
 
-  function format_time_single(timeago, option, unit) {
-    return timeago === 1
-      ? `${option} (1 ${unit} Ago)`
-      : `${option} (${timeago} ${unit}s Ago)`;
-  }
-
-  function format_time(
-    created_or_updated,
-    years_ago,
-    months_ago,
-    weeks_ago,
-    days_ago
-  ) {
-    switch (true) {
-      case years_ago >= 1:
-        return format_time_single(years_ago, created_or_updated, "Year");
-      case months_ago >= 1:
-        return format_time_single(months_ago, created_or_updated, "Month");
-      case weeks_ago >= 1:
-        return format_time_single(weeks_ago, created_or_updated, "Week");
-      case days_ago >= 1:
-        return format_time_single(days_ago, created_or_updated, "Day");
-      default:
-        return "Just Now";
-    }
-  }
-
   created.textContent = format_time(
     gameData.created,
     gameData.datestodays.publishedYearsAgo,
@@ -272,7 +288,10 @@ const game_handler = async (gameId) => {
   game_size.textContent = gameData.filesize;
 
   developer_name.setAttribute("href", `user?id=${gameData.developer_id}`);
-  game_genre.setAttribute("href", `category?n=${DOMPurify.sanitize(gameData.genre).toUpperCase()}`);
+  game_genre.setAttribute(
+    "href",
+    `category?n=${DOMPurify.sanitize(gameData.genre).toUpperCase()}`
+  );
 
   let features = [
     {

@@ -12,7 +12,7 @@ const requestOptions = {
   headers: myHeaders,
 };
 
-function create_blog_post(post) {
+const create_blog_post = (post) => {
   const blog_card = document.createElement("a");
   const blog_image = document.createElement("img");
   const blog_column = document.createElement("div");
@@ -28,11 +28,14 @@ function create_blog_post(post) {
   blog_card.setAttribute("href", post.url);
   blog_card.setAttribute("target", "_blank");
 
-  const blog_format_date = new Date(post.created_at).toLocaleDateString("en-US", {
-    year: "2-digit",
-    month: "2-digit",
-    day: "2-digit",
-  });
+  const blog_format_date = new Date(post.created_at).toLocaleDateString(
+    "en-US",
+    {
+      year: "2-digit",
+      month: "2-digit",
+      day: "2-digit",
+    }
+  );
 
   blog_image.setAttribute("src", post.feature_image);
   blog_title.textContent = post.title;
@@ -43,7 +46,7 @@ function create_blog_post(post) {
   blog_card.appendChild(blog_image);
   blog_card.appendChild(blog_column);
   blog_market.appendChild(blog_card);
-}
+};
 
 const post_request = await request(
   blog_posts,
@@ -54,7 +57,7 @@ const post_request = await request(
 const posts = post_request.Result.response.result.posts;
 
 posts.sort((a, b) => {
-  new Date(b.created_at) - new Date(a.created_at)
+  new Date(b.created_at) - new Date(a.created_at);
 });
 
 posts.forEach((post) => {
