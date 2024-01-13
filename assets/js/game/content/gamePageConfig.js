@@ -72,6 +72,13 @@ const update_background_color = (alphaInput, styleElement) => {
 };
 
 const get_game_data = async (gameId) => {
+  const options = {
+    method: "GET",
+    headers: myHeaders,
+    redirect: "follow",
+  };
+
+
   const result = await request(
     `${get_game}${gameId}`,
     options,
@@ -85,7 +92,13 @@ const get_game_data = async (gameId) => {
     throw new Error(`Unable to get game data: ${result.Result}`);
   }
 };
-const fetch_price_data = async () => {
+const fetch_price_data = async (rawGameData) => {
+  const options = {
+    method: "GET",
+    headers: myHeaders,
+    redirect: "follow",
+  };
+
   const result = await request(
     `${get_price}${rawGameData.product_id}`,
     options,
@@ -103,12 +116,6 @@ const fetch_price_data = async () => {
 const fetch_game_data = async (gameId) => {
   const myHeaders = new Headers();
   myHeaders.append("Content-Type", "application/json");
-
-  const options = {
-    method: "GET",
-    headers: myHeaders,
-    redirect: "follow",
-  };
 
   const rawGameData = await get_game_data(gameId);
 
@@ -166,7 +173,7 @@ const fetch_game_data = async (gameId) => {
   };
 
   if (!rawGameData.free) {
-    const response = await fetch_price_data();
+    const response = await fetch_price_data(rawGameData);
 
     if (response.currency) {
       priceData = {
