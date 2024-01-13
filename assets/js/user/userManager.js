@@ -33,15 +33,19 @@ const calculate_expiration = (past) => {
 
 const update_username = () => {
   const username = document.getElementById("username");
+  const copyright_year = document.getElementById("copyright-year");
 
   const login_btn = document.getElementById("login-btn");
   const signup_btn = document.getElementById("signup-btn");
   const dashboard_btn = document.getElementById("dashboard-btn");
   const upload_btn = document.getElementById("upload-btn");
 
-  document.getElementById("copyright-year").textContent = new Date()
-    .getFullYear()
-    .toString();
+  if (copyright_year != null) {
+    document.getElementById("copyright-year").textContent = new Date()
+      .getFullYear()
+      .toString();
+  }
+  
   if (cookie_data.Valid) {
     username.textContent = user.name;
 
