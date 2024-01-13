@@ -41,6 +41,7 @@ switch (error_code) {
     message.textContent = "A server error occured";
     break;
   default:
+    errorcode.textContent = "404";
     message_header.textContent = "Not Found";
     message.textContent = "Page cannot be found or no longer exists.";
     break;
