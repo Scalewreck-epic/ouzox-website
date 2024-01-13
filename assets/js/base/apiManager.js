@@ -24,10 +24,6 @@ const calculate_duration = (startTime, endTime, name) => {
 };
 
 export const request = async (endpoint, options, redirect, name) => {
-  if (!["GET", "POST", "DELETE"].includes(options.method)) {
-    throw new Error(`Invalid request method: ${options.method}`);
-  }
-
   const startTime = performance.now();
 
   try {
