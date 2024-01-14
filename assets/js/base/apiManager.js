@@ -3,7 +3,7 @@ const handle_error = async (responseOrError, redirect) => {
     throw new Error("Expected a Response object");
   }
 
-  const statusCode = responseOrError.status || 500
+  const statusCode = responseOrError.status || 500;
 
   if (redirect && !window.location.pathname.includes("/404")) {
     window.location.assign(`404?code=${statusCode}`);
@@ -23,24 +23,42 @@ const calculate_duration = (startTime, endTime, name) => {
 };
 
 const validate_endpoint = (endpoint) => {
-  if (typeof endpoint !== 'string') {
+  if (typeof endpoint !== "string") {
     throw new Error(`Expected endpoint to be a string: ${endpoint}`);
   }
 
   try {
-    new URL(endpoint);
-  } catch(error) {
+    const url = new URL(endpoint);
+    if (url.protocol != "https:") {
+      throw new Error("Invalid endpoint URL: HTTPS required");
+    }
+  } catch (error) {
     throw new Error(`Invalid endpoint URL: ${endpoint}`);
   }
-}
+};
 
 const validate_options = (options) => {
-  if (typeof options !== 'object' || options == null) {
-    throw new Error('Expected options to be an object');
+  if (typeof options !== "object" || options == null) {
+    throw new Error("Expected options to be an object");
   }
-}
 
-export const request = async (endpoint, options, redirect = false, name = 'request') => {
+  const unexpectedProperties = Object.keys(options).filter(
+    (key) => !["method", "headers", "body"].includes(key)
+  );
+
+  if (unexpectedProperties.length > 0) {
+    throw new Error(
+      `Unexpected properties in options object: ${unexpectedProperties}`
+    );
+  }
+};
+
+export const request = async (
+  endpoint,
+  options,
+  redirect = false,
+  name = "request"
+) => {
   validate_endpoint(endpoint);
   validate_options(options);
 
