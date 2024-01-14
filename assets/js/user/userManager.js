@@ -172,8 +172,8 @@ const create_session_data = async () => {
         error_label.textContent = "Successfully created account!";
         window.location.assign("index");
       } else {
-        console.error(`Unable to signup: ${error.message}`);
-        error_label.textContent = "An error occured";
+        console.error(`Unable to signup: ${result.Result.message}`);
+        error_label.textContent = result.Result.message;
       }
     } else {
       error_label.textContent = "Not secure enough.";
@@ -185,6 +185,8 @@ const fetch_session_data = async () => {
   if (!cookie_data.Valid) {
     const username_input = document.getElementById("username_login").value;
     const password_input = document.getElementById("password_login").value;
+    
+    const error_label = document.getElementById("error-label");
 
     if (is_valid_login()) {
       const username = username_input.toString();
@@ -201,7 +203,6 @@ const fetch_session_data = async () => {
         }),
       };
 
-      const error_label = document.getElementById("error-label");
       error_label.textContent = "Logging you in...";
 
       const result = await request(auth_login, requestOptions, false, "login");
@@ -211,8 +212,8 @@ const fetch_session_data = async () => {
         error_label.textContent = "Successfully logged in!";
         window.location.assign("index");
       } else {
-        console.error(`Unable to login: ${result.Result}`);
-        error_label.textContent = "An error occured";
+        console.error(`Unable to login: ${result.Result.message}`);
+        error_label.textContent = result.Result.message;
       }
     }
   }

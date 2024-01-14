@@ -1,4 +1,4 @@
-const handle_error = (responseOrError, redirect) => {
+const handle_error = async (responseOrError, redirect) => {
   let statusCode;
 
   if (responseOrError instanceof Response) {
@@ -12,7 +12,7 @@ const handle_error = (responseOrError, redirect) => {
     window.location.assign(`404?code=${encodedStatusCode}`);
   } else {
     return {
-      Result: responseOrError,
+      Result: await responseOrError.json(),
       Success: false,
     };
   }
@@ -29,6 +29,8 @@ export const request = async (endpoint, options, redirect, name) => {
   try {
     const response = await fetch(endpoint, options);
 
+    calculate_duration(startTime, performance.now(), name);
+
     if (!response.ok) {
       return handle_error(response, redirect);
     }
@@ -38,8 +40,6 @@ export const request = async (endpoint, options, redirect, name) => {
     if (!contentType || !contentType.startsWith("application/json")) {
       throw new Error("Invalid Content-Type");
     }
-
-    calculate_duration(startTime, performance.now(), name);
 
     const result = await response.json();
 

@@ -58,7 +58,7 @@
 						<input type="email" class="text-box" name="email" id="email_input" placeholder="Email" required>
 					</li>
 					<li>
-						<input type="password" class="text-box" name="password" id="password_input" placeholder="Password" required>
+						<input type="password" class="text-box" name="password" id="password_input" placeholder="Password" required minlength="3" pattern="(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\da-zA-Z]).{3,}">
 						<span class="hide-icon" id="show-password-icon"></span>
 					</li>
 				</ul>
