@@ -1,18 +1,17 @@
 const handle_error = async (responseOrError, redirect) => {
-  let statusCode;
-
-  if (responseOrError instanceof Response) {
-    statusCode = responseOrError.status ? responseOrError.status : 500;
-  } else {
-    statusCode = 500;
+  if (!(responseOrError instanceof Response)) {
+    throw new Error("Expected a Response object");
   }
 
-  if (redirect && !window.location.pathname.includes("404")) {
-    const encodedStatusCode = encodeURIComponent(statusCode);
-    window.location.assign(`404?code=${encodedStatusCode}`);
+  const statusCode = responseOrError.status || 500
+
+  if (redirect && !window.location.pathname.includes("/404")) {
+    window.location.assign(`404?code=${statusCode}`);
   } else {
+    const result = await responseOrError.json();
+
     return {
-      Result: await responseOrError.json(),
+      Result: result,
       Success: false,
     };
   }
@@ -23,13 +22,35 @@ const calculate_duration = (startTime, endTime, name) => {
   console.info(`${name} request duration: ${duration}ms`);
 };
 
-export const request = async (endpoint, options, redirect, name) => {
-  const startTime = performance.now();
+const validate_endpoint = (endpoint) => {
+  if (typeof endpoint !== 'string') {
+    throw new Error(`Expected endpoint to be a string: ${endpoint}`);
+  }
 
   try {
-    const response = await fetch(endpoint, options);
+    new URL(endpoint);
+  } catch(error) {
+    throw new Error(`Invalid endpoint URL: ${endpoint}`);
+  }
+}
 
-    calculate_duration(startTime, performance.now(), name);
+const validate_options = (options) => {
+  if (typeof options !== 'object' || options == null) {
+    throw new Error('Expected options to be an object');
+  }
+}
+
+export const request = async (endpoint, options, redirect = false, name = 'request') => {
+  validate_endpoint(endpoint);
+  validate_options(options);
+
+  const startTime = Date.now();
+
+  try {
+    const endpoint_url = new URL(endpoint);
+    const response = await fetch(endpoint_url, options);
+
+    calculate_duration(startTime, Date.now(), name);
 
     if (!response.ok) {
       return handle_error(response, redirect);
