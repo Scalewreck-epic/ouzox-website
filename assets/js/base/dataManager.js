@@ -512,13 +512,11 @@ const fetch_games = async () => {
   const game_request_options = {
     method: "GET",
     headers: myHeaders,
-    redirect: "follow",
   };
 
   const price_request_options = {
     method: "GET",
     headers: myHeaders,
-    redirect: "follow",
   };
 
   const set_genres = () => {

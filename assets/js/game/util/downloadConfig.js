@@ -14,7 +14,6 @@ async function set_game_data(gameId) {
   const options = {
     method: "GET",
     headers: myHeaders,
-    redirect: "follow",
   };
 
   async function fetch_game_data() {

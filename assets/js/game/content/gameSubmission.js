@@ -22,7 +22,6 @@ const upload_product = async () => {
   const productRequestOptions = {
     method: "POST",
     headers: myHeaders,
-    redirect: "follow",
     body: JSON.stringify({
       product: {
         name: title_input.value,
@@ -64,7 +63,6 @@ const set_product_price = async (product_id) => {
   const priceRequestOptions = {
     method: "POST",
     headers: myHeaders,
-    redirect: "follow",
     body: JSON.stringify({
       price: {
         currency: currency,
@@ -237,7 +235,6 @@ const on_submit = async (event) => {
         const gameRequestOptions = {
           method: "POST",
           headers: myHeaders,
-          redirect: "follow",
           body: JSON.stringify({
             name: title_input.value,
             active: "false",
@@ -300,7 +297,6 @@ const on_submit = async (event) => {
       const gameRequestOptions = {
         method: "POST",
         headers: myHeaders,
-        redirect: "follow",
         body: JSON.stringify({
           name: title_input.value,
           active: "false",

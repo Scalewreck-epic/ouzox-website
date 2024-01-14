@@ -128,7 +128,6 @@ export const fetch_alternative_user = async (user_id) => {
   const get_user_options = {
     method: "GET",
     headers: myHeaders,
-    redirect: "follow",
   };
 
   const result = await request(
@@ -155,7 +154,6 @@ export const fetch_user = async () => {
     const get_user_options = {
       method: "GET",
       headers: myHeaders,
-      redirect: "follow",
     };
 
     const result = await request(

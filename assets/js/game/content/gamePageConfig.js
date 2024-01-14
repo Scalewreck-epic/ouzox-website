@@ -78,7 +78,6 @@ const get_game_data = async (gameId) => {
   const options = {
     method: "GET",
     headers: myHeaders,
-    redirect: "follow",
   };
 
 
@@ -102,7 +101,6 @@ const fetch_price_data = async (rawGameData) => {
   const options = {
     method: "GET",
     headers: myHeaders,
-    redirect: "follow",
   };
 
   const result = await request(
@@ -969,7 +967,6 @@ const game_handler = async (gameId) => {
         const update_game_options = {
           method: "POST",
           headers: myHeaders,
-          redirect: "follow",
           body: JSON.stringify(update_game_options_body),
         };
 
