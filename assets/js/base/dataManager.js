@@ -476,15 +476,6 @@ const load_games = () => {
         const totalScoreA = downloadScoreA + updatedScoreA;
         const totalScoreB = downloadScoreB + updatedScoreB;
 
-        console.info(`A downloads: ${downloadScoreA}`);
-        console.info(`B downloads: ${downloadScoreB}`);
-
-        console.info(`A time score: ${updatedScoreA}`);
-        console.info(`B time score: ${updatedScoreB}`);
-
-        console.info(`A: ${totalScoreA}`);
-        console.info(`B: ${totalScoreB}`);
-
         return totalScoreB - totalScoreA;
       },
       0,
