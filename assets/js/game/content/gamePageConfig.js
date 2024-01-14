@@ -72,6 +72,9 @@ const update_background_color = (alphaInput, styleElement) => {
 };
 
 const get_game_data = async (gameId) => {
+  const myHeaders = new Headers();
+  myHeaders.append("Content-Type", "application/json");
+
   const options = {
     method: "GET",
     headers: myHeaders,
@@ -93,6 +96,9 @@ const get_game_data = async (gameId) => {
   }
 };
 const fetch_price_data = async (rawGameData) => {
+  const myHeaders = new Headers();
+  myHeaders.append("Content-Type", "application/json");
+  
   const options = {
     method: "GET",
     headers: myHeaders,
