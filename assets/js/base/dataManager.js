@@ -37,8 +37,10 @@ class Game {
   constructor(game) {
     this.id = game.id;
     this.created = game.created;
+    this.developer_name = game.developer_name
     this.updated = game.updated;
     this.downloads = game.downloads;
+    this.product_id = game.product_id;
     this.sponsor_money = game.sponsor_money;
     this.free = game.free;
     this.active = game.active;
@@ -300,7 +302,7 @@ const load_user_games = async (user_id) => {
     create_game_page(game, game_price, category);
 
     total_downloads += game.downloads;
-    game_downloads.textContent = toString(total_downloads);
+    game_downloads.textContent = total_downloads.toString();
   });
 
   if (user_games.length > 0) {
@@ -568,6 +570,8 @@ const fetch_games = async () => {
           id: game.id,
           created: game.created_at,
           updated: game.updated,
+          developer_name: game.developer_name,
+          product_id: game.product_id,
           downloads: game.downloads,
           sponsor_money: game.sponsor_money,
           free: game.free,
