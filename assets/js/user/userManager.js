@@ -45,7 +45,7 @@ const update_username = () => {
       .getFullYear()
       .toString();
   }
-  
+
   if (cookie_data.Valid) {
     username.textContent = user.name;
 
@@ -185,7 +185,7 @@ const fetch_session_data = async () => {
   if (!cookie_data.Valid) {
     const username_input = document.getElementById("username_login").value;
     const password_input = document.getElementById("password_login").value;
-    
+
     const error_label = document.getElementById("error-label");
 
     if (is_valid_login()) {
@@ -219,6 +219,26 @@ const fetch_session_data = async () => {
   }
 };
 
+const update_login_buttons = (is_valid, button) => {
+  if (is_valid) {
+    if (button.hasAttribute("disabled")) {
+      button.removeAttribute("disabled");
+    }
+  } else {
+    button.setAttribute("disabled", true);
+  }
+};
+
+const toggle_password_visiblity = (passwordInput, icon) => {
+  if (passwordInput.type === "password") {
+    passwordInput.type = "text";
+    icon.setAttribute("class", "show-icon");
+  } else {
+    passwordInput.type = "password";
+    icon.setAttribute("class", "hide-icon");
+  }
+};
+
 const logout = () => {
   if (cookie_data.Valid) {
     clear_cookie();
@@ -227,17 +247,7 @@ const logout = () => {
   window.location.assign("login");
 };
 
-if (cookie_data.Valid) {
-  if (loginPaths.some((path) => window.location.pathname.includes(path))) {
-    window.location.assign("settings");
-  }
-} else {
-  if (restrictedPaths.some((path) => window.location.pathname.includes(path))) {
-    window.location.assign("login");
-  }
-}
-
-if (window.location.pathname.includes("/user")) {
+const setup_profile_page = async () => {
   const user_username = document.getElementById("user-username");
   const user_status = document.getElementById("user-status");
   const user_joindate = document.getElementById("join-date");
@@ -267,52 +277,32 @@ if (window.location.pathname.includes("/user")) {
   user_status.textContent = other_user.status;
   user_joindate.textContent = formattedDate;
   web_title.textContent = `Ouzox | ${other_user.name}`;
-}
-
-const update_login_buttons = (is_valid, button) => {
-  if (is_valid) {
-    if (button.hasAttribute("disabled")) {
-      button.removeAttribute("disabled");
-    }
-  } else {
-    button.setAttribute("disabled", true);
-  }
 };
 
-const toggle_password_visiblity = (passwordInput, icon) => {
-  if (passwordInput.type === "password") {
-    passwordInput.type = "text";
-    icon.setAttribute("class", "show-icon");
-  } else {
-    passwordInput.type = "password";
-    icon.setAttribute("class", "hide-icon");
-  }
-};
-
-if (window.location.pathname.includes("/settings")) {
+const setup_settings_page = () => {
   const email_button = document.getElementById("save-email");
   const password_button = document.getElementById("save-password");
   const status_button = document.getElementById("save-status");
   const logout_button = document.getElementById("logout-profile");
 
-  update_user_stats();
-
   email_button.addEventListener("click", () => change_email_data());
   password_button.addEventListener("click", () => change_password_data());
   status_button.addEventListener("click", () => change_status_data());
   logout_button.addEventListener("click", () => logout());
-}
 
-if (window.location.pathname.includes("/login")) {
+  update_user_stats();
+};
+
+const setup_login_page = () => {
   const login_form = document.getElementById("login-form");
   const login_button = document.getElementById("login-button");
   const icon = document.getElementById("show-password-icon");
 
-  icon.addEventListener("click", function () {
-    const passwordInput = document.getElementById("password_login");
-    toggle_password_visiblity(passwordInput, icon);
-  });
+  const passwordInput = document.getElementById("password_login");
 
+  icon.addEventListener("click", () =>
+    toggle_password_visiblity(passwordInput, icon)
+  );
   login_form.addEventListener("input", () =>
     update_login_buttons(is_valid_login(), login_button)
   );
@@ -322,18 +312,18 @@ if (window.location.pathname.includes("/login")) {
   });
 
   login_button.setAttribute("disabled", true);
-}
+};
 
-if (window.location.pathname.includes("/signup")) {
+const setup_signup_page = () => {
   const signup_form = document.getElementById("signup-form");
   const signup_button = document.getElementById("signup-button");
   const icon = document.getElementById("show-password-icon");
 
-  icon.addEventListener("click", function () {
-    const passwordInput = document.getElementById("password_input");
-    toggle_password_visiblity(passwordInput, icon);
-  });
+  const passwordInput = document.getElementById("password_login");
 
+  icon.addEventListener("click", () =>
+    toggle_password_visiblity(passwordInput, icon)
+  );
   signup_form.addEventListener("input", () =>
     update_login_buttons(is_valid_signup(), signup_button)
   );
@@ -343,6 +333,29 @@ if (window.location.pathname.includes("/signup")) {
   });
 
   signup_button.setAttribute("disabled", true);
+};
+
+if (cookie_data.Valid) {
+  if (loginPaths.some((path) => window.location.pathname.includes(path))) {
+    window.location.assign("settings");
+  }
+} else {
+  if (restrictedPaths.some((path) => window.location.pathname.includes(path))) {
+    window.location.assign("login");
+  }
 }
 
 update_username();
+
+if (window.location.pathname.includes("/user")) {
+  setup_profile_page();
+}
+if (window.location.pathname.includes("/settings")) {
+  setup_settings_page();
+}
+if (window.location.pathname.includes("/login")) {
+  setup_login_page();
+}
+if (window.location.pathname.includes("/signup")) {
+  setup_signup_page();
+}

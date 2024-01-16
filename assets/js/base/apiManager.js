@@ -1,6 +1,6 @@
 const handle_error = async (responseOrError, redirect) => {
   if (!(responseOrError instanceof Response)) {
-    throw new Error("Expected a Response object");
+    throw new Error(`Expected a Response object: ${responseOrError}`);
   }
 
   const statusCode = responseOrError.status || 500;
@@ -24,7 +24,7 @@ const calculate_duration = (startTime, endTime, name) => {
 
 const validate_endpoint = (endpoint) => {
   if (typeof endpoint !== "string") {
-    throw new Error(`Expected endpoint to be a string: ${endpoint}`);
+    throw new Error(`Expected endpoint to be a string: ${typeof endpoint}`);
   }
 
   try {
@@ -39,7 +39,7 @@ const validate_endpoint = (endpoint) => {
 
 const validate_options = (options) => {
   if (typeof options !== "object" || options == null) {
-    throw new Error("Expected options to be an object");
+    throw new Error(`Expected options to be an object: ${typeof options}`);
   }
 
   const unexpectedProperties = Object.keys(options).filter(
