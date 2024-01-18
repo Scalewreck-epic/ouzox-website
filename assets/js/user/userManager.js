@@ -319,7 +319,7 @@ const setup_signup_page = () => {
   const signup_button = document.getElementById("signup-button");
   const icon = document.getElementById("show-password-icon");
 
-  const passwordInput = document.getElementById("password_login");
+  const passwordInput = document.getElementById("password_input");
 
   icon.addEventListener("click", () =>
     toggle_password_visiblity(passwordInput, icon)
