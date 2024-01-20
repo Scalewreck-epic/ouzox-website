@@ -44,7 +44,7 @@ const upload_product = async () => {
   }
 };
 
-const upload_game = async (pgameRequestOptions) => {
+const upload_game = async (gameRequestOptions) => {
   const result = await request(
     create_game,
     gameRequestOptions,
