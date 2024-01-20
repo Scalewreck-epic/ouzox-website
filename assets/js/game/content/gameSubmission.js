@@ -440,12 +440,19 @@ const update_description = () => {
   }
 };
 
+update_description();
+update_price();
+update_genre();
+update_art();
+update_file_size();
+update_thumbnail();
 update_free();
+
 game_description.addEventListener("input", () => update_description());
-download_file.addEventListener("change", () => update_file_size());
-game_thumbnail.addEventListener("change", () => update_thumbnail());
-game_isfree.addEventListener("change", () => update_free());
 game_price.addEventListener("input", () => update_price());
 genre_input.addEventListener("input", () => update_genre());
 game_art.addEventListener("input", () => update_art());
+download_file.addEventListener("change", () => update_file_size());
+game_thumbnail.addEventListener("change", () => update_thumbnail());
+game_isfree.addEventListener("change", () => update_free());
 uploadGame.addEventListener("submit", async () => await on_submit());
