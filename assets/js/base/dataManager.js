@@ -37,7 +37,7 @@ class Game {
   constructor(game) {
     this.id = game.id;
     this.created = game.created;
-    this.developer_name = game.developer_name
+    this.developer_name = game.developer_name;
     this.updated = game.updated;
     this.downloads = game.downloads;
     this.product_id = game.product_id;

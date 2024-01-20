@@ -80,7 +80,6 @@ const get_game_data = async (gameId) => {
     headers: myHeaders,
   };
 
-
   const result = await request(
     `${get_game}${gameId}`,
     options,
@@ -97,7 +96,7 @@ const get_game_data = async (gameId) => {
 const fetch_price_data = async (rawGameData) => {
   const myHeaders = new Headers();
   myHeaders.append("Content-Type", "application/json");
-  
+
   const options = {
     method: "GET",
     headers: myHeaders,
