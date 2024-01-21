@@ -27,7 +27,7 @@ class GameData {
     this.artstyle = rawGameData.artstyle;
     this.filesize = rawGameData.size;
     this.agerating = rawGameData.age_rating;
-    this.icon = rawGameData.icon;
+    this.icon = new URL(rawGameData.icon.url);
     this.created = createdFormattedDate;
     this.updated = updatedFormattedDate;
     this.datestodays = datestodays;
@@ -287,7 +287,7 @@ const game_handler = async (gameId) => {
     gameData.datestodays.updatedDaysAgo
   );
 
-  icon.setAttribute("href", gameData.icon.url);
+  icon.setAttribute("href", gameData.icon);
   navigation_title.textContent = `${gameData.name} By ${gameData.developer_name}`;
 
   developer_name.textContent = gameData.developer_name;

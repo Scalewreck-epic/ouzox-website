@@ -577,7 +577,7 @@ const fetch_games = async () => {
           free: game.free,
           active: game.active,
           name: game.name,
-          icon: game.icon.url,
+          icon: new URL(game.icon.url),
           summary: game.summary,
           genre: game.genre,
         };
