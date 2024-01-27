@@ -345,6 +345,7 @@ if (cookie_data.Valid) {
   }
 }
 
+console.info("Ouzox is open source! https://github.com/Scalewreck-epic/ouzox-website");
 update_username();
 
 if (window.location.pathname.includes("/user")) {

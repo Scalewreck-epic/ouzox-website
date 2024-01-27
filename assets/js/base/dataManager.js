@@ -83,12 +83,9 @@ const calculate_time_score = (updated) => {
 };
 
 const calculate_diff_days = (timestamp) => {
-  const createdTimestamp = new Date(timestamp);
   const currentDate = new Date();
 
-  const createdTimeDiff = Math.abs(
-    currentDate.getTime() - createdTimestamp.getTime()
-  );
+  const createdTimeDiff = Math.abs(currentDate.getTime() - timestamp);
   const createdDiffDays = Math.ceil(createdTimeDiff / (1000 * 3600 * 24));
 
   return createdDiffDays;
@@ -161,13 +158,13 @@ const create_game_page = (game, game_price, market) => {
 
   game_price_text.innerHTML = `${price} ${currency.toUpperCase()}`;
 
-  const diff_days_created = calculate_diff_days(game.created);
-  const diff_days_updated = calculate_diff_days(game.updated);
-
   game_price_div.appendChild(game_price_text);
 
   game_image_container.appendChild(game_image);
   game_image_container.appendChild(game_price_div);
+
+  const diff_days_created = calculate_diff_days(game.created);
+  const diff_days_updated = calculate_diff_days(game.updated);
 
   if (diff_days_created <= 7) {
     createLabel("NEW", diff_days_created, game_image_container);
