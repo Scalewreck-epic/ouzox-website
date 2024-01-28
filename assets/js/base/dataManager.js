@@ -567,7 +567,7 @@ const fetch_games = async () => {
           id: game.id,
           created: game.created_at,
           updated: game.updated,
-          developer_name: game.developer_name,
+          developer_name: game.developer.username,
           product_id: game.product_id,
           downloads: game.downloads,
           sponsor_money: game.sponsor_money,

@@ -20,8 +20,6 @@ class GameData {
     this.name = rawGameData.name;
     this.active = rawGameData.active;
     this.description = rawGameData.description;
-    this.developer_name = rawGameData.developer_name;
-    this.developer_id = rawGameData.developer_id;
     this.genre = rawGameData.genre;
     this.summary = rawGameData.summary;
     this.artstyle = rawGameData.artstyle;
@@ -36,6 +34,10 @@ class GameData {
     this.price = priceData;
     this.download_key = rawGameData.product_id;
     this.page = rawGameData.page;
+    this.developer = {
+      username: rawGameData.username,
+      id: rawGameData.id,
+    }
   }
 }
 
@@ -288,16 +290,16 @@ const game_handler = async (gameId) => {
   );
 
   icon.setAttribute("href", gameData.icon);
-  navigation_title.textContent = `${gameData.name} By ${gameData.developer_name}`;
+  navigation_title.textContent = `${gameData.name} By ${gameData.developer.username}`;
 
-  developer_name.textContent = gameData.developer_name;
+  developer_name.textContent = gameData.developer.username;
   game_genre.textContent = DOMPurify.sanitize(gameData.genre).toUpperCase();
   game_summary.textContent = gameData.summary;
   game_art.textContent = DOMPurify.sanitize(gameData.artstyle).toUpperCase();
   game_age.textContent = gameData.agerating.toUpperCase();
   game_size.textContent = gameData.filesize;
 
-  developer_name.setAttribute("href", `user?id=${gameData.developer_id}`);
+  developer_name.setAttribute("href", `user?id=${gameData.developer.id}`);
   game_genre.setAttribute(
     "href",
     `category?n=${DOMPurify.sanitize(gameData.genre).toUpperCase()}`
@@ -469,7 +471,7 @@ const game_handler = async (gameId) => {
     window.location.assign(`download?g=${gameData.download_key}`);
   });
 
-  if (user != null && user.name == gameData.developer_name) {
+  if (user != null && user.name == gameData.developer.username) {
     const game_public = document.getElementById("public");
     const single_player = document.getElementById("single-player");
     const multi_player = document.getElementById("multi-player");
