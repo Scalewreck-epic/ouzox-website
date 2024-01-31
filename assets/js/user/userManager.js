@@ -47,10 +47,9 @@ const update_username = () => {
   }
 
   if (cookie_data.Valid) {
-    username.textContent = user.name;
-
     login_btn.remove();
     signup_btn.remove();
+    username.textContent = user.name;
   } else {
     dashboard_btn.remove();
     upload_btn.remove();

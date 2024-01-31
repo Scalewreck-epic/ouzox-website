@@ -23,7 +23,8 @@ nav ul {
   font-weight: bold;
 }
 
-.push-left {
+.push-left,
+.push-right {
   display: flex;
   align-items: center;
   gap: 1rem;
@@ -57,9 +58,7 @@ nav ul {
 }
 
 .push-right {
-  display: flex;
   justify-content: flex-end;
-  align-items: center;
   height: 3.125rem;
 }
 
@@ -77,4 +76,27 @@ nav ul {
   border-radius: 1.5rem;
   margin: 1rem;
   width: 100%;
+}
+
+.login-navbar,
+.signup-navbar {
+  border: 0.20rem solid;
+  padding: 0.25rem 1rem;
+  border-radius: 0.25rem;
+}
+
+.login-navbar:hover {
+  color: green;
+}
+
+.signup-navbar:hover {
+  color: blue;
+}
+
+.login-navbar {
+  border-color: green;
+}
+
+.signup-navbar {
+  border-color: blue;
 }
