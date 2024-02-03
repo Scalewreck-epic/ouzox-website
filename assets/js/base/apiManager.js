@@ -72,7 +72,8 @@ export const request = (
   return new Promise((resolve, reject) => {
     const xhr = new XMLHttpRequest();
 
-    xhr.open(options.method || "GET", endpoint);
+    const endpoint_url = new URL(endpoint);
+    xhr.open(options.method || "GET", endpoint_url);
 
     if (options.headers) {
       Object.entries(options.headers).forEach(([key, value]) => {
@@ -87,7 +88,7 @@ export const request = (
         return reject(handle_error(xhr, redirect));
       }
 
-      return resolve({
+      resolve({
         Result: JSON.parse(xhr.responseText),
         Success: true,
       });
