@@ -14,31 +14,31 @@ if (error_code) {
 switch (error_code) {
   case 400:
     message_header.textContent = "Bad Request";
-    message.textContent = "There was a problem with your request.";
+    message.textContent = "Your request was invalid.";
     break;
   case 401:
     message_header.textContent = "Unauthorized";
-    message.textContent = "Your request was unauthorized";
+    message.textContent = "Your request did not include any security.";
     break;
   case 403:
-    message_header.textContent = "Forbidden";
-    message.textContent = "You do not have permission to view this page.";
+    message_header.textContent = "Access Denied";
+    message.textContent = "You do not have permission to use this request.";
     break;
   case 405:
     message_header.textContent = "Method Not Allowed";
-    message.textContent = "You do not have permission to use this method."
+    message.textContent = "Your request could not process the method."
     break;
   case 409:
     message_header.textContent = "Conflict";
-    message.textContent = "Your request was interrupted."
+    message.textContent = "Your request could not be completed due to a conflict."
     break;
   case 429:
     message_header.textContent = "Too Many Requests";
-    message.textContent = "Please wait a few seconds before retrying.";
+    message.textContent = "Your request was used too many times.";
     break;
   case 500:
     message_header.textContent = "Internal Server Error";
-    message.textContent = "A server error occured";
+    message.textContent = "Your request was could not be completed due to an internal server error.";
     break;
   default:
     errorcode.textContent = "404";

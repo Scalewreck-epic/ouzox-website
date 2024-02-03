@@ -1,3 +1,5 @@
+const timeout = 1000;
+
 const handle_error = (xhr, redirect) => {
   if (!(xhr instanceof XMLHttpRequest)) {
     throw new Error(`Expected an XMLHttpRequest object: ${xhr}`);
@@ -22,11 +24,6 @@ const handle_error = (xhr, redirect) => {
   }
 };
 
-const calculate_duration = (startTime, endTime, name) => {
-  const duration = endTime - startTime;
-  console.info(`${name} request duration: ${duration}ms`);
-};
-
 const validate_endpoint = (endpoint) => {
   if (typeof endpoint !== "string") {
     throw new Error(`Expected endpoint to be a string: ${typeof endpoint}`);
@@ -34,7 +31,9 @@ const validate_endpoint = (endpoint) => {
 
   try {
     const url = new URL(endpoint);
-    if (url.protocol != "https:") {
+    if (url.protocol == "https:") {
+      return url;
+    } else {
       throw new Error("Invalid endpoint URL: HTTPS required");
     }
   } catch (error) {
@@ -58,35 +57,37 @@ const validate_options = (options) => {
   }
 };
 
+const calculate_duration = (start, end, name) => {
+  const duration = end - start;
+  console.log(`${name} duration: ${duration}ms`);
+}
+
 export const request = (
   endpoint,
   options,
   redirect = false,
-  name = "request"
+  name = "unknown request"
 ) => {
-  validate_endpoint(endpoint);
   validate_options(options);
-
-  const startTime = Date.now();
+  const endpoint_url = validate_endpoint(endpoint);
 
   return new Promise((resolve, reject) => {
+    const start = Date.now();
     const xhr = new XMLHttpRequest();
 
-    const endpoint_url = new URL(endpoint);
-    xhr.open(options.method || "GET", endpoint_url);
+    xhr.open(options.method, endpoint_url);
+    xhr.timeout = timeout;
 
-    if (options.headers) {
-      Object.entries(options.headers).forEach(([key, value]) => {
-        xhr.setRequestHeader(key, value);
-      });
-    }
+    Object.entries(options.headers).forEach(([key, value]) => {
+      xhr.setRequestHeader(key, value);
+    });
 
     xhr.onload = () => {
-      calculate_duration(startTime, Date.now(), name);
-
       if (xhr.status < 200 || xhr.status >= 300) {
         return reject(handle_error(xhr, redirect));
       }
+
+      calculate_duration(start, Date.now(), name);
 
       resolve({
         Result: JSON.parse(xhr.responseText),
