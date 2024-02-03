@@ -18,10 +18,10 @@ const change_session_data = async (headers, endpoint) => {
   const result = await request(endpoint, headers, false, "change session data");
 
   if (result.Success) {
-    error_label.textContent = result.Result.message;
+    error_label.textContent = result.message;
   } else {
     error_label.textContent = "Error changing session data.";
-    throw new Error(`Unable to change session data: ${result.Result}`);
+    throw new Error(`Unable to change session data: ${result}`);
   }
 };
 
@@ -137,11 +137,7 @@ export const fetch_alternative_user = async (user_id) => {
     "get user (id)"
   );
 
-  if (result.Success) {
-    return result.Result;
-  } else {
-    throw new Error(`Unable to get user with user ID: ${result.Result}`);
-  }
+  return result;
 };
 
 export const fetch_user = async () => {
@@ -163,10 +159,6 @@ export const fetch_user = async () => {
       "get user (session)"
     );
 
-    if (result.Success) {
-      return result.Result;
-    } else {
-      throw new Error(`Unable to get user with session ID: ${result.Result}`);
-    }
+    return result;
   }
 };

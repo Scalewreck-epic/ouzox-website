@@ -546,10 +546,10 @@ const fetch_games = async () => {
       "prices"
     );
 
-    if (result.Success) {
-      prices = result.Result.data;
+    if (result.data) {
+      prices = result.data;
     } else {
-      throw new Error(result.Result);
+      throw new Error(result);
     }
   };
 
@@ -561,8 +561,8 @@ const fetch_games = async () => {
       "games"
     );
 
-    if (result.Success) {
-      result.Result.games.forEach((game) => {
+    if (result.games) {
+      result.games.forEach((game) => {
         const properties = {
           id: game.id,
           created: game.created_at,
@@ -583,7 +583,7 @@ const fetch_games = async () => {
         games.push(newGame);
       });
     } else {
-      throw new Error(result.Result);
+      throw new Error(result);
     }
   };
 

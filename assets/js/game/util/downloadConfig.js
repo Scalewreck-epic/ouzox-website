@@ -22,12 +22,8 @@ async function set_game_data(gameId) {
       true,
       "game data"
     );
-
-    if (result.Success) {
-      return result.Result;
-    } else {
-      throw new Error(`Unable to fetch game data: ${result.Result}`);
-    }
+    
+    return result;
   }
 
   const gameData = await fetch_game_data();

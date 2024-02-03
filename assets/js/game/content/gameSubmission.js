@@ -37,11 +37,7 @@ const upload_product = async () => {
     "product upload"
   );
 
-  if (result.Success) {
-    return result.Result;
-  } else {
-    throw new Error(`Unable to create product: ${result.Result}`);
-  }
+  return result;
 };
 
 const upload_game = async (gameRequestOptions) => {
@@ -52,11 +48,7 @@ const upload_game = async (gameRequestOptions) => {
     "game upload"
   );
 
-  if (result.Success) {
-    return result.Result;
-  } else {
-    throw new Error(`Unable to create game: ${result.Result}`);
-  }
+  return result;
 };
 
 const set_product_price = async (product_id) => {
@@ -105,11 +97,7 @@ const set_product_price = async (product_id) => {
     "price creation"
   );
 
-  if (result.Success) {
-    return result.Result;
-  } else {
-    throw new Error(`Unable to ser price: ${result.Result}`);
-  }
+  return result;
 };
 
 const on_submit = async (event) => {

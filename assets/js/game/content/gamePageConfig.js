@@ -89,10 +89,10 @@ const get_game_data = async (gameId) => {
     "game data"
   );
 
-  if (result.Success) {
-    return result.Result;
+  if (result) {
+    return result;
   } else {
-    throw new Error(`Unable to get game data: ${result.Result}`);
+    throw new Error(`Unable to get game data: ${result}`);
   }
 };
 const fetch_price_data = async (rawGameData) => {
@@ -111,11 +111,7 @@ const fetch_price_data = async (rawGameData) => {
     "price data"
   );
 
-  if (result.Success) {
-    return result.Result;
-  } else {
-    throw new Error(`Unable to get price data: ${result.Result}`);
-  }
+  return result;
 };
 
 const fetch_game_data = async (gameId) => {
@@ -206,10 +202,10 @@ const update_product = async (data, gameId, commitChangesButton) => {
     "configure game"
   );
 
-  if (result.Success) {
+  if (result) {
     commitChangesButton.textContent = "Success";
   } else {
-    console.error(`Error trying to update game: ${result.Result}`);
+    console.error(`Error trying to update game: ${result}`);
     commitChangesButton.textContent = "An error occured";
   }
 };

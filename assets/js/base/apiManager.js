@@ -10,17 +10,7 @@ const handle_error = (xhr, redirect) => {
   if (redirect && !window.location.pathname.includes("/404")) {
     window.location.assign(`404?code=${statusCode}`);
   } else {
-    const result = {
-      error: {
-        message: xhr.responseText,
-        statusCode,
-      },
-    };
-
-    return {
-      Result: result,
-      Success: false,
-    };
+    return xhr;
   }
 };
 
@@ -89,10 +79,7 @@ export const request = (
 
       calculate_duration(start, Date.now(), name);
 
-      resolve({
-        Result: JSON.parse(xhr.responseText),
-        Success: true,
-      });
+      resolve(JSON.parse(xhr.responseText));
     };
 
     xhr.onerror = () => reject(handle_error(xhr, redirect));

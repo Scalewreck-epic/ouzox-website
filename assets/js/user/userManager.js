@@ -166,13 +166,12 @@ const create_session_data = async () => {
         "signup"
       );
 
-      if (result.Success) {
-        create_cookie("session_id", result.Result.authToken);
+      if (result.authToken) {
+        create_cookie("session_id", result.authToken);
         error_label.textContent = "Successfully created account!";
         window.location.assign("index");
       } else {
-        console.error(`Unable to signup: ${result.Result.message}`);
-        error_label.textContent = result.Result.message;
+        error_label.textContent = "An error occured";
       }
     } else {
       error_label.textContent = "Not secure enough.";
@@ -206,13 +205,12 @@ const fetch_session_data = async () => {
 
       const result = await request(auth_login, requestOptions, false, "login");
 
-      if (result.Success) {
-        create_cookie("session_id", result.Result.authToken);
+      if (result.authToken) {
+        create_cookie("session_id", result.authToken);
         error_label.textContent = "Successfully logged in!";
         window.location.assign("index");
       } else {
-        console.error(`Unable to login: ${result.Result.message}`);
-        error_label.textContent = result.Result.message;
+        error_label.textContent = "An error occured";
       }
     }
   }
