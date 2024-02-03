@@ -50,7 +50,7 @@ const validate_options = (options) => {
 const calculate_duration = (start, end, name) => {
   const duration = end - start;
   console.log(`${name} duration: ${duration}ms`);
-}
+};
 
 export const request = (
   endpoint,
