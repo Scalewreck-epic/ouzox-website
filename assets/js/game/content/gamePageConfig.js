@@ -37,7 +37,7 @@ class GameData {
     this.developer = {
       username: rawGameData.username,
       id: rawGameData.id,
-    }
+    };
   }
 }
 
@@ -111,7 +111,9 @@ const fetch_price_data = async (rawGameData) => {
     "price data"
   );
 
-  return result;
+  if (result) {
+    return result;
+  }
 };
 
 const fetch_game_data = async (gameId) => {

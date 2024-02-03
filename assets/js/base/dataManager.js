@@ -546,7 +546,7 @@ const fetch_games = async () => {
       "prices"
     );
 
-    if (result.data) {
+    if (result) {
       prices = result.data;
     } else {
       throw new Error(result);
@@ -561,7 +561,7 @@ const fetch_games = async () => {
       "games"
     );
 
-    if (result.games) {
+    if (result) {
       result.games.forEach((game) => {
         const properties = {
           id: game.id,

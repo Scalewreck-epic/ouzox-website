@@ -17,7 +17,7 @@ const change_session_data = async (headers, endpoint) => {
 
   const result = await request(endpoint, headers, false, "change session data");
 
-  if (result.Success) {
+  if (result) {
     error_label.textContent = result.message;
   } else {
     error_label.textContent = "Error changing session data.";
@@ -137,7 +137,9 @@ export const fetch_alternative_user = async (user_id) => {
     "get user (id)"
   );
 
-  return result;
+  if (result) {
+    return result;
+  }
 };
 
 export const fetch_user = async () => {
@@ -159,6 +161,8 @@ export const fetch_user = async () => {
       "get user (session)"
     );
 
-    return result;
+    if (result) {
+      return result;
+    }
   }
 };

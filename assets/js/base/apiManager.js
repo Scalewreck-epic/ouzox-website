@@ -10,7 +10,7 @@ const handle_error = (xhr, redirect) => {
   if (redirect && !window.location.pathname.includes("/404")) {
     window.location.assign(`404?code=${statusCode}`);
   } else {
-    return xhr;
+    return null;
   }
 };
 

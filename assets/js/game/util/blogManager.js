@@ -48,13 +48,13 @@ const create_blog_post = (post) => {
   blog_market.appendChild(blog_card);
 };
 
-const post_request = await request(
+const result = await request(
   blog_posts,
   requestOptions,
   false,
   "blog posts"
 );
-const posts = post_request.Result.response.result.posts;
+const posts = result.response.result.posts;
 
 posts.sort((a, b) => {
   new Date(b.created_at) - new Date(a.created_at);

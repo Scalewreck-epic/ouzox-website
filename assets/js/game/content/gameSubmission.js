@@ -37,7 +37,9 @@ const upload_product = async () => {
     "product upload"
   );
 
-  return result;
+  if (result) {
+    return result;
+  }
 };
 
 const upload_game = async (gameRequestOptions) => {
@@ -48,7 +50,9 @@ const upload_game = async (gameRequestOptions) => {
     "game upload"
   );
 
-  return result;
+  if (result) {
+    return result;
+  }
 };
 
 const set_product_price = async (product_id) => {
@@ -97,7 +101,9 @@ const set_product_price = async (product_id) => {
     "price creation"
   );
 
-  return result;
+  if (result) {
+    return result;
+  }
 };
 
 const on_submit = async (event) => {

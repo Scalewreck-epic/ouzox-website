@@ -166,7 +166,7 @@ const create_session_data = async () => {
         "signup"
       );
 
-      if (result.authToken) {
+      if (result) {
         create_cookie("session_id", result.authToken);
         error_label.textContent = "Successfully created account!";
         window.location.assign("index");
@@ -205,7 +205,7 @@ const fetch_session_data = async () => {
 
       const result = await request(auth_login, requestOptions, false, "login");
 
-      if (result.authToken) {
+      if (result) {
         create_cookie("session_id", result.authToken);
         error_label.textContent = "Successfully logged in!";
         window.location.assign("index");
@@ -342,7 +342,9 @@ if (cookie_data.Valid) {
   }
 }
 
-console.info("Ouzox is open source! https://github.com/Scalewreck-epic/ouzox-website");
+console.info(
+  "Ouzox is open source! https://github.com/Scalewreck-epic/ouzox-website"
+);
 update_username();
 
 if (window.location.pathname.includes("/user")) {

@@ -22,8 +22,10 @@ async function set_game_data(gameId) {
       true,
       "game data"
     );
-    
-    return result;
+
+    if (result) {
+      return result;
+    }
   }
 
   const gameData = await fetch_game_data();
