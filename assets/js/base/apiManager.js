@@ -1,14 +1,19 @@
-const handle_error = async (responseOrError, redirect) => {
-  if (!(responseOrError instanceof Response)) {
-    throw new Error(`Expected a Response object: ${responseOrError}`);
+const handle_error = (xhr, redirect) => {
+  if (!(xhr instanceof XMLHttpRequest)) {
+    throw new Error(`Expected an XMLHttpRequest object: ${xhr}`);
   }
 
-  const statusCode = responseOrError.status || 500;
+  const statusCode = xhr.status || 500;
 
   if (redirect && !window.location.pathname.includes("/404")) {
     window.location.assign(`404?code=${statusCode}`);
   } else {
-    const result = await responseOrError.json();
+    const result = {
+      error: {
+        message: xhr.responseText,
+        statusCode,
+      },
+    };
 
     return {
       Result: result,
@@ -53,7 +58,7 @@ const validate_options = (options) => {
   }
 };
 
-export const request = async (
+export const request = (
   endpoint,
   options,
   redirect = false,
@@ -64,34 +69,36 @@ export const request = async (
 
   const startTime = Date.now();
 
-  try {
-    const endpoint_url = new URL(endpoint);
-    const response = await fetch(endpoint_url, options);
+  return new Promise((resolve, reject) => {
+    const xhr = new XMLHttpRequest();
 
-    calculate_duration(startTime, Date.now(), name);
+    xhr.open(options.method || "GET", endpoint);
 
-    if (!response.ok) {
-      return handle_error(response, redirect);
+    if (options.headers) {
+      Object.entries(options.headers).forEach(([key, value]) => {
+        xhr.setRequestHeader(key, value);
+      });
     }
 
-    const contentType = response.headers.get("Content-Type");
+    xhr.onload = () => {
+      calculate_duration(startTime, Date.now(), name);
 
-    if (!contentType || !contentType.startsWith("application/json")) {
-      throw new Error("Invalid Content-Type");
-    }
+      if (xhr.status < 200 || xhr.status >= 300) {
+        return reject(handle_error(xhr, redirect));
+      }
 
-    const result = await response.json();
-
-    return {
-      Result: result,
-      Success: true,
+      return resolve({
+        Result: JSON.parse(xhr.responseText),
+        Success: true,
+      });
     };
-  } catch (error) {
-    if (error.response) {
-      // The request was made and the server responded with a status code that falls out of the range of 2xx
-      return handle_error(error.response, redirect);
-    }
 
-    return handle_error(error, redirect);
-  }
+    xhr.onerror = () => reject(handle_error(xhr, redirect));
+
+    if (options.body) {
+      xhr.send(options.body);
+    } else {
+      xhr.send();
+    }
+  });
 };

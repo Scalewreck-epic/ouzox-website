@@ -557,7 +557,7 @@ const fetch_games = async () => {
     const result = await request(
       get_games,
       game_request_options,
-      false,
+      true,
       "games"
     );
 
