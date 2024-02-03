@@ -21,7 +21,6 @@ const change_session_data = async (headers, endpoint) => {
     error_label.textContent = result.message;
   } else {
     error_label.textContent = "Error changing session data.";
-    throw new Error(`Unable to change session data: ${result}`);
   }
 };
 

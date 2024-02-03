@@ -207,7 +207,6 @@ const update_product = async (data, gameId, commitChangesButton) => {
   if (result) {
     commitChangesButton.textContent = "Success";
   } else {
-    console.error(`Error trying to update game: ${result}`);
     commitChangesButton.textContent = "An error occured";
   }
 };

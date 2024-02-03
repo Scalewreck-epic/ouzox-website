@@ -548,8 +548,6 @@ const fetch_games = async () => {
 
     if (result) {
       prices = result.data;
-    } else {
-      throw new Error(result);
     }
   };
 
@@ -582,8 +580,6 @@ const fetch_games = async () => {
         const newGame = new Game(properties);
         games.push(newGame);
       });
-    } else {
-      throw new Error(result);
     }
   };
 
