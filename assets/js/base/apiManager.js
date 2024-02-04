@@ -1,4 +1,5 @@
-const timeout = 1000;
+const timeout = 5000;
+const max_retries = 3;
 
 const handle_error = (xhr, redirect) => {
   if (!(xhr instanceof XMLHttpRequest)) {
@@ -56,7 +57,8 @@ export const request = (
   endpoint,
   options,
   redirect = false,
-  name = "unknown request"
+  name = "unknown request",
+  retries = 0
 ) => {
   validate_options(options);
   const endpoint_url = validate_endpoint(endpoint);
@@ -82,7 +84,15 @@ export const request = (
       resolve(JSON.parse(xhr.responseText));
     };
 
-    xhr.onerror = () => reject(handle_error(xhr, redirect));
+    xhr.onerror = () => {
+      if (retries < max_retries) {
+        ++retries
+        console.debug(`${name} failed, retrying (attempt ${retries}/${max_retries})...`);
+        self.setTimeout(() => request(endpoint, options, redirect, name, retries));
+      } else {
+        reject(handle_error(xhr, redirect));
+      }
+    };
 
     if (options.body) {
       xhr.send(options.body);
