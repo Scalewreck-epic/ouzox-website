@@ -1,15 +1,13 @@
 const urlParams = new URLSearchParams(window.location.search);
-const error_code = Number(encodeURIComponent(urlParams.get("code")));
+const error_code = Number(encodeURIComponent(urlParams.get("code"))) || 404;
 
 const errorcode = document.getElementById("errorcode");
 const message_header = document.getElementById("messageheader");
 const message = document.getElementById("message");
 const navigation_title = document.getElementById("navigation-title");
 
-if (error_code) {
-  errorcode.textContent = error_code;
-  navigation_title.textContent = `Ouzox | ${error_code} Error`;
-}
+errorcode.textContent = `Error ${error_code}`;
+navigation_title.textContent = `Ouzox | Error ${error_code}`;
 
 switch (error_code) {
   case 400:
@@ -18,11 +16,15 @@ switch (error_code) {
     break;
   case 401:
     message_header.textContent = "Unauthorized";
-    message.textContent = "Your request did not include any security.";
+    message.textContent = "Your request was unprotected.";
     break;
   case 403:
     message_header.textContent = "Access Denied";
-    message.textContent = "You do not have permission to use this request.";
+    message.textContent = "You do not have permission to view this page.";
+    break;
+  case 404:
+    message_header.textContent = "Not Found";
+    message.textContent = "Page cannot be found or no longer exists.";
     break;
   case 405:
     message_header.textContent = "Method Not Allowed";
@@ -44,10 +46,9 @@ switch (error_code) {
     break;
   case 503:
     message_header.textContent = "Service Unavailable";
-    message.textContent = "The server was unavailable.";
+    message.textContent = "Ouzox is currently unavailable.";
   default:
-    errorcode.textContent = "404";
-    message_header.textContent = "Not Found";
-    message.textContent = "Page cannot be found or no longer exists.";
+    message_header.textContent = "Error";
+    message.textContent = "An unknown error occured.";
     break;
 }
