@@ -26,20 +26,25 @@ switch (error_code) {
     break;
   case 405:
     message_header.textContent = "Method Not Allowed";
-    message.textContent = "Your request could not process the method."
+    message.textContent = "Your request could not process the method.";
     break;
   case 409:
     message_header.textContent = "Conflict";
-    message.textContent = "Your request could not be completed due to a conflict."
+    message.textContent =
+      "Your request could not be completed due to a conflict.";
     break;
   case 429:
     message_header.textContent = "Too Many Requests";
-    message.textContent = "Your request was used too many times.";
+    message.textContent = "Your request has been called too much.";
     break;
   case 500:
     message_header.textContent = "Internal Server Error";
-    message.textContent = "Your request was could not be completed due to an internal server error.";
+    message.textContent =
+      "Your request was could not be completed due to an internal server error.";
     break;
+  case 503:
+    message_header.textContent = "Service Unavailable";
+    message.textContent = "The server was unavailable.";
   default:
     errorcode.textContent = "404";
     message_header.textContent = "Not Found";
