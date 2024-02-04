@@ -47,6 +47,7 @@ switch (error_code) {
   case 503:
     message_header.textContent = "Service Unavailable";
     message.textContent = "Ouzox is currently unavailable.";
+    break;
   default:
     message_header.textContent = "Error";
     message.textContent = "An unknown error occured.";
