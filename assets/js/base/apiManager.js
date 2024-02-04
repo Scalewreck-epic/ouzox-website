@@ -1,4 +1,4 @@
-const timeout = 5000;
+const timeout = 3000;
 
 const handle_error = (xhr, redirect) => {
   if (!(xhr instanceof XMLHttpRequest)) {
@@ -47,9 +47,14 @@ const validate_options = (options) => {
   }
 };
 
-const calculate_duration = (start, end, name) => {
-  const duration = end - start;
-  console.log(`${name} duration: ${duration}ms`);
+const log_request = (duration, name, xhr) => {
+  var log = {
+    event: name,
+    status: xhr.status,
+    duration: `${duration}ms`,
+  }
+
+  console.info(log);
 };
 
 export const request = (
@@ -57,7 +62,6 @@ export const request = (
   options,
   redirect = false,
   name = "unknown request",
-  retries = 0
 ) => {
   validate_options(options);
   const endpoint_url = validate_endpoint(endpoint);
@@ -66,29 +70,27 @@ export const request = (
     const start = Date.now();
     const xhr = new XMLHttpRequest();
 
-    xhr.open(options.method, endpoint_url);
     xhr.timeout = timeout;
 
     Object.entries(options.headers).forEach(([key, value]) => {
       xhr.setRequestHeader(key, value);
     });
 
+    xhr.open(options.method, endpoint_url);
     xhr.onload = () => {
+      const duration =  Date.now() - start;
+
+      log_request(duration, name, xhr);
+
       if (xhr.status < 200 || xhr.status >= 300) {
         return reject(handle_error(xhr, redirect));
       }
-
-      calculate_duration(start, Date.now(), name);
 
       resolve(JSON.parse(xhr.responseText));
     };
 
     xhr.onerror = () => reject(handle_error(xhr, redirect));
 
-    if (options.body) {
-      xhr.send(options.body);
-    } else {
-      xhr.send();
-    }
+    options.body ? xhr.send(options.body) : xhr.send();
   });
 };
