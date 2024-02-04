@@ -47,12 +47,12 @@ const validate_options = (options) => {
   }
 };
 
-const log_request = (duration, name, xhr) => {
+const log_request = (duration, name, response) => {
   var log = {
     event: name,
-    status: xhr.status,
+    status: response.status,
     duration: `${duration}ms`,
-  }
+  };
 
   console.info(log);
 };
@@ -61,36 +61,55 @@ export const request = (
   endpoint,
   options,
   redirect = false,
-  name = "unknown request",
+  name = "unknown request"
 ) => {
   validate_options(options);
   const endpoint_url = validate_endpoint(endpoint);
 
-  return new Promise((resolve, reject) => {
+  return new Promise(async (resolve, reject) => {
     const start = Date.now();
-    const xhr = new XMLHttpRequest();
 
-    xhr.timeout = timeout;
+    // XHR version:
+    //const xhr = new XMLHttpRequest();
 
-    Object.entries(options.headers).forEach(([key, value]) => {
-      xhr.setRequestHeader(key, value);
-    });
+    //xhr.timeout = timeout;
 
-    xhr.open(options.method, endpoint_url);
-    xhr.onload = () => {
-      const duration =  Date.now() - start;
+    //Object.entries(options.headers).forEach(([key, value]) => {
+      //xhr.setRequestHeader(key, value);
+    //});
 
-      log_request(duration, name, xhr);
+    //xhr.open(options.method, endpoint_url);
+    //xhr.onload = () => {
+      //const duration = Date.now() - start;
 
-      if (xhr.status < 200 || xhr.status >= 300) {
-        return reject(handle_error(xhr, redirect));
+      //log_request(duration, name, xhr);
+
+      //if (xhr.status < 200 || xhr.status >= 300) {
+        //return reject(handle_error(xhr, redirect));
+      //}
+
+      //resolve(JSON.parse(xhr.responseText));
+    //};
+
+    //xhr.onerror = () => reject(handle_error(xhr, redirect));
+
+    //options.body ? xhr.send(options.body) : xhr.send();
+
+    // Fetch Version:
+    try {
+      const response = await fetch(endpoint_url, options);
+      const duration = Date.now() - start;
+
+      log_request(duration, name, response);
+
+      if (!response.ok) {
+        return reject(handle_error(response, redirect));
       }
 
-      resolve(JSON.parse(xhr.responseText));
-    };
-
-    xhr.onerror = () => reject(handle_error(xhr, redirect));
-
-    options.body ? xhr.send(options.body) : xhr.send();
+      resolve(await response.json());
+    } catch (error) {
+      console.error("Fetch error:", error);
+      reject(handle_error(error.response, redirect));
+    }
   });
 };
