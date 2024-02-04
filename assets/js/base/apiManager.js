@@ -1,11 +1,5 @@
-const timeout = 3000;
-
-const handle_error = (xhr, redirect) => {
-  if (!(xhr instanceof XMLHttpRequest)) {
-    throw new Error(`Expected an XMLHttpRequest object: ${xhr}`);
-  }
-
-  const statusCode = xhr.status || 500;
+const handle_error = (response, redirect) => {
+  const statusCode = response.status || 500;
 
   if (redirect && !window.location.pathname.includes("/404")) {
     window.location.assign(`404?code=${statusCode}`);
