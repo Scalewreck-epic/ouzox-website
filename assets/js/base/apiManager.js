@@ -1,7 +1,7 @@
 const handle_error = (response, redirect) => {
   const statusCode = response.status || 500;
 
-  if (redirect && !window.location.pathname.includes("/404")) {
+  if (redirect) {
     window.location.assign(`404?code=${statusCode}`);
   } else {
     return null;
@@ -48,7 +48,7 @@ const log_request = (duration, name, response) => {
     duration: `${duration}ms`,
   };
 
-  console.info(log);
+  console.info(`${name} event:`, log);
 };
 
 export const request = (
@@ -97,13 +97,13 @@ export const request = (
       log_request(duration, name, response);
 
       if (!response.ok) {
-        return reject(handle_error(response, redirect));
+        return reject(handle_error(response, redirect && window.location.pathname.includes("/404")));
       }
 
       resolve(await response.json());
     } catch (error) {
       console.error("Fetch error:", error);
-      reject(handle_error(error.response, redirect));
+      reject(handle_error(error.response, redirect && window.location.pathname.includes("/404")));
     }
   });
 };
