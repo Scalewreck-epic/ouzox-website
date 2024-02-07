@@ -41,19 +41,27 @@ const update_username = () => {
   const upload_btn = document.getElementById("upload-btn");
 
   if (copyright_year != null) {
-    document.getElementById("copyright-year").textContent = new Date()
-      .getFullYear()
-      .toString();
+    copyright_year.textContent = new Date().getFullYear().toString();
   }
 
   if (cookie_data.Valid) {
+    if (loginPaths.some((path) => window.location.pathname.includes(path))) {
+      window.location.assign("settings");
+    }
+
     login_btn.remove();
     signup_btn.remove();
     username.textContent = user.name;
   } else {
+    if (
+      restrictedPaths.some((path) => window.location.pathname.includes(path))
+    ) {
+      window.location.assign("login");
+    }
+
     dashboard_btn.remove();
     upload_btn.remove();
-    username.textContent = "";
+    username.remove();
   }
 };
 
@@ -331,16 +339,6 @@ const setup_signup_page = () => {
 
   signup_button.setAttribute("disabled", true);
 };
-
-if (cookie_data.Valid) {
-  if (loginPaths.some((path) => window.location.pathname.includes(path))) {
-    window.location.assign("settings");
-  }
-} else {
-  if (restrictedPaths.some((path) => window.location.pathname.includes(path))) {
-    window.location.assign("login");
-  }
-}
 
 console.info(
   "Ouzox is open source! https://github.com/Scalewreck-epic/ouzox-website"
