@@ -442,8 +442,6 @@ update_description();
 update_price();
 update_genre();
 update_art();
-update_file_size();
-update_thumbnail();
 update_free();
 
 game_description.addEventListener("input", () => update_description());

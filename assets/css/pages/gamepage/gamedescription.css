@@ -18,3 +18,12 @@
 .game-description h4 {
   margin: 0.3rem 0;
 }
+
+.game-description div {
+  margin: 0;
+}
+
+.game-description ul,
+.game-description ol {
+  margin: 0.5rem 0;
+}
