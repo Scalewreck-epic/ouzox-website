@@ -5,14 +5,15 @@ import { fetch_user, fetch_alternative_user } from "../user/sessionManager.js";
 import { request } from "./apiManager.js";
 
 const urlParams = new URLSearchParams(window.location.search);
-const search_query = encodeURIComponent(urlParams.get("q") || "");
-const category_name = encodeURIComponent(urlParams.get("n") || "");
+const search_query = (urlParams.get("q") || "");
+const category_name = (urlParams.get("n") || "");
 
 let prices = [];
 let games = [];
 let genres = [];
 
 let offset = 30;
+const similarityThreshold = 0.30;
 
 const search_algorithm = (a, b) => {
   const scoreA = a.relevance * 0.7 + a.downloads * 0.3;
@@ -213,13 +214,12 @@ const calculate_similarity = (a, b) => {
 };
 
 const set_genre_relevancy = () => {
-  const similarityThreshold = 0.15;
-
   if (search_query != "") {
     const relevantGenres = genres.map((genre) => {
       const similarity = calculate_similarity(search_query, genre.name);
 
       if (similarity > similarityThreshold) {
+        console.log(`${genre.name} (Genre) similarity: ${similarity}`);
         return {
           ...genre,
           relevance: similarity,
@@ -234,8 +234,6 @@ const set_genre_relevancy = () => {
 };
 
 const set_game_relevancy = () => {
-  const similarityThreshold = 0.15;
-
   if (category_name != "") {
     const genreGames = games.filter((game) => game.genre == category_name);
     games = genreGames;
@@ -252,6 +250,7 @@ const set_game_relevancy = () => {
       const similarity = nameSimilarity * 0.7 + summarySimilarity * 0.3;
 
       if (similarity > similarityThreshold) {
+        console.log(`${game.name} (Game) similarity: ${similarity}`);
         return {
           ...game,
           relevance: similarity,

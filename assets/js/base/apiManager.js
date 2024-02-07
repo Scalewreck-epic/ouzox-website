@@ -62,34 +62,7 @@ export const request = (
 
   return new Promise(async (resolve, reject) => {
     const start = Date.now();
-
-    // XHR version:
-    //const xhr = new XMLHttpRequest();
-
-    //xhr.timeout = timeout;
-
-    //Object.entries(options.headers).forEach(([key, value]) => {
-    //  xhr.setRequestHeader(key, value);
-    //});
-
-    //xhr.open(options.method, endpoint_url);
-    //xhr.onload = () => {
-    //  const duration = Date.now() - start;
-
-    //  log_request(duration, name, xhr);
-
-    //  if (xhr.status < 200 || xhr.status >= 300) {
-    //    return reject(handle_error(xhr, redirect));
-    //  }
-
-    //  resolve(JSON.parse(xhr.responseText));
-    //};
-
-    //xhr.onerror = () => reject(handle_error(xhr, redirect));
-
-    //options.body ? xhr.send(options.body) : xhr.send();
-
-    // Fetch Version:
+    
     try {
       const response = await fetch(endpoint_url, options);
       const duration = Date.now() - start;
