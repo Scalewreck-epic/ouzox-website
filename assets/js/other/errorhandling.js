@@ -13,45 +13,45 @@ switch (error_code) {
   case 400:
     message_header.textContent = "Bad Request";
     message.textContent =
-      "Your request didn't compute correctly. Please check your input and try again.";
+      "Unable to understand your request. Please check your input and try again.";
     break;
   case 401:
     message_header.textContent = "Unauthorized";
     message.textContent =
-      "Your request was unauthroized. Incorrect credentials used.";
+      "You do not have permission to access this resource. Incorrect or missing credentials.";
     break;
   case 403:
     message_header.textContent = "Access Denied";
-    message.textContent = "You do not have permission to access this content.";
+    message.textContent = "You do not have permission to access this resource.";
     break;
   case 404:
     message_header.textContent = "Not Found";
     message.textContent =
-      "You've wandered too far from the website. The page you're looking for isn't here.";
+      "The page you are looking for could not be found. It may have been moved or deleted.";
     break;
   case 405:
     message_header.textContent = "Method Not Allowed";
-    message.textContent = "Your request was using an invalid method.";
+    message.textContent = "The method you used to access this resource is not allowed.";
     break;
   case 409:
     message_header.textContent = "Conflict";
-    message.textContent = "There's a conflict in your request.";
+    message.textContent = "The request could not be completed due to a conflict.";
     break;
   case 429:
     message_header.textContent = "Too Many Requests";
-    message.textContent = "Just wait a few seconds then return back.";
+    message.textContent = "You have made too many requests to this resource. Please try again later.";
     break;
   case 500:
     message_header.textContent = "Internal Server Error";
-    message.textContent = "Ouzox is trying to fix the error in the server.";
+    message.textContent = "An error occurred on the server. Ouzox is attempting to fix it. If problem persists, please report it.";
     break;
   case 503:
     message_header.textContent = "Service Unavailable";
     message.textContent =
-      "Ouzox is temporarily under maintenance. Please come back later.";
+      "Ouzox is currently unavailable. Please try again later.";
     break;
   default:
     message_header.textContent = "Anomaly Error.";
-    message.textContent = "An unknown error has disturbed the site.";
+    message.textContent = "An unexpected error has occurred. Please report this issue to Ouzox.";
     break;
 }
