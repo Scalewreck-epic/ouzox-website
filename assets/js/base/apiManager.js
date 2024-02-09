@@ -51,15 +51,8 @@ const log_request = (duration, name, response) => {
   console.info(`${name} event:`, log);
 };
 
-export const request = (
-  endpoint,
-  options,
-  redirect = false,
-  name = "unknown request"
-) => {
-  validate_options(options);
-  const endpoint_url = validate_endpoint(endpoint);
-
+// Fetch Request as a main preference.
+const fetch_request = (endpoint_url, options, redirect, name) => {
   return new Promise(async (resolve, reject) => {
     const start = Date.now();
 
@@ -70,23 +63,63 @@ export const request = (
       log_request(duration, name, response);
 
       if (!response.ok) {
-        return reject(
-          handle_error(
-            response,
-            redirect && window.location.pathname.includes("/404")
-          )
-        );
+        return reject(handle_error(response, redirect));
       }
 
       resolve(await response.json());
     } catch (error) {
       console.error("Fetch error:", error);
-      reject(
-        handle_error(
-          error.response,
-          redirect && window.location.pathname.includes("/404")
-        )
-      );
+      reject(handle_error(error.response, redirect));
     }
   });
+};
+
+// XMLHttpRequest is here if you need it :).
+const xhrequest = (endpoint_url, options, redirect, name) => {
+  return new Promise((resolve, reject) => {
+    const start = Date.now();
+    const xhr = new XMLHttpRequest();
+    xhr.open(options.method || "GET", endpoint_url, true);
+
+    if (options.headers) {
+      Object.entries(options.headers).forEach(([key, value]) => {
+        xhr.setRequestHeader(key, value);
+      });
+    }
+
+    xhr.onload = () => {
+      const duration = Date.now() - start;
+      log_request(duration, name, xhr);
+
+      if (xhr.status < 200 || xhr.status >= 400) {
+        return reject(handle_error(xhr, redirect));
+      }
+
+      resolve(JSON.parse(xhr.responseText));
+    };
+
+    xhr.onerror = () => {
+      console.error("XHR error:");
+      reject(handle_error(xhr, redirect));
+    };
+
+    options.body ? xhr.send(options.body) : xhr.send();
+  });
+};
+
+export const request = (
+  endpoint,
+  options,
+  redirect = false,
+  name = "unknown request"
+) => {
+  validate_options(options);
+  const endpoint_url = validate_endpoint(endpoint);
+
+  return fetch_request(
+    endpoint_url,
+    options,
+    redirect && window.location.pathname.includes("/404"),
+    name
+  );
 };
