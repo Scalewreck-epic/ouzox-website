@@ -16,6 +16,10 @@ import {
 } from "./sessionManager.js";
 import { request } from "../base/apiManager.js";
 
+console.info(
+  "Ouzox is open source! https://github.com/Scalewreck-epic/ouzox-website"
+);
+
 const cookie_data = fetch_cookie("session_id");
 const user = await fetch_user();
 
@@ -261,13 +265,6 @@ const setup_profile_page = async () => {
   const urlParams = new URLSearchParams(window.location.search);
   const user_id = urlParams.get("id");
 
-  const myHeaders = new Headers();
-  myHeaders.append("Content-Type", "application/json");
-  const requestOptions = {
-    method: "GET",
-    headers: myHeaders,
-  };
-
   const other_user = await fetch_alternative_user(user_id);
 
   const rfcDate = new Date(other_user.created_at).toUTCString();
@@ -339,10 +336,6 @@ const setup_signup_page = () => {
 
   signup_button.setAttribute("disabled", true);
 };
-
-console.info(
-  "Ouzox is open source! https://github.com/Scalewreck-epic/ouzox-website"
-);
 update_username();
 
 if (window.location.pathname.includes("/user")) {

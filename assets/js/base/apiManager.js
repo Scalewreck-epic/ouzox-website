@@ -62,7 +62,7 @@ export const request = (
 
   return new Promise(async (resolve, reject) => {
     const start = Date.now();
-    
+
     try {
       const response = await fetch(endpoint_url, options);
       const duration = Date.now() - start;
@@ -70,13 +70,23 @@ export const request = (
       log_request(duration, name, response);
 
       if (!response.ok) {
-        return reject(handle_error(response, redirect && window.location.pathname.includes("/404")));
+        return reject(
+          handle_error(
+            response,
+            redirect && window.location.pathname.includes("/404")
+          )
+        );
       }
 
       resolve(await response.json());
     } catch (error) {
       console.error("Fetch error:", error);
-      reject(handle_error(error.response, redirect && window.location.pathname.includes("/404")));
+      reject(
+        handle_error(
+          error.response,
+          redirect && window.location.pathname.includes("/404")
+        )
+      );
     }
   });
 };
