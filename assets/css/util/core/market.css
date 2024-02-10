@@ -4,7 +4,6 @@
   overflow-y: hidden;
   gap: 1.25rem 1.25rem;
   padding: 1rem;
-  scrollbar-width: none;
   -ms-overflow-style: none;
 }
 
@@ -18,5 +17,5 @@
 }
 
 .market::-webkit-scrollbar-thumb:hover {
-  outline: 0.125rem solid #4d0101;
+  background: #686868;
 }
