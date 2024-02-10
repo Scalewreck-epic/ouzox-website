@@ -89,7 +89,7 @@ const update_user_stats = async () => {
 
 const create_cookie = (cookie_name, token) => {
   const expiration = calculate_expiration(false).toUTCString();
-  document.cookie = `${cookie_name}=${token}; expires=${expiration};`;
+  document.cookie = `${cookie_name}=${token}; expires=${expiration}; samesite=lax; secure;`;
 };
 
 const clear_cookie = () => {
