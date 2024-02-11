@@ -346,7 +346,6 @@ const on_submit = async (event) => {
       const game = await upload_game(gameRequestOptions);
 
       if (game.game) {
-        console.log("Game uploaded successfully");
         error_label.textContent = "Successfully published game!";
       } else {
         error_label.textContent = game.message;
