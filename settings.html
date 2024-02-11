@@ -72,7 +72,6 @@
 					<input type="text" class="text-box" id="status-input" placeholder="What's new?">
 					<button class="login-button" id="save-status">Save Status</button>
 				</div>
-				<h1 class="settings-category-title">Payment</h1>
 				<div class="settings-category">
 					<h2>Credit Cards</h2>
 					<p>Attach a credit card to your account so you can simply press "Purchase" without typing your information.</p>
@@ -91,13 +90,24 @@
 					</div>
 					<button class="login-button" id="save-email">Save Card</button>
 				</div>
+				<h1 class="settings-category-title">Publisher</h1>
 				<div class="settings-category">
 					<h2>Payment Processors</h2>
 					<p>Individual payment processors must be connected to your account in order to receive payments.</p>
-					<h3>Paypal</h3>
-					<button class="login-button" id="save-email">Connect to Paypal</button>
-					<h3>Stripe</h3>
-					<button class="login-button" id="save-email">Connect with Stripe</button>
+					<button class="login-button" id="save-stripe-billing">Connect with Stripe</button>
+				</div>
+				<div class="settings-category">
+					<h2>Support Email</h2>
+					<p>This email will be shared with buyers if they encounter an issue with your content.</p>
+					<input type="email" class="text-box" id="support-email-input" placeholder="support@email.com">
+					<button class="login-button" id="save-semail">Save Support Email</button>
+				</div>
+				<div class="settings-category">
+					<h2>Google Analytics</h2>
+					<p>Connect additional analytics to your game pages to get more detailed information about your downloaders.</p>
+					<p>Providing an ID will enable analytics on all pages and sub-pages you have created on Ouzox.</p>
+					<input type="text" class="text-box" id="gtag-input" placeholder="G-XXXXXXXXXX">
+					<button class="login-button" id="save-gtag">Save Google Tag</button>
 				</div>
 				<div class="extra-buttons">
 					<button class="login-button" id="logout-profile">Logout</button>
