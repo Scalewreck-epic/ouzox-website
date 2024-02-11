@@ -119,7 +119,7 @@ export const request = (
   return fetch_request(
     endpoint_url,
     options,
-    redirect && window.location.pathname.includes("/404"),
+    redirect && !window.location.pathname.includes("/404"),
     name
   );
 };
