@@ -15,9 +15,9 @@ const calculate_expiration = (past) => {
   const currentDate = new Date();
 
   if (past == true) {
-    currentDate.setFullYear(currentDate.getFullYear() - annualExpiration);
+    currentDate.setFullYear(currentDate.getFullYear() - 1);
   } else {
-    currentDate.setFullYear(currentDate.getFullYear() + annualExpiration);
+    currentDate.setFullYear(currentDate.getFullYear() + 1);
   }
 
   return currentDate;
