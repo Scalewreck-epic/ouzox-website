@@ -92,13 +92,15 @@ const create_cookie = (cookie_name, token) => {
   document.cookie = `${cookie_name}=${token}; expires=${expiration}; samesite=lax; secure;`;
 };
 
-const clear_cookie = () => {
+const delete_cookie = (cookie_name) => {
   const expiration = calculate_expiration(true).toUTCString();
-  const cookies = document.cookie.split(";");
+  document.cookie = `${cookie_name}=; expires=${expiration}`;
+};
 
-  cookies.forEach(function (cookie) {
+const clear_cookie = () => {
+  document.cookie.split(";").forEach(function (cookie) {
     const name = cookie.split("=")[0].trim();
-    document.cookie = `${name}=; expires=${expiration};`;
+    delete_cookie(name);
   });
 };
 
