@@ -11,6 +11,35 @@ const edit_user_status =
 
 import { request } from "../base/apiManager.js";
 
+const calculate_expiration = (past) => {
+  const currentDate = new Date();
+
+  if (past == true) {
+    currentDate.setFullYear(currentDate.getFullYear() - annualExpiration);
+  } else {
+    currentDate.setFullYear(currentDate.getFullYear() + annualExpiration);
+  }
+
+  return currentDate;
+};
+
+const delete_cookie = (cookie_name) => {
+  const expiration = calculate_expiration(true).toUTCString();
+  document.cookie = `${cookie_name}=; expires=${expiration}`;
+};
+
+export const create_cookie = (cookie_name, token) => {
+  const expiration = calculate_expiration(false).toUTCString();
+  document.cookie = `${cookie_name}=${token}; expires=${expiration}; samesite=lax; secure;`;
+};
+
+export const clear_cookie = () => {
+  document.cookie.split(";").forEach(function (cookie) {
+    const name = cookie.split("=")[0].trim();
+    delete_cookie(name);
+  });
+};
+
 const change_session_data = async (headers, endpoint) => {
   const error_label = document.getElementById("error-label");
   error_label.innerHTML = "Changing settings...";
@@ -156,12 +185,14 @@ export const fetch_user = async () => {
     const result = await request(
       `${get_user_with_session}${session_id}`,
       get_user_options,
-      true,
+      false,
       "get user (session)"
     );
 
     if (result) {
       return result;
+    } else {
+      clear_cookie();
     }
   }
 };

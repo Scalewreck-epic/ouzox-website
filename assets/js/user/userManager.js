@@ -8,6 +8,8 @@ const loginPaths = ["/login", "/signup"];
 
 import {
   fetch_cookie,
+  create_cookie,
+  clear_cookie,
   fetch_user,
   fetch_alternative_user,
   change_email_data,
@@ -22,18 +24,6 @@ console.info(
 
 const cookie_data = fetch_cookie("session_id");
 const user = await fetch_user();
-
-const calculate_expiration = (past) => {
-  const currentDate = new Date();
-
-  if (past == true) {
-    currentDate.setFullYear(currentDate.getFullYear() - annualExpiration);
-  } else {
-    currentDate.setFullYear(currentDate.getFullYear() + annualExpiration);
-  }
-
-  return currentDate;
-};
 
 const update_username = () => {
   const username = document.getElementById("username");
@@ -85,23 +75,6 @@ const update_user_stats = async () => {
   email_stat.textContent = `Email: ${user.email}`;
   join_time.textContent = `Creation: ${formattedDate}`;
   profile_link.setAttribute("href", `user?id=${user.id}`);
-};
-
-const create_cookie = (cookie_name, token) => {
-  const expiration = calculate_expiration(false).toUTCString();
-  document.cookie = `${cookie_name}=${token}; expires=${expiration}; samesite=lax; secure;`;
-};
-
-const delete_cookie = (cookie_name) => {
-  const expiration = calculate_expiration(true).toUTCString();
-  document.cookie = `${cookie_name}=; expires=${expiration}`;
-};
-
-const clear_cookie = () => {
-  document.cookie.split(";").forEach(function (cookie) {
-    const name = cookie.split("=")[0].trim();
-    delete_cookie(name);
-  });
 };
 
 const is_valid_password = (password_input) => {
