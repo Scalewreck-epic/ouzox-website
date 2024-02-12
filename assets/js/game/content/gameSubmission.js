@@ -1,12 +1,17 @@
 const create_product =
   "https://x8ki-letl-twmt.n7.xano.io/api:iwAsZq4E/products";
 const set_price = "https://x8ki-letl-twmt.n7.xano.io/api:tFdG2Vz-/prices";
+const create_payment_link =
+  "https://x8ki-letl-twmt.n7.xano.io/api:nrRyaavp/payment_link";
 const create_game = "https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv/games";
 
 const uploadGame = document.getElementById("upload-game");
 
 import { fetch_user } from "../../user/sessionManager.js";
 import { request } from "../../base/apiManager.js";
+
+const myHeaders = new Headers();
+myHeaders.append("Content-Type", "application/json");
 
 const format_file_size = (fileSizeInBytes) => {
   if (fileSizeInBytes < Math.pow(1024, 2)) {
@@ -15,30 +20,6 @@ const format_file_size = (fileSizeInBytes) => {
     return `${(fileSizeInBytes / Math.pow(1024, 2)).toFixed(2)} MB`;
   } else {
     return `${(fileSizeInBytes / Math.pow(1024, 3)).toFixed(2)} GB`;
-  }
-};
-
-const upload_product = async () => {
-  const productRequestOptions = {
-    method: "POST",
-    headers: myHeaders,
-    body: JSON.stringify({
-      product: {
-        name: title_input.value,
-        active: "false",
-      },
-    }),
-  };
-
-  const result = await request(
-    create_product,
-    productRequestOptions,
-    true,
-    "product upload"
-  );
-
-  if (result) {
-    return result;
   }
 };
 
@@ -99,6 +80,54 @@ const set_product_price = async (product_id) => {
     priceRequestOptions,
     true,
     "price creation"
+  );
+
+  if (result) {
+    return result;
+  }
+};
+
+const upload_product = async () => {
+  const productRequestOptions = {
+    method: "POST",
+    headers: myHeaders,
+    body: JSON.stringify({
+      product: {
+        name: title_input.value,
+        active: "false",
+      },
+    }),
+  };
+
+  const result = await request(
+    create_product,
+    productRequestOptions,
+    true,
+    "product upload"
+  );
+
+  if (result) {
+    return result;
+  }
+};
+
+const upload_payment_link = async (price_id) => {
+  const paymentLinkOptions = {
+    method: "POST",
+    headers: myHeaders,
+    body: JSON.stringify({
+      line_items: {
+        price: price_id,
+        quantity: 1,
+      },
+    }),
+  };
+
+  const result = await request(
+    create_payment_link,
+    paymentLinkOptions,
+    true,
+    "payment link upload"
   );
 
   if (result) {
@@ -217,15 +246,16 @@ const on_submit = async (event) => {
       reader.readAsDataURL(image);
     });
 
-    const myHeaders = new Headers();
-    myHeaders.append("Content-Type", "application/json");
-
     error_label.textContent = "Creating game page...";
 
     if (price_input.value > 0) {
       const product_result = await upload_product();
 
       if (product_result && product_result.id) {
+        error_label.textContent = "Setting price...";
+        const price = await set_product_price(product_result.id);
+        const payment_link = await upload_payment_link(price.id);
+
         const gameRequestOptions = {
           method: "POST",
           headers: myHeaders,
@@ -247,6 +277,7 @@ const on_submit = async (event) => {
             defaultColors: true,
             icon_upload: imageURI,
             product_id: product_result.id,
+            payment_link: payment_link.url,
             platforms: {
               windows: game_platforms[0].Enabled,
               mac: game_platforms[1].Enabled,
@@ -279,13 +310,9 @@ const on_submit = async (event) => {
           }),
         };
 
-        error_label.textContent = "Setting price...";
-
         const game = await upload_game(gameRequestOptions);
-        const price = await set_product_price(product_result.id);
 
-        if (price && price.active && game.game) {
-          console.log("Game and product created successfully");
+        if (price && price.active && game) {
           error_label.textContent = "Successfully published game!";
         }
       }
@@ -311,6 +338,7 @@ const on_submit = async (event) => {
           defaultColors: true,
           icon_upload: imageURI,
           product_id: "none",
+          payment_link: "none",
           platforms: {
             windows: game_platforms[0].Enabled,
             mac: game_platforms[1].Enabled,
@@ -345,10 +373,8 @@ const on_submit = async (event) => {
 
       const game = await upload_game(gameRequestOptions);
 
-      if (game.game) {
+      if (game) {
         error_label.textContent = "Successfully published game!";
-      } else {
-        error_label.textContent = game.message;
       }
     }
   } else {

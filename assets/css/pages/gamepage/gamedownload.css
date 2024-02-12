@@ -8,12 +8,14 @@
   font-size: 1.125rem;
   font-weight: bold;
   margin-right: 0.625rem;
-  background-color: #4caf50;
-  color: white;
-  text-decoration: none;
+  border: solid #4caf50 0.2rem;
   border-radius: 0.25rem;
   cursor: pointer;
-  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+  color: white;
+}
+
+.game-download-button:hover {
+  color: #4caf50;
 }
 
 .game-download-input {

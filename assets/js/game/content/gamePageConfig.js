@@ -26,6 +26,7 @@ class GameData {
     this.filesize = rawGameData.size;
     this.agerating = rawGameData.age_rating;
     this.icon = new URL(rawGameData.icon.url);
+    this.payment_link = new URL(rawGameData.payment_link);
     this.created = createdFormattedDate;
     this.updated = updatedFormattedDate;
     this.datestodays = datestodays;
@@ -464,9 +465,7 @@ const game_handler = async (gameId) => {
     }
   }
 
-  download_button.addEventListener("click", function () {
-    window.location.assign(`download?g=${gameData.download_key}`);
-  });
+  download_button.setAttribute("href", gameData.payment_link);
 
   if (user != null && user.name == gameData.developer.username) {
     const game_public = document.getElementById("public");
@@ -988,5 +987,5 @@ if (gameIdParam != null) {
   game_handler(gameIdParam);
 } else {
   console.warn("There is no game id.");
-  window.location.assign("404");
+  //window.location.assign("404");
 }
