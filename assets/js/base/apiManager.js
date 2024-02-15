@@ -56,7 +56,7 @@ const fetchRequest = async (
   options,
   redirect,
   name,
-  timeout = 1
+  timeout = 5000
 ) => {
   const start = Date.now();
 
