@@ -1,4 +1,4 @@
-const handle_error = (response, redirect) => {
+const handleError = (response, redirect) => {
   const statusCode = response.status || 500;
 
   if (redirect) {
@@ -8,14 +8,14 @@ const handle_error = (response, redirect) => {
   }
 };
 
-const validate_endpoint = (endpoint) => {
+const validateEndpoint = (endpoint) => {
   if (typeof endpoint !== "string") {
     throw new Error(`Expected endpoint to be a string: ${typeof endpoint}`);
   }
 
   try {
     const url = new URL(endpoint);
-    if (url.protocol == "https:") {
+    if (url.protocol === "https:") {
       return url;
     } else {
       throw new Error("Invalid endpoint URL: HTTPS required");
@@ -25,8 +25,8 @@ const validate_endpoint = (endpoint) => {
   }
 };
 
-const validate_options = (options) => {
-  if (typeof options !== "object" || options == null) {
+const validateOptions = (options) => {
+  if (typeof options !== "object" || options === null) {
     throw new Error(`Expected options to be an object: ${typeof options}`);
   }
 
@@ -41,8 +41,8 @@ const validate_options = (options) => {
   }
 };
 
-const log_request = (duration, name, response) => {
-  var log = {
+const logRequest = (duration, name, response) => {
+  const log = {
     event: name,
     status: response.status,
     duration: `${duration}ms`,
@@ -51,60 +51,53 @@ const log_request = (duration, name, response) => {
   console.info(`${name} event:`, log);
 };
 
-// Fetch Request as a main preference.
-const fetch_request = (endpoint_url, options, redirect, name) => {
-  return new Promise(async (resolve, reject) => {
-    const start = Date.now();
+const fetchRequest = async (
+  endpointUrl,
+  options,
+  redirect,
+  name,
+  timeout = 1
+) => {
+  const start = Date.now();
 
-    try {
-      const response = await fetch(endpoint_url, options);
-      const duration = Date.now() - start;
+  const abortController = new AbortController();
+  const { signal } = abortController;
 
-      log_request(duration, name, response);
+  options.signal = signal;
 
-      if (!response.ok) {
-        return reject(handle_error(response, redirect));
-      }
+  const timeoutId = setTimeout(() => {
+    abortController.abort();
+  }, timeout);
 
-      resolve(await response.json());
-    } catch (error) {
-      console.error("Fetch error:", error);
-      reject(handle_error(error.response, redirect));
-    }
-  });
-};
+  try {
+    const response = await fetch(endpointUrl, options);
+    clearTimeout(timeoutId);
+    const duration = Date.now() - start;
 
-// XMLHttpRequest is here if you need it :).
-const xhrequest = (endpoint_url, options, redirect, name) => {
-  return new Promise((resolve, reject) => {
-    const start = Date.now();
-    const xhr = new XMLHttpRequest();
-    xhr.open(options.method || "GET", endpoint_url, true);
+    logRequest(duration, name, response);
 
-    if (options.headers) {
-      Object.entries(options.headers).forEach(([key, value]) => {
-        xhr.setRequestHeader(key, value);
-      });
+    if (!response.ok) {
+      throw handleError(response, redirect);
     }
 
-    xhr.onload = () => {
-      const duration = Date.now() - start;
-      log_request(duration, name, xhr);
-
-      if (xhr.status < 200 || xhr.status >= 400) {
-        return reject(handle_error(xhr, redirect));
-      }
-
-      resolve(JSON.parse(xhr.responseText));
-    };
-
-    xhr.onerror = () => {
-      console.error("XHR error:");
-      reject(handle_error(xhr, redirect));
-    };
-
-    options.body ? xhr.send(options.body) : xhr.send();
-  });
+    return await response.json();
+  } catch (error) {
+    if (error.name === "AbortError") {
+      console.error(`Request to '${name}' was aborted due to timeout`);
+      throw handleError({ status: 504 }, redirect);
+    } else if (error instanceof TypeError) {
+      console.error(`Network error: ${error.message}`);
+      throw handleError({ status: 503 }, redirect);
+    } else if (error instanceof SyntaxError) {
+      console.error(`JSON parsing error: ${error.message}`);
+      throw handleError({ status: 400 }, redirect);
+    } else {
+      console.error(`Unexpected error: ${error.message}`);
+      throw handleError(error, redirect);
+    }
+  } finally {
+    abortController.abort();
+  }
 };
 
 export const request = (
@@ -113,13 +106,7 @@ export const request = (
   redirect = false,
   name = "unknown request"
 ) => {
-  validate_options(options);
-  const endpoint_url = validate_endpoint(endpoint);
-
-  return fetch_request(
-    endpoint_url,
-    options,
-    redirect && !window.location.pathname.includes("/404"),
-    name
-  );
+  validateOptions(options);
+  const endpointUrl = validateEndpoint(endpoint);
+  return fetchRequest(endpointUrl, options, redirect, name);
 };

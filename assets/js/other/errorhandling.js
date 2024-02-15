@@ -50,6 +50,10 @@ switch (error_code) {
     message.textContent =
       "Ouzox is currently unavailable. Please try again later.";
     break;
+  case 504:
+    message_header.textContent = "Gateway Timeout";
+    message.textContent = "Ouzox did not receive a timely response.";
+    break;
   default:
     message_header.textContent = "Anomaly Error.";
     message.textContent = "An unexpected error has occurred. Please report this issue to Ouzox.";
