@@ -1,3 +1,5 @@
+const timeout = 5000;
+
 const handleError = (response, redirect) => {
   const statusCode = response.status || 500;
 
@@ -55,8 +57,7 @@ const fetchRequest = async (
   endpointUrl,
   options,
   redirect,
-  name,
-  timeout = 5000
+  name
 ) => {
   const start = Date.now();
 
@@ -82,19 +83,11 @@ const fetchRequest = async (
 
     return await response.json();
   } catch (error) {
-    if (error.name === "AbortError") {
-      console.error(`Request to '${name}' was aborted due to timeout`);
+    if (error.name == "AbortError") {
       throw handleError({ status: 504 }, redirect);
-    } else if (error instanceof TypeError) {
-      console.error(`Network error: ${error.message}`);
-      throw handleError({ status: 503 }, redirect);
-    } else if (error instanceof SyntaxError) {
-      console.error(`JSON parsing error: ${error.message}`);
-      throw handleError({ status: 400 }, redirect);
-    } else {
-      console.error(`Unexpected error: ${error.message}`);
-      throw handleError(error, redirect);
     }
+
+    throw new Error(`Fetch ${error.name || typeof error}:`, error);
   } finally {
     abortController.abort();
   }

@@ -48,6 +48,6 @@ if (gameIdParam && priceIdParam) {
 } else {
   console.warn("There are no params.");
   window.location.assign(
-    `404?er=${error.response.status ? error.response.status : 500}`
+    `404`
   );
 }

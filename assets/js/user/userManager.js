@@ -5,24 +5,15 @@ const auth_login =
 const restrictedPaths = ["/settings", "/upload", "/dashboard"];
 const loginPaths = ["/login", "/signup"];
 
-import {
-  fetch_cookie,
-  create_cookie,
-  clear_cookie,
-  fetch_user,
-  fetch_alternative_user,
-  change_email_data,
-  change_password_data,
-  change_status_data,
-} from "./sessionManager.js";
+import * as session from "./sessionManager.js";
 import { request } from "../base/apiManager.js";
 
 console.info(
   "Ouzox is open source! https://github.com/Scalewreck-epic/ouzox-website"
 );
 
-const cookie_data = fetch_cookie("session_id");
-const user = await fetch_user();
+const cookie_data = session.fetch_cookie("session_id");
+const user = await session.fetch_user();
 
 const update_username = () => {
   const username = document.getElementById("username");
@@ -153,7 +144,7 @@ const create_session_data = async () => {
       );
 
       if (result) {
-        create_cookie("session_id", result.authToken);
+        session.create_cookie("session_id", result.authToken);
         error_label.textContent = "Successfully created account!";
         window.location.assign("index");
       } else {
@@ -192,7 +183,7 @@ const fetch_session_data = async () => {
       const result = await request(auth_login, requestOptions, false, "login");
 
       if (result) {
-        create_cookie("session_id", result.authToken);
+        session.create_cookie("session_id", result.authToken);
         error_label.textContent = "Successfully logged in!";
         window.location.assign("index");
       } else {
@@ -239,7 +230,7 @@ const setup_profile_page = async () => {
   const urlParams = new URLSearchParams(window.location.search);
   const user_id = urlParams.get("id");
 
-  const other_user = await fetch_alternative_user(user_id);
+  const other_user = await session.fetch_alternative_user(user_id);
 
   const rfcDate = new Date(other_user.created_at).toUTCString();
   const dateObj = new Date(Date.parse(rfcDate));
@@ -261,9 +252,9 @@ const setup_settings_page = () => {
   const status_button = document.getElementById("save-status");
   const logout_button = document.getElementById("logout-profile");
 
-  email_button.addEventListener("click", () => change_email_data());
-  password_button.addEventListener("click", () => change_password_data());
-  status_button.addEventListener("click", () => change_status_data());
+  email_button.addEventListener("click", () => session.change_email_data());
+  password_button.addEventListener("click", () => session.change_password_data());
+  status_button.addEventListener("click", () => session.change_status_data());
   logout_button.addEventListener("click", () => logout());
 
   update_user_stats();

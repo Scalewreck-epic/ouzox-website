@@ -219,7 +219,6 @@ const set_genre_relevancy = () => {
       const similarity = calculate_similarity(search_query, genre.name);
 
       if (similarity > similarityThreshold) {
-        console.log(`${genre.name} (Genre) similarity: ${similarity}`);
         return {
           ...genre,
           relevance: similarity,
@@ -250,7 +249,6 @@ const set_game_relevancy = () => {
       const similarity = nameSimilarity * 0.7 + summarySimilarity * 0.3;
 
       if (similarity > similarityThreshold) {
-        console.log(`${game.name} (Game) similarity: ${similarity}`);
         return {
           ...game,
           relevance: similarity,
