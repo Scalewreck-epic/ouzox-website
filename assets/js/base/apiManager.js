@@ -53,12 +53,7 @@ const logRequest = (duration, name, response) => {
   console.info(`${name} event:`, log);
 };
 
-const fetchRequest = async (
-  endpointUrl,
-  options,
-  redirect,
-  name
-) => {
+const fetchRequest = async (endpointUrl, options, redirect, name) => {
   const start = Date.now();
 
   const abortController = new AbortController();

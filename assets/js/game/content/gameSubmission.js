@@ -116,10 +116,10 @@ const upload_payment_link = async (price_id) => {
     method: "POST",
     headers: myHeaders,
     body: JSON.stringify({
-      line_items: {
-        price: price_id,
-        quantity: 1,
-      },
+      line_items: [{
+        "price": price_id,
+        "quantity": 1,
+      }],
     }),
   };
 
