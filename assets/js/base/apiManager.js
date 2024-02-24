@@ -23,7 +23,7 @@ const validateEndpoint = (endpoint) => {
       throw new Error("Invalid endpoint URL: HTTPS required");
     }
   } catch (error) {
-    throw new Error(`Invalid endpoint URL: ${endpoint}`);
+    throw new Error(`Invalid endpoint URL: ${endpoint}`, error);
   }
 };
 
@@ -37,9 +37,7 @@ const validateOptions = (options) => {
   );
 
   if (unexpectedProperties.length > 0) {
-    throw new Error(
-      `Unexpected properties in options object: ${unexpectedProperties}`
-    );
+    throw new Error("Unexpected properties in options object:", unexpectedProperties);
   }
 };
 
