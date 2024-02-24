@@ -48,12 +48,13 @@ const apply_header = (button) => {
   const selection = window.getSelection();
   const selectedText = selection.toString();
 
-  document.execCommand("formatBlock", false, `<h${level}>`);
-
   if (selection.rangeCount > 0) {
     const range = selection.getRangeAt(0);
+    const header = document.createElement(`h${level}`);
+    header.textContent = selectedText;
+
     range.deleteContents();
-    range.insertNode(document.createTextNode(selectedText));
+    range.insertNode(header);
   }
 };
 
