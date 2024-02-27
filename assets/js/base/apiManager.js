@@ -1,5 +1,3 @@
-const timeout = 5000;
-
 const handleError = (response, redirect) => {
   const statusCode = response.status || 500;
 
