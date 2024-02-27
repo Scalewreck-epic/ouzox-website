@@ -54,21 +54,8 @@ const logRequest = (duration, name, response) => {
 const fetchRequest = async (endpointUrl, options, redirect, name) => {
   const start = Date.now();
 
-  const abortController = new AbortController();
-  const { signal } = abortController;
-
-  options.signal = signal;
-
-  const timeoutId = setTimeout(() => {
-    abortController.abort();
-  }, timeout);
-
   try {
     const response = await fetch(endpointUrl, options);
-    clearTimeout(timeoutId);
-    const duration = Date.now() - start;
-
-    logRequest(duration, name, response);
 
     if (!response.ok) {
       throw handleError(response, redirect);
@@ -76,13 +63,10 @@ const fetchRequest = async (endpointUrl, options, redirect, name) => {
 
     return await response.json();
   } catch (error) {
-    if (error.name == "AbortError") {
-      throw handleError({ status: 504 }, redirect);
-    }
-
     throw new Error(`Fetch ${error.name || typeof error}:`, error);
   } finally {
-    abortController.abort();
+    const duration = Date.now() - start;
+    logRequest(duration, name, response);
   }
 };
 
