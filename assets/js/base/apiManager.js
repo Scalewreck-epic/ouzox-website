@@ -54,17 +54,17 @@ const fetchRequest = async (endpointUrl, options, redirect, name) => {
 
   try {
     const response = await fetch(endpointUrl, options);
+    const duration = Date.now() - start;
 
     if (!response.ok) {
       throw handleError(response, redirect);
     }
 
+    logRequest(duration, name, response);
+
     return await response.json();
   } catch (error) {
     throw new Error(`Fetch ${error.name || typeof error}:`, error);
-  } finally {
-    const duration = Date.now() - start;
-    logRequest(duration, name, response);
   }
 };
 
