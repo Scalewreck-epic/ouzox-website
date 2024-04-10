@@ -11,7 +11,7 @@ const category_name = (urlParams.get("n") || "");
 let prices = [];
 let genres = [];
 
-let offset = 30;
+let page = 1;
 const similarityThreshold = 0.30;
 
 const search_algorithm = (a, b) => {
@@ -356,6 +356,7 @@ const load_more_games = () => {
 
   results_label.textContent =
     games.length != 1 ? `(${games.length} results)` : "(1 result)";
+  
 
   if (window.location.pathname.includes("/search")) {
     sort_games(
@@ -400,7 +401,7 @@ const load_games = async () => {
     }
 
     const fresh_games_list = await request("https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv/list_games", fresh_games_options, false);
-    display_games(document.getElementById("fresh-games-list"), document.getElementById("fresh-games"), fresh_games_list.games);
+    display_games(document.getElementById("fresh-games-list"), document.getElementById("fresh-games"), fresh_games_list.games.items);
   }
 };
 
