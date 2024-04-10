@@ -1,4 +1,3 @@
-const get_games = "https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv/games";
 const get_prices = "https://x8ki-letl-twmt.n7.xano.io/api:tFdG2Vz-/prices";
 
 import { fetch_user, fetch_alternative_user } from "../user/sessionManager.js";
@@ -356,28 +355,17 @@ const load_more_games = () => {
 
   results_label.textContent =
     games.length != 1 ? `(${games.length} results)` : "(1 result)";
-  
 
   if (window.location.pathname.includes("/search")) {
-    sort_games(
-      "relevant-games-list",
-      games,
-      search_algorithm,
-      offset,
-      offset * 2
-    );
+    // Load more search results
   } else if (window.location.pathname.includes("/category")) {
-    sort_games(
-      "genre-games-list",
-      games,
-      category_algorithm,
-      offset,
-      offset * 2
-    );
+    // Load more category results
   }
 };
 
 const load_games = async () => {
+  const get_games_list = "https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv/list_games";
+
   if (window.location.pathname.includes("/search")) {
     const results_label = document.getElementById("results-label");
     // Show the search results
@@ -388,20 +376,65 @@ const load_games = async () => {
     const myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
 
-    // Fresh Games
+    const perPage = 30;
+
     const fresh_games_options = {
       method: "POST",
       headers: myHeaders,
       body: JSON.stringify({
         orderBy: "asc",
         sortColumn: "created_at",
-        perPage: 30,
+        perPage: perPage,
         page: 1,
+        publicOnly: true,
       })
     }
 
-    const fresh_games_list = await request("https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv/list_games", fresh_games_options, false);
+    const hot_games_options = {
+      method: "POST",
+      headers: myHeaders,
+      body: JSON.stringify({
+        orderBy: "desc",
+        sortColumn: "updated",
+        perPage: perPage,
+        page: 1,
+        publicOnly: true,
+      })
+    }
+
+    const sponsored_games_options = {
+      method: "POST",
+      headers: myHeaders,
+      body: JSON.stringify({
+        orderBy: "desc",
+        sortColumn: "sponsor_money",
+        perPage: perPage,
+        page: 1,
+        publicOnly: true,
+      })
+    }
+
+    const bestsellers_games_options = {
+      method: "POST",
+      headers: myHeaders,
+      body: JSON.stringify({
+        orderBy: "desc",
+        sortColumn: "downloads",
+        perPage: perPage,
+        page: 1,
+        publicOnly: true,
+      })
+    }
+
+    const fresh_games_list = await request(get_games_list, fresh_games_options, false);
+    const hot_games_list = await request(get_games_list, hot_games_options, false);
+    const sponsored_games_list = await request(get_games_list, sponsored_games_options, false);
+    const bestsellers_games_list = await request(get_games_list, bestsellers_games_options, false);
+
     display_games(document.getElementById("fresh-games-list"), document.getElementById("fresh-games"), fresh_games_list.games.items);
+    display_games(document.getElementById("hot-games-list"), document.getElementById("hot-games"), hot_games_list.games.items);
+    display_games(document.getElementById("sponsored-games-list"), document.getElementById("sponsored-games"), sponsored_games_list.games.items);
+    display_games(document.getElementById("bestseller-games-list"), document.getElementById("bestseller-games"), bestsellers_games_list.games.items);
   }
 };
 
@@ -500,7 +533,7 @@ const on_scroll = () => {
     const pageHeight = document.documentElement.scrollHeight;
 
     if (scrollPosition >= pageHeight - 100) {
-      offset += 100;
+      page += 1;
       load_more_games();
     }
   }
