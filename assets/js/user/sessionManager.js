@@ -44,7 +44,7 @@ const change_session_data = async (headers, endpoint) => {
   const error_label = document.getElementById("error-label");
   error_label.innerHTML = "Changing settings...";
 
-  const result = await request(endpoint, headers, false, "change session data");
+  const result = await request(endpoint, headers, false);
 
   if (result) {
     error_label.textContent = result.message;
@@ -162,7 +162,6 @@ export const fetch_alternative_user = async (user_id) => {
     `${get_user_with_id}${user_id}`,
     get_user_options,
     true,
-    "get user (id)"
   );
 
   if (result) {
@@ -186,7 +185,6 @@ export const fetch_user = async () => {
       `${get_user_with_session}${session_id}`,
       get_user_options,
       false,
-      "get user (session)"
     );
 
     if (result) {

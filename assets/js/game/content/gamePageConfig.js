@@ -87,7 +87,6 @@ const get_game_data = async (gameId) => {
     `${get_game}${gameId}`,
     options,
     true,
-    "game data"
   );
 
   if (result) {
@@ -109,7 +108,6 @@ const fetch_price_data = async (rawGameData) => {
     `${get_price}${rawGameData.product_id}`,
     options,
     true,
-    "price data"
   );
 
   if (result) {
@@ -202,7 +200,6 @@ const update_product = async (data, gameId, commitChangesButton) => {
     `${update_game}${gameId}`,
     data,
     false,
-    "configure game"
   );
 
   if (result) {

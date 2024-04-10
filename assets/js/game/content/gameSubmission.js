@@ -28,7 +28,6 @@ const upload_game = async (gameRequestOptions) => {
     create_game,
     gameRequestOptions,
     true,
-    "game upload"
   );
 
   if (result) {
@@ -79,7 +78,6 @@ const set_product_price = async (product_id) => {
     set_price,
     priceRequestOptions,
     true,
-    "price creation"
   );
 
   if (result) {
@@ -103,7 +101,6 @@ const upload_product = async () => {
     create_product,
     productRequestOptions,
     true,
-    "product upload"
   );
 
   if (result) {
@@ -127,7 +124,6 @@ const upload_payment_link = async (price_id) => {
     create_payment_link,
     paymentLinkOptions,
     true,
-    "payment link upload"
   );
 
   if (result) {

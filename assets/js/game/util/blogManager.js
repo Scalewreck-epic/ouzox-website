@@ -52,7 +52,6 @@ const result = await request(
   blog_posts,
   requestOptions,
   false,
-  "blog posts"
 );
 const posts = result.response.result.posts;
 

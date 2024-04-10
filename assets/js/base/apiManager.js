@@ -39,28 +39,13 @@ const validateOptions = (options) => {
   }
 };
 
-const logRequest = (duration, name, response) => {
-  const log = {
-    event: name,
-    status: response.status,
-    duration: `${duration}ms`,
-  };
-
-  console.info(`${name} event:`, log);
-};
-
-const fetchRequest = async (endpointUrl, options, redirect, name) => {
-  const start = Date.now();
-
+const fetchRequest = async (endpointUrl, options, redirect) => {
   try {
     const response = await fetch(endpointUrl, options);
-    const duration = Date.now() - start;
 
     if (!response.ok) {
       throw handleError(response, redirect);
     }
-
-    logRequest(duration, name, response);
 
     return await response.json();
   } catch (error) {
@@ -72,9 +57,8 @@ export const request = (
   endpoint,
   options,
   redirect = false,
-  name = "unknown request"
 ) => {
   validateOptions(options);
   const endpointUrl = validateEndpoint(endpoint);
-  return fetchRequest(endpointUrl, options, redirect, name);
+  return fetchRequest(endpointUrl, options, redirect);
 };

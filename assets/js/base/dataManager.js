@@ -540,7 +540,6 @@ const fetch_games = async () => {
       get_prices,
       price_request_options,
       true,
-      "prices"
     );
 
     if (result) {
@@ -553,7 +552,6 @@ const fetch_games = async () => {
       get_games,
       game_request_options,
       true,
-      "games"
     );
 
     if (result) {

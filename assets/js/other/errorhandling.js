@@ -51,7 +51,7 @@ switch (error_code) {
       "Ouzox is currently unavailable. Please try again later.";
     break;
   default:
-    message_header.textContent = "Anomaly Error.";
+    message_header.textContent = "Unknown Error.";
     message.textContent = "An unexpected error has occurred. Please report this issue to Ouzox.";
     break;
 }

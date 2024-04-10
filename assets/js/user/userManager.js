@@ -140,7 +140,6 @@ const create_session_data = async () => {
         auth_signup,
         requestOptions,
         false,
-        "signup"
       );
 
       if (result) {
@@ -180,7 +179,7 @@ const fetch_session_data = async () => {
 
       error_label.textContent = "Logging you in...";
 
-      const result = await request(auth_login, requestOptions, false, "login");
+      const result = await request(auth_login, requestOptions, false);
 
       if (result) {
         session.create_cookie("session_id", result.authToken);

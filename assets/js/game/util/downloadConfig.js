@@ -20,7 +20,6 @@ async function set_game_data(gameId) {
       `${get_product}${gameId}`,
       options,
       true,
-      "game data"
     );
 
     if (result) {
