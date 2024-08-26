@@ -40,7 +40,7 @@ const update_username = () => {
     if (
       restrictedPaths.some((path) => window.location.pathname.includes(path))
     ) {
-      //window.location.assign("login");
+      window.location.assign("login");
     }
 
     dashboard_btn.remove();
