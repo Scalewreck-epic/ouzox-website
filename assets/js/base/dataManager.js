@@ -7,13 +7,102 @@ const category_name = (urlParams.get("n") || "");
 
 let prices = [];
 let genres = [];
+let allGames = [];
 
 class Genre {
   constructor(genre) {
     this.name = genre.name;
     this.count = genre.count;
   }
-}
+
+  create_genre_page = (name, amount) => {
+    const genre_button = document.createElement("a");
+    const genre_name = document.createElement("div");
+    const genre_games_amount = document.createElement("h4");
+  
+    genre_button.setAttribute("class", "genre-button");
+    genre_name.setAttribute("class", "genre-name");
+  
+    genre_name.textContent = name;
+    genre_button.setAttribute("href", `category?n=${name}`);
+  
+    genre_games_amount.textContent =
+      amount != 1 ? `${amount} games` : `${amount} game`;
+  
+    genre_button.appendChild(genre_name);
+    genre_button.appendChild(genre_games_amount);
+  
+    document.getElementById("genres-list").appendChild(genre_button);
+  }
+};
+
+class Game {
+  constructor(data) {
+    this.id = data.id;
+    this.name = data.name;
+    this.summary = data.summary;
+    this.icon = data.icon;
+    this.genre = data.genre;
+  }
+
+  calculate_diff_days = (timestamp) => {
+    const currentDate = new Date();
+  
+    const createdTimeDiff = Math.abs(currentDate.getTime() - timestamp);
+    const createdDiffDays = Math.ceil(createdTimeDiff / (1000 * 3600 * 24));
+  
+    return createdDiffDays;
+  }
+
+  create_game_page = (listElement, gamePrice) => {
+    const price = gamePrice.price / 100;
+    const currency = gamePrice.currency;
+  
+    const game_div = document.createElement("div");
+    const game_image = document.createElement("img");
+    const game_image_container = document.createElement("a");
+    const game_title = document.createElement("a");
+    const game_summary = document.createElement("div");
+    const game_price_div = document.createElement("div");
+    const game_price_text = document.createElement("span");
+  
+    game_div.setAttribute("class", "game");
+    game_image.setAttribute("class", "product-image");
+    game_image_container.setAttribute("class", "product-image-container");
+    game_title.setAttribute("class", "product-title");
+    game_summary.setAttribute("class", "product-summary");
+    game_price_div.setAttribute("class", "product-price");
+  
+    game_image.setAttribute("src", this.icon.url);
+    game_image_container.setAttribute("href", `game?g=${this.id}`);
+    game_title.setAttribute("href", `game?g=${this.id}`);
+  
+    game_title.textContent = this.name;
+    game_summary.textContent = this.summary;
+  
+    game_price_text.innerHTML = `${price} ${currency.toUpperCase()}`;
+  
+    game_price_div.appendChild(game_price_text);
+  
+    game_image_container.appendChild(game_image);
+    game_image_container.appendChild(game_price_div);
+  
+    const diff_days_created = this.calculate_diff_days(this.created);
+    const diff_days_updated = this.calculate_diff_days(this.updated);
+  
+    if (diff_days_created <= 7) {
+      createLabel("NEW", diff_days_created, game_image_container);
+    } else if (diff_days_updated <= 7) {
+      createLabel("UPDATED", diff_days_updated, game_image_container);
+    }
+  
+    game_div.appendChild(game_image_container);
+    game_div.appendChild(game_title);
+    game_div.appendChild(game_summary);
+  
+    listElement.appendChild(game_div);
+  }
+};
 
 const fetch_game_price = (game_id) => {
   const result = prices.find((item) => item.product === game_id);
@@ -28,15 +117,6 @@ const fetch_game_price = (game_id) => {
     price: 0,
     currency: "USD",
   };
-};
-
-const calculate_diff_days = (timestamp) => {
-  const currentDate = new Date();
-
-  const createdTimeDiff = Math.abs(currentDate.getTime() - timestamp);
-  const createdDiffDays = Math.ceil(createdTimeDiff / (1000 * 3600 * 24));
-
-  return createdDiffDays;
 };
 
 const createLabel = (labelText, numDays, targetElement) => {
@@ -56,75 +136,6 @@ const createLabel = (labelText, numDays, targetElement) => {
   label.addEventListener("mouseleave", function () {
     text.innerHTML = labelText;
   });
-};
-
-const create_genre_page = (name, amount) => {
-  const genre_button = document.createElement("a");
-  const genre_name = document.createElement("div");
-  const genre_games_amount = document.createElement("h4");
-
-  genre_button.setAttribute("class", "genre-button");
-  genre_name.setAttribute("class", "genre-name");
-
-  genre_name.textContent = name;
-  genre_button.setAttribute("href", `category?n=${name}`);
-
-  genre_games_amount.textContent =
-    amount != 1 ? `${amount} games` : `${amount} game`;
-
-  genre_button.appendChild(genre_name);
-  genre_button.appendChild(genre_games_amount);
-
-  document.getElementById("genres-list").appendChild(genre_button);
-};
-
-const create_game_page = (game, game_price, market) => {
-  const price = game_price.price / 100;
-  const currency = game_price.currency;
-
-  const game_div = document.createElement("div");
-  const game_image = document.createElement("img");
-  const game_image_container = document.createElement("a");
-  const game_title = document.createElement("a");
-  const game_summary = document.createElement("div");
-  const game_price_div = document.createElement("div");
-  const game_price_text = document.createElement("span");
-
-  game_div.setAttribute("class", "game");
-  game_image.setAttribute("class", "product-image");
-  game_image_container.setAttribute("class", "product-image-container");
-  game_title.setAttribute("class", "product-title");
-  game_summary.setAttribute("class", "product-summary");
-  game_price_div.setAttribute("class", "product-price");
-
-  game_image.setAttribute("src", game.icon.url);
-  game_image_container.setAttribute("href", `game?g=${game.id}`);
-  game_title.setAttribute("href", `game?g=${game.id}`);
-
-  game_title.textContent = game.name;
-  game_summary.textContent = game.summary;
-
-  game_price_text.innerHTML = `${price} ${currency.toUpperCase()}`;
-
-  game_price_div.appendChild(game_price_text);
-
-  game_image_container.appendChild(game_image);
-  game_image_container.appendChild(game_price_div);
-
-  const diff_days_created = calculate_diff_days(game.created);
-  const diff_days_updated = calculate_diff_days(game.updated);
-
-  if (diff_days_created <= 7) {
-    createLabel("NEW", diff_days_created, game_image_container);
-  } else if (diff_days_updated <= 7) {
-    createLabel("UPDATED", diff_days_updated, game_image_container);
-  }
-
-  game_div.appendChild(game_image_container);
-  game_div.appendChild(game_title);
-  game_div.appendChild(game_summary);
-
-  market.appendChild(game_div);
 };
 
 const load_user_games = async (user_id) => {
@@ -151,39 +162,30 @@ const display_games = async (listElement, categoryElement, games) => {
       categoryNoneElement.remove();
     }
     
-    games.forEach((game) => {
+    games.forEach((gameData) => {
+      const game = new Game(gameData);
+      allGames.push(game);
       const game_price = fetch_game_price(game.id.toString());
-      create_game_page(game, game_price, listElement);
+      game.create_game_page(listElement, game_price);
 
-      const genre = genres.find((genre) => genre.name === game.genre);
-  
-      if (!genre) {
-        const genreCount = games.filter(
-          (gameWsamegenre) => gameWsamegenre.genre == game.genre
-        ).length;
-  
-        const properties = {
+      if (!genres[game.genre]) {
+        genres[game.genre] = {
           name: game.genre,
-          count: genreCount,
-        };
-  
-        const newGenre = new Genre(properties);
-        genres.push(newGenre);
-      }
+          count: 1,
+        }
+      } else {
+        genres[game.genre].count++;
+      };
     });
   }
 }
 
-const load_genres = () => {
+const display_genres = async () => {
   if (window.location.pathname.includes("/search")) {
     // Sort genres by relevancy
   } else {
     genres.sort((a, b) => b.count - a.count);
   }
-
-  genres.forEach((genre) => {
-    create_genre_page(genre.name, genre.count);
-  });
 
   if (genres.length > 0) {
     const categoryNoneElement = document
@@ -194,7 +196,12 @@ const load_genres = () => {
       categoryNoneElement.remove();
     }
   }
-};
+
+  genres.forEach((genreData) => {
+    const genre = new Genre(genreData);
+    genre.create_genre_page(genreData.name, genreData.count);
+  });
+}
 
 const load_games = async () => {
   const list_games_api_url = "https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv/list_games";
@@ -268,6 +275,8 @@ const load_games = async () => {
     display_games(document.getElementById("hot-games-list"), document.getElementById("hot-games"), hot_games_list.games.items);
     display_games(document.getElementById("sponsored-games-list"), document.getElementById("sponsored-games"), sponsored_games_list.games.items);
     display_games(document.getElementById("bestseller-games-list"), document.getElementById("bestseller-games"), bestsellers_games_list.games.items);
+
+
   }
 };
 
@@ -306,7 +315,7 @@ const fetch_games = async () => {
   }
 
   if (genres.length > 0 && document.getElementById("genres-list") != null) {
-    load_genres();
+    display_genres();
   }
 };
 
