@@ -2,8 +2,8 @@ import { fetch_user, fetch_alternative_user } from "../user/sessionManager.js";
 import { request } from "./apiManager.js";
 
 const urlParams = new URLSearchParams(window.location.search);
-const search_query = (urlParams.get("q") || "");
-const category_name = (urlParams.get("n") || "");
+const searchQuery = (urlParams.get("q") || "");
+const categoryName = (urlParams.get("n") || "");
 
 let prices = [];
 let genres = [];
@@ -15,24 +15,24 @@ class Genre {
     this.count = genre.count;
   }
 
-  create_genre_page = (name, amount) => {
-    const genre_button = document.createElement("a");
-    const genre_name = document.createElement("div");
-    const genre_games_amount = document.createElement("h4");
+  createGenrePage = (name, amount) => {
+    const genreButton = document.createElement("a");
+    const genreName = document.createElement("div");
+    const genreGamesAmount = document.createElement("h4");
   
-    genre_button.setAttribute("class", "genre-button");
-    genre_name.setAttribute("class", "genre-name");
+    genreButton.setAttribute("class", "genre-button");
+    genreName.setAttribute("class", "genre-name");
   
-    genre_name.textContent = name;
-    genre_button.setAttribute("href", `category?n=${name}`);
+    genreName.textContent = name;
+    genreButton.setAttribute("href", `category?n=${name}`);
   
-    genre_games_amount.textContent =
+    genreGamesAmount.textContent =
       amount != 1 ? `${amount} games` : `${amount} game`;
   
-    genre_button.appendChild(genre_name);
-    genre_button.appendChild(genre_games_amount);
+    genreButton.appendChild(genreName);
+    genreButton.appendChild(genre_games_amount);
   
-    document.getElementById("genres-list").appendChild(genre_button);
+    document.getElementById("genres-list").appendChild(genreButton);
   }
 };
 
@@ -45,7 +45,7 @@ class Game {
     this.genre = data.genre;
   }
 
-  calculate_diff_days = (timestamp) => {
+  calculateDiffDays = (timestamp) => {
     const currentDate = new Date();
   
     const createdTimeDiff = Math.abs(currentDate.getTime() - timestamp);
@@ -54,58 +54,58 @@ class Game {
     return createdDiffDays;
   }
 
-  create_game_page = (listElement, gamePrice) => {
+  createGamePage = (listElement, gamePrice) => {
     const price = gamePrice.price / 100;
     const currency = gamePrice.currency;
   
-    const game_div = document.createElement("div");
-    const game_image = document.createElement("img");
-    const game_image_container = document.createElement("a");
-    const game_title = document.createElement("a");
-    const game_summary = document.createElement("div");
-    const game_price_div = document.createElement("div");
-    const game_price_text = document.createElement("span");
+    const gameContainer = document.createElement("div");
+    const gameImage = document.createElement("img");
+    const gameImageContainer = document.createElement("a");
+    const gameTitle = document.createElement("a");
+    const gameSummary = document.createElement("div");
+    const gamePriceContainer = document.createElement("div");
+    const gamePriceText = document.createElement("span");
   
-    game_div.setAttribute("class", "game");
-    game_image.setAttribute("class", "product-image");
-    game_image_container.setAttribute("class", "product-image-container");
-    game_title.setAttribute("class", "product-title");
-    game_summary.setAttribute("class", "product-summary");
-    game_price_div.setAttribute("class", "product-price");
+    gameContainer.setAttribute("class", "game");
+    gameImage.setAttribute("class", "product-image");
+    gameImageContainer.setAttribute("class", "product-image-container");
+    gameTitle.setAttribute("class", "product-title");
+    gameSummary.setAttribute("class", "product-summary");
+    gamePriceContainer.setAttribute("class", "product-price");
   
-    game_image.setAttribute("src", this.icon.url);
-    game_image_container.setAttribute("href", `game?g=${this.id}`);
-    game_title.setAttribute("href", `game?g=${this.id}`);
+    gameImage.setAttribute("src", this.icon.url);
+    gameImageContainer.setAttribute("href", `game?g=${this.id}`);
+    gameTitle.setAttribute("href", `game?g=${this.id}`);
   
-    game_title.textContent = this.name;
-    game_summary.textContent = this.summary;
+    gameTitle.textContent = this.name;
+    gameTitle.textContent = this.summary;
   
-    game_price_text.innerHTML = `${price} ${currency.toUpperCase()}`;
+    gamePriceText.innerHTML = `${price} ${currency.toUpperCase()}`;
   
-    game_price_div.appendChild(game_price_text);
+    gamePriceContainer.appendChild(gamePriceText);
   
-    game_image_container.appendChild(game_image);
-    game_image_container.appendChild(game_price_div);
+    gamePriceContainer.appendChild(gameImage);
+    gamePriceContainer.appendChild(gamePriceContainer);
   
-    const diff_days_created = this.calculate_diff_days(this.created);
-    const diff_days_updated = this.calculate_diff_days(this.updated);
+    const diffDaysCreated = this.calculateDiffDays(this.created);
+    const diffDaysUpdated = this.calculateDiffDays(this.updated);
   
-    if (diff_days_created <= 7) {
-      createLabel("NEW", diff_days_created, game_image_container);
-    } else if (diff_days_updated <= 7) {
-      createLabel("UPDATED", diff_days_updated, game_image_container);
+    if (diffDaysCreated <= 7) {
+      createLabel("NEW", diffDaysCreated, gamePriceContainer);
+    } else if (diffDaysUpdated <= 7) {
+      createLabel("UPDATED", diffDaysUpdated, gamePriceContainer);
     }
   
-    game_div.appendChild(game_image_container);
-    game_div.appendChild(game_title);
-    game_div.appendChild(game_summary);
+    gameContainer.appendChild(gamePriceContainer);
+    gameContainer.appendChild(gameTitle);
+    gameContainer.appendChild(gameSummary);
   
-    listElement.appendChild(game_div);
+    listElement.appendChild(gameContainer);
   }
 };
 
-const fetch_game_price = (game_id) => {
-  const result = prices.find((item) => item.product === game_id);
+const fetchGamePrice = (gameId) => {
+  const result = prices.find((item) => item.product === gameId);
   if (result) {
     return {
       price: result.unit_amount,
@@ -138,23 +138,23 @@ const createLabel = (labelText, numDays, targetElement) => {
   });
 };
 
-const load_user_games = async (user_id) => {
+const loadUserGames = async (userId) => {
   const category = document.getElementById("user-games");
-  const game_downloads = document.getElementById("game-downloads");
+  const gameDownloads = document.getElementById("game-downloads");
 
-  const user = await fetch_alternative_user(user_id);
+  const user = await fetch_alternative_user(userId);
 
   // collect and load public user games
 };
 
-const load_dashboard = async () => {
+const loadDashboard = async () => {
   const category = document.getElementById("dashboard-market");
   const user = await fetch_user();
 
   // collect and load user games
 };
 
-const display_games = async (listElement, categoryElement, games) => {
+const displayGames = async (listElement, categoryElement, games) => {
   if (games.length > 0) {
     const categoryNoneElement = categoryElement.querySelector(".category-none");
 
@@ -165,8 +165,8 @@ const display_games = async (listElement, categoryElement, games) => {
     games.forEach((gameData) => {
       const game = new Game(gameData);
       allGames.push(game);
-      const game_price = fetch_game_price(game.id.toString());
-      game.create_game_page(listElement, game_price);
+      const gamePrice = fetchGamePrice(game.id.toString());
+      game.createGamePage(listElement, gamePrice);
 
       if (!genres[game.genre]) {
         genres[game.genre] = {
@@ -180,7 +180,7 @@ const display_games = async (listElement, categoryElement, games) => {
   }
 }
 
-const display_genres = async () => {
+const displayGenres = async () => {
   if (window.location.pathname.includes("/search")) {
     // Sort genres by relevancy
   } else {
@@ -199,18 +199,18 @@ const display_genres = async () => {
 
   genres.forEach((genreData) => {
     const genre = new Genre(genreData);
-    genre.create_genre_page(genreData.name, genreData.count);
+    genre.createGenrePage(genreData.name, genreData.count);
   });
 }
 
-const load_games = async () => {
-  const list_games_api_url = "https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv/list_games";
+const loadGames = async () => {
+  const listGamesUrl = "https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv/list_games";
 
   if (window.location.pathname.includes("/search")) {
-    const results_label = document.getElementById("results-label");
+    const resultsLabel = document.getElementById("results-label");
     // Show the search results
   } else if (window.location.pathname.includes("/category")) {
-    const results_label = document.getElementById("results-label");
+    const resultsLabel = document.getElementById("results-label");
     // Show the category results
   } else {
     const myHeaders = new Headers();
@@ -218,7 +218,7 @@ const load_games = async () => {
 
     const perPage = 30;
 
-    const fresh_games_options = {
+    const freshGamesOptions = {
       method: "POST",
       headers: myHeaders,
       body: JSON.stringify({
@@ -230,7 +230,7 @@ const load_games = async () => {
       })
     }
 
-    const hot_games_options = {
+    const hotGamesOptions = {
       method: "POST",
       headers: myHeaders,
       body: JSON.stringify({
@@ -242,7 +242,7 @@ const load_games = async () => {
       })
     }
 
-    const sponsored_games_options = {
+    const sponsoredOptions = {
       method: "POST",
       headers: myHeaders,
       body: JSON.stringify({
@@ -254,7 +254,7 @@ const load_games = async () => {
       })
     }
 
-    const bestsellers_games_options = {
+    const bestsellerOptions = {
       method: "POST",
       headers: myHeaders,
       body: JSON.stringify({
@@ -266,34 +266,34 @@ const load_games = async () => {
       })
     }
 
-    const fresh_games_list = await request(list_games_api_url, fresh_games_options, false);
-    const hot_games_list = await request(list_games_api_url, hot_games_options, false);
-    const sponsored_games_list = await request(list_games_api_url, sponsored_games_options, false);
-    const bestsellers_games_list = await request(list_games_api_url, bestsellers_games_options, false);
+    const freshGames = await request(listGamesUrl, freshGamesOptions, false);
+    const hotGames = await request(listGamesUrl, hotGamesOptions, false);
+    const sponsoredGames = await request(listGamesUrl, sponsoredOptions, false);
+    const bestsellingGames = await request(listGamesUrl, bestsellerOptions, false);
 
-    display_games(document.getElementById("fresh-games-list"), document.getElementById("fresh-games"), fresh_games_list.games.items);
-    display_games(document.getElementById("hot-games-list"), document.getElementById("hot-games"), hot_games_list.games.items);
-    display_games(document.getElementById("sponsored-games-list"), document.getElementById("sponsored-games"), sponsored_games_list.games.items);
-    display_games(document.getElementById("bestseller-games-list"), document.getElementById("bestseller-games"), bestsellers_games_list.games.items);
+    displayGames(document.getElementById("fresh-games-list"), document.getElementById("fresh-games"), freshGames.games.items);
+    displayGames(document.getElementById("hot-games-list"), document.getElementById("hot-games"), hotGames.games.items);
+    displayGames(document.getElementById("sponsored-games-list"), document.getElementById("sponsored-games"), sponsoredGames.games.items);
+    displayGames(document.getElementById("bestseller-games-list"), document.getElementById("bestseller-games"), bestsellingGames.games.items);
 
 
   }
 };
 
-const fetch_games = async () => {
-  const prices_api_url = "https://x8ki-letl-twmt.n7.xano.io/api:tFdG2Vz-/prices";
+const fetchGames = async () => {
+  const listPricesUrl = "https://x8ki-letl-twmt.n7.xano.io/api:tFdG2Vz-/prices";
   const myHeaders = new Headers();
   myHeaders.append("Content-Type", "application/json");
 
-  const price_request_options = {
+  const priceRequestOptions = {
     method: "GET",
     headers: myHeaders,
   };
 
-  const set_prices = async () => {
+  const setPrices = async () => {
     const result = await request(
-      prices_api_url,
-      price_request_options,
+      listPricesUrl,
+      priceRequestOptions,
       true,
     );
 
@@ -303,31 +303,31 @@ const fetch_games = async () => {
     }
   };
 
-  await set_prices();
+  await setPrices();
 
   if (window.location.pathname.includes("/dashboard")) {
-    //await load_dashboard();
+    //await loadDashboard();
   } else if (window.location.pathname.includes("/user")) {
-    //const user_id = urlParams.get("id");
-    //await load_user_games(user_id);
+    //const userId = urlParams.get("id");
+    //await loadUserGames(userId);
   } else {
-    await load_games();
+    await loadGames();
   }
 
   if (genres.length > 0 && document.getElementById("genres-list") != null) {
-    display_genres();
+    displayGenres();
   }
 };
 
-const set_search = () => {
+const setSearch = () => {
   if (document.getElementById("search-query") != null) {
-    const search_label = document.getElementById("search-label");
-    const search_query_input = document.getElementById("search-query");
+    const searchLabel = document.getElementById("search-label");
+    const searchQueryInput = document.getElementById("search-query");
 
-    search_query_input.value = search_query;
-    if (search_label != null) {
-      if (search_query != null) {
-        search_label.textContent = `Results for '${search_query}'`;
+    searchQueryInput.value = searchQuery;
+    if (searchLabel != null) {
+      if (searchQuery != null) {
+        searchLabel.textContent = `Results for '${searchQuery}'`;
       } else {
         window.location.assign("index");
       }
@@ -335,13 +335,13 @@ const set_search = () => {
   }
 };
 
-const set_category = () => {
+const setCategory = () => {
   if (window.location.pathname.includes("/category")) {
-    const search_label = document.getElementById("search-label");
-    search_label.textContent = `Top '${category_name}' Games`;
+    const searchLabel = document.getElementById("search-label");
+    searchLabel.textContent = `Top '${categoryName}' Games`;
   }
 };
 
-fetch_games();
-set_search();
-set_category();
+fetchGames();
+setSearch();
+setCategory();

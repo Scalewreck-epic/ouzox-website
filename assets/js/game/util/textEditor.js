@@ -1,40 +1,37 @@
 const description = document.getElementById("description");
-const game_column = document.getElementById("game-column");
+const gameColumn = document.getElementById("game-column");
 
-const formattingButtons = {
-  bold: document.getElementById("bold"),
-  italic: document.getElementById("italic"),
-  underline: document.getElementById("underline"),
-  strikethrough: document.getElementById("strikethrough"),
+const buttons = {
+  formatting: {
+    bold: document.getElementById("bold"),
+    italic: document.getElementById("italic"),
+    underline: document.getElementById("underline"),
+    strikethrough: document.getElementById("strikethrough"),
+  },
+  list: {
+    unorderedlist: document.getElementById("insertUnorderedList"),
+    orderedlist: document.getElementById("insertOrderedList"),
+  },
+  alignment: {
+    left: document.getElementById("Left"),
+    right: document.getElementById("Right"),
+    center: document.getElementById("Center"),
+  },
+  header: {
+    1: document.getElementById("1"),
+    2: document.getElementById("2"),
+    3: document.getElementById("3"),
+    4: document.getElementById("4"),
+  },
 };
 
-const listButtons = {
-  unorderedlist: document.getElementById("insertUnorderedList"),
-  orderedlist: document.getElementById("insertOrderedList"),
-};
-
-const alignmentButtons = {
-  left: document.getElementById("Left"),
-  right: document.getElementById("Right"),
-  center: document.getElementById("Center"),
-};
-
-const headerButtons = {
-  1: document.getElementById("1"),
-  2: document.getElementById("2"),
-  3: document.getElementById("3"),
-  4: document.getElementById("4"),
-};
-
-const font_sort = document.getElementById("font-sort");
+const fontSort = document.getElementById("font-sort");
 const link = document.getElementById("link");
 
-const apply_formatting = (button) => {
-  const formatType = button.id;
+const applyFormat = (formatType) => {
+  document.execCommand(formatType);
   const selection = window.getSelection();
   const selectedText = selection.toString();
-
-  document.execCommand(formatType);
 
   if (selection.rangeCount > 0) {
     const range = selection.getRangeAt(0);
@@ -43,8 +40,7 @@ const apply_formatting = (button) => {
   }
 };
 
-const apply_header = (button) => {
-  const level = button.id;
+const applyHeader = (level) => {
   const selection = window.getSelection();
   const selectedText = selection.toString();
 
@@ -58,12 +54,11 @@ const apply_header = (button) => {
   }
 };
 
-const justify = (button) => {
-  const level = button.id;
+const justify = (level) => {
   document.execCommand("justify" + level);
 };
 
-const create_link = () => {
+const createLink = () => {
   const url = prompt("Enter the link URL:");
 
   if (url) {
@@ -84,24 +79,27 @@ const create_link = () => {
   }
 };
 
-if (font_sort) {
-  font_sort.addEventListener("change", function () {
-    game_column.style.fontFamily =
-      font_sort.options[font_sort.selectedIndex].value;
+if (fontSort) {
+  fontSort.addEventListener("change", function () {
+    gameColumn.style.fontFamily =
+    fontSort.options[fontSort.selectedIndex].value;
   });
 }
 
-link.addEventListener("click", () => create_link());
+link.addEventListener("click", createLink);
 
-Object.values(formattingButtons).forEach((button) =>
-  button.addEventListener("click", () => apply_formatting(button))
+Object.values(buttons.formatting).forEach((button) =>
+  button.addEventListener("click", () => applyFormat(button.id))
 );
-Object.values(listButtons).forEach((button) =>
-  button.addEventListener("click", () => apply_formatting(button))
+
+Object.values(buttons.list).forEach((button) =>
+  button.addEventListener("click", () => applyFormat(button.id))
 );
-Object.values(alignmentButtons).forEach((button) =>
-  button.addEventListener("click", () => justify(button))
+
+Object.values(buttons.list).forEach((button) =>
+  button.addEventListener("click", () => justify(button.id))
 );
-Object.values(headerButtons).forEach((button) =>
-  button.addEventListener("click", () => apply_header(button))
+
+Object.values(buttons.list).forEach((button) =>
+  button.addEventListener("click", () => applyHeader(button.id))
 );
