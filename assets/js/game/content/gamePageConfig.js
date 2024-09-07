@@ -201,7 +201,7 @@ const updateProduct = async (data, gameId, commitChangesButton) => {
   }
 };
 
-const fomatTimeSingle = (timeago, option, unit) => {
+const formatTimeSingle = (timeago, option, unit) => {
   return timeago === 1
     ? `${option} (1 ${unit} Ago)`
     : `${option} (${timeago} ${unit}s Ago)`;
@@ -209,13 +209,13 @@ const fomatTimeSingle = (timeago, option, unit) => {
 const formatTime = (coru, yearsAgo, monthsAgo, weeksAgo, daysAgo) => {
   switch (true) {
     case yearsAgo >= 1:
-      return fomatTimeSingle(yearsAgo, coru, "Year");
+      return formatTimeSingle(yearsAgo, coru, "Year");
     case monthsAgo >= 1:
-      return fomatTimeSingle(monthsAgo, coru, "Month");
+      return formatTimeSingle(monthsAgo, coru, "Month");
     case weeksAgo >= 1:
-      return fomatTimeSingle(weeksAgo, coru, "Week");
+      return formatTimeSingle(weeksAgo, coru, "Week");
     case daysAgo >= 1:
-      return fomatTimeSingle(daysAgo, coru, "Day");
+      return formatTimeSingle(daysAgo, coru, "Day");
     default:
       return "Just Now";
   }

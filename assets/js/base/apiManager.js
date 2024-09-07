@@ -1,4 +1,3 @@
-// Define a class for handling requests
 class RequestHandler {
   /**
    * @param {string} endpoint - The endpoint URL
