@@ -78,14 +78,14 @@ class Game {
     gameTitle.setAttribute("href", `game?g=${this.id}`);
 
     gameTitle.textContent = this.name;
-    gameTitle.textContent = this.summary;
+    gameSummary.textContent = this.summary;
 
     gamePriceText.innerHTML = `${price} ${currency.toUpperCase()}`;
 
     gamePriceContainer.appendChild(gamePriceText);
 
-    gamePriceContainer.appendChild(gameImage);
-    gamePriceContainer.appendChild(gamePriceContainer);
+    gameImageContainer.appendChild(gameImage);
+    gameImageContainer.appendChild(gamePriceContainer);
 
     const diffDaysCreated = this.calculateDiffDays(this.created);
     const diffDaysUpdated = this.calculateDiffDays(this.updated);
@@ -96,7 +96,7 @@ class Game {
       createLabel("UPDATED", diffDaysUpdated, gamePriceContainer);
     }
 
-    gameContainer.appendChild(gamePriceContainer);
+    gameContainer.appendChild(gameImageContainer);
     gameContainer.appendChild(gameTitle);
     gameContainer.appendChild(gameSummary);
 
@@ -269,13 +269,13 @@ const loadGames = async () => {
       }),
     };
 
-    const freshGames = await request(listGamesUrl, freshGamesOptions, false);
-    const hotGames = await request(listGamesUrl, hotGamesOptions, false);
-    const sponsoredGames = await request(listGamesUrl, sponsoredOptions, false);
+    const freshGames = await request(listGamesUrl, freshGamesOptions, true);
+    const hotGames = await request(listGamesUrl, hotGamesOptions, true);
+    const sponsoredGames = await request(listGamesUrl, sponsoredOptions, true);
     const bestsellingGames = await request(
       listGamesUrl,
       bestsellerOptions,
-      false
+      true
     );
 
     displayGames(
