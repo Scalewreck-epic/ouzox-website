@@ -163,11 +163,12 @@ const displayGames = async (listElement, categoryElement, games) => {
     }
 
     games.forEach((gameData) => {
+      const game = new Game(gameData);
+      const gamePrice = fetchGamePrice(game.id.toString());
+      game.createGamePage(listElement, gamePrice);
+      
       if (!allGames[gameData]) {
         allGames.push(gameData);
-        const game = new Game(gameData);
-        const gamePrice = fetchGamePrice(game.id.toString());
-        game.createGamePage(listElement, gamePrice);
 
         if (!genres[game.genre]) {
           genres[game.genre] = {

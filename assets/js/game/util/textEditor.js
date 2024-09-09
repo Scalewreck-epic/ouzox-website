@@ -96,10 +96,10 @@ Object.values(buttons.list).forEach((button) =>
   button.addEventListener("click", () => applyFormat(button.id))
 );
 
-Object.values(buttons.list).forEach((button) =>
+Object.values(buttons.alignment).forEach((button) =>
   button.addEventListener("click", () => justify(button.id))
 );
 
-Object.values(buttons.list).forEach((button) =>
+Object.values(buttons.header).forEach((button) =>
   button.addEventListener("click", () => applyHeader(button.id))
 );
