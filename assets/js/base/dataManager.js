@@ -138,22 +138,6 @@ const createLabel = (labelText, numDays, targetElement) => {
   });
 };
 
-const loadUserGames = async (userId) => {
-  const category = document.getElementById("user-games");
-  const gameDownloads = document.getElementById("game-downloads");
-
-  const user = await fetch_alternative_user(userId);
-
-  // collect and load public user games
-};
-
-const loadDashboard = async () => {
-  const category = document.getElementById("dashboard-market");
-  const user = await fetch_user();
-
-  // collect and load user games
-};
-
 const displayGames = async (listElement, categoryElement, games) => {
   if (games.length > 0) {
     const categoryNoneElement = categoryElement.querySelector(".category-none");
@@ -206,6 +190,65 @@ const displayGenres = async () => {
   });
 };
 
+const loadUserGames = async (userId) => {
+  const listUserGamesUrl = "https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv/user/games";
+  const gameDownloads = document.getElementById("game-downloads");
+
+  const user = await fetch_alternative_user(userId);
+
+  const developerGameOptions = {
+    method: "POST",
+    headers: myHeaders,
+    body: JSON.stringify({
+      user_name: user.name,
+      user_id: user.id,
+    }),
+  };
+
+  let downloads = 0;
+
+  const userGames = await request(listUserGamesUrl, developerGameOptions, true);
+  const publicUserGames = userGames.games.items.filter((game) => {
+    if (game.active == true) {
+      downloads += game.downloads;
+      return game;
+    }
+  });
+
+  gameDownloads.textContent = downloads.toString();
+
+  displayGames(
+    document.getElementById("user-games"),
+    document.getElementById("user-games"),
+    publicUserGames
+  );
+};
+
+const loadDashboard = async () => {
+  const listUserGamesUrl = "https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv/user/games";
+  const user = await fetch_user();
+
+  const myHeaders = new Headers();
+  myHeaders.append("Content-Type", "application/json");
+
+  const developerGameOptions = {
+    method: "POST",
+    headers: myHeaders,
+    body: JSON.stringify({
+      user_name: user.name,
+      user_id: user.id,
+    }),
+  };
+
+  const userGames = await request(listUserGamesUrl, developerGameOptions, true);
+
+  displayGames(
+    document.getElementById("dashboard-market"),
+    document.getElementById("dashboard-market"),
+    userGames.games.items
+  );
+};
+
 const loadGames = async () => {
   const listGamesUrl =
     "https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv/games/list";
@@ -230,7 +273,6 @@ const loadGames = async () => {
         sortColumn: "created_at",
         perPage: perPage,
         page: 1,
-        publicOnly: true,
       }),
     };
 
@@ -242,7 +284,6 @@ const loadGames = async () => {
         sortColumn: "updated",
         perPage: perPage,
         page: 1,
-        publicOnly: true,
       }),
     };
 
@@ -254,7 +295,6 @@ const loadGames = async () => {
         sortColumn: "sponsor_money",
         perPage: perPage,
         page: 1,
-        publicOnly: true,
       }),
     };
 
@@ -266,7 +306,6 @@ const loadGames = async () => {
         sortColumn: "downloads",
         perPage: perPage,
         page: 1,
-        publicOnly: true,
       }),
     };
 
@@ -324,10 +363,10 @@ const fetchGames = async () => {
   await setPrices();
 
   if (window.location.pathname.includes("/dashboard")) {
-    //await loadDashboard();
+    await loadDashboard();
   } else if (window.location.pathname.includes("/user")) {
-    //const userId = urlParams.get("id");
-    //await loadUserGames(userId);
+    const userId = urlParams.get("id");
+    await loadUserGames(userId);
   } else {
     await loadGames();
   }
