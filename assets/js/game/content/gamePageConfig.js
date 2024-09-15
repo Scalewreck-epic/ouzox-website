@@ -1,4 +1,4 @@
-const updateGame = "https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv/games/";
+const updateGame = "https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv/games/edit/";
 const getGame = "https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv/games/";
 const getPrice = "https://x8ki-letl-twmt.n7.xano.io/api:tFdG2Vz-/prices/";
 

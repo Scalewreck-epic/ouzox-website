@@ -3,7 +3,7 @@ const create_product =
 const set_price = "https://x8ki-letl-twmt.n7.xano.io/api:tFdG2Vz-/prices";
 const create_payment_link =
   "https://x8ki-letl-twmt.n7.xano.io/api:nrRyaavp/payment_link";
-const create_game = "https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv/games";
+const create_game = "https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv/games/create";
 
 const uploadGame = document.getElementById("upload-game");
 

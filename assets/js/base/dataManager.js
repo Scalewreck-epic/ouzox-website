@@ -30,7 +30,7 @@ class Genre {
       amount != 1 ? `${amount} games` : `${amount} game`;
 
     genreButton.appendChild(genreName);
-    genreButton.appendChild(genre_games_amount);
+    genreButton.appendChild(genreGamesAmount);
 
     document.getElementById("genres-list").appendChild(genreButton);
   };
@@ -208,7 +208,7 @@ const displayGenres = async () => {
 
 const loadGames = async () => {
   const listGamesUrl =
-    "https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv/list_games";
+    "https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv/games/list";
 
   if (window.location.pathname.includes("/search")) {
     const resultsLabel = document.getElementById("results-label");
