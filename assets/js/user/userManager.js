@@ -142,12 +142,12 @@ const create_session_data = async () => {
         false,
       );
 
-      if (result) {
+      if (result.ok == true) {
         session.create_cookie("session_id", result.authToken);
         error_label.textContent = "Successfully created account!";
         window.location.assign("index");
       } else {
-        error_label.textContent = "An error occured";
+        error_label.textContent = result.response;
       }
     } else {
       error_label.textContent = "Not secure enough.";
@@ -181,12 +181,12 @@ const fetch_session_data = async () => {
 
       const result = await request(auth_login, requestOptions, false);
 
-      if (result) {
+      if (result.ok == true) {
         session.create_cookie("session_id", result.authToken);
         error_label.textContent = "Successfully logged in!";
         window.location.assign("index");
       } else {
-        error_label.textContent = "An error occured";
+        error_label.textContent = result.response;
       }
     }
   }

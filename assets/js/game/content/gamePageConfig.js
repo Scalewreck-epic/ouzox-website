@@ -85,8 +85,8 @@ const getGameData = async (gameId) => {
 
   const result = await request(`${getGame}${gameId}`, options, true);
 
-  if (result) {
-    return result;
+  if (result.ok == true) {
+    return result.response;
   } else {
     throw new Error(`Unable to get game data: ${result}`);
   }
@@ -106,8 +106,8 @@ const fetchPriceData = async (rawGameData) => {
     true
   );
 
-  if (result) {
-    return result;
+  if (result.ok == true) {
+    return result.response;
   }
 };
 
@@ -194,10 +194,10 @@ const fetchGameData = async (gameId) => {
 const updateProduct = async (data, gameId, commitChangesButton) => {
   const result = await request(`${updateGame}${gameId}`, data, false);
 
-  if (result) {
+  if (result.ok == true) {
     commitChangesButton.textContent = "Success";
   } else {
-    commitChangesButton.textContent = "An error occured";
+    commitChangesButton.textContent = result.response;
   }
 };
 

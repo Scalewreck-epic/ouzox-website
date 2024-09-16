@@ -53,7 +53,7 @@ const result = await request(
   requestOptions,
   false,
 );
-const posts = result.response.result.posts;
+const posts = result.response.response.result.posts;
 
 posts.sort((a, b) => {
   new Date(b.created_at) - new Date(a.created_at);

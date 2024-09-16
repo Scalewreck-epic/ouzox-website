@@ -35,10 +35,10 @@ const change_session_data = async (headers, endpoint) => {
 
   const result = await request(endpoint, headers, false);
 
-  if (result) {
-    error_label.textContent = result.message;
+  if (result.ok == true) {
+    error_label.textContent = result.response.message;
   } else {
-    error_label.textContent = "Error changing session data.";
+    error_label.textContent = result.response;
   }
 };
 
@@ -157,8 +157,8 @@ export const fetch_alternative_user = async (userId) => {
     true,
   );
 
-  if (result) {
-    return result;
+  if (result.ok == true) {
+    return result.response;
   }
 };
 
@@ -181,8 +181,8 @@ export const fetch_user = async () => {
       false,
     );
 
-    if (result) {
-      return result;
+    if (result.ok == true) {
+      return result.response;
     } else {
       clear_cookie();
     }

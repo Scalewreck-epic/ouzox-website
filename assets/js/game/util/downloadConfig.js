@@ -22,8 +22,8 @@ async function set_game_data(gameId) {
       true,
     );
 
-    if (result) {
-      return result;
+    if (result.ok == true) {
+      return result.response;
     }
   }
 

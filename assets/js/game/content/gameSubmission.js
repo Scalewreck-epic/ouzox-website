@@ -30,8 +30,8 @@ const upload_game = async (gameRequestOptions) => {
     true,
   );
 
-  if (result) {
-    return result;
+  if (result.ok == true) {
+    return result.response;
   }
 };
 
@@ -80,8 +80,8 @@ const set_product_price = async (product_id) => {
     true,
   );
 
-  if (result) {
-    return result;
+  if (result.ok == true) {
+    return result.response;
   }
 };
 
@@ -103,8 +103,8 @@ const upload_product = async () => {
     true,
   );
 
-  if (result) {
-    return result;
+  if (result.ok == true) {
+    return result.response;
   }
 };
 
@@ -126,8 +126,8 @@ const upload_payment_link = async (price_id) => {
     true,
   );
 
-  if (result) {
-    return result;
+  if (result.ok == true) {
+    return result.response;
   }
 };
 

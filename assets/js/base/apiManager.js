@@ -1,3 +1,16 @@
+const errorMessages = {
+  400: { header: "Bad Request"},
+  401: { header: "Unauthorized"},
+  402: { header: "Payment Required"},
+  403: { header: "Access Denied"},
+  404: { header: "Not Found"},
+  405: { header: "Method Not Allowed"},
+  409: { header: "Conflict"},
+  429: { header: "Too Many Requests"},
+  500: { header: "Internal Server Error"},
+  503: { header: "Service Unavailable"},
+};
+
 class RequestHandler {
   /**
    * @param {string} endpoint - The endpoint URL
@@ -61,7 +74,7 @@ class RequestHandler {
       window.location.assign(`404?code=${statusCode}`);
       return null;
     } else {
-      throw new Error(`Fetch error: ${statusCode}`);
+      throw new Error(`${statusCode} ${errorMessages[statusCode].header}`);
     }
   }
 
@@ -80,9 +93,11 @@ class RequestHandler {
         throw this.handleError(response);
       }
 
-      return await response.json();
+      const jsonResponse = await response.json();
+
+      return {response: jsonResponse, ok: true};
     } catch (error) {
-      throw new Error(`Fetch ${error.name || typeof error}:`, error);
+      return {response: error, ok: false};
     }
   }
 }

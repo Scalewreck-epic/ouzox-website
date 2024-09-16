@@ -138,32 +138,38 @@ const createLabel = (labelText, numDays, targetElement) => {
   });
 };
 
-const displayGames = async (listElement, categoryElement, games) => {
-  if (games.length > 0) {
-    const categoryNoneElement = categoryElement.querySelector(".category-none");
+const displayGames = async (listElement, categoryElement, response) => {
+  const categoryNoneElement = categoryElement.querySelector(".category-none");
 
-    if (categoryNoneElement) {
-      categoryNoneElement.remove();
-    }
-
-    games.forEach((gameData) => {
-      const game = new Game(gameData);
-      const gamePrice = fetchGamePrice(game.id.toString());
-      game.createGamePage(listElement, gamePrice);
-      
-      if (!allGames[gameData]) {
-        allGames.push(gameData);
-
-        if (!genres[game.genre]) {
-          genres[game.genre] = {
-            name: game.genre,
-            count: 1,
-          };
-        } else {
-          genres[game.genre].count++;
-        }
+  if (response.ok == true) {
+    const games = response.response.games.items;
+  
+    if (games.length > 0) {
+      if (categoryNoneElement) {
+        categoryNoneElement.remove();
       }
-    });
+  
+      games.forEach((gameData) => {
+        const game = new Game(gameData);
+        const gamePrice = fetchGamePrice(game.id.toString());
+        game.createGamePage(listElement, gamePrice);
+        
+        if (!allGames[gameData]) {
+          allGames.push(gameData);
+  
+          if (!genres[game.genre]) {
+            genres[game.genre] = {
+              name: game.genre,
+              count: 1,
+            };
+          } else {
+            genres[game.genre].count++;
+          }
+        }
+      });
+    }
+  } else {
+    categoryNoneElement.textContent = response.response;
   }
 };
 
@@ -208,20 +214,31 @@ const loadUserGames = async (userId) => {
   let downloads = 0;
 
   const userGames = await request(listUserGamesUrl, developerGameOptions, true);
-  const publicUserGames = userGames.games.items.filter((game) => {
-    if (game.active == true) {
-      downloads += game.downloads;
-      return game;
-    }
-  });
 
-  gameDownloads.textContent = downloads.toString();
-
-  displayGames(
-    document.getElementById("user-games"),
-    document.getElementById("user-games"),
-    publicUserGames
-  );
+  if (userGames.ok == true) {
+    const publicUserGames = userGames.response.games.items.filter((game) => {
+      if (game.active == true) {
+        downloads += game.downloads;
+        return game;
+      }
+    });
+  
+    const displayResponse = {response: publicUserGames, ok: true}
+  
+    gameDownloads.textContent = downloads.toString();
+  
+    displayGames(
+      document.getElementById("user-games"),
+      document.getElementById("user-games"),
+      displayResponse
+    );
+  } else {
+    displayGames(
+      document.getElementById("user-games"),
+      document.getElementById("user-games"),
+      userGames
+    );
+  }
 };
 
 const loadDashboard = async () => {
@@ -245,7 +262,7 @@ const loadDashboard = async () => {
   displayGames(
     document.getElementById("dashboard-market"),
     document.getElementById("dashboard-market"),
-    userGames.games.items
+    userGames
   );
 };
 
@@ -309,34 +326,34 @@ const loadGames = async () => {
       }),
     };
 
-    const freshGames = await request(listGamesUrl, freshGamesOptions, true);
-    const hotGames = await request(listGamesUrl, hotGamesOptions, true);
-    const sponsoredGames = await request(listGamesUrl, sponsoredOptions, true);
+    const freshGames = await request(listGamesUrl, freshGamesOptions, false);
+    const hotGames = await request(listGamesUrl, hotGamesOptions, false);
+    const sponsoredGames = await request(listGamesUrl, sponsoredOptions, false);
     const bestsellingGames = await request(
       listGamesUrl,
       bestsellerOptions,
-      true
+      false
     );
 
     displayGames(
       document.getElementById("fresh-games-list"),
       document.getElementById("fresh-games"),
-      freshGames.games.items
+      freshGames
     );
     displayGames(
       document.getElementById("hot-games-list"),
       document.getElementById("hot-games"),
-      hotGames.games.items
+      hotGames
     );
     displayGames(
       document.getElementById("sponsored-games-list"),
       document.getElementById("sponsored-games"),
-      sponsoredGames.games.items
+      sponsoredGames
     );
     displayGames(
       document.getElementById("bestseller-games-list"),
       document.getElementById("bestseller-games"),
-      bestsellingGames.games.items
+      bestsellingGames
     );
   }
 };
@@ -355,7 +372,7 @@ const fetchGames = async () => {
     const result = await request(listPricesUrl, priceRequestOptions, true);
 
     if (result) {
-      prices = result.data;
+      prices = result.response.data;
       prices.sort((a, b) => b.unit_amount - a.unit_amount);
     }
   };
