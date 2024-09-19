@@ -328,7 +328,9 @@ const loadGames = async () => {
 
     const freshGames = await request(listGamesUrl, freshGamesOptions, false);
     const hotGames = await request(listGamesUrl, hotGamesOptions, false);
+    // underrated games
     const sponsoredGames = await request(listGamesUrl, sponsoredOptions, false);
+    // free and hot
     const bestsellingGames = await request(
       listGamesUrl,
       bestsellerOptions,
