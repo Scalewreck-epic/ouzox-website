@@ -288,6 +288,7 @@ const loadGames = async () => {
 
     const perPage = 30;
 
+    // recently created and recently updated
     const freshGamesOptions = {
       method: "POST",
       headers: myHeaders,
@@ -299,16 +300,29 @@ const loadGames = async () => {
       }),
     };
 
+    // most downloads and high rating
     const hotGamesOptions = {
       method: "POST",
       headers: myHeaders,
       body: JSON.stringify({
         orderBy: "desc",
-        sortColumn: "updated",
+        sortColumn: "downloads",
         perPage: perPage,
         page: 1,
       }),
     };
+
+    // high rating and least downloads
+    const underratedGamesOptions = {
+      method: "POST",
+      headers: myHeaders,
+      body: JSON.stringify({
+        orderBy: "asc",
+        sortColumn: "downloads",
+        perPage: perPage,
+        page: 1,
+      }),
+    }
 
     const sponsoredOptions = {
       method: "POST",
@@ -321,6 +335,7 @@ const loadGames = async () => {
       }),
     };
 
+    // highest gross profit
     const bestsellerOptions = {
       method: "POST",
       headers: myHeaders,
@@ -334,7 +349,7 @@ const loadGames = async () => {
 
     const freshGames = await request(listGamesUrl, freshGamesOptions, false);
     const hotGames = await request(listGamesUrl, hotGamesOptions, false);
-    // underrated games
+    const underratedGames = await request(listGamesUrl, underratedGamesOptions, false);
     const sponsoredGames = await request(listGamesUrl, sponsoredOptions, false);
     // free and hot
     const bestsellingGames = await request(
@@ -352,6 +367,11 @@ const loadGames = async () => {
       document.getElementById("hot-games-list"),
       document.getElementById("hot-games"),
       hotGames
+    );
+    displayGames(
+      document.getElementById("underrated-games-list"),
+      document.getElementById("underrated-games"),
+      underratedGames
     );
     displayGames(
       document.getElementById("sponsored-games-list"),
