@@ -43,6 +43,8 @@ class Game {
     this.summary = data.summary;
     this.icon = data.icon;
     this.genre = data.genre;
+    this.likes = data.likes;
+    this.dislikes = data.dislikes;
   }
 
   calculateDiffDays = (timestamp) => {
@@ -57,6 +59,8 @@ class Game {
   createGamePage = (listElement, gamePrice) => {
     const price = gamePrice.price / 100;
     const currency = gamePrice.currency;
+    const likeToDislikeRatio =
+      (this.likes / (this.likes + this.dislikes)) * 100;
 
     const gameContainer = document.createElement("div");
     const gameImage = document.createElement("img");
@@ -64,7 +68,9 @@ class Game {
     const gameTitle = document.createElement("a");
     const gameSummary = document.createElement("div");
     const gamePriceContainer = document.createElement("div");
+    const gameRatioContainer = document.createElement("div");
     const gamePriceText = document.createElement("span");
+    const gameRatioText = document.createElement("span");
 
     gameContainer.setAttribute("class", "game");
     gameImage.setAttribute("class", "product-image");
@@ -72,6 +78,7 @@ class Game {
     gameTitle.setAttribute("class", "product-title");
     gameSummary.setAttribute("class", "product-summary");
     gamePriceContainer.setAttribute("class", "product-price");
+    gameRatioContainer.setAttribute("class", "product-ratio");
 
     gameImage.setAttribute("src", this.icon.url);
     gameImageContainer.setAttribute("href", `game?g=${this.id}`);
@@ -81,19 +88,22 @@ class Game {
     gameSummary.textContent = this.summary;
 
     gamePriceText.innerHTML = `${price} ${currency.toUpperCase()}`;
+    gameRatioText.innerHTML = `${likeToDislikeRatio}%`;
 
     gamePriceContainer.appendChild(gamePriceText);
+    gameRatioContainer.appendChild(gameRatioText);
 
     gameImageContainer.appendChild(gameImage);
     gameImageContainer.appendChild(gamePriceContainer);
+    gameImageContainer.appendChild(gameRatioContainer);
 
     const diffDaysCreated = this.calculateDiffDays(this.created);
     const diffDaysUpdated = this.calculateDiffDays(this.updated);
 
     if (diffDaysCreated <= 7) {
-      createLabel("NEW", diffDaysCreated, gamePriceContainer);
+      createLabel("NEW", diffDaysCreated, gameImageContainer);
     } else if (diffDaysUpdated <= 7) {
-      createLabel("UPDATED", diffDaysUpdated, gamePriceContainer);
+      createLabel("UPDATED", diffDaysUpdated, gameImageContainer);
     }
 
     gameContainer.appendChild(gameImageContainer);
@@ -143,20 +153,17 @@ const displayGames = async (listElement, categoryElement, response) => {
 
   if (response.ok == true) {
     const games = response.response.games.items;
-  
+    categoryNoneElement.remove();
+
     if (games.length > 0) {
-      if (categoryNoneElement) {
-        categoryNoneElement.remove();
-      }
-  
       games.forEach((gameData) => {
         const game = new Game(gameData);
         const gamePrice = fetchGamePrice(game.id.toString());
         game.createGamePage(listElement, gamePrice);
-        
+
         if (!allGames[gameData]) {
           allGames.push(gameData);
-  
+
           if (!genres[game.genre]) {
             genres[game.genre] = {
               name: game.genre,
@@ -184,10 +191,7 @@ const displayGenres = async () => {
     const categoryNoneElement = document
       .getElementById("genres")
       .querySelector(".category-none");
-
-    if (categoryNoneElement) {
-      categoryNoneElement.remove();
-    }
+    categoryNoneElement.remove();
   }
 
   genres.forEach((genreData) => {
@@ -197,7 +201,8 @@ const displayGenres = async () => {
 };
 
 const loadUserGames = async (userId) => {
-  const listUserGamesUrl = "https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv/user/games";
+  const listUserGamesUrl =
+    "https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv/user/games";
   const gameDownloads = document.getElementById("game-downloads");
 
   const user = await fetch_alternative_user(userId);
@@ -222,11 +227,11 @@ const loadUserGames = async (userId) => {
         return game;
       }
     });
-  
-    const displayResponse = {response: publicUserGames, ok: true}
-  
+
+    const displayResponse = { response: publicUserGames, ok: true };
+
     gameDownloads.textContent = downloads.toString();
-  
+
     displayGames(
       document.getElementById("user-games"),
       document.getElementById("user-games"),
@@ -242,7 +247,8 @@ const loadUserGames = async (userId) => {
 };
 
 const loadDashboard = async () => {
-  const listUserGamesUrl = "https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv/user/games";
+  const listUserGamesUrl =
+    "https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv/user/games";
   const user = await fetch_user();
 
   const myHeaders = new Headers();

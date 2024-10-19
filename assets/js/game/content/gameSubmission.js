@@ -318,7 +318,6 @@ const on_submit = async (event) => {
         headers: myHeaders,
         body: JSON.stringify({
           name: title_input.value,
-          active: "false",
           free: game_isfree.checked,
           description: description_input.innerHTML,
           developer: {
