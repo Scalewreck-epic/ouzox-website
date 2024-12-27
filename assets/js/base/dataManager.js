@@ -142,12 +142,12 @@ const createLabel = (labelText, numDays, targetElement) => {
   });
 };
 
-const displayErrorForGames = async (categoryElement, response) => {
+export const displayErrorForGames = async (categoryElement, response) => {
   const categoryNoneElement = categoryElement.querySelector(".category-none");
   categoryNoneElement.textContent = response;
 }
 
-const displayGames = async (listElement, categoryElement, games) => {
+export const displayGames = async (listElement, categoryElement, games) => {
   const categoryNoneElement = categoryElement.querySelector(".category-none");
   
   if (games.length > 0) {
@@ -194,25 +194,20 @@ const displayGenres = async () => {
   });
 };
 
-const loadUserGames = async (userId) => {
+export const loadUserGames = async (newUser) => {
   const gameDownloads = document.getElementById("game-downloads");
-
-  const newUser = await fetch_alternative_user(userId);
 
   const myHeaders = new Headers();
   myHeaders.append("Content-Type", "application/json");
 
   const developerGameOptions = {
-    method: "POST",
+    method: "GET",
     headers: myHeaders,
-    body: JSON.stringify({
-      user_id: newUser.id,
-    }),
   };
 
   let downloads = 0;
 
-  const userGamesRequest = await request(endpoints.user.list_public_games, developerGameOptions, false);
+  const userGamesRequest = await request(`${endpoints.user.list_public_games}${newUser.id}`, developerGameOptions, false);
   userGamesRequest.ok ? displayGames(document.getElementById("user-games"), document.getElementById("user-games"), userGamesRequest.response) : displayErrorForGames(document.getElementById("user-games"), userGamesRequest.response);
 
   if (userGamesRequest.ok == true) {
@@ -229,14 +224,11 @@ const loadDashboard = async () => {
   myHeaders.append("Content-Type", "application/json");
 
   const developerGameOptions = {
-    method: "POST",
+    method: "GET",
     headers: myHeaders,
-    body: JSON.stringify({
-      user_id: user.id,
-    }),
   };
 
-  const userGamesRequest = await request(endpoints.user.list_games, developerGameOptions, true).response;
+  const userGamesRequest = await request(`${endpoints.user.list_games}${user.id}`, developerGameOptions, true).response;
   userGamesRequest.ok ? displayGames(document.getElementById("dashboard-market"), document.getElementById("dashboard-market"), userGamesRequest.response) : displayErrorForGames(document.getElementById("dashboard-market"), userGamesRequest.response);
 };
 
@@ -250,9 +242,17 @@ const loadGames = async () => {
     hot: { orderBy: "desc", sortColumn: "downloads" },
     underrated: { orderBy: "asc", sortColumn: "downloads" },
     sponsored: { orderBy: "desc", sortColumn: "sponsor_money" },
-    freeandhot: { orderBy: "desc", sortColumn: "downloads", free_only: true },
+    freeandhot: { orderBy: "desc", sortColumn: "downloads" },
     bestseller: { orderBy: "desc", sortColumn: "downloads" },
   };
+
+  const fetchFreeGames = async (key) => {
+    return await request(endpoints.list.list_free_games, {
+      method: "POST",
+      headers: myHeaders,
+      body: JSON.stringify({ ...options[key], perPage, page: 1 }),
+    }, false);
+  }
 
   const fetchGames = async (key) => {
     return await request(endpoints.list.list_games, {
@@ -270,7 +270,7 @@ const loadGames = async () => {
       fetchGames("hot"),
       fetchGames("underrated"),
       fetchGames("sponsored"),
-      fetchGames("freeandhot"),
+      fetchFreeGames("freeandhot"),
       fetchGames("bestseller"),
     ]);
 
@@ -305,9 +305,6 @@ const fetchGames = async () => {
 
   if (window.location.pathname.includes("/dashboard")) {
     await loadDashboard();
-  } else if (window.location.pathname.includes("/user")) {
-    const userId = urlParams.get("id");
-    await loadUserGames(userId);
   } else {
     await loadGames();
   }
@@ -340,6 +337,8 @@ const setCategory = () => {
   }
 };
 
-fetchGames();
-setSearch();
-setCategory();
+(() => {
+  fetchGames();
+  setSearch();
+  setCategory();
+})

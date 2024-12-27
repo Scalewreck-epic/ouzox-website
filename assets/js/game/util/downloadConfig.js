@@ -44,8 +44,5 @@ async function set_game_data(gameId) {
 if (gameIdParam && priceIdParam) {
   set_game_data(`prod_${gameIdParam}`);
 } else {
-  console.warn("There are no params.");
-  window.location.assign(
-    `404`
-  );
+  window.location.assign("404?code=404");
 }

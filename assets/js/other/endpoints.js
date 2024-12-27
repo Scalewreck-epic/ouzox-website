@@ -5,8 +5,8 @@ const CHECKOUT_BASE_URL = "https://x8ki-letl-twmt.n7.xano.io/api:nrRyaavp";
 
 export const endpoints = {
     "user": {
-        "list_public_games": `${DATABASE_URL}/user/publicgames`,
-        "list_games": `${DATABASE_URL}/user/games`,
+        "list_public_games": `${DATABASE_URL}/user/games/public/`,
+        "list_games": `${DATABASE_URL}/user/games/`,
         "edit_email": `${DATABASE_URL}/user/edit_email/`, // + user session
         "edit_password": `${DATABASE_URL}/user/edit_pass/`, // + user session
         "edit_status": `${DATABASE_URL}/user/edit_status/`, // + user session
@@ -29,6 +29,7 @@ export const endpoints = {
     },
     "list": {
         "list_games": `${DATABASE_URL}/games/list`,
+        "list_free_games": `${DATABASE_URL}/games/list/free`,
         "list_prices": `${PRICES_BASE_URL}/prices/list`,
         "list_blog": "https://x8ki-letl-twmt.n7.xano.io/api:fcT2v9YQ/posts",
     },

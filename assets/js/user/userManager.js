@@ -3,6 +3,7 @@ const loginPaths = ["/login", "/signup"];
 import * as session from "./sessionManager.js";
 import { request } from "../base/apiManager.js";
 import { endpoints } from "../other/endpoints.js";
+import { loadUserGames } from "../base/dataManager.js";
 
 console.info("Ouzox is open source! https://github.com/Scalewreck-epic/ouzox-website");
 
@@ -125,6 +126,8 @@ const setup_profile_page = async () => {
   document.getElementById("user-status").textContent = other_user.status;
   document.getElementById("join-date").textContent = formattedDate;
   document.getElementById("title").textContent = `Ouzox | ${other_user.name}`;
+
+  loadUserGames(other_user);
 };
 
 const setup_settings_page = () => {
