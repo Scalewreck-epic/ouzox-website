@@ -1,12 +1,13 @@
-const updateGame = "https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv/games/edit/";
-const getGame = "https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv/games/";
-const getPrice = "https://x8ki-letl-twmt.n7.xano.io/api:tFdG2Vz-/prices/";
-
 import { fetch_user } from "../../user/sessionManager.js";
 import { request } from "../../base/apiManager.js";
+import { endpoints } from "../other/endpoints.js";
 
 const urlParams = new URLSearchParams(window.location.search);
 const gameIdParam = urlParams.get("g");
+
+import { fetch_user } from "../../user/sessionManager.js";
+
+const user = await fetch_user()
 
 class GameData {
   constructor(
@@ -83,7 +84,7 @@ const getGameData = async (gameId) => {
     headers: myHeaders,
   };
 
-  const result = await request(`${getGame}${gameId}`, options, true);
+  const result = await request(`${endpoints.game.get_data}${gameId}`, options, true);
 
   if (result.ok == true) {
     return result.response;
@@ -101,7 +102,7 @@ const fetchPriceData = async (rawGameData) => {
   };
 
   const result = await request(
-    `${getPrice}${rawGameData.product_id}`,
+    `${endpoints.game.get_price}${rawGameData.product_id}`,
     options,
     true
   );
@@ -192,7 +193,7 @@ const fetchGameData = async (gameId) => {
   return gameData;
 };
 const updateProduct = async (data, gameId, commitChangesButton) => {
-  const result = await request(`${updateGame}${gameId}`, data, false);
+  const result = await request(`${endpoints.game.update}${gameId}`, data, false);
 
   if (result.ok == true) {
     commitChangesButton.textContent = "Success";
@@ -222,7 +223,6 @@ const formatTime = (coru, yearsAgo, monthsAgo, weeksAgo, daysAgo) => {
 };
 
 const gameHandler = async (gameId) => {
-  const user = await fetch_user();
   const gameData = await fetchGameData(gameId);
 
   const realGameId = gameData.id;
@@ -854,6 +854,7 @@ const gameHandler = async (gameId) => {
           artstyle: gameArtStyleInput.textContent,
           age_rating: gameAgeInput.options[gameAgeInput.selectedIndex].value,
           active: ispublic.Enabled ? "true" : "false",
+          uploader_id: user.id,
           platforms: {
             windows: gamePlatforms[0].Enabled ? "true" : "false",
             mac: gamePlatforms[1].Enabled ? "true" : "false",

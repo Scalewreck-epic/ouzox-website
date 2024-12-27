@@ -1,5 +1,6 @@
 import { fetch_user, fetch_alternative_user } from "../user/sessionManager.js";
 import { request } from "./apiManager.js";
+import { endpoints } from "../other/endpoints.js";
 
 const urlParams = new URLSearchParams(window.location.search);
 const searchQuery = urlParams.get("q") || "";
@@ -8,6 +9,8 @@ const categoryName = urlParams.get("n") || "";
 let prices = [];
 let genres = [];
 let allGames = [];
+
+const user = await fetch_user();
 
 class Genre {
   constructor(genre) {
@@ -201,8 +204,6 @@ const displayGenres = async () => {
 };
 
 const loadUserGames = async (userId) => {
-  const listUserGamesUrl =
-    "https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv/user/publicgames";
   const gameDownloads = document.getElementById("game-downloads");
 
   const user = await fetch_alternative_user(userId);
@@ -217,7 +218,7 @@ const loadUserGames = async (userId) => {
 
   let downloads = 0;
 
-  const userGames = await request(listUserGamesUrl, developerGameOptions, true);
+  const userGames = await request(endpoints.user.list_public_games, developerGameOptions, true);
 
   userGames.forEach((game) => {
     downloads += game.downloads;
@@ -233,10 +234,6 @@ const loadUserGames = async (userId) => {
 };
 
 const loadDashboard = async () => {
-  const listUserGamesUrl =
-    "https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv/user/games";
-  const user = await fetch_user();
-
   const myHeaders = new Headers();
   myHeaders.append("Content-Type", "application/json");
 
@@ -248,7 +245,7 @@ const loadDashboard = async () => {
     }),
   };
 
-  const userGames = await request(listUserGamesUrl, developerGameOptions, true);
+  const userGames = await request(endpoints.user.list_games, developerGameOptions, true);
 
   displayGames(
     document.getElementById("dashboard-market"),
@@ -258,121 +255,49 @@ const loadDashboard = async () => {
 };
 
 const loadGames = async () => {
-  const listGamesUrl =
-    "https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv/games/list";
+  const resultsLabel = document.getElementById("results-label");
+  const myHeaders = new Headers({ "Content-Type": "application/json" });
+  const perPage = 30;
 
-  if (window.location.pathname.includes("/search")) {
-    const resultsLabel = document.getElementById("results-label");
-    // Show the search results
-  } else if (window.location.pathname.includes("/category")) {
-    const resultsLabel = document.getElementById("results-label");
-    // Show the category results
+  const options = {
+    fresh: { orderBy: "asc", sortColumn: "created_at" },
+    hot: { orderBy: "desc", sortColumn: "downloads" },
+    underrated: { orderBy: "asc", sortColumn: "downloads" },
+    sponsored: { orderBy: "desc", sortColumn: "sponsor_money" },
+    freeandhot: { orderBy: "desc", sortColumn: "sponsor_money", free_only: true },
+    bestseller: { orderBy: "desc", sortColumn: "downloads" },
+  };
+
+  const fetchGames = async (key) => {
+    return await request(endpoints.list.list_games, {
+      method: "POST",
+      headers: myHeaders,
+      body: JSON.stringify({ ...options[key], perPage, page: 1 }),
+    }, false);
+  };
+
+  if (window.location.pathname.includes("/search") || window.location.pathname.includes("/category")) {
+    // TODO: Show the search or category results
   } else {
-    const myHeaders = new Headers();
-    myHeaders.append("Content-Type", "application/json");
+    const [freshGames, hotGames, underratedGames, sponsoredGames, freeandhotGames, bestsellingGames] = await Promise.all([
+      fetchGames("fresh"),
+      fetchGames("hot"),
+      fetchGames("underrated"),
+      fetchGames("sponsored"),
+      fetchGames("freeandhot"),
+      fetchGames("bestseller"),
+    ]);
 
-    const perPage = 30;
-
-    // recently created and recently updated
-    const freshGamesOptions = {
-      method: "POST",
-      headers: myHeaders,
-      body: JSON.stringify({
-        orderBy: "asc",
-        sortColumn: "created_at",
-        perPage: perPage,
-        page: 1,
-      }),
-    };
-
-    // most downloads and high rating
-    const hotGamesOptions = {
-      method: "POST",
-      headers: myHeaders,
-      body: JSON.stringify({
-        orderBy: "desc",
-        sortColumn: "downloads",
-        perPage: perPage,
-        page: 1,
-      }),
-    };
-
-    // high rating and least downloads
-    const underratedGamesOptions = {
-      method: "POST",
-      headers: myHeaders,
-      body: JSON.stringify({
-        orderBy: "asc",
-        sortColumn: "downloads",
-        perPage: perPage,
-        page: 1,
-      }),
-    }
-
-    const sponsoredOptions = {
-      method: "POST",
-      headers: myHeaders,
-      body: JSON.stringify({
-        orderBy: "desc",
-        sortColumn: "sponsor_money",
-        perPage: perPage,
-        page: 1,
-      }),
-    };
-
-    // highest gross profit
-    const bestsellerOptions = {
-      method: "POST",
-      headers: myHeaders,
-      body: JSON.stringify({
-        orderBy: "desc",
-        sortColumn: "downloads",
-        perPage: perPage,
-        page: 1,
-      }),
-    };
-
-    const freshGames = await request(listGamesUrl, freshGamesOptions, false);
-    const hotGames = await request(listGamesUrl, hotGamesOptions, false);
-    const underratedGames = await request(listGamesUrl, underratedGamesOptions, false);
-    const sponsoredGames = await request(listGamesUrl, sponsoredOptions, false);
-    // free and hot
-    const bestsellingGames = await request(
-      listGamesUrl,
-      bestsellerOptions,
-      false
-    );
-
-    displayGames(
-      document.getElementById("fresh-games-list"),
-      document.getElementById("fresh-games"),
-      freshGames
-    );
-    displayGames(
-      document.getElementById("hot-games-list"),
-      document.getElementById("hot-games"),
-      hotGames
-    );
-    displayGames(
-      document.getElementById("underrated-games-list"),
-      document.getElementById("underrated-games"),
-      underratedGames
-    );
-    displayGames(
-      document.getElementById("sponsored-games-list"),
-      document.getElementById("sponsored-games"),
-      sponsoredGames
-    );
-    displayGames(
-      document.getElementById("bestseller-games-list"),
-      document.getElementById("bestseller-games"),
-      bestsellingGames
-    );
+    displayGames(document.getElementById("fresh-games-list"), document.getElementById("fresh-games"), freshGames);
+    displayGames(document.getElementById("hot-games-list"), document.getElementById("hot-games"), hotGames);
+    displayGames(document.getElementById("underrated-games-list"), document.getElementById("underrated-games"), underratedGames);
+    displayGames(document.getElementById("sponsored-games-list"), document.getElementById("sponsored-games"), sponsoredGames);
+    displayGames(document.getElementById("freehot-games-list"), document.getElementById("freehot-games"), freeandhotGames);
+    displayGames(document.getElementById("bestseller-games-list"), document.getElementById("bestseller-games"), bestsellingGames);
   }
 };
 
 const fetchGames = async () => {
-  const listPricesUrl = "https://x8ki-letl-twmt.n7.xano.io/api:tFdG2Vz-/prices";
   const myHeaders = new Headers();
   myHeaders.append("Content-Type", "application/json");
 
@@ -382,7 +307,7 @@ const fetchGames = async () => {
   };
 
   const setPrices = async () => {
-    const result = await request(listPricesUrl, priceRequestOptions, true);
+    const result = await request(endpoints.list.list_prices, priceRequestOptions, true);
 
     if (result) {
       prices = result.response.data;

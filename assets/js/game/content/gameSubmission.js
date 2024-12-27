@@ -1,17 +1,15 @@
-const create_product =
-  "https://x8ki-letl-twmt.n7.xano.io/api:iwAsZq4E/products";
-const set_price = "https://x8ki-letl-twmt.n7.xano.io/api:tFdG2Vz-/prices";
-const create_payment_link =
-  "https://x8ki-letl-twmt.n7.xano.io/api:nrRyaavp/payment_link";
-const create_game = "https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv/games/create";
-
 const uploadGame = document.getElementById("upload-game");
 
 import { fetch_user } from "../../user/sessionManager.js";
 import { request } from "../../base/apiManager.js";
+import { endpoints } from "../other/endpoints.js";
 
 const myHeaders = new Headers();
 myHeaders.append("Content-Type", "application/json");
+
+const uploader = await fetch_user();
+const uploader_name = uploader.name;
+const uploader_id = uploader.id;
 
 const format_file_size = (fileSizeInBytes) => {
   if (fileSizeInBytes < Math.pow(1024, 2)) {
@@ -25,7 +23,7 @@ const format_file_size = (fileSizeInBytes) => {
 
 const upload_game = async (gameRequestOptions) => {
   const result = await request(
-    create_game,
+    endpoints.game.create_game,
     gameRequestOptions,
     true,
   );
@@ -75,7 +73,7 @@ const set_product_price = async (product_id) => {
   };
 
   const result = await request(
-    set_price,
+    endpoints.game.update_price,
     priceRequestOptions,
     true,
   );
@@ -98,7 +96,7 @@ const upload_product = async () => {
   };
 
   const result = await request(
-    create_product,
+    endpoints.game.create_product,
     productRequestOptions,
     true,
   );
@@ -121,7 +119,7 @@ const upload_payment_link = async (price_id) => {
   };
 
   const result = await request(
-    create_payment_link,
+    endpoints.game.create_payment_link,
     paymentLinkOptions,
     true,
   );
@@ -170,10 +168,6 @@ const on_submit = async (event) => {
     const xbox = document.getElementById("xbox");
     const playstation = document.getElementById("playstation");
     const oculus = document.getElementById("oculus");
-
-    const uploader = await fetch_user();
-    const uploader_name = uploader.name;
-    const uploader_id = uploader.id;
 
     const currency = currency_input.options[currency_input.selectedIndex].value;
     const age = age_rating.options[age_rating.selectedIndex].value;

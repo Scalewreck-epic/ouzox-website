@@ -1,12 +1,9 @@
-const auth_signup =
-  "https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv:v1/auth/signup";
-const auth_login =
-  "https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv:v1/auth/login";
 const restrictedPaths = ["/settings", "/upload", "/dashboard"];
 const loginPaths = ["/login", "/signup"];
 
 import * as session from "./sessionManager.js";
 import { request } from "../base/apiManager.js";
+import { endpoints } from "../other/endpoints.js";
 
 console.info(
   "Ouzox is open source! https://github.com/Scalewreck-epic/ouzox-website"
@@ -137,7 +134,7 @@ const create_session_data = async () => {
       error_label.textContent = "Creating account...";
 
       const result = await request(
-        auth_signup,
+        endpoints.user.signup,
         requestOptions,
         false,
       );
@@ -179,7 +176,7 @@ const fetch_session_data = async () => {
 
       error_label.textContent = "Logging you in...";
 
-      const result = await request(auth_login, requestOptions, false);
+      const result = await request(endpoints.user.login, requestOptions, false);
 
       if (result.ok == true) {
         session.create_cookie("session_id", result.authToken);

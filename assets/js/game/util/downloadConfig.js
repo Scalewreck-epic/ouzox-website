@@ -1,10 +1,9 @@
-const get_product = "https://x8ki-letl-twmt.n7.xano.io/api:iwAsZq4E/products/";
-
 const urlParams = new URLSearchParams(window.location.search);
 const gameIdParam = urlParams.get("g");
 const priceIdParam = urlParams.get("p");
 
 import { request } from "../../base/apiManager.js";
+import { endpoints } from "../other/endpoints.js";
 
 async function set_game_data(gameId) {
   const myHeaders = new Headers();
@@ -17,7 +16,7 @@ async function set_game_data(gameId) {
 
   async function fetch_game_data() {
     const result = await request(
-      `${get_product}${gameId}`,
+      `${endpoints.game.get_product}${gameId}`,
       options,
       true,
     );

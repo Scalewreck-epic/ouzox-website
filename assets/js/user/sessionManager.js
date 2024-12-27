@@ -1,4 +1,5 @@
 import { request } from "../base/apiManager.js";
+import { endpoints } from "../other/endpoints.js";
 
 const calculate_expiration = (past) => {
   const currentDate = new Date();
@@ -55,9 +56,10 @@ export const fetch_cookie = (wanted) => {
   }
 };
 
+const sessionId = fetch_cookie("session_id").Data;
+
 export const change_email_data = async () => {
   const editEmail = "https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv:v1/user/edit_email/";
-  const sessionId = fetch_cookie("session_id").Data;
 
   if (sessionId) {
     const newEmail = document.getElementById("email_input").value;
@@ -85,10 +87,7 @@ export const change_email_data = async () => {
 };
 
 export const change_password_data = async () => {
-  const session_id = getCookie("session_id").Data;
-  const editPassword = "https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv:v1/user/edit_pass/";
-
-  if (session_id) {
+  if (sessionId) {
     const newPassword = document.getElementById("password_input").value;
     const previousPassword = document.getElementById("old_password_input").value;
     const validPassword = newPassword.length >= 8;
@@ -101,7 +100,7 @@ export const change_password_data = async () => {
         method: "POST",
         headers: myHeaders,
         body: JSON.stringify({
-          session_id: session_id,
+          session_id: sessionId,
           old_password: previousPassword,
           new_password: newPassword,
         }),
@@ -109,16 +108,13 @@ export const change_password_data = async () => {
 
       await change_session_data(
         requestOptions,
-        `${editPassword}${session_id}`
+        `${endpoints.user.edit_password}${sessionId}`
       );
     }
   }
 };
 
 export const change_status_data = async () => {
-  const editStatus = "https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv/user/edit_status/";
-  const sessionId = fetch_cookie("session_id").Data;
-
   if (sessionId) {
     const new_status = document.getElementById("status-input").value;
 
@@ -136,13 +132,12 @@ export const change_status_data = async () => {
 
     await change_session_data(
       requestOptions,
-      `${editStatus}${sessionId}`
+      `${endpoints.user.edit_status}${sessionId}`
     );
   }
 };
 
 export const fetch_alternative_user = async (userId) => {
-  const getUserWId = "https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv/user/id/";
   const myHeaders = new Headers();
   myHeaders.append("Content-Type", "application/json");
 
@@ -152,7 +147,7 @@ export const fetch_alternative_user = async (userId) => {
   };
 
   const result = await request(
-    `${getUserWId}${userId}`,
+    `${endpoints.user.get_data_with_id}${userId}`,
     getUserOpt,
     true,
   );
@@ -163,9 +158,6 @@ export const fetch_alternative_user = async (userId) => {
 };
 
 export const fetch_user = async () => {
-  const getUserWSession = "https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv/user/session/";
-  const sessionId = fetch_cookie("session_id").Data;
-
   if (sessionId) {
     const myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
@@ -176,7 +168,7 @@ export const fetch_user = async () => {
     };
 
     const result = await request(
-      `${getUserWSession}${sessionId}`,
+      `${endpoints.user.get_data_with_sess}${sessionId}`,
       getUserOpt,
       false,
     );

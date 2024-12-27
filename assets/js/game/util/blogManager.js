@@ -1,6 +1,5 @@
-const blog_posts = "https://x8ki-letl-twmt.n7.xano.io/api:fcT2v9YQ/posts";
-
 import { request } from "../../base/apiManager.js";
+import { endpoints } from "../other/endpoints.js";
 
 const blog_market = document.getElementById("blog-posts");
 
@@ -49,7 +48,7 @@ const create_blog_post = (post) => {
 };
 
 const result = await request(
-  blog_posts,
+  endpoints.list.list_blog,
   requestOptions,
   false,
 );
