@@ -202,7 +202,7 @@ const displayGenres = async () => {
 
 const loadUserGames = async (userId) => {
   const listUserGamesUrl =
-    "https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv/user/games";
+    "https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv/user/publicgames";
   const gameDownloads = document.getElementById("game-downloads");
 
   const user = await fetch_alternative_user(userId);
@@ -211,7 +211,6 @@ const loadUserGames = async (userId) => {
     method: "POST",
     headers: myHeaders,
     body: JSON.stringify({
-      user_name: user.name,
       user_id: user.id,
     }),
   };
@@ -220,30 +219,17 @@ const loadUserGames = async (userId) => {
 
   const userGames = await request(listUserGamesUrl, developerGameOptions, true);
 
-  if (userGames.ok == true) {
-    const publicUserGames = userGames.response.games.items.filter((game) => {
-      if (game.active == true) {
-        downloads += game.downloads;
-        return game;
-      }
-    });
+  userGames.forEach((game) => {
+    downloads += game.downloads;
+  })
 
-    const displayResponse = { response: publicUserGames, ok: true };
+  displayGames(
+    document.getElementById("user-games"),
+    document.getElementById("user-games"),
+    userGames
+  );
 
-    gameDownloads.textContent = downloads.toString();
-
-    displayGames(
-      document.getElementById("user-games"),
-      document.getElementById("user-games"),
-      displayResponse
-    );
-  } else {
-    displayGames(
-      document.getElementById("user-games"),
-      document.getElementById("user-games"),
-      userGames
-    );
-  }
+  gameDownloads.textContent = downloads.toString();
 };
 
 const loadDashboard = async () => {
@@ -258,7 +244,6 @@ const loadDashboard = async () => {
     method: "POST",
     headers: myHeaders,
     body: JSON.stringify({
-      user_name: user.name,
       user_id: user.id,
     }),
   };
