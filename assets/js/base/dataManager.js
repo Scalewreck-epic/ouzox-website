@@ -119,17 +119,8 @@ class Game {
 
 const fetchGamePrice = (gameId) => {
   const result = prices.find((item) => item.product === gameId);
-  if (result) {
-    return {
-      price: result.unit_amount,
-      currency: result.currency,
-    };
-  }
 
-  return {
-    price: 0,
-    currency: "USD",
-  };
+  return result ? {price: result.unit_amount, currency: result.currency} : {price: 0, currency: "USD"};
 };
 
 const createLabel = (labelText, numDays, targetElement) => {
@@ -151,35 +142,35 @@ const createLabel = (labelText, numDays, targetElement) => {
   });
 };
 
-const displayGames = async (listElement, categoryElement, response) => {
+const displayErrorForGames = async (categoryElement, response) => {
   const categoryNoneElement = categoryElement.querySelector(".category-none");
+  categoryNoneElement.textContent = response;
+}
 
-  if (response.ok == true) {
-    const games = response.response.games.items;
+const displayGames = async (listElement, categoryElement, games) => {
+  const categoryNoneElement = categoryElement.querySelector(".category-none");
+  
+  if (games.length > 0) {
     categoryNoneElement.remove();
 
-    if (games.length > 0) {
-      games.forEach((gameData) => {
-        const game = new Game(gameData);
-        const gamePrice = fetchGamePrice(game.id.toString());
-        game.createGamePage(listElement, gamePrice);
+    games.forEach((gameData) => {
+      const game = new Game(gameData);
+      const gamePrice = fetchGamePrice(game.id.toString());
+      game.createGamePage(listElement, gamePrice);
 
-        if (!allGames[gameData]) {
-          allGames.push(gameData);
+      if (!allGames[gameData]) {
+        allGames.push(gameData);
 
-          if (!genres[game.genre]) {
-            genres[game.genre] = {
-              name: game.genre,
-              count: 1,
-            };
-          } else {
-            genres[game.genre].count++;
-          }
+        if (!genres[game.genre]) {
+          genres[game.genre] = {
+            name: game.genre,
+            count: 1,
+          };
+        } else {
+          genres[game.genre].count++;
         }
-      });
-    }
-  } else {
-    categoryNoneElement.textContent = response.response;
+      }
+    });
   }
 };
 
@@ -206,29 +197,29 @@ const displayGenres = async () => {
 const loadUserGames = async (userId) => {
   const gameDownloads = document.getElementById("game-downloads");
 
-  const user = await fetch_alternative_user(userId);
+  const newUser = await fetch_alternative_user(userId);
+
+  const myHeaders = new Headers();
+  myHeaders.append("Content-Type", "application/json");
 
   const developerGameOptions = {
     method: "POST",
     headers: myHeaders,
     body: JSON.stringify({
-      user_id: user.id,
+      user_id: newUser.id,
     }),
   };
 
   let downloads = 0;
 
-  const userGames = await request(endpoints.user.list_public_games, developerGameOptions, true);
+  const userGamesRequest = await request(endpoints.user.list_public_games, developerGameOptions, false);
+  userGamesRequest.ok == true ? displayGames(document.getElementById("user-games"), document.getElementById("user-games"), userGamesRequest.response) : displayErrorForGames(document.getElementById("user-games"), userGamesRequest.response);
 
-  userGames.forEach((game) => {
-    downloads += game.downloads;
-  })
-
-  displayGames(
-    document.getElementById("user-games"),
-    document.getElementById("user-games"),
-    userGames
-  );
+  if (userGamesRequest.ok == true) {
+    userGamesRequest.response.forEach((game) => {
+      downloads += game.downloads;
+    })
+  }
 
   gameDownloads.textContent = downloads.toString();
 };
@@ -245,13 +236,8 @@ const loadDashboard = async () => {
     }),
   };
 
-  const userGames = await request(endpoints.user.list_games, developerGameOptions, true);
-
-  displayGames(
-    document.getElementById("dashboard-market"),
-    document.getElementById("dashboard-market"),
-    userGames
-  );
+  const userGamesRequest = await request(endpoints.user.list_games, developerGameOptions, true).response;
+  userGamesRequest.ok == true ? displayGames(document.getElementById("dashboard-market"), document.getElementById("dashboard-market"), userGamesRequest.response) : displayErrorForGames(document.getElementById("dashboard-market"), userGamesRequest.response);
 };
 
 const loadGames = async () => {
@@ -288,12 +274,12 @@ const loadGames = async () => {
       fetchGames("bestseller"),
     ]);
 
-    displayGames(document.getElementById("fresh-games-list"), document.getElementById("fresh-games"), freshGames);
-    displayGames(document.getElementById("hot-games-list"), document.getElementById("hot-games"), hotGames);
-    displayGames(document.getElementById("underrated-games-list"), document.getElementById("underrated-games"), underratedGames);
-    displayGames(document.getElementById("sponsored-games-list"), document.getElementById("sponsored-games"), sponsoredGames);
-    displayGames(document.getElementById("freehot-games-list"), document.getElementById("freehot-games"), freeandhotGames);
-    displayGames(document.getElementById("bestseller-games-list"), document.getElementById("bestseller-games"), bestsellingGames);
+    freshGames.ok == true ? displayGames(document.getElementById("fresh-games-list"), document.getElementById("fresh-games"), freshGames.response) : displayErrorForGames(document.getElementById("fresh-games"), freshGames.response);
+    hotGames.ok == true ? displayGames(document.getElementById("hot-games-list"), document.getElementById("hot-games"), hotGames.response) : displayErrorForGames(document.getElementById("hot-games"), hotGames.response);
+    underratedGames.ok == true ? displayGames(document.getElementById("underrated-games-list"), document.getElementById("underrated-games"), underratedGames.response) : displayErrorForGames(document.getElementById("underrated-games"), underratedGames.response);
+    sponsoredGames.ok == true ? displayGames(document.getElementById("sponsored-games-list"), document.getElementById("sponsored-games"), sponsoredGames.response) : displayErrorForGames(document.getElementById("sponsored-games"), sponsoredGames.response);
+    freeandhotGames.ok == true ? displayGames(document.getElementById("freehot-games-list"), document.getElementById("freehot-games"), freeandhotGames.response) : displayErrorForGames(document.getElementById("freehot-games"), freeandhotGames.response);
+    bestsellingGames.ok == true ? displayGames(document.getElementById("bestseller-games-list"), document.getElementById("bestseller-games"), bestsellingGames.response) : displayErrorForGames(document.getElementById("bestseller-games"), bestsellingGames.response);
   }
 };
 
