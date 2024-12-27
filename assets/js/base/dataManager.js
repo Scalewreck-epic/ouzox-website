@@ -213,7 +213,7 @@ const loadUserGames = async (userId) => {
   let downloads = 0;
 
   const userGamesRequest = await request(endpoints.user.list_public_games, developerGameOptions, false);
-  userGamesRequest.ok == true ? displayGames(document.getElementById("user-games"), document.getElementById("user-games"), userGamesRequest.response) : displayErrorForGames(document.getElementById("user-games"), userGamesRequest.response);
+  userGamesRequest.ok ? displayGames(document.getElementById("user-games"), document.getElementById("user-games"), userGamesRequest.response) : displayErrorForGames(document.getElementById("user-games"), userGamesRequest.response);
 
   if (userGamesRequest.ok == true) {
     userGamesRequest.response.forEach((game) => {
@@ -237,7 +237,7 @@ const loadDashboard = async () => {
   };
 
   const userGamesRequest = await request(endpoints.user.list_games, developerGameOptions, true).response;
-  userGamesRequest.ok == true ? displayGames(document.getElementById("dashboard-market"), document.getElementById("dashboard-market"), userGamesRequest.response) : displayErrorForGames(document.getElementById("dashboard-market"), userGamesRequest.response);
+  userGamesRequest.ok ? displayGames(document.getElementById("dashboard-market"), document.getElementById("dashboard-market"), userGamesRequest.response) : displayErrorForGames(document.getElementById("dashboard-market"), userGamesRequest.response);
 };
 
 const loadGames = async () => {
@@ -250,7 +250,7 @@ const loadGames = async () => {
     hot: { orderBy: "desc", sortColumn: "downloads" },
     underrated: { orderBy: "asc", sortColumn: "downloads" },
     sponsored: { orderBy: "desc", sortColumn: "sponsor_money" },
-    freeandhot: { orderBy: "desc", sortColumn: "sponsor_money", free_only: true },
+    freeandhot: { orderBy: "desc", sortColumn: "downloads", free_only: true },
     bestseller: { orderBy: "desc", sortColumn: "downloads" },
   };
 
@@ -274,12 +274,12 @@ const loadGames = async () => {
       fetchGames("bestseller"),
     ]);
 
-    freshGames.ok == true ? displayGames(document.getElementById("fresh-games-list"), document.getElementById("fresh-games"), freshGames.response) : displayErrorForGames(document.getElementById("fresh-games"), freshGames.response);
-    hotGames.ok == true ? displayGames(document.getElementById("hot-games-list"), document.getElementById("hot-games"), hotGames.response) : displayErrorForGames(document.getElementById("hot-games"), hotGames.response);
-    underratedGames.ok == true ? displayGames(document.getElementById("underrated-games-list"), document.getElementById("underrated-games"), underratedGames.response) : displayErrorForGames(document.getElementById("underrated-games"), underratedGames.response);
-    sponsoredGames.ok == true ? displayGames(document.getElementById("sponsored-games-list"), document.getElementById("sponsored-games"), sponsoredGames.response) : displayErrorForGames(document.getElementById("sponsored-games"), sponsoredGames.response);
-    freeandhotGames.ok == true ? displayGames(document.getElementById("freehot-games-list"), document.getElementById("freehot-games"), freeandhotGames.response) : displayErrorForGames(document.getElementById("freehot-games"), freeandhotGames.response);
-    bestsellingGames.ok == true ? displayGames(document.getElementById("bestseller-games-list"), document.getElementById("bestseller-games"), bestsellingGames.response) : displayErrorForGames(document.getElementById("bestseller-games"), bestsellingGames.response);
+    freshGames.ok  ? displayGames(document.getElementById("fresh-games-list"), document.getElementById("fresh-games"), freshGames.response.items) : displayErrorForGames(document.getElementById("fresh-games"), freshGames.response);
+    hotGames.ok  ? displayGames(document.getElementById("hot-games-list"), document.getElementById("hot-games"), hotGames.response.items) : displayErrorForGames(document.getElementById("hot-games"), hotGames.response);
+    underratedGames.ok  ? displayGames(document.getElementById("underrated-games-list"), document.getElementById("underrated-games"), underratedGames.response.items) : displayErrorForGames(document.getElementById("underrated-games"), underratedGames.response);
+    sponsoredGames.ok  ? displayGames(document.getElementById("sponsored-games-list"), document.getElementById("sponsored-games"), sponsoredGames.response.items) : displayErrorForGames(document.getElementById("sponsored-games"), sponsoredGames.response);
+    freeandhotGames.ok  ? displayGames(document.getElementById("freehot-games-list"), document.getElementById("freehot-games"), freeandhotGames.response.items) : displayErrorForGames(document.getElementById("freehot-games"), freeandhotGames.response);
+    bestsellingGames.ok  ? displayGames(document.getElementById("bestseller-games-list"), document.getElementById("bestseller-games"), bestsellingGames.response.items) : displayErrorForGames(document.getElementById("bestseller-games"), bestsellingGames.response);
   }
 };
 
