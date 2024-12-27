@@ -6,8 +6,6 @@ const urlParams = new URLSearchParams(window.location.search);
 const gameIdParam = urlParams.get("g");
 const user = await fetch_user();
 
-// TODO: Add the color, background color, and alpha inputs from the depricated version to this script.
-
 class GameData {
   constructor(rawGameData, priceData, createdFormattedDate, updatedFormattedDate, datestodays) {
     Object.assign(this, {

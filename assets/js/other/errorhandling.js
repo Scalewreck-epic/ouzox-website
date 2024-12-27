@@ -1,5 +1,5 @@
 const urlParams = new URLSearchParams(window.location.search);
-const errorCode = Number(encodeURIComponent(urlParams.get("code"))) || 404;
+const errorCode = Number(urlParams.get("code")) || 404;
 
 const errorcodeLabel = document.getElementById("errorcode");
 const messageHeader = document.getElementById("messageheader");
@@ -22,12 +22,13 @@ const errorMessages = {
 errorcodeLabel.textContent = `Error ${errorCode}`;
 navigationTitle.textContent = `Ouzox | Error ${errorCode}`;
 
-const errorMessage = errorMessages[errorCode]
+const errorMessage = errorMessages[errorCode];
 
 if (errorMessage) {
   messageHeader.textContent = errorMessage.header;
   message.textContent = errorMessage.message;
 } else {
+  console.error(`Unknown error code: ${errorCode}`);
   messageHeader.textContent = "Unknown Error.";
-  message.textContent = `An unknown error occurred. Error code: ${errorCode}`
+  message.textContent = `An unknown error occurred. Error code: ${errorCode}`;
 }
