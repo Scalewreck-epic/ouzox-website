@@ -42,7 +42,7 @@ String.prototype.convertToHex = function () {
 };
 
 const updateBackgroundColor = (alphaInput, styleElement) => {
-  const alphaValue = alphaInput.value / 100;
+  const alphaValue = alphaInput / 100;
   const [r, g, b] = getComputedStyle(styleElement).getPropertyValue("background-color").match(/\d+/g).map(Number);
   styleElement.style.setProperty("background-color", `rgba(${r}, ${g}, ${b}, ${alphaValue})`);
 };
@@ -140,6 +140,51 @@ const gameHandler = async (gameId) => {
   const features = ["Singleplayer", "Multiplayer", "Coop", "Achievements", "Controller Support", "Saves"].map(name => ({ Name: name, Enabled: gameData.features[name] }));
   const platforms = ["windows", "mac", "linux", "android", "ios", "xbox", "playstation", "oculus"].map(name => ({ Name: name.charAt(0).toUpperCase() + name.slice(1), Enabled: gameData.platforms[name] }));
 
+  const elementAlphas = [
+    {
+      Amount: gameData.page.alphas.bg2_alpha,
+      ElementChanging: elements.gameColumn,
+    },
+    {
+      Amount: gameData.page.alphas.description_bg_alpha,
+      ElementChanging: elements.gameDesc,
+    },
+    {
+      Amount: gameData.page.alphas.game_details_bg_alpha,
+      ElementChanging: elements.gameStats,
+    },
+  ]
+
+  const elementShadows = [
+    {
+      Enabled: gameData.page.outlines.game_details_outline,
+      ElementChanging: elements.gameStats,
+    },
+    {
+      Enabled: gameData.page.outlines.description_outline,
+      ElementChanging: elements.gameDesc,
+    },
+    {
+      Enabled: gameData.page.outlines.bg2_outline,
+      ElementChanging: elements.gameColumn,
+    },
+  ]
+
+  const elementOutlines = [
+    {
+      Enabled: gameData.page.outlines.game_details_shadow,
+      ElementChanging: elements.gameStats,
+    },
+    {
+      Enabled: gameData.page.outlines.description_shadow,
+      ElementChanging: elements.gameDesc,
+    },
+    {
+      Enabled: gameData.page.outlines.bg2_shadow,
+      ElementChanging: elements.gameColumn,
+    },
+  ]
+
   features.forEach(feature => {
     if (feature.Enabled) {
       const featureContainer = document.createElement("div");
@@ -156,6 +201,18 @@ const gameHandler = async (gameId) => {
       platformContainer.textContent = platform.Name;
       elements.gamePlatforms.appendChild(platformContainer);
     }
+  });
+
+  elementShadows.forEach(shadow => {
+    shadow.Enabled ? shadow.ElementChanging.classList.add("shadow-input") : shadow.ElementChanging.classList.remove("shadow-input")
+  });
+
+  elementOutlines.forEach(outline => {
+    outline.Enabled ? outline.ElementChanging.classList.add("outline-input") : outline.ElementChanging.classList.remove("outline-input")
+  });
+
+  elementAlphas.forEach(alpha => {
+    updateBackgroundColor(alpha.Amount, alpha.ElementChanging);
   });
 
   if (!gameData.page.default_colors) {
@@ -189,6 +246,108 @@ const gameHandler = async (gameId) => {
       commitChangesButton: document.createElement("button"),
     };
 
+    const colorInputs = [
+      {
+        Element: document.getElementById("bg-color"),
+        Property: "background-color",
+        ElementChanging: document.body,
+      },
+      {
+        Element: document.getElementById("bg2-color"),
+        Property: "background-color",
+        ElementChanging: elements.gameColumn,
+      },
+      {
+        Element: document.getElementById("title-color"),
+        Property: "color",
+        ElementChanging: elements.gameTitleColumn,
+      },
+      {
+        Element: document.getElementById("description-color"),
+        Property: "color",
+        ElementChanging: elements.gameDescBackground,
+      },
+      {
+        Element: document.getElementById("description-bg-color"),
+        Property: "background-color",
+        ElementChanging: elements.gameDescBackground,
+      },
+      {
+        Element: document.getElementById("game-details-color"),
+        Property: "color",
+        ElementChanging: elements.gameStats,
+      },
+      {
+        Element: document.getElementById("game-details-bg-color"),
+        Property: "background-color",
+        ElementChanging: elements.gameStats,
+      },
+      {
+        Element: document.getElementById("button-bg-color"),
+        Property: "background-color",
+        ElementChanging: elements.downloadButton,
+      },
+      {
+        Element: document.getElementById("button-text-color"),
+        Property: "color",
+        ElementChanging: elements.downloadButton,
+      },
+    ]
+
+    const alphaInputs = [
+      {
+        Element: document.getElementById("bg2-alpha"),
+        Amount: gameData.page.alphas.bg2_alpha,
+        ElementChanging: elements.gameColumn
+      },
+      {
+        Element: document.getElementById("description-bg-alpha"),
+        Amount: gameData.page.alphas.description_bg_alpha,
+        ElementChanging: elements.gameDescBackground
+      },
+      {
+        Element: document.getElementById("game-details-bg-alpha"),
+        Amount: gameData.page.alphas.game_details_bg_alpha,
+        ElementChanging: elements.gameStats
+      },
+    ]
+
+    const shadowCheckboxes = [
+      {
+        Element: document.getElementById("game-details-outline-checkbox"),
+        Enabled: gameData.page.outlines.game_details_outline,
+        ElementChanging: elements.gameStats,
+      },
+      {
+        Element: document.getElementById("description-outline-checkbox"),
+        Enabled: gameData.page.outlines.description_outline,
+        ElementChanging: elements.gameDescBackground,
+      },
+      {
+        Element: document.getElementById("bg2-outline-checkbox"),
+        Enabled: gameData.page.outlines.bg2_outline,
+        ElementChanging: elements.gameColumn,
+      },
+    ]  
+
+    const outlineCheckboxes = [
+      {
+        Element: document.getElementById("game-details-shadow-checkbox"),
+        Enabled: gameData.page.outlines.game_details_shadow,
+        ElementChanging: elements.gameStats,
+      },
+      {
+        Element: document.getElementById("description-shadow-checkbox"),
+        Enabled: gameData.page.outlines.description_shadow,
+        ElementChanging: elements.gameDescBackground,
+      },
+      {
+        Element: document.getElementById("bg2-shadow-checkbox"),
+        Enabled: gameData.page.outlines.bg2_shadow,
+        ElementChanging: elements.gameColumn,
+      },
+    ]
+
     elements.gameTitle.contentEditable = true;
     elements.gameDesc.contentEditable = true;
     elements.gameSummary.contentEditable = true;
@@ -219,7 +378,7 @@ const gameHandler = async (gameId) => {
       isPublic.Enabled = isPublic.Element.checked;
     });
 
-    const gameFeatures = ["Singleplayer", "Multiplayer", "Coop", "Achievements", "Controller Support", "Saves", "VR Support"].map(name => ({
+    const gameFeatures = ["Single player", "Multi player", "Co op", "Achievements", "Controller Support", "Saves", "VR Support"].map(name => ({
       Name: name,
       Enabled: gameData.features[name],
       Element: document.getElementById(name.toLowerCase().replace(" ", "-")),
@@ -242,6 +401,37 @@ const gameHandler = async (gameId) => {
       platform.Element.checked = platform.Enabled;
       platform.Element.addEventListener("change", () => {
         platform.Enabled = platform.Element.checked;
+      });
+    });
+
+    colorInputs.forEach(colorInput => {
+      colorInput.Element.value = getComputedStyle(colorInput.ElementChanging).getPropertyValue("color").toString().convertToHex();
+      colorInput.Element.addEventListener("input", function () {
+        colorInput.ElementChanging.style.setProperty(colorInput.Property, this.value);
+      });
+    });
+
+    alphaInputs.forEach(alphaInput => {
+      alphaInput.Element.value = alphaInput.Amount * 100;
+      alphaInput.Element.addEventListener("input", function () {
+        alphaInput.Amount = alphaInput.Element.value;
+        updateBackgroundColor(alphaInput.Amount, alphaInput.ElementChanging);
+      });
+    });
+
+    shadowCheckboxes.forEach(shadowCheckbox => {
+      shadowCheckbox.Element.checked = shadowCheckbox.Enabled;
+      shadowCheckbox.Element.addEventListener("change", function() {
+        shadowCheckbox.Enabled = this.checked;
+        this.checked ? shadowCheckbox.ElementChanging.classList.add("shadow-input") : shadowCheckbox.ElementChanging.classList.remove("shadow-input");
+      });
+    });
+
+    outlineCheckboxes.forEach(outlineCheckbox => {
+      outlineCheckbox.Element.checked = outlineCheckbox.Enabled;
+      outlineCheckbox.Element.addEventListener("change", function() {
+        outlineCheckbox.Enabled = this.checked;
+        this.checked ? outlineCheckbox.ElementChanging.classList.add("outline-input") : outlineCheckbox.ElementChanging.classList.remove("outline-input");
       });
     });
 
