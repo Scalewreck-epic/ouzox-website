@@ -2,7 +2,7 @@ const uploadGame = document.getElementById("upload-game");
 
 import { fetch_user } from "../../user/sessionManager.js";
 import { request } from "../../base/apiManager.js";
-import { endpoints } from "../other/endpoints.js";
+import { endpoints } from "../../other/endpoints.js";
 
 const myHeaders = new Headers();
 myHeaders.append("Content-Type", "application/json");

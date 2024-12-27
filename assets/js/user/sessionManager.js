@@ -152,9 +152,7 @@ export const fetch_alternative_user = async (userId) => {
     true,
   );
 
-  if (result.ok == true) {
-    return result.response;
-  }
+  return result.ok ? result.response : null;
 };
 
 export const fetch_user = async () => {
@@ -173,10 +171,10 @@ export const fetch_user = async () => {
       false,
     );
 
-    if (result.ok == true) {
-      return result.response;
-    } else {
+    if (result.ok == false) {
       clear_cookie();
     }
+
+    return result.ok ? result.response : null;
   }
 };

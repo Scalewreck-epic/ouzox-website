@@ -1,960 +1,291 @@
 import { fetch_user } from "../../user/sessionManager.js";
 import { request } from "../../base/apiManager.js";
-import { endpoints } from "../other/endpoints.js";
+import { endpoints } from "../../other/endpoints.js";
 
 const urlParams = new URLSearchParams(window.location.search);
 const gameIdParam = urlParams.get("g");
+const user = await fetch_user();
 
-import { fetch_user } from "../../user/sessionManager.js";
-
-const user = await fetch_user()
+// TODO: Add the color, background color, and alpha inputs from the depricated version to this script.
 
 class GameData {
-  constructor(
-    rawGameData,
-    priceData,
-    createdFormattedDate,
-    updatedFormattedDate,
-    datestodays
-  ) {
-    this.id = rawGameData.id;
-    this.name = rawGameData.name;
-    this.active = rawGameData.active;
-    this.description = rawGameData.description;
-    this.genre = rawGameData.genre;
-    this.summary = rawGameData.summary;
-    this.artstyle = rawGameData.artstyle;
-    this.filesize = rawGameData.size;
-    this.agerating = rawGameData.age_rating;
-    this.icon = new URL(rawGameData.icon.url);
-    this.paymentLink = new URL(rawGameData.payment_link);
-    this.created = createdFormattedDate;
-    this.updated = updatedFormattedDate;
-    this.datestodays = datestodays;
-    this.features = rawGameData.features;
-    this.platforms = rawGameData.platforms;
-    this.price = priceData;
-    this.download_key = rawGameData.product_id;
-    this.page = rawGameData.page;
-    this.developer = {
-      username: rawGameData.username,
+  constructor(rawGameData, priceData, createdFormattedDate, updatedFormattedDate, datestodays) {
+    Object.assign(this, {
       id: rawGameData.id,
-    };
+      name: rawGameData.name,
+      active: rawGameData.active,
+      description: rawGameData.description,
+      genre: rawGameData.genre,
+      summary: rawGameData.summary,
+      artstyle: rawGameData.artstyle,
+      filesize: rawGameData.size,
+      agerating: rawGameData.age_rating,
+      icon: new URL(rawGameData.icon.url),
+      paymentLink: rawGameData.paymentLink,
+      created: createdFormattedDate,
+      updated: updatedFormattedDate,
+      datestodays,
+      features: rawGameData.features,
+      platforms: rawGameData.platforms,
+      price: priceData,
+      download_key: rawGameData.product_id,
+      page: rawGameData.page,
+      developer: { username: rawGameData.username, id: rawGameData.id },
+    });
   }
 }
 
 String.prototype.convertToHex = function () {
-  if (/^#[0-9a-fA-F]{6}$/.test(this)) {
-    return this;
-  }
-
-  const rgbValues = this.match(/\d+/g).map(Number);
-
-  const r = rgbValues[0];
-  const g = rgbValues[1];
-  const b = rgbValues[2];
-
-  const hexR = r.toString(16).padStart(2, "0");
-  const hexG = g.toString(16).padStart(2, "0");
-  const hexB = b.toString(16).padStart(2, "0");
-
-  return `#${hexR}${hexG}${hexB}`;
+  if (/^#[0-9a-fA-F]{6}$/.test(this)) return this;
+  const [r, g, b] = this.match(/\d+/g).map(Number);
+  return `#${[r, g, b].map(v => v.toString(16).padStart(2, "0")).join("")}`;
 };
 
 const updateBackgroundColor = (alphaInput, styleElement) => {
   const alphaValue = alphaInput.value / 100;
-
-  const rgbValues =
-    getComputedStyle(styleElement).getPropertyValue("background-color");
-  const match = rgbValues.match(/\d+/g).map(Number);
-  const r = match[0];
-  const g = match[1];
-  const b = match[2];
-
-  const newBackgroundColor = `rgba(${r}, ${g}, ${b}, ${alphaValue})`;
-  styleElement.style.setProperty("background-color", newBackgroundColor);
+  const [r, g, b] = getComputedStyle(styleElement).getPropertyValue("background-color").match(/\d+/g).map(Number);
+  styleElement.style.setProperty("background-color", `rgba(${r}, ${g}, ${b}, ${alphaValue})`);
 };
 
 const getGameData = async (gameId) => {
-  const myHeaders = new Headers();
-  myHeaders.append("Content-Type", "application/json");
-
-  const options = {
-    method: "GET",
-    headers: myHeaders,
-  };
-
-  const result = await request(`${endpoints.game.get_data}${gameId}`, options, true);
-
-  if (result.ok == true) {
-    return result.response;
-  } else {
-    throw new Error(`Unable to get game data: ${result}`);
-  }
+  const result = await request(`${endpoints.game.get_data}${gameId}`, { method: "GET", headers: { "Content-Type": "application/json" } }, true);
+  if (result.ok) return result.response;
+  throw new Error(`Unable to get game data: ${result}`);
 };
+
 const fetchPriceData = async (rawGameData) => {
-  const myHeaders = new Headers();
-  myHeaders.append("Content-Type", "application/json");
-
-  const options = {
-    method: "GET",
-    headers: myHeaders,
-  };
-
-  const result = await request(
-    `${endpoints.game.get_price}${rawGameData.product_id}`,
-    options,
-    true
-  );
-
-  if (result.ok == true) {
-    return result.response;
-  }
+  const result = await request(`${endpoints.game.get_price}${rawGameData.product_id}`, { method: "GET", headers: { "Content-Type": "application/json" } }, true);
+  return result.ok ? result.response : null;
 };
 
 const fetchGameData = async (gameId) => {
-  const myHeaders = new Headers();
-  myHeaders.append("Content-Type", "application/json");
-
   const rawGameData = await getGameData(gameId);
-
   const createdDate = new Date(rawGameData.created_at);
   const updatedDate = new Date(rawGameData.updated);
-
   const currentDate = new Date();
 
-  const createdFormattedDate = createdDate.toLocaleDateString("en-US", {
-    year: "2-digit",
-    month: "2-digit",
-    day: "2-digit",
-  });
-
-  const updatedFormattedDate = updatedDate.toLocaleDateString("en-US", {
-    year: "2-digit",
-    month: "2-digit",
-    day: "2-digit",
-  });
-
-  const publishedDifference = Math.abs(
-    currentDate.getTime() - createdDate.getTime()
-  );
-
-  const updatedDifference = Math.abs(
-    currentDate.getTime() - updatedDate.getTime()
-  );
-
-  const publishedDaysAgo = Math.ceil(
-    publishedDifference / (1000 * 60 * 60 * 24)
-  );
-  const publishedWeeksAgo = Math.floor(publishedDaysAgo / 7);
-  const publishedMonthsAgo = Math.floor(publishedDaysAgo / 31);
-  const publishedYearsAgo = Math.floor(publishedDaysAgo / 365);
-
-  const updatedDaysAgo = Math.ceil(updatedDifference / (1000 * 60 * 60 * 24));
-  const updatedWeeksAgo = Math.floor(updatedDaysAgo / 7);
-  const updatedMonthsAgo = Math.floor(publishedDaysAgo / 31);
-  const updatedYearsAgo = Math.floor(updatedDaysAgo / 365);
+  const createdFormattedDate = createdDate.toLocaleDateString("en-US", { year: "2-digit", month: "2-digit", day: "2-digit" });
+  const updatedFormattedDate = updatedDate.toLocaleDateString("en-US", { year: "2-digit", month: "2-digit", day: "2-digit" });
 
   const datestodays = {
-    publishedDaysAgo: publishedDaysAgo,
-    publishedWeeksAgo: publishedWeeksAgo,
-    publishedMonthsAgo: publishedMonthsAgo,
-    publishedYearsAgo: publishedYearsAgo,
-    updatedDaysAgo: updatedDaysAgo,
-    updatedWeeksAgo: updatedWeeksAgo,
-    updatedMonthsAgo: updatedMonthsAgo,
-    updatedYearsAgo: updatedYearsAgo,
+    publishedDaysAgo: Math.ceil((currentDate - createdDate) / (1000 * 60 * 60 * 24)),
+    updatedDaysAgo: Math.ceil((currentDate - updatedDate) / (1000 * 60 * 60 * 24)),
   };
 
-  let priceData = {
-    currency: "USD",
-    amount: "0",
-  };
-
+  let priceData = { currency: "USD", amount: "0" };
   if (!rawGameData.free) {
     const response = await fetchPriceData(rawGameData);
-
-    if (response.currency) {
-      priceData = {
-        currency: response.currency.toUpperCase(),
-        amount: parseFloat(response.unit_amount / 100),
-      };
-    }
+    if (response?.currency) priceData = { currency: response.currency.toUpperCase(), amount: parseFloat(response.unit_amount / 100) };
   }
 
-  const gameData = new GameData(
-    rawGameData,
-    priceData,
-    createdFormattedDate,
-    updatedFormattedDate,
-    datestodays
-  );
-
-  return gameData;
+  return new GameData(rawGameData, priceData, createdFormattedDate, updatedFormattedDate, datestodays);
 };
+
 const updateProduct = async (data, gameId, commitChangesButton) => {
   const result = await request(`${endpoints.game.update}${gameId}`, data, false);
-
-  if (result.ok == true) {
-    commitChangesButton.textContent = "Success";
-  } else {
-    commitChangesButton.textContent = result.response;
-  }
+  commitChangesButton.textContent = result.ok ? "Success" : result.response;
 };
 
-const formatTimeSingle = (timeago, option, unit) => {
-  return timeago === 1
-    ? `${option} (1 ${unit} Ago)`
-    : `${option} (${timeago} ${unit}s Ago)`;
-};
+const formatTimeSingle = (timeago, option, unit) => `${option} (${timeago === 1 ? "1" : timeago} ${unit}${timeago === 1 ? "" : "s"} Ago)`;
 const formatTime = (coru, yearsAgo, monthsAgo, weeksAgo, daysAgo) => {
-  switch (true) {
-    case yearsAgo >= 1:
-      return formatTimeSingle(yearsAgo, coru, "Year");
-    case monthsAgo >= 1:
-      return formatTimeSingle(monthsAgo, coru, "Month");
-    case weeksAgo >= 1:
-      return formatTimeSingle(weeksAgo, coru, "Week");
-    case daysAgo >= 1:
-      return formatTimeSingle(daysAgo, coru, "Day");
-    default:
-      return "Just Now";
-  }
+  if (yearsAgo >= 1) return formatTimeSingle(yearsAgo, coru, "Year");
+  if (monthsAgo >= 1) return formatTimeSingle(monthsAgo, coru, "Month");
+  if (weeksAgo >= 1) return formatTimeSingle(weeksAgo, coru, "Week");
+  if (daysAgo >= 1) return formatTimeSingle(daysAgo, coru, "Day");
+  return "Just Now";
 };
 
 const gameHandler = async (gameId) => {
   const gameData = await fetchGameData(gameId);
+  const elements = {
+    gameTitle: document.getElementById("game-title"),
+    gameDesc: document.getElementById("description"),
+    created: document.getElementById("created"),
+    updated: document.getElementById("updated"),
+    navigationTitle: document.getElementById("navigation-title"),
+    icon: document.getElementById("icon"),
+    developerName: document.getElementById("game-developer-name"),
+    downloadButton: document.getElementById("download-button"),
+    gameGenre: document.getElementById("game-genre"),
+    gameSummary: document.getElementById("game-summary"),
+    gameArt: document.getElementById("game-art"),
+    gameAge: document.getElementById("game-age"),
+    gameSize: document.getElementById("game-size"),
+    gamePrice: document.getElementById("game-price"),
+    gameFeatures: document.getElementById("features"),
+    gamePlatforms: document.getElementById("platforms"),
+    gameColumn: document.getElementById("game-column"),
+    gameTitleColumn: document.getElementById("game-title-column"),
+    gameStats: document.getElementById("game-stats"),
+    gameDescBackground: document.getElementById("game-description"),
+  };
 
-  const realGameId = gameData.id;
+  elements.gameTitle.textContent = gameData.name;
+  elements.gameDesc.innerHTML = DOMPurify.sanitize(gameData.description);
+  elements.gamePrice.textContent = `${gameData.price.amount} ${gameData.price.currency}`;
+  elements.created.textContent = formatTime(gameData.created, gameData.datestodays.publishedYearsAgo, gameData.datestodays.publishedMonthsAgo, gameData.datestodays.publishedWeeksAgo, gameData.datestodays.publishedDaysAgo);
+  elements.updated.textContent = formatTime(gameData.updated, gameData.datestodays.updatedYearsAgo, gameData.datestodays.updatedMonthsAgo, gameData.datestodays.updatedWeeksAgo, gameData.datestodays.updatedDaysAgo);
+  elements.icon.setAttribute("href", gameData.icon);
+  elements.navigationTitle.textContent = `${gameData.name} By ${gameData.developer.username}`;
+  elements.developerName.textContent = gameData.developer.username;
+  elements.gameGenre.textContent = DOMPurify.sanitize(gameData.genre).toUpperCase();
+  elements.gameSummary.textContent = gameData.summary;
+  elements.gameArt.textContent = DOMPurify.sanitize(gameData.artstyle).toUpperCase();
+  elements.gameAge.textContent = gameData.agerating.toUpperCase();
+  elements.gameSize.textContent = gameData.filesize;
 
-  const gameTitle = document.getElementById("game-title");
-  const gameDesc = document.getElementById("description");
-  const created = document.getElementById("created");
-  const updated = document.getElementById("updated");
+  elements.developerName.setAttribute("href", `user?id=${gameData.developer.id}`);
+  elements.gameGenre.setAttribute("href", `category?n=${DOMPurify.sanitize(gameData.genre).toUpperCase()}`);
 
-  const navigationTitle = document.getElementById("navigation-title");
-  const icon = document.getElementById("icon");
+  const features = ["Singleplayer", "Multiplayer", "Coop", "Achievements", "Controller Support", "Saves"].map(name => ({ Name: name, Enabled: gameData.features[name] }));
+  const platforms = ["windows", "mac", "linux", "android", "ios", "xbox", "playstation", "oculus"].map(name => ({ Name: name.charAt(0).toUpperCase() + name.slice(1), Enabled: gameData.platforms[name] }));
 
-  const developerName = document.getElementById("game-developer-name");
-  const downloadButton = document.getElementById("download-button");
-  const gameGenre = document.getElementById("game-genre");
-  const gameSummary = document.getElementById("game-summary");
-  const gameArt = document.getElementById("game-art");
-  const gameAge = document.getElementById("game-age");
-  const gameSize = document.getElementById("game-size");
-  const gamePrice = document.getElementById("game-price");
-  const gameFeatures = document.getElementById("features");
-  const gamePlatforms = document.getElementById("platforms");
-
-  const gameColumn = document.getElementById("game-column");
-  const gameTitleColumn = document.getElementById("game-title-column");
-  const gameStats = document.getElementById("game-stats");
-  const gameDescBackground = document.getElementById("game-description");
-
-  gameTitle.textContent = gameData.name;
-  gameDesc.innerHTML = DOMPurify.sanitize(gameData.description);
-  gamePrice.textContent = `${gameData.price.amount} ${gameData.price.currency}`;
-
-  created.textContent = formatTime(
-    gameData.created,
-    gameData.datestodays.publishedYearsAgo,
-    gameData.datestodays.publishedMonthsAgo,
-    gameData.datestodays.publishedWeeksAgo,
-    gameData.datestodays.publishedDaysAgo
-  );
-  updated.textContent = formatTime(
-    gameData.updated,
-    gameData.datestodays.updatedYearsAgo,
-    gameData.datestodays.updatedMonthsAgo,
-    gameData.datestodays.updatedWeeksAgo,
-    gameData.datestodays.updatedDaysAgo
-  );
-
-  icon.setAttribute("href", gameData.icon);
-  navigationTitle.textContent = `${gameData.name} By ${gameData.developer.username}`;
-
-  developerName.textContent = gameData.developer.username;
-  gameGenre.textContent = DOMPurify.sanitize(gameData.genre).toUpperCase();
-  gameSummary.textContent = gameData.summary;
-  gameArt.textContent = DOMPurify.sanitize(gameData.artstyle).toUpperCase();
-  gameAge.textContent = gameData.agerating.toUpperCase();
-  gameSize.textContent = gameData.filesize;
-
-  developerName.setAttribute("href", `user?id=${gameData.developer.id}`);
-  gameGenre.setAttribute(
-    "href",
-    `category?n=${DOMPurify.sanitize(gameData.genre).toUpperCase()}`
-  );
-
-  let features = [
-    {
-      ["Name"]: "Singleplayer",
-      ["Enabled"]: gameData.features.Singleplayer,
-    },
-    {
-      ["Name"]: "Multiplayer",
-      ["Enabled"]: gameData.features.Multiplayer,
-    },
-    {
-      ["Name"]: "Co-op",
-      ["Enabled"]: gameData.features.Coop,
-    },
-    {
-      ["Name"]: "Achievements",
-      ["Enabled"]: gameData.features.Achievements,
-    },
-    {
-      ["Name"]: "Controller Support",
-      ["Enabled"]: gameData.features.ControllerSupport,
-    },
-    {
-      ["Name"]: "Saves",
-      ["Enabled"]: gameData.features.Saves,
-    },
-  ];
-
-  let platforms = [
-    {
-      ["Name"]: "Windows",
-      ["Enabled"]: gameData.platforms.windows,
-    },
-    {
-      ["Name"]: "Mac",
-      ["Enabled"]: gameData.platforms.mac,
-    },
-    {
-      ["Name"]: "Linux",
-      ["Enabled"]: gameData.platforms.linux,
-    },
-    {
-      ["Name"]: "Android",
-      ["Enabled"]: gameData.platforms.android,
-    },
-    {
-      ["Name"]: "IOS",
-      ["Enabled"]: gameData.platforms.ios,
-    },
-    {
-      ["Name"]: "XBOX",
-      ["Enabled"]: gameData.platforms.xbox,
-    },
-    {
-      ["Name"]: "PlayStation",
-      ["Enabled"]: gameData.platforms.playstation,
-    },
-    {
-      ["Name"]: "Oculus",
-      ["Enabled"]: gameData.platforms.oculus,
-    },
-  ];
-
-  let pageOutlines = [
-    {
-      Enabled: gameData.page.outlines.game_details_outline,
-      Element: gameStats,
-      Class: "outline-input",
-    },
-    {
-      Enabled: gameData.page.outlines.game_details_shadow,
-      Element: gameStats,
-      Class: "shadow-input",
-    },
-    {
-      Enabled: gameData.page.outlines.description_outline,
-      Element: gameDescBackground,
-      Class: "outline-input",
-    },
-    {
-      Enabled: gameData.page.outlines.description_shadow,
-      Element: gameDescBackground,
-      Class: "shadow-input",
-    },
-    {
-      Enabled: gameData.page.outlines.bg2_outline,
-      Element: gameColumn,
-      Class: "outline-input",
-    },
-    {
-      Enabled: gameData.page.outlines.bg2_shadow,
-      Element: gameColumn,
-      Class: "shadow-input",
-    },
-  ];
-
-  let pageAlphas = [
-    {
-      Amount: gameData.page.alphas.bg2_alpha,
-      Element: gameColumn,
-    },
-    {
-      Amount: gameData.page.alphas.description_bg_alpha,
-      Element: gameDescBackground,
-    },
-    {
-      Amount: gameData.page.alphas.game_details_bg_alpha,
-      Element: gameStats,
-    },
-  ];
-
-  pageOutlines.forEach(function (outline) {
-    if (!outline.Enabled) {
-      outline.Element.classList.remove(outline.Class);
-    }
-  });
-
-  pageAlphas.forEach(function (alpha) {
-    updateBackgroundColor(alpha.Amount, alpha.Element);
-  });
-
-  features.forEach(function (feature) {
+  features.forEach(feature => {
     if (feature.Enabled) {
       const featureContainer = document.createElement("div");
       featureContainer.setAttribute("class", "game-feature");
       featureContainer.textContent = feature.Name;
-
-      gameFeatures.appendChild(featureContainer);
+      elements.gameFeatures.appendChild(featureContainer);
     }
   });
 
-  platforms.forEach(function (platform) {
+  platforms.forEach(platform => {
     if (platform.Enabled) {
       const platformContainer = document.createElement("div");
       platformContainer.setAttribute("class", "game-feature");
       platformContainer.textContent = platform.Name;
-
-      gamePlatforms.appendChild(platformContainer);
+      elements.gamePlatforms.appendChild(platformContainer);
     }
   });
 
   if (!gameData.page.default_colors) {
-    const elements = document.getElementsByClassName("game-stat");
+    const colors = gameData.page.colors;
+    document.body.style.backgroundColor = colors.bg_color;
+    elements.gameColumn.style.backgroundColor = colors.bg2_color;
+    elements.gameTitleColumn.style.color = colors.title_color;
+    elements.gameDesc.style.color = colors.desc_color;
+    elements.gameDescBackground.style.backgroundColor = colors.desc_bg_color;
+    elements.downloadButton.style.backgroundColor = colors.button_color;
+    elements.downloadButton.style.color = colors.button_text_color;
+    elements.gameStats.style.backgroundColor = colors.stats_bg_color;
 
-    document.body.style.backgroundColor = gameData.page.colors.bg_color;
-    gameColumn.style.backgroundColor = gameData.page.colors.bg2_color;
-    gameTitleColumn.style.color = gameData.page.colors.title_color;
-    gameDesc.style.color = gameData.page.colors.desc_color;
-    gameDescBackground.style.backgroundColor =
-      gameData.page.colors.desc_bg_color;
-    downloadButton.style.backgroundColor = gameData.page.colors.button_color;
-    downloadButton.style.color = gameData.page.colors.button_text_color;
-    gameStats.style.backgroundColor = gameData.page.colors.stats_bg_color;
+    Array.from(document.getElementsByClassName("game-stat")).forEach(stat => {
+      stat.style.color = colors.stats_text_color;
+    });
 
-    for (let i = 0; i < elements.length; i++) {
-      elements[i].style.color = gameData.page.colors.stats_text_color;
-    }
-
-    if (gameData.page.font_family != undefined) {
-      gameColumn.style.fontFamily = gameData.page.font_family;
+    if (gameData.page.font_family) {
+      elements.gameColumn.style.fontFamily = gameData.page.font_family;
     }
   }
 
-  downloadButton.setAttribute("href", gameData.paymentLink);
+  elements.downloadButton.setAttribute("href", gameData.paymentLink);
 
-  if (user != null && user.name == gameData.developer.username) {
-    const gamePublic = document.getElementById("public");
-    const singlePlayer = document.getElementById("single-player");
-    const multiPlayer = document.getElementById("multi-player");
-    const coOp = document.getElementById("co-op");
-    const achievements = document.getElementById("achievements");
-    const controllerSupport = document.getElementById("controller-support");
-    const saves = document.getElementById("saves");
-    const vrSupport = document.getElementById("vr-support");
-
-    const windows = document.getElementById("windows");
-    const mac = document.getElementById("mac");
-    const linux = document.getElementById("linux");
-    const android = document.getElementById("android");
-    const ios = document.getElementById("ios");
-    const xbox = document.getElementById("xbox");
-    const playstation = document.getElementById("playstation");
-    const oculus = document.getElementById("oculus");
-
-    const gameGenreInput = document.getElementById("genre-input");
-    const gameArtStyleInput = document.getElementById("art-style-input");
-    const gameAgeInput = document.getElementById("age-sort");
-    const gameThumbnailInput = document.getElementById("thumbnail-input");
-
-    const bgColorInput = document.getElementById("bg-color");
-    const bg2ColorInput = document.getElementById("bg2-color");
-    const titleColorInput = document.getElementById("title-color");
-    const descColorInput = document.getElementById("description-color");
-    const descBgColorInput = document.getElementById("description-bg-color");
-    const detailsColorInput = document.getElementById("game-details-color");
-    const detailsBgColorInput = document.getElementById(
-      "game-details-bg-color"
-    );
-    const buttonBgColorInput = document.getElementById("button-bg-color");
-    const buttonTextColorInput = document.getElementById("button-text-color");
-    const bg2AlphaInput = document.getElementById("bg2-alpha");
-    const descriptionBgAlphaInput = document.getElementById(
-      "description-bg-alpha"
-    );
-    const detailsBgAlphaInput = document.getElementById(
-      "game-details-bg-alpha"
-    );
-    const detailsOutlineCheckbox = document.getElementById(
-      "game-details-outline-checkbox"
-    );
-    const detailsShadowCheckbox = document.getElementById(
-      "game-details-shadow-checkbox"
-    );
-    const descriptionOutlineCheckbox = document.getElementById(
-      "description-outline-checkbox"
-    );
-    const descriptionShadowCheckbox = document.getElementById(
-      "description-shadow-checkbox"
-    );
-    const bg2OutlineCheckbox = document.getElementById("bg2-outline-checkbox");
-    const bg2ShadowCheckbox = document.getElementById("bg2-shadow-checkbox");
-
-    gameGenreInput.value = gameData.genre;
-    gameArtStyleInput.value = gameData.artstyle;
-
-    for (let i = 0; i < gameAgeInput.options.length; i++) {
-      if (gameAgeInput.options[i].value == gameData.agerating.toLowerCase()) {
-        gameAgeInput.selectedIndex = i;
-        break;
-      }
-    }
-
-    gameGenreInput.addEventListener("input", function () {
-      gameGenreInput.value = gameGenreInput.value.toUpperCase();
-    });
-
-    gameArtStyleInput.addEventListener("input", function () {
-      gameArtStyleInput.value = gameArtStyleInput.value.toUpperCase();
-    });
-
-    let ispublic = {
-      Enabled: gameData.active ? "true" : "false",
-      Element: gamePublic,
+  if (user && user.id === gameData.developer.id) {
+    const editableElements = {
+      gameGenreInput: document.getElementById("genre-input"),
+      gameArtStyleInput: document.getElementById("art-style-input"),
+      gameAgeInput: document.getElementById("age-sort"),
+      gameThumbnailInput: document.getElementById("thumbnail-input"),
+      commitChangesButton: document.createElement("button"),
     };
 
-    let gameFeatures = [
-      {
-        Name: "Singleplayer",
-        Enabled: gameData.features.Singleplayer,
-        Element: singlePlayer,
-      },
-      {
-        Name: "Multiplayer",
-        Enabled: gameData.features.Multiplayer,
-        Element: multiPlayer,
-      },
-      {
-        Name: "Co-op",
-        Enabled: gameData.features.Coop,
-        Element: coOp,
-      },
-      {
-        Name: "Achievements",
-        Enabled: gameData.features.Achievements,
-        Element: achievements,
-      },
-      {
-        Name: "Controller Support",
-        Enabled: gameData.features.ControllerSupport,
-        Element: controllerSupport,
-      },
-      {
-        Name: "Saves",
-        Enabled: gameData.features.Saves,
-        Element: saves,
-      },
-      {
-        Name: "VR Support",
-        Enabled: gameData.features.VRSupport,
-        Element: vrSupport,
-      },
-    ];
+    elements.gameTitle.contentEditable = true;
+    elements.gameDesc.contentEditable = true;
+    elements.gameSummary.contentEditable = true;
 
-    let gamePlatforms = [
-      {
-        Name: "Windows",
-        Enabled: gameData.platforms.windows,
-        Element: windows,
-      },
-      {
-        Name: "Mac",
-        Enabled: gameData.platforms.mac,
-        Element: mac,
-      },
-      {
-        Name: "Linux",
-        Enabled: gameData.platforms.linux,
-        Element: linux,
-      },
-      {
-        Name: "Android",
-        Enabled: gameData.platforms.android,
-        Element: android,
-      },
-      {
-        Name: "IOS",
-        Enabled: gameData.platforms.ios,
-        Element: ios,
-      },
-      {
-        Name: "XBOX",
-        Enabled: gameData.platforms.xbox,
-        Element: xbox,
-      },
-      {
-        Name: "PlayStation",
-        Enabled: gameData.platforms.playstation,
-        Element: playstation,
-      },
-      {
-        Name: "Oculus",
-        Enabled: gameData.platforms.oculus,
-        Element: oculus,
-      },
-    ];
+    editableElements.commitChangesButton.setAttribute("class", "game-download-button");
+    editableElements.commitChangesButton.textContent = "Commit Changes";
 
-    let pageDetailsCheckbox = [
-      {
-        Name: "game_details_outline",
-        Enabled: gameData.page.outlines.game_details_outline,
-        Element: detailsOutlineCheckbox,
-        Element_Changing: gameStats,
-        Class: "outline-input",
-      },
-      {
-        Name: "game_details_shadow",
-        Enabled: gameData.page.outlines.game_details_shadow,
-        Element: detailsShadowCheckbox,
-        Element_Changing: gameStats,
-        Class: "shadow-input",
-      },
-      {
-        Name: "description_outline",
-        Enabled: gameData.page.outlines.description_outline,
-        Element: descriptionOutlineCheckbox,
-        Element_Changing: gameDescBackground,
-        Class: "outline-input",
-      },
-      {
-        Name: "description_shadow",
-        Enabled: gameData.page.outlines.description_shadow,
-        Element: descriptionShadowCheckbox,
-        Element_Changing: gameDescBackground,
-        Class: "shadow-input",
-      },
-      {
-        Name: "bg2_outline",
-        Enabled: gameData.page.outlines.bg2_outline,
-        Element: bg2OutlineCheckbox,
-        Element_Changing: gameColumn,
-        Class: "outline-input",
-      },
-      {
-        Name: "bg2_shadow",
-        Enabled: gameData.page.outlines.bg2_shadow,
-        Element: bg2ShadowCheckbox,
-        Element_Changing: gameColumn,
-        Class: "shadow-input",
-      },
-    ];
+    editableElements.gameGenreInput.value = gameData.genre;
+    editableElements.gameArtStyleInput.value = gameData.artstyle;
 
-    let pageDetailsAlphas = [
-      {
-        Name: "bg2_alpha",
-        Amount: gameData.page.alphas.bg2_alpha,
-        Element: bg2AlphaInput,
-        Element_Changing: gameColumn,
-      },
-      {
-        Name: "description_bg_alpha",
-        Amount: gameData.page.alphas.description_bg_alpha,
-        Element: descriptionBgAlphaInput,
-        Element_Changing: gameDescBackground,
-      },
-      {
-        Name: "game_details_bg_alpha",
-        Amount: gameData.page.alphas.game_details_bg_alpha,
-        Element: detailsBgAlphaInput,
-        Element_Changing: gameStats,
-      },
-    ];
-
-    gameTitle.contentEditable = true;
-    gameDesc.contentEditable = true;
-    gameSummary.contentEditable = true;
-
-    ispublic.Element.checked = ispublic.Enabled;
-    ispublic.Element.addEventListener("change", function () {
-      ispublic.Enabled = ispublic.Element.checked;
+    Array.from(editableElements.gameAgeInput.options).forEach((option, i) => {
+      if (option.value === gameData.agerating.toLowerCase()) {
+        editableElements.gameAgeInput.selectedIndex = i;
+      }
     });
 
-    gameFeatures.forEach(function (feature) {
+    editableElements.gameGenreInput.addEventListener("input", () => {
+      editableElements.gameGenreInput.value = editableElements.gameGenreInput.value.toUpperCase();
+    });
+
+    editableElements.gameArtStyleInput.addEventListener("input", () => {
+      editableElements.gameArtStyleInput.value = editableElements.gameArtStyleInput.value.toUpperCase();
+    });
+
+    const isPublic = { Enabled: gameData.active, Element: document.getElementById("public") };
+    isPublic.Element.checked = isPublic.Enabled;
+    isPublic.Element.addEventListener("change", () => {
+      isPublic.Enabled = isPublic.Element.checked;
+    });
+
+    const gameFeatures = ["Singleplayer", "Multiplayer", "Coop", "Achievements", "Controller Support", "Saves", "VR Support"].map(name => ({
+      Name: name,
+      Enabled: gameData.features[name],
+      Element: document.getElementById(name.toLowerCase().replace(" ", "-")),
+    }));
+
+    gameFeatures.forEach(feature => {
       feature.Element.checked = feature.Enabled;
-      feature.Element.addEventListener("change", function () {
+      feature.Element.addEventListener("change", () => {
         feature.Enabled = feature.Element.checked;
       });
     });
 
-    gamePlatforms.forEach(function (platform) {
+    const gamePlatforms = ["Windows", "Mac", "Linux", "Android", "IOS", "XBOX", "PlayStation", "Oculus"].map(name => ({
+      Name: name,
+      Enabled: gameData.platforms[name.toLowerCase()],
+      Element: document.getElementById(name.toLowerCase()),
+    }));
+
+    gamePlatforms.forEach(platform => {
       platform.Element.checked = platform.Enabled;
-      platform.Element.addEventListener("change", function () {
+      platform.Element.addEventListener("change", () => {
         platform.Enabled = platform.Element.checked;
       });
     });
 
-    const commitChangesButton = document.createElement("button");
-    commitChangesButton.setAttribute("class", "game-download-button");
-    commitChangesButton.textContent = "Commit Changes";
+    editableElements.commitChangesButton.addEventListener("click", async () => {
+      const updateGameOptionsBody = {
+        name: elements.gameTitle.textContent,
+        description: elements.gameDesc.innerHTML,
+        summary: elements.gameSummary.textContent,
+        genre: editableElements.gameGenreInput.value,
+        artstyle: editableElements.gameArtStyleInput.value,
+        age_rating: editableElements.gameAgeInput.value,
+        active: isPublic.Enabled ? "true" : "false",
+        uploader_id: user.id,
+        platforms: Object.fromEntries(gamePlatforms.map(p => [p.Name.toLowerCase(), p.Enabled ? "true" : "false"])),
+        features: Object.fromEntries(gameFeatures.map(f => [f.Name, f.Enabled ? "true" : "false"])),
+        page: {
+          font_family: getComputedStyle(elements.gameColumn).getPropertyValue("font-family"),
+          defaultColors: false,
+          outlines: gameData.page.outlines,
+          alphas: gameData.page.alphas,
+          colors: gameData.page.colors,
+        },
+      };
 
-    gameTitle.addEventListener("input", function () {
-      const text = DOMPurify.sanitize(this.textContent);
-
-      if (text.length > 120) {
-        this.textContent = text.substr(0, 120);
-      }
-    });
-
-    gameSummary.addEventListener("input", function () {
-      const text = DOMPurify.sanitize(this.textContent);
-
-      if (text.length > 120) {
-        this.textContent = text.substr(0, 120);
-      }
-    });
-
-    gameDesc.addEventListener("input", function () {
-      const text = DOMPurify.sanitize(this.innerHTML);
-
-      if (text.length > 4000) {
-        this.innerHTML = text.substr(0, 4000);
-      }
-    });
-
-    bgColorInput.value = getComputedStyle(document.body)
-      .getPropertyValue("background-color")
-      .toString()
-      .convertToHex();
-    bgColorInput.addEventListener("input", function () {
-      document.body.style.setProperty("background-color", this.value);
-    });
-
-    bg2ColorInput.value = getComputedStyle(gameColumn)
-      .getPropertyValue("background-color")
-      .toString()
-      .convertToHex();
-    bg2ColorInput.addEventListener("input", function () {
-      gameColumn.style.setProperty("background-color", this.value);
-    });
-
-    titleColorInput.value = getComputedStyle(gameTitleColumn)
-      .getPropertyValue("color")
-      .toString()
-      .convertToHex();
-    titleColorInput.addEventListener("input", function () {
-      gameTitleColumn.style.setProperty("color", this.value);
-    });
-
-    descColorInput.value = getComputedStyle(gameDesc)
-      .getPropertyValue("color")
-      .toString()
-      .convertToHex();
-    descColorInput.addEventListener("input", function () {
-      gameDesc.style.setProperty("color", this.value);
-    });
-
-    descBgColorInput.value = getComputedStyle(gameDescBackground)
-      .getPropertyValue("background-color")
-      .toString()
-      .convertToHex();
-    descBgColorInput.addEventListener("input", function () {
-      gameDescBackground.style.setProperty("background-color", this.value);
-    });
-
-    buttonBgColorInput.value = getComputedStyle(downloadButton)
-      .getPropertyValue("background-color")
-      .toString()
-      .convertToHex();
-    buttonBgColorInput.addEventListener("input", function () {
-      downloadButton.style.setProperty("background-color", this.value);
-    });
-
-    buttonTextColorInput.value = getComputedStyle(downloadButton)
-      .getPropertyValue("color")
-      .toString()
-      .convertToHex();
-    buttonTextColorInput.addEventListener("input", function () {
-      downloadButton.style.setProperty("color", this.value);
-    });
-
-    detailsColorInput.value = getComputedStyle(gameStats)
-      .getPropertyValue("color")
-      .toString()
-      .convertToHex();
-    detailsColorInput.addEventListener("input", function () {
-      gameStats.style.setProperty("color", this.value);
-    });
-
-    detailsBgColorInput.value = getComputedStyle(gameStats)
-      .getPropertyValue("background-color")
-      .toString()
-      .convertToHex();
-    detailsBgColorInput.addEventListener("input", function () {
-      gameStats.style.setProperty("background-color", this.value);
-    });
-
-    pageDetailsAlphas.forEach(function (pageDetail) {
-      pageDetail.Element.value = pageDetail.Amount;
-      pageDetail.Element.addEventListener("input", function () {
-        pageDetail.Amount = pageDetail.Element.value;
-        updateBackgroundColor(pageDetail.Element, pageDetail.Element_Changing);
-      });
-    });
-
-    pageDetailsCheckbox.forEach(function (pageDetail) {
-      pageDetail.Element.checked = pageDetail.Enabled;
-      pageDetail.Element.addEventListener("change", function () {
-        pageDetail.Enabled = this.checked;
-
-        if (this.checked) {
-          pageDetail.Element_Changing.classList.add(pageDetail.Class);
-        } else {
-          pageDetail.Element_Changing.classList.remove(pageDetail.Class);
-        }
-      });
-    });
-
-    let isLoading = false;
-    commitChangesButton.addEventListener("click", async function () {
-      const gameStatElements = document.getElementsByClassName("game-stat");
-
-      if (!isLoading) {
-        isLoading = true;
-
-        const myHeaders = new Headers();
-        myHeaders.append("Content-Type", "application/json");
-
-        const image = gameThumbnailInput.files[0];
+      const image = editableElements.gameThumbnailInput.files[0];
+      if (image) {
         const reader = new FileReader();
-        let imageURI;
-
-        if (image instanceof Blob) {
-          reader.onload = function (event) {
-            imageURI = event.target.result;
-          };
-
-          await new Promise((resolve) => {
-            reader.onloadend = () => resolve();
-            reader.readAsDataURL(image);
-          });
-        }
-
-        const updateGameOptionsBody = {
-          name: gameTitle.textContent,
-          description: gameDesc.innerHTML,
-          summary: gameSummary.textContent,
-          genre: gameGenreInput.textContent,
-          artstyle: gameArtStyleInput.textContent,
-          age_rating: gameAgeInput.options[gameAgeInput.selectedIndex].value,
-          active: ispublic.Enabled ? "true" : "false",
-          uploader_id: user.id,
-          platforms: {
-            windows: gamePlatforms[0].Enabled ? "true" : "false",
-            mac: gamePlatforms[1].Enabled ? "true" : "false",
-            linux: gamePlatforms[2].Enabled ? "true" : "false",
-            android: gamePlatforms[3].Enabled ? "true" : "false",
-            ios: gamePlatforms[4].Enabled ? "true" : "false",
-            xbox: gamePlatforms[5].Enabled ? "true" : "false",
-            playstation: gamePlatforms[6].Enabled ? "true" : "false",
-            oculus: gamePlatforms[7].Enabled ? "true" : "false",
-          },
-          features: {
-            Singleplayer: gameFeatures[0].Enabled ? "true" : "false",
-            Multiplayer: gameFeatures[1].Enabled ? "true" : "false",
-            Coop: gameFeatures[2].Enabled ? "true" : "false",
-            Achievements: gameFeatures[3].Enabled ? "true" : "false",
-            ControllerSupport: gameFeatures[4].Enabled ? "true" : "false",
-            Saves: gameFeatures[5].Enabled ? "true" : "false",
-            VRSupport: gameFeatures[6].Enabled ? "true" : "false",
-          },
-          page: {
-            font_family: getComputedStyle(gameColumn)
-              .getPropertyValue("font-family")
-              .toString(),
-            defaultColors: false,
-            outlines: {
-              game_details_outline: pageDetailsCheckbox[0].Enabled
-                ? "true"
-                : "false",
-              game_details_shadow: pageDetailsCheckbox[1].Enabled
-                ? "true"
-                : "false",
-              description_outline: pageDetailsCheckbox[2].Enabled
-                ? "true"
-                : "false",
-              description_shadow: pageDetailsCheckbox[3].Enabled
-                ? "true"
-                : "false",
-              bg2_outline: pageDetailsCheckbox[4].Enabled ? "true" : "false",
-              bg2_shadow: pageDetailsCheckbox[5].Enabled ? "true" : "false",
-            },
-            alphas: {
-              bg2_alpha: pageDetailsAlphas[0].Amount,
-              description_bg_alpha: pageDetailsAlphas[1].Amount,
-              game_details_bg_alpha: pageDetailsAlphas[2].Amount,
-            },
-            colors: {
-              bg_color: getComputedStyle(document.body).getPropertyValue(
-                "background-color"
-              ),
-              bg2_color:
-                getComputedStyle(gameColumn).getPropertyValue(
-                  "background-color"
-                ),
-              title_color:
-                getComputedStyle(gameTitleColumn).getPropertyValue("color"),
-              desc_color: getComputedStyle(gameDesc).getPropertyValue("color"),
-              desc_bg_color:
-                getComputedStyle(gameDescBackground).getPropertyValue(
-                  "background-color"
-                ),
-              button_color:
-                getComputedStyle(downloadButton).getPropertyValue(
-                  "background-color"
-                ),
-              button_text_color:
-                getComputedStyle(downloadButton).getPropertyValue("color"),
-              stats_bg_color:
-                getComputedStyle(gameStats).getPropertyValue(
-                  "background-color"
-                ),
-              stats_text_color: getComputedStyle(
-                gameStatElements[0]
-              ).getPropertyValue("color"),
-            },
-          },
+        reader.onload = async (event) => {
+          updateGameOptionsBody.icon = event.target.result;
+          await updateProduct({ method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(updateGameOptionsBody) }, gameData.id, editableElements.commitChangesButton);
         };
-
-        if (imageURI !== null) {
-          updateGameOptionsBody.icon = imageURI;
-        }
-
-        const updateGameOptions = {
-          method: "POST",
-          headers: myHeaders,
-          body: JSON.stringify(updateGameOptionsBody),
-        };
-
-        commitChangesButton.textContent = "Uploading..";
-        await updateProduct(updateGameOptions, realGameId, commitChangesButton);
-        isLoading = false;
+        reader.readAsDataURL(image);
+      } else {
+        await updateProduct({ method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(updateGameOptionsBody) }, gameData.id, editableElements.commitChangesButton);
       }
     });
 
-    document.getElementById("buttons").appendChild(commitChangesButton);
+    document.getElementById("buttons").appendChild(editableElements.commitChangesButton);
   } else {
     document.getElementById("game-editing").remove();
   }
 };
 
-if (gameIdParam != null) {
+if (gameIdParam) {
   gameHandler(gameIdParam);
 } else {
   console.warn("There is no game id.");

@@ -3,7 +3,7 @@ const gameIdParam = urlParams.get("g");
 const priceIdParam = urlParams.get("p");
 
 import { request } from "../../base/apiManager.js";
-import { endpoints } from "../other/endpoints.js";
+import { endpoints } from "../../other/endpoints.js";
 
 async function set_game_data(gameId) {
   const myHeaders = new Headers();
