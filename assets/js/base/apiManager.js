@@ -1,21 +1,21 @@
 const errorMessages = {
-  400: { header: "Bad Request"},
-  401: { header: "Unauthorized"},
-  402: { header: "Payment Required"},
-  403: { header: "Access Denied"},
-  404: { header: "Not Found"},
-  405: { header: "Method Not Allowed"},
-  409: { header: "Conflict"},
-  429: { header: "Too Many Requests"},
-  500: { header: "Internal Server Error"},
-  503: { header: "Service Unavailable"},
+  400: { header: "Bad Request", description: "The request was invalid or cannot be processed." },
+  401: { header: "Unauthorized", description: "Authentication is required to access the requested resource." },
+  402: { header: "Payment Required", description: "The request was valid, but the payment was not successful." },
+  403: { header: "Access Denied", description: "The server understood the request, but is refusing to fulfill it." },
+  404: { header: "Not Found", description: "The requested resource could not be found." },
+  405: { header: "Method Not Allowed", description: "The request method is not supported by the requested resource." },
+  409: { header: "Conflict", description: "The request could not be completed due to a conflict with the current state of the resource." },
+  429: { header: "Too Many Requests", description: "The user has sent too many requests in a given amount of time." },
+  500: { header: "Internal Server Error", description: "An unexpected condition was encountered and no more specific message is suitable." },
+  503: { header: "Service Unavailable", description: "The server is currently unavailable (because it is overloaded or down for maintenance)." },
 };
 
 class RequestHandler {
   /**
-   * @param {string} endpoint - The endpoint URL
-   * @param {object} options - The options object for the request
-   * @param {boolean} redirect - Whether to redirect on error (default: false)
+   * @param {string} endpoint
+   * @param {object} options
+   * @param {boolean} redirect
    */
   constructor(endpoint, options, redirect = false) {
     this.endpoint = endpoint;
@@ -24,8 +24,8 @@ class RequestHandler {
   }
 
   /**
-   * @throws {Error} If the endpoint is not a string or not an HTTPS URL
-   * @returns {URL} The validated endpoint URL
+   * @throws {Error}
+   * @returns {URL}
    */
   validateEndpoint() {
     if (typeof this.endpoint !== "string") {
@@ -45,7 +45,7 @@ class RequestHandler {
   }
 
   /**
-   * @throws {Error} If the options object is not an object or contains unexpected properties
+   * @throws {Error}
    */
   validateOptions() {
     if (typeof this.options !== "object" || this.options === null) {
@@ -62,10 +62,9 @@ class RequestHandler {
   }
 
   /**
-   * Handle errors in the response
-   * @param {Response} response - The response object
-   * @throws {Error} If the response is not OK
-   * @returns {null} If redirect is true, otherwise throws an error
+   * @param {Response} response
+   * @throws {Error}
+   * @returns {null}
    */
   handleError(response) {
     const statusCode = response.status || 500;
@@ -74,14 +73,14 @@ class RequestHandler {
       window.location.assign(`404?code=${statusCode}`);
       return null;
     } else {
-      throw new Error(`${statusCode} ${errorMessages[statusCode].header}`);
+      const errorMessage = errorMessages[statusCode];
+      throw new Error(`${statusCode} ${errorMessage.header}: ${errorMessage.description}`);
     }
   }
 
   /**
-   * Make the fetch request
-   * @throws {Error} If the request fails
-   * @returns {Promise<object>} The JSON response
+   * @throws {Error}
+   * @returns {Promise<object>}
    */
   async makeRequest() {
     try {
@@ -95,9 +94,9 @@ class RequestHandler {
 
       const jsonResponse = await response.json();
 
-      return {response: jsonResponse, ok: true};
+      return { response: jsonResponse, ok: true };
     } catch (error) {
-      return {response: error, ok: false};
+      return { response: error, ok: false };
     }
   }
 }
