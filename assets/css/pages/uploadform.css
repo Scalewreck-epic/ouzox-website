@@ -1,3 +1,22 @@
+.upload-game {
+  display: flex;                /* Enable flexbox */
+  flex-direction: column;      /* Stack children vertically */
+  align-items: center;         /* Center children vertically */
+}
+
+.main-upload-form,
+.extra-upload-form,
+.upload-game-conclusion {
+  width: 50%;
+  margin: 0 2rem; /* Adjust margins for spacing */
+  padding: 2rem;
+  border-radius: 1rem;
+  background-color: #222222;
+  box-shadow: 0 1rem 1rem black;
+  outline: 1px solid #3f3f3f;
+  transition: transform 0.3s ease;
+}
+
 .main-upload-form,
 .extra-upload-form,
 .upload-game-conclusion {

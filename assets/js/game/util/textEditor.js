@@ -54,10 +54,6 @@ const applyHeader = (level) => {
   }
 };
 
-const justify = (level) => {
-  document.execCommand(`justify${level}`);
-};
-
 const createLink = () => {
   const url = prompt("Enter the link URL:");
 
@@ -77,6 +73,10 @@ const createLink = () => {
       range.insertNode(link);
     }
   }
+};
+
+const justify = (level) => {
+  document.execCommand(`justify${level}`);
 };
 
 if (fontSort) {

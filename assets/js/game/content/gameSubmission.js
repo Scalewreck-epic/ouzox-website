@@ -3,7 +3,6 @@ import { request } from "../../base/apiManager.js";
 import { endpoints } from "../../other/endpoints.js";
 
 const myHeaders = new Headers({ "Content-Type": "application/json" });
-const { name: uploader_name, id: uploader_id } = await fetchUser();
 const uploadGame = document.getElementById("upload-game");
 
 const game_thumbnail = document.getElementById("thumbnail");
@@ -13,6 +12,9 @@ const game_isfree = document.getElementById("isfree");
 const game_art = document.getElementById("art-style-input");
 const download_file = document.getElementById("download-file");
 const game_description = document.getElementById("description");
+
+const user = await fetchUser();
+const uploader_name = user.name, uploader_id = user.id;
 
 const maxDescriptionCharacters = 4000;
 const minPrice = 1, maxPrice = 5000;
@@ -28,7 +30,7 @@ const format_file_size = (fileSizeInBytes) => {
 
 const upload_game = async (gameRequestOptions) => {
   const result = await request(endpoints.game.create_game, gameRequestOptions, true);
-  return result.ok ? result.response : null;
+  return result;
 };
 
 // TODO: Use create_product_price and set_product_price when the game is not free
@@ -76,7 +78,7 @@ const upload_product = async (title) => {
     body: JSON.stringify({ product: { name: title, active: false } }),
   }, true);
   
-  return result.ok ? result.response : null;
+  return result.ok;
 };
 
 const upload_payment_link = async (price_id) => {
@@ -123,7 +125,7 @@ const on_submit = async (event) => {
     });
 
     error_label.textContent = "Creating game page...";
-    const product_result = inputs.price > 0 ? await upload_product(inputs.title) : null;
+    const product = inputs.price > 0 ? await upload_product(inputs.title) : null;
 
     const gameRequestOptions = {
       method: "POST",
@@ -140,16 +142,21 @@ const on_submit = async (event) => {
         age_rating: inputs.ageRating,
         size: Math.round(file_size),
         defaultColors: true,
-        icon_upload: imageURI,
-        product_id: product_result ? product_result.id : "none",
-        payment_link: product_result ? await upload_payment_link(product_result.id) : "none",
+        icon: imageURI,
+        product_id: product ? product.id : "none",
+        payment_link: product ? await upload_payment_link(product.id) : "none",
         platforms: Object.fromEntries(inputs.platforms.map((enabled, index) => [inputs.platforms[index], enabled])),
         features: Object.fromEntries(inputs.features.map((enabled, index) => [inputs.features[index], enabled])),
       }),
     };
 
     const game = await upload_game(gameRequestOptions);
-    error_label.textContent = game && (!product_result || (product_result.active && game)) ? "Successfully published game!" : "Error publishing game.";
+    if (game.ok) {
+        error_label.textContent = "Successfully published game!";
+        window.location.assign("dashboard");
+    } else {
+        error_label.textContent = game.response;
+    }
   } else {
     error_label.textContent = "Incomplete form.";
   }
@@ -184,14 +191,6 @@ const update_description = () => {
   game_description.innerHTML = text.length > maxDescriptionCharacters ? text.substr(0, maxDescriptionCharacters) : text;
 };
 
-const init = () => {
-  update_description();
-  update_price();
-  update_genre();
-  update_art();
-  update_free();
-};
-
 game_description.addEventListener("input", update_description);
 game_price.addEventListener("input", update_price);
 genre_input.addEventListener("input", update_genre);
@@ -200,5 +199,3 @@ download_file.addEventListener("change", update_file_size);
 game_thumbnail.addEventListener("change", update_thumbnail);
 game_isfree.addEventListener("change", update_price);
 uploadGame.addEventListener("submit", async () => await on_submit());
-
-init();
