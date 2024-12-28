@@ -126,9 +126,9 @@ const gameHandler = async (gameId) => {
   elements.icon.setAttribute("href", gameData.icon);
   elements.navigationTitle.textContent = `${gameData.name} By ${gameData.developer.username}`;
   elements.developerName.textContent = gameData.developer.username;
-  elements.gameGenre.textContent = DOMPurify.sanitize(gameData.genre).toUpperCase();
+  elements.gameGenre.textContent = gameData.genre.toUpperCase();
   elements.gameSummary.textContent = gameData.summary;
-  elements.gameArt.textContent = DOMPurify.sanitize(gameData.artstyle).toUpperCase();
+  elements.gameArt.textContent = gameData.artstyle.toUpperCase();
   elements.gameAge.textContent = gameData.agerating.toUpperCase();
   elements.gameSize.textContent = gameData.filesize;
 

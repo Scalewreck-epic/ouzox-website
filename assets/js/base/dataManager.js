@@ -6,9 +6,9 @@ const urlParams = new URLSearchParams(window.location.search);
 const searchQuery = urlParams.get("q") || "";
 const categoryName = urlParams.get("n") || "";
 
-let prices = [];
-let genres = [];
-let allGames = [];
+const prices = [];
+const genres = [];
+const platformGames = [];
 
 const user = await fetchUser();
 
@@ -91,8 +91,8 @@ class Game {
     gameTitle.textContent = this.name;
     gameSummary.textContent = this.summary;
 
-    gamePriceText.innerHTML = `${price} ${currency.toUpperCase()}`;
-    gameRatioText.innerHTML = `${likeToDislikeRatio}%`;
+    gamePriceText.textContent = `${price} ${currency.toUpperCase()}`;
+    gameRatioText.textContent = `${likeToDislikeRatio}%`;
 
     gamePriceContainer.appendChild(gamePriceText);
     gameRatioContainer.appendChild(gameRatioText);
@@ -129,17 +129,17 @@ const createLabel = (labelText, numDays, targetElement) => {
   label.setAttribute("class", `${labelText.toLowerCase()}-label`);
 
   const text = document.createElement("span");
-  text.innerHTML = labelText;
+  text.textContent = labelText;
 
   label.appendChild(text);
   targetElement.appendChild(label);
 
   label.addEventListener("mouseenter", function () {
-    text.innerHTML = numDays != 1 ? `${numDays} DAYS AGO` : `TODAY`;
+    text.textContent = numDays != 1 ? `${numDays} DAYS AGO` : `TODAY`;
   });
 
   label.addEventListener("mouseleave", function () {
-    text.innerHTML = labelText;
+    text.textContent = labelText;
   });
 };
 
@@ -159,8 +159,8 @@ export const displayGames = async (listElement, categoryElement, games) => {
       const gamePrice = fetchGamePrice(game.id.toString());
       game.createGamePage(listElement, gamePrice);
 
-      if (!allGames.find((game) => game.id === gameData.id)) {
-        allGames.push(gameData);
+      if (!platformGames.find((game) => game.id === gameData.id)) {
+        platformGames.push(gameData);
 
         if (!genres.find((genre) => genre.name === game.genre)) {
           genres.push({

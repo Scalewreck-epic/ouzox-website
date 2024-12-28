@@ -13,13 +13,10 @@ const deleteCookie = (cookieName) => {
 
 const changeSessionData = async (headers, endpoint) => {
   const errorLabel = document.getElementById("error-label");
-  errorLabel.innerHTML = "Changing settings...";
-  try {
-    const result = await request(endpoint, headers, false);
-    errorLabel.textContent = result.ok ? result.response.message : result.response;
-  } catch (error) {
-    errorLabel.textContent = "An error occurred";
-  }
+  errorLabel.textContent = "Changing settings...";
+
+  const result = await request(endpoint, headers, false);
+  errorLabel.textContent = result.ok ? result.response.message : result.response;
 };
 
 export const createCookie = (cookieName, token) => {
@@ -86,30 +83,22 @@ export const changeStatusData = async () => {
 };
 
 export const fetchAlternativeUser = async (userId) => {
-  try {
-    const result = await request(
-      `${endpoints.user.get_data_with_id}${userId}`,
-      { method: "GET", headers: { "Content-Type": "application/json" } },
-      true
-    );
-    return result.ok ? result.response : null;
-  } catch (error) {
-    return null;
-  }
+  const result = await request(
+    `${endpoints.user.get_data_with_id}${userId}`,
+    { method: "GET", headers: { "Content-Type": "application/json" } },
+    true
+  );
+  return result.ok ? result.response : null;
 };
 
 export const fetchUser = async () => {
   if (sessionId) {
-    try {
-      const result = await request(
-        `${endpoints.user.get_data_with_sess}${sessionId}`,
-        { method: "GET", headers: { "Content-Type": "application/json" } },
-        false
-      );
-      if (!result.ok) clearCookie();
-      return result.ok ? result.response : null;
-    } catch (error) {
-      return null;
-    }
+    const result = await request(
+      `${endpoints.user.get_data_with_sess}${sessionId}`,
+      { method: "GET", headers: { "Content-Type": "application/json" } },
+      false
+    );
+    
+    return result.ok ? result.response : null;
   }
 };

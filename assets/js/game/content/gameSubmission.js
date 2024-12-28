@@ -147,7 +147,7 @@ const on_submit = async (event) => {
     const game = await upload_game(gameRequestOptions);
     error_label.textContent = game && (!product_result || (product_result.active && game)) ? "Successfully published game!" : "Error publishing game.";
   } else {
-    error_label.innerHTML = "Incomplete form.";
+    error_label.textContent = "Incomplete form.";
   }
 };
 
@@ -162,10 +162,10 @@ const update_file_size = () => {
   const file = download_file.files[0];
   const warn = document.getElementById("game-file-warn");
   if (file.size / Math.pow(1024, 3) > 5) {
-    warn.innerHTML = "File size too large, select a file under 5GB";
+    warn.textContent = "File size too large, select a file under 5GB";
     download_file.value = "";
   } else {
-    warn.innerHTML = "";
+    warn.textContent = "";
   }
 };
 

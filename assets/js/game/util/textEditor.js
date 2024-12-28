@@ -104,7 +104,6 @@ Object.values(buttons.header).forEach((button) =>
   button.addEventListener("click", () => applyHeader(button.id))
 );
 
-// Add event listener to description for keydown event
 description.addEventListener("keydown", (e) => {
   if (e.key === "Enter") {
     e.preventDefault();
@@ -112,7 +111,6 @@ description.addEventListener("keydown", (e) => {
   }
 });
 
-// Add event listener to description for paste event
 description.addEventListener("paste", (e) => {
   e.preventDefault();
   const text = e.clipboardData.getData("text/plain");
