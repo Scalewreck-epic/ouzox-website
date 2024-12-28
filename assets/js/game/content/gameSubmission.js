@@ -57,8 +57,6 @@ const set_product_price = async (product_id) => {
         currency,
         unit_amount: price_input.value * 100,
         product: product_id,
-        recurring: {},
-        product_data: {},
       },
     }),
   };
@@ -67,11 +65,11 @@ const set_product_price = async (product_id) => {
   return result.ok ? result.response : null;
 };
 
-const upload_product = async () => {
+const upload_product = async (title) => {
   const result = await request(endpoints.game.create_product, {
     method: "POST",
     headers: myHeaders,
-    body: JSON.stringify({ product: { name: title_input.value, active: "false" } }),
+    body: JSON.stringify({ product: { name: title, active: false } }),
   }, true);
   
   return result.ok ? result.response : null;
@@ -121,7 +119,7 @@ const on_submit = async (event) => {
     });
 
     error_label.textContent = "Creating game page...";
-    const product_result = inputs.price > 0 ? await upload_product() : null;
+    const product_result = inputs.price > 0 ? await upload_product(inputs.title) : null;
 
     const gameRequestOptions = {
       method: "POST",

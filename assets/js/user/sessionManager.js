@@ -11,14 +11,6 @@ const deleteCookie = (cookieName) => {
   document.cookie = `${cookieName}=; expires=${calculateExpiration(true).toUTCString()}`;
 };
 
-export const createCookie = (cookieName, token) => {
-  document.cookie = `${cookieName}=${token}; expires=${calculateExpiration(false).toUTCString()}; samesite=lax; secure;`;
-};
-
-export const clearCookie = () => {
-  document.cookie.split(";").forEach((cookie) => deleteCookie(cookie.split("=")[0].trim()));
-};
-
 const changeSessionData = async (headers, endpoint) => {
   const errorLabel = document.getElementById("error-label");
   errorLabel.innerHTML = "Changing settings...";
@@ -30,11 +22,19 @@ const changeSessionData = async (headers, endpoint) => {
   }
 };
 
-export const fetchCookie = (wanted) => {
+export const createCookie = (cookieName, token) => {
+  document.cookie = `${cookieName}=${token}; expires=${calculateExpiration(false).toUTCString()}; samesite=lax; secure;`;
+};
+
+export const clearCookie = () => {
+  document.cookie.split(";").forEach((cookie) => deleteCookie(cookie.split("=")[0].trim()));
+};
+
+export const fetchCookie = (cookieName) => {
   const matchingCookie = document.cookie
     .split(";")
     .map((pair) => pair.trim().split("="))
-    .find(([name]) => name === wanted);
+    .find(([name]) => name === cookieName);
   return matchingCookie
     ? { data: matchingCookie[1], valid: true }
     : { data: null, valid: false };

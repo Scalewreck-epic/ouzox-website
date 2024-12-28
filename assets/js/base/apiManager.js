@@ -57,6 +57,9 @@ class RequestHandler {
       return null;
     } else {
       const errorMessage = errorMessages[statusCode];
+      if (!errorMessage) {
+        throw new Error(`Unknown error: ${statusCode}`);
+      }
       throw new Error(`${statusCode} ${errorMessage.header}: ${errorMessage.description}`);
     }
   }
