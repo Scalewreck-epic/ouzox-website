@@ -28,52 +28,87 @@ const buttons = {
 const fontSort = document.getElementById("font-sort");
 const link = document.getElementById("link");
 
-const applyFormat = (formatType) => {
-  document.execCommand(formatType);
-  const selection = window.getSelection();
-  const selectedText = selection.toString();
+const isInList = (selection) => {
+  const parentElement = selection.anchorNode.parentElement;
+  return parentElement.closest("ul, ol") !== null;
+};
 
-  if (selection.rangeCount > 0) {
-    const range = selection.getRangeAt(0);
-    range.deleteContents();
-    range.insertNode(document.createTextNode(selectedText));
+const applyFormat = (formatType) => {
+  const selection = window.getSelection();
+  
+  if (!isInList(selection)) {
+    const selectedText = selection.toString();
+
+    if (description.contains(selection.anchorNode)) {
+      document.execCommand(formatType);
+      
+      if (selection.rangeCount > 0) {
+        const range = selection.getRangeAt(0);
+        range.deleteContents();
+        range.insertNode(document.createTextNode(selectedText));
+      }
+    }
   }
 };
 
 const applyHeader = (level) => {
   const selection = window.getSelection();
-  const selectedText = selection.toString();
+  
+  if (!isInList(selection)) {
+    const selectedText = selection.toString();
 
-  if (selection.rangeCount > 0) {
-    const range = selection.getRangeAt(0);
-    const header = document.createElement(`h${level}`);
-    header.textContent = selectedText;
+    if (description.contains(selection.anchorNode) && selection.rangeCount > 0) {
+      const range = selection.getRangeAt(0);
+      const header = document.createElement(`h${level}`);
+      header.textContent = selectedText;
 
-    range.deleteContents();
-    range.insertNode(header);
+      range.deleteContents();
+      range.insertNode(header);
+    }
   }
 };
 
 const createLink = () => {
-  const url = prompt("Enter the link URL:");
+  const selection = window.getSelection();
+  
+  if (!isInList(selection) && description.contains(selection.anchorNode) && selection.rangeCount > 0) {
+    const url = prompt("Enter the link URL:");
 
-  if (url) {
-    const cleanURL = DOMPurify.sanitize(url);
-    const selection = window.getSelection();
-    const selectedText = selection.toString();
+    if (url) {
+      const cleanURL = DOMPurify.sanitize(url);
+      const selectedText = selection.toString();
 
-    const link = document.createElement("a");
-    link.setAttribute("href", cleanURL);
-    link.setAttribute("target", "_blank");
-    link.textContent = selectedText;
+      const link = document.createElement("a");
+      link.setAttribute("href", cleanURL);
+      link.setAttribute("target", "_blank");
+      link.textContent = selectedText;
 
-    if (selection.rangeCount > 0) {
       const range = selection.getRangeAt(0);
       range.deleteContents();
       range.insertNode(link);
     }
   }
 };
+
+description.addEventListener("keydown", (e) => {
+  const selection = window.getSelection();
+  
+  if (e.key === "Enter" && !isInList(selection)) {
+    e.preventDefault();
+    applyFormat("insertLineBreak");
+  }
+});
+
+description.addEventListener("paste", (e) => {
+  e.preventDefault();
+  const text = e.clipboardData.getData("text/plain");
+  const range = window.getSelection().getRangeAt(0);
+  
+  if (!isInList(range) && description.contains(range.startContainer)) {
+    range.deleteContents();
+    range.insertNode(document.createTextNode(text));
+  }
+});
 
 const justify = (level) => {
   document.execCommand(`justify${level}`);
@@ -103,18 +138,3 @@ Object.values(buttons.alignment).forEach((button) =>
 Object.values(buttons.header).forEach((button) =>
   button.addEventListener("click", () => applyHeader(button.id))
 );
-
-description.addEventListener("keydown", (e) => {
-  if (e.key === "Enter") {
-    e.preventDefault();
-    applyFormat("insertLineBreak");
-  }
-});
-
-description.addEventListener("paste", (e) => {
-  e.preventDefault();
-  const text = e.clipboardData.getData("text/plain");
-  const range = window.getSelection().getRangeAt(0);
-  range.deleteContents();
-  range.insertNode(document.createTextNode(text));
-});
