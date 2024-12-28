@@ -135,7 +135,7 @@ const gameHandler = async (gameId) => {
   elements.developerName.setAttribute("href", `user?id=${gameData.developer.id}`);
   elements.gameGenre.setAttribute("href", `category?n=${DOMPurify.sanitize(gameData.genre).toUpperCase()}`);
 
-  const features = ["Singleplayer", "Multiplayer", "Coop", "Achievements", "Controller Support", "Saves"].map(name => ({ Name: name, Enabled: gameData.features[name] }));
+  const features = ["Singleplayer", "Multiplayer", "Coop", "Achievements", "ControllerSupport", "Saves", "VRSupport"].map(name => ({ Name: name, Enabled: gameData.features[name] }));
   const platforms = ["windows", "mac", "linux", "android", "ios", "xbox", "playstation", "oculus"].map(name => ({ Name: name.charAt(0).toUpperCase() + name.slice(1), Enabled: gameData.platforms[name] }));
 
   const elementAlphas = [
@@ -246,46 +246,55 @@ const gameHandler = async (gameId) => {
 
     const colorInputs = [
       {
+        Name: "bg_color",
         Element: document.getElementById("bg-color"),
         Property: "background-color",
         ElementChanging: document.body,
       },
       {
+        Name: "bg2_color",
         Element: document.getElementById("bg2-color"),
         Property: "background-color",
         ElementChanging: elements.gameColumn,
       },
       {
+        Name: "title_color",
         Element: document.getElementById("title-color"),
         Property: "color",
         ElementChanging: elements.gameTitleColumn,
       },
       {
+        Name: "desc_color",
         Element: document.getElementById("description-color"),
         Property: "color",
         ElementChanging: elements.gameDescBackground,
       },
       {
+        Name: "desc_bg_color",
         Element: document.getElementById("description-bg-color"),
         Property: "background-color",
         ElementChanging: elements.gameDescBackground,
       },
       {
+        Name: "stats_text_color",
         Element: document.getElementById("game-details-color"),
         Property: "color",
         ElementChanging: elements.gameStats,
       },
       {
+        Name: "stats_bg_color",
         Element: document.getElementById("game-details-bg-color"),
         Property: "background-color",
         ElementChanging: elements.gameStats,
       },
       {
+        Name: "button_color",
         Element: document.getElementById("button-bg-color"),
         Property: "background-color",
         ElementChanging: elements.downloadButton,
       },
       {
+        Name: "button_text_color",
         Element: document.getElementById("button-text-color"),
         Property: "color",
         ElementChanging: elements.downloadButton,
@@ -294,16 +303,19 @@ const gameHandler = async (gameId) => {
 
     const alphaInputs = [
       {
+        Name: "bg2_alpha",
         Element: document.getElementById("bg2-alpha"),
         Amount: gameData.page.alphas.bg2_alpha,
         ElementChanging: elements.gameColumn
       },
       {
+        Name: "description_bg_alpha",
         Element: document.getElementById("description-bg-alpha"),
         Amount: gameData.page.alphas.description_bg_alpha,
         ElementChanging: elements.gameDescBackground
       },
       {
+        Name: "game_details_bg_alpha",
         Element: document.getElementById("game-details-bg-alpha"),
         Amount: gameData.page.alphas.game_details_bg_alpha,
         ElementChanging: elements.gameStats
@@ -312,36 +324,42 @@ const gameHandler = async (gameId) => {
 
     const shadowCheckboxes = [
       {
-        Element: document.getElementById("game-details-outline-checkbox"),
-        Enabled: gameData.page.outlines.game_details_outline,
-        ElementChanging: elements.gameStats,
-      },
-      {
-        Element: document.getElementById("description-outline-checkbox"),
-        Enabled: gameData.page.outlines.description_outline,
-        ElementChanging: elements.gameDescBackground,
-      },
-      {
-        Element: document.getElementById("bg2-outline-checkbox"),
-        Enabled: gameData.page.outlines.bg2_outline,
-        ElementChanging: elements.gameColumn,
-      },
-    ]  
-
-    const outlineCheckboxes = [
-      {
+        Name: "game_details_shadow",
         Element: document.getElementById("game-details-shadow-checkbox"),
         Enabled: gameData.page.outlines.game_details_shadow,
         ElementChanging: elements.gameStats,
       },
       {
+        Name: "description_shadow",
         Element: document.getElementById("description-shadow-checkbox"),
         Enabled: gameData.page.outlines.description_shadow,
         ElementChanging: elements.gameDescBackground,
       },
       {
+        Name: "bg2_shadow",
         Element: document.getElementById("bg2-shadow-checkbox"),
         Enabled: gameData.page.outlines.bg2_shadow,
+        ElementChanging: elements.gameColumn,
+      },
+    ]
+
+    const outlineCheckboxes = [
+      {
+        Name: "game_details_outline",
+        Element: document.getElementById("game-details-outline-checkbox"),
+        Enabled: gameData.page.outlines.game_details_outline,
+        ElementChanging: elements.gameStats,
+      },
+      {
+        Name: "description_outline",
+        Element: document.getElementById("description-outline-checkbox"),
+        Enabled: gameData.page.outlines.description_outline,
+        ElementChanging: elements.gameDescBackground,
+      },
+      {
+        Name: "bg2_outline",
+        Element: document.getElementById("bg2-outline-checkbox"),
+        Enabled: gameData.page.outlines.bg2_outline,
         ElementChanging: elements.gameColumn,
       },
     ]
@@ -376,7 +394,7 @@ const gameHandler = async (gameId) => {
       isPublic.Enabled = isPublic.Element.checked;
     });
 
-    const gameFeatures = ["Single player", "Multi player", "Co op", "Achievements", "Controller Support", "Saves", "VR Support"].map(name => ({
+    const gameFeatures = ["Singleplayer", "Multiplayer", "Coop", "Achievements", "ControllerSupport", "Saves", "VRSupport"].map(name => ({
       Name: name,
       Enabled: gameData.features[name],
       Element: document.getElementById(name.toLowerCase().replace(" ", "-")),
@@ -434,6 +452,11 @@ const gameHandler = async (gameId) => {
     });
 
     editableElements.commitChangesButton.addEventListener("click", async () => {
+      const combinedCheckboxes = [
+        ...outlineCheckboxes.map(checkbox => ({ Name: checkbox.Name, Enabled: checkbox.Enabled ? "true" : "false"})),
+        ...shadowCheckboxes.map(checkbox => ({ Name: checkbox.Name, Enabled: checkbox.Enabled ? "true" : "false"})),
+      ];
+
       const updateGameOptionsBody = {
         name: elements.gameTitle.textContent,
         description: elements.gameDesc.innerHTML,
@@ -448,23 +471,34 @@ const gameHandler = async (gameId) => {
         page: {
           font_family: getComputedStyle(elements.gameColumn).getPropertyValue("font-family"),
           defaultColors: false,
-          outlines: gameData.page.outlines,
-          alphas: gameData.page.alphas,
-          colors: gameData.page.colors,
+          outlines: Object.fromEntries(combinedCheckboxes.map(o => [o.Name, o.Enabled])),
+          alphas: Object.fromEntries(alphaInputs.map(a => [a.Name, a.Amount])),
+          colors: Object.fromEntries(colorInputs.map(c => [c.Name, c.ElementChanging.getPropertyValue(c.Property)])),
         },
       };
 
       const image = editableElements.gameThumbnailInput.files[0];
+
       if (image) {
         const reader = new FileReader();
-        reader.onload = async (event) => {
-          updateGameOptionsBody.icon = event.target.result;
-          await updateProduct({ method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(updateGameOptionsBody) }, gameData.id, editableElements.commitChangesButton);
+
+        const readFile = () => {
+          return new Promise((resolve, reject) => {
+            reader.onload = (event) => {
+              updateGameOptionsBody.icon = event.target.result;
+              resolve();
+            };
+            reader.onerror = () => {
+              reject(error);
+            };
+            reader.readAsDataURL(image);
+          });
         };
-        reader.readAsDataURL(image);
-      } else {
-        await updateProduct({ method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(updateGameOptionsBody) }, gameData.id, editableElements.commitChangesButton);
-      }
+
+        await readFile();
+      };
+
+      await updateProduct({ method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(updateGameOptionsBody) }, gameData.id, editableElements.commitChangesButton);
     });
 
     document.getElementById("buttons").appendChild(editableElements.commitChangesButton);
