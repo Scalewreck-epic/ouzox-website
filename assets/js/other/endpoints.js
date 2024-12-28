@@ -19,7 +19,7 @@ export const endpoints = {
     create: `${DATABASE_URL}/games/create/`,
     remove: `${DATABASE_URL}/games/remove/`, // + game ID
     update: `${DATABASE_URL}/games/edit/`,
-    getData: `${DATABASE_URL}/games/`, // + game ID
+    get_data: `${DATABASE_URL}/games/`, // + game ID
     create_product: `${PRODUCTS_BASE_URL}/products/create`,
     get_product: `${PRODUCTS_BASE_URL}/products/view/`, // + product ID
     update_price: `${PRICES_BASE_URL}/prices/edit/`, // + price ID

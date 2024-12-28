@@ -19,7 +19,7 @@ class GameData {
       filesize: rawGameData.size,
       agerating: rawGameData.age_rating,
       icon: new URL(rawGameData.icon.url),
-      paymentLink: rawGameData.paymentLink,
+      paymentLink: rawGameData.paymentLink ? new URL(rawGameData.paymentLink) : null,
       created: createdFormattedDate,
       updated: updatedFormattedDate,
       datestodays,
@@ -28,7 +28,7 @@ class GameData {
       price: priceData,
       download_key: rawGameData.product_id,
       page: rawGameData.page,
-      developer: { username: rawGameData.username, id: rawGameData.id },
+      developer: { username: rawGameData.developer.username, id: rawGameData.developer.id },
     });
   }
 }
