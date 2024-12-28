@@ -14,6 +14,10 @@ const game_art = document.getElementById("art-style-input");
 const download_file = document.getElementById("download-file");
 const game_description = document.getElementById("description");
 
+const maxDescriptionCharacters = 4000;
+const minPrice = 1, maxPrice = 5000;
+const maxFileSize = 5; // GB
+
 const format_file_size = (fileSizeInBytes) => {
   const units = ["KB", "MB", "GB"];
   const size = fileSizeInBytes < 1024 ? fileSizeInBytes : 
@@ -161,7 +165,7 @@ const update_thumbnail = () => {
 const update_file_size = () => {
   const file = download_file.files[0];
   const warn = document.getElementById("game-file-warn");
-  if (file.size / Math.pow(1024, 3) > 5) {
+  if (file.size / Math.pow(1024, 3) > maxFileSize) {
     warn.textContent = "File size too large, select a file under 5GB";
     download_file.value = "";
   } else {
@@ -170,7 +174,6 @@ const update_file_size = () => {
 };
 
 const update_price = () => {
-  const minPrice = 1, maxPrice = 5000;
   game_price.value = game_isfree.checked ? 0 : Math.min(maxPrice, Math.max(minPrice, game_price.value.replace(/[^0-9]/g, "")));
 };
 
@@ -178,7 +181,7 @@ const update_genre = () => genre_input.value = genre_input.value.toUpperCase();
 const update_art = () => game_art.value = game_art.value.toUpperCase();
 const update_description = () => {
   const text = DOMPurify.sanitize(game_description.innerHTML);
-  game_description.innerHTML = text.length > 4000 ? text.substr(0, 4000) : text;
+  game_description.innerHTML = text.length > maxDescriptionCharacters ? text.substr(0, maxDescriptionCharacters) : text;
 };
 
 const init = () => {
