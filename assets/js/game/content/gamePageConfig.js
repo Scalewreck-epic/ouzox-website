@@ -6,6 +6,8 @@ const urlParams = new URLSearchParams(window.location.search);
 const gameIdParam = urlParams.get("g");
 const user = await fetchUser();
 
+// TODO: Update price and currency options.
+
 class GameData {
   constructor(rawGameData, priceData, createdFormattedDate, updatedFormattedDate, datestodays) {
     Object.assign(this, {

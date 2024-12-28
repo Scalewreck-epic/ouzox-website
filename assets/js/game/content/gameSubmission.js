@@ -152,7 +152,6 @@ const on_submit = async (event) => {
 
     const game = await upload_game(gameRequestOptions);
     if (game.ok) {
-        error_label.textContent = "Successfully published game!";
         window.location.assign("dashboard");
     } else {
         error_label.textContent = game.response;
