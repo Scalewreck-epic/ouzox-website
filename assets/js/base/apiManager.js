@@ -1,14 +1,14 @@
-const errorMessages = {
+export const errorMessages = {
   400: { header: "Bad Request", description: "The request was invalid or cannot be processed." },
-  401: { header: "Unauthorized", description: "Authentication is required to access the requested resource." },
-  402: { header: "Payment Required", description: "The request was valid, but the payment was not successful." },
-  403: { header: "Access Denied", description: "The server understood the request, but is refusing to fulfill it." },
-  404: { header: "Not Found", description: "The requested resource could not be found." },
-  405: { header: "Method Not Allowed", description: "The request method is not supported by the requested resource." },
+  401: { header: "Unauthorized", description: "Authentication is required to access this resource." },
+  402: { header: "Payment Required", description: "Payment is required to access this resource." },
+  403: { header: "Access Denied", description: "Permission is required to access this resource." },
+  404: { header: "Not Found", description: "This resource could not be found." },
+  405: { header: "Method Not Allowed", description: "The request method is not supported by this resource." },
   409: { header: "Conflict", description: "The request could not be completed due to a conflict with the current state of the resource." },
-  429: { header: "Too Many Requests", description: "The user has sent too many requests in a given amount of time." },
-  500: { header: "Internal Server Error", description: "An unexpected condition was encountered and no more specific message is suitable." },
-  503: { header: "Service Unavailable", description: "The server is currently unavailable (because it is overloaded or down for maintenance)." },
+  429: { header: "Too Many Requests", description: "Sent too many requests in a given amount of time." },
+  500: { header: "Internal Server Error", description: "An unexpected error occured. If this keeps happening, contact us." },
+  503: { header: "Service Unavailable", description: "Ouzox is currently down for maintenance. Please come back." },
 };
 
 class RequestHandler {

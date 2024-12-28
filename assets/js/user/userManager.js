@@ -10,6 +10,8 @@ console.info("Ouzox is open source! https://github.com/Scalewreck-epic/ouzox-web
 const cookieData = session.fetchCookie("session_id");
 const user = await session.fetchUser();
 
+const isValidCookie = cookieData.valid;
+
 const updateUsername = () => {
   const username = document.getElementById("username");
   const copyrightYear = document.getElementById("copyright-year");
@@ -20,7 +22,7 @@ const updateUsername = () => {
 
   copyrightYear && (copyrightYear.textContent = new Date().getFullYear().toString());
 
-  if (cookieData.Valid) {
+  if (isValidCookie) {
     if (loginPaths.some(path => window.location.pathname.includes(path))) window.location.assign("settings");
     loginBtn.remove(); signupBtn.remove(); username.textContent = user.name;
   } else {
@@ -53,7 +55,7 @@ const isValidLogin = () => {
 };
 
 const createSessionData = async () => {
-  if (!cookieData.valid) {
+  if (!isValidCookie) {
     const usernameInput = document.getElementById("username_input").value;
     const emailInput = document.getElementById("email_input").value;
     const passwordInput = document.getElementById("password_input").value;
@@ -78,7 +80,7 @@ const createSessionData = async () => {
 };
 
 const fetchSessionData = async () => {
-  if (!cookieData.valid) {
+  if (!isValidCookie) {
     const username = document.getElementById("username_login").value;
     const password = document.getElementById("password_login").value;
     const errorLabel = document.getElementById("error-label");
@@ -113,7 +115,7 @@ const togglePasswordVisibility = (passwordInput, icon) => {
 };
 
 const logout = () => {
-  if (cookieData.Valid) clearCookie();
+  if (isValidCookie) clearCookie();
   window.location.assign("login");
 };
 
