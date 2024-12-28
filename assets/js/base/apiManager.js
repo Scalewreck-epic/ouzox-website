@@ -45,23 +45,6 @@ class RequestHandler {
   }
 
   /**
-   * @throws {Error}
-   */
-  validateOptions() {
-    if (typeof this.options !== "object" || this.options === null) {
-      throw new Error(`Expected options to be an object: ${typeof this.options}`);
-    }
-
-    const unexpectedProperties = Object.keys(this.options).filter(
-      (key) => !["method", "headers", "body"].includes(key)
-    );
-
-    if (unexpectedProperties.length > 0) {
-      throw new Error("Unexpected properties in options object:", unexpectedProperties);
-    }
-  }
-
-  /**
    * @param {Response} response
    * @throws {Error}
    * @returns {null}
@@ -84,7 +67,6 @@ class RequestHandler {
    */
   async makeRequest() {
     try {
-      this.validateOptions();
       const endpointUrl = this.validateEndpoint();
       const response = await fetch(endpointUrl, this.options);
 

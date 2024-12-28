@@ -1,4 +1,4 @@
-import { fetch_user, fetch_alternative_user } from "../user/sessionManager.js";
+import { fetchUser } from "../user/sessionManager.js";
 import { request } from "./apiManager.js";
 import { endpoints } from "../other/endpoints.js";
 
@@ -10,7 +10,7 @@ let prices = [];
 let genres = [];
 let allGames = [];
 
-const user = await fetch_user();
+const user = await fetchUser();
 
 class Genre {
   constructor(genre) {
@@ -23,14 +23,13 @@ class Genre {
     const genreName = document.createElement("div");
     const genreGamesAmount = document.createElement("h4");
 
-    genreButton.setAttribute("class", "genre-button");
-    genreName.setAttribute("class", "genre-name");
+    genreButton.classList.add("genre-button");
+    genreName.classList.add("genre-name");
 
     genreName.textContent = name;
-    genreButton.setAttribute("href", `category?n=${name}`);
+    genreButton.href = `category?n=${name}`;
 
-    genreGamesAmount.textContent =
-      amount != 1 ? `${amount} games` : `${amount} game`;
+    genreGamesAmount.textContent = amount !== 1 ? `${amount} games` : `${amount} game`;
 
     genreButton.appendChild(genreName);
     genreButton.appendChild(genreGamesAmount);
@@ -48,6 +47,8 @@ class Game {
     this.genre = data.genre;
     this.likes = data.likes;
     this.dislikes = data.dislikes;
+    this.created = data.created;
+    this.updated = data.updated;
   }
 
   calculateDiffDays = (timestamp) => {
@@ -62,8 +63,8 @@ class Game {
   createGamePage = (listElement, gamePrice) => {
     const price = gamePrice.price / 100;
     const currency = gamePrice.currency;
-    const likeToDislikeRatio =
-      (this.likes / (this.likes + this.dislikes)) * 100;
+
+    const likeToDislikeRatio = (this.likes / (this.likes + this.dislikes)) * 100;
 
     const gameContainer = document.createElement("div");
     const gameImage = document.createElement("img");
@@ -75,17 +76,17 @@ class Game {
     const gamePriceText = document.createElement("span");
     const gameRatioText = document.createElement("span");
 
-    gameContainer.setAttribute("class", "game");
-    gameImage.setAttribute("class", "product-image");
-    gameImageContainer.setAttribute("class", "product-image-container");
-    gameTitle.setAttribute("class", "product-title");
-    gameSummary.setAttribute("class", "product-summary");
-    gamePriceContainer.setAttribute("class", "product-price");
-    gameRatioContainer.setAttribute("class", "product-ratio");
+    gameContainer.classList.add("game");
+    gameImage.classList.add("product-image");
+    gameImageContainer.classList.add("product-image-container");
+    gameTitle.classList.add("product-title");
+    gameSummary.classList.add("product-summary");
+    gamePriceContainer.classList.add("product-price");
+    gameRatioContainer.classList.add("product-ratio");
 
-    gameImage.setAttribute("src", this.icon.url);
-    gameImageContainer.setAttribute("href", `game?g=${this.id}`);
-    gameTitle.setAttribute("href", `game?g=${this.id}`);
+    gameImage.src = this.icon.url;
+    gameImageContainer.href = `game?g=${this.id}`;
+    gameTitle.href = `game?g=${this.id}`;
 
     gameTitle.textContent = this.name;
     gameSummary.textContent = this.summary;
@@ -158,16 +159,17 @@ export const displayGames = async (listElement, categoryElement, games) => {
       const gamePrice = fetchGamePrice(game.id.toString());
       game.createGamePage(listElement, gamePrice);
 
-      if (!allGames[gameData]) {
+      if (!allGames.find((game) => game.id === gameData.id)) {
         allGames.push(gameData);
 
-        if (!genres[game.genre]) {
-          genres[game.genre] = {
+        if (!genres.find((genre) => genre.name === game.genre)) {
+          genres.push({
             name: game.genre,
             count: 1,
-          };
+          });
         } else {
-          genres[game.genre].count++;
+          const genreIndex = genres.findIndex((genre) => genre.name === game.genre);
+          genres[genreIndex].count++;
         }
       }
     });
@@ -197,39 +199,39 @@ const displayGenres = async () => {
 export const loadUserGames = async (newUser) => {
   const gameDownloads = document.getElementById("game-downloads");
 
-  const myHeaders = new Headers();
-  myHeaders.append("Content-Type", "application/json");
+  const myHeaders = new Headers({ "Content-Type": "application/json" });
 
   const developerGameOptions = {
     method: "GET",
     headers: myHeaders,
   };
 
-  let downloads = 0;
-
   const userGamesRequest = await request(`${endpoints.user.list_public_games}${newUser.id}`, developerGameOptions, false);
-  userGamesRequest.ok ? displayGames(document.getElementById("user-games"), document.getElementById("user-games"), userGamesRequest.response) : displayErrorForGames(document.getElementById("user-games"), userGamesRequest.response);
 
-  if (userGamesRequest.ok == true) {
-    userGamesRequest.response.forEach((game) => {
-      downloads += game.downloads;
-    })
+  if (userGamesRequest.ok) {
+    const downloads = userGamesRequest.response.reduce((acc, game) => acc + game.downloads, 0);
+    gameDownloads.textContent = downloads.toString();
+    displayGames(document.getElementById("user-games"), document.getElementById("user-games"), userGamesRequest.response);
+  } else {
+    displayErrorForGames(document.getElementById("user-games"), userGamesRequest.response);
   }
-
-  gameDownloads.textContent = downloads.toString();
 };
 
 const loadDashboard = async () => {
-  const myHeaders = new Headers();
-  myHeaders.append("Content-Type", "application/json");
+  const myHeaders = new Headers({ "Content-Type": "application/json" });
 
   const developerGameOptions = {
     method: "GET",
     headers: myHeaders,
   };
 
-  const userGamesRequest = await request(`${endpoints.user.list_games}${user.id}`, developerGameOptions, true).response;
-  userGamesRequest.ok ? displayGames(document.getElementById("dashboard-market"), document.getElementById("dashboard-market"), userGamesRequest.response) : displayErrorForGames(document.getElementById("dashboard-market"), userGamesRequest.response);
+  const userGamesRequest = await request(`${endpoints.user.list_games}${user.id}`, developerGameOptions, true);
+
+  if (userGamesRequest.ok) {
+    displayGames(document.getElementById("dashboard-market"), document.getElementById("dashboard-market"), userGamesRequest.response);
+  } else {
+    displayErrorForGames(document.getElementById("dashboard-market"), userGamesRequest.response);
+  }
 };
 
 const loadGames = async () => {
@@ -246,16 +248,8 @@ const loadGames = async () => {
     bestseller: { orderBy: "desc", sortColumn: "downloads" },
   };
 
-  const fetchFreeGames = async (key) => {
-    return await request(endpoints.list.list_free_games, {
-      method: "POST",
-      headers: myHeaders,
-      body: JSON.stringify({ ...options[key], perPage, page: 1 }),
-    }, false);
-  }
-
-  const fetchGames = async (key) => {
-    return await request(endpoints.list.list_games, {
+  const fetchGames = async (key, endpoint) => {
+    return await request(endpoint, {
       method: "POST",
       headers: myHeaders,
       body: JSON.stringify({ ...options[key], perPage, page: 1 }),
@@ -265,21 +259,25 @@ const loadGames = async () => {
   if (window.location.pathname.includes("/search") || window.location.pathname.includes("/category")) {
     // TODO: Show the search or category results
   } else {
-    const [freshGames, hotGames, underratedGames, sponsoredGames, freeandhotGames, bestsellingGames] = await Promise.all([
-      fetchGames("fresh"),
-      fetchGames("hot"),
-      fetchGames("underrated"),
-      fetchGames("sponsored"),
-      fetchFreeGames("freeandhot"),
-      fetchGames("bestseller"),
-    ]);
+    const endpointsList = {
+      fresh: endpoints.list.list_games,
+      hot: endpoints.list.list_games,
+      underrated: endpoints.list.list_games,
+      sponsored: endpoints.list.list_games,
+      freeandhot: endpoints.list.list_free_games,
+      bestseller: endpoints.list.list_games,
+    };
 
-    freshGames.ok  ? displayGames(document.getElementById("fresh-games-list"), document.getElementById("fresh-games"), freshGames.response.items) : displayErrorForGames(document.getElementById("fresh-games"), freshGames.response);
-    hotGames.ok  ? displayGames(document.getElementById("hot-games-list"), document.getElementById("hot-games"), hotGames.response.items) : displayErrorForGames(document.getElementById("hot-games"), hotGames.response);
-    underratedGames.ok  ? displayGames(document.getElementById("underrated-games-list"), document.getElementById("underrated-games"), underratedGames.response.items) : displayErrorForGames(document.getElementById("underrated-games"), underratedGames.response);
-    sponsoredGames.ok  ? displayGames(document.getElementById("sponsored-games-list"), document.getElementById("sponsored-games"), sponsoredGames.response.items) : displayErrorForGames(document.getElementById("sponsored-games"), sponsoredGames.response);
-    freeandhotGames.ok  ? displayGames(document.getElementById("freehot-games-list"), document.getElementById("freehot-games"), freeandhotGames.response.items) : displayErrorForGames(document.getElementById("freehot-games"), freeandhotGames.response);
-    bestsellingGames.ok  ? displayGames(document.getElementById("bestseller-games-list"), document.getElementById("bestseller-games"), bestsellingGames.response.items) : displayErrorForGames(document.getElementById("bestseller-games"), bestsellingGames.response);
+    const promises = Object.keys(endpointsList).map((key) => fetchGames(key, endpointsList[key]));
+    const results = await Promise.all(promises);
+
+    Object.keys(endpointsList).forEach((key, index) => {
+      const result = results[index];
+      const listElement = document.getElementById(`${key}-games-list`);
+      const categoryElement = document.getElementById(`${key}-games`);
+
+      result.ok ? displayGames(listElement, categoryElement, result.response.items) : displayErrorForGames(categoryElement, result.response);
+    });
   }
 };
 
@@ -294,7 +292,6 @@ const fetchGames = async () => {
 
   const setPrices = async () => {
     const result = await request(endpoints.list.list_prices, priceRequestOptions, true);
-
     if (result) {
       prices = result.response.data;
       prices.sort((a, b) => b.unit_amount - a.unit_amount);

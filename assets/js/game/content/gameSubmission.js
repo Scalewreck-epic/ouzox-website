@@ -1,9 +1,9 @@
-import { fetch_user } from "../../user/sessionManager.js";
+import { fetchUser } from "../../user/sessionManager.js";
 import { request } from "../../base/apiManager.js";
 import { endpoints } from "../../other/endpoints.js";
 
 const myHeaders = new Headers({ "Content-Type": "application/json" });
-const { name: uploader_name, id: uploader_id } = await fetch_user();
+const { name: uploader_name, id: uploader_id } = await fetchUser();
 const uploadGame = document.getElementById("upload-game");
 
 const game_thumbnail = document.getElementById("thumbnail");

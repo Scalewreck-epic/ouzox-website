@@ -1,10 +1,10 @@
-import { fetch_user } from "../../user/sessionManager.js";
+import { fetchUser } from "../../user/sessionManager.js";
 import { request } from "../../base/apiManager.js";
 import { endpoints } from "../../other/endpoints.js";
 
 const urlParams = new URLSearchParams(window.location.search);
 const gameIdParam = urlParams.get("g");
-const user = await fetch_user();
+const user = await fetchUser();
 
 class GameData {
   constructor(rawGameData, priceData, createdFormattedDate, updatedFormattedDate, datestodays) {

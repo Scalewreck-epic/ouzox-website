@@ -103,3 +103,20 @@ Object.values(buttons.alignment).forEach((button) =>
 Object.values(buttons.header).forEach((button) =>
   button.addEventListener("click", () => applyHeader(button.id))
 );
+
+// Add event listener to description for keydown event
+description.addEventListener("keydown", (e) => {
+  if (e.key === "Enter") {
+    e.preventDefault();
+    applyFormat("insertLineBreak");
+  }
+});
+
+// Add event listener to description for paste event
+description.addEventListener("paste", (e) => {
+  e.preventDefault();
+  const text = e.clipboardData.getData("text/plain");
+  const range = window.getSelection().getRangeAt(0);
+  range.deleteContents();
+  range.insertNode(document.createTextNode(text));
+});
