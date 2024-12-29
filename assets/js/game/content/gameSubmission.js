@@ -4,6 +4,9 @@ import { endpoints } from "../../other/endpoints.js";
 
 const myHeaders = new Headers({ "Content-Type": "application/json" });
 const uploadGame = document.getElementById("upload-game");
+const uploadButton = document.getElementById("upload-button");
+const error_label = document.getElementById("error-label");
+const game_file_warn = document.getElementById("game-file-warn");
 
 const game_thumbnail = document.getElementById("thumbnail");
 const game_price = document.getElementById("price");
@@ -93,8 +96,8 @@ const upload_payment_link = async (price_id) => {
 
 const on_submit = async (event) => {
   event.preventDefault();
-  const error_label = document.getElementById("error-label");
-  const game_file_warn = document.getElementById("game-file-warn");
+
+  uploadButton.disabled = true;
 
   update_thumbnail();
   update_file_size();
@@ -159,6 +162,8 @@ const on_submit = async (event) => {
   } else {
     error_label.textContent = "Incomplete form.";
   }
+
+  uploadButton.disabled = false;
 };
 
 const update_thumbnail = () => {

@@ -454,6 +454,7 @@ const gameHandler = async (gameId) => {
     });
 
     editableElements.commitChangesButton.addEventListener("click", async () => {
+      editableElements.commitChangesButton.disabled = true;
       const combinedCheckboxes = [
         ...outlineCheckboxes.map(checkbox => ({ Name: checkbox.Name, Enabled: checkbox.Enabled ? "true" : "false"})),
         ...shadowCheckboxes.map(checkbox => ({ Name: checkbox.Name, Enabled: checkbox.Enabled ? "true" : "false"})),
@@ -501,6 +502,7 @@ const gameHandler = async (gameId) => {
       };
 
       await updateProduct({ method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(updateGameOptionsBody) }, gameData.id, editableElements.commitChangesButton);
+      editableElements.commitChangesButton.disabled = false;
     });
 
     document.getElementById("buttons").appendChild(editableElements.commitChangesButton);

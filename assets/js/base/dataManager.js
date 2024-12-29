@@ -120,7 +120,6 @@ class Game {
 
 const fetchGamePrice = (gameId) => {
   const result = prices.find((item) => item.product === gameId);
-
   return result ? {price: result.unit_amount, currency: result.currency} : {price: 0, currency: "USD"};
 };
 
@@ -154,7 +153,7 @@ export const displayGames = async (listElement, categoryElement, games) => {
   if (games.length > 0) {
     categoryNoneElement.remove();
 
-    games.forEach((gameData) => {
+    games.forEach(async (gameData) => {
       const game = new Game(gameData);
       const gamePrice = fetchGamePrice(game.id.toString());
       game.createGamePage(listElement, gamePrice);
@@ -162,14 +161,15 @@ export const displayGames = async (listElement, categoryElement, games) => {
       if (!platformGames.find((game) => game.id === gameData.id)) {
         platformGames.push(gameData);
 
-        if (!genres.find((genre) => genre.name === game.genre)) {
+        const existingGenreIndex = genres.findIndex((genre) => genre.name === game.genre);
+
+        if (existingGenreIndex !== -1) {
+          genres[existingGenreIndex].count++;
+        } else {
           genres.push({
             name: game.genre,
             count: 1,
           });
-        } else {
-          const genreIndex = genres.findIndex((genre) => genre.name === game.genre);
-          genres[genreIndex].count++;
         }
       }
     });
