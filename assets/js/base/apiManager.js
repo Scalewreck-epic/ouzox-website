@@ -8,7 +8,7 @@ export const errorMessages = {
   409: { header: "Conflict", description: "The request could not be completed due to a conflict with the current state of the resource." },
   429: { header: "Too Many Requests", description: "Sent too many requests in a given amount of time." },
   500: { header: "Internal Server Error", description: "An unexpected error occured. If this keeps happening, contact us." },
-  503: { header: "Service Unavailable", description: "Ouzox is currently down for maintenance. Please come back." },
+  503: { header: "Service Unavailable", description: "Ouzox is currently down for maintenance. We will be up shortly." },
 };
 
 class RequestHandler {

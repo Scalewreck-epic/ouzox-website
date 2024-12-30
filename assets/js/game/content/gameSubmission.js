@@ -87,11 +87,7 @@ const on_submit = async (event) => {
         size: Math.round(file_size),
         defaultColors: true,
         icon: imageURI,
-        pricing: {
-          price: inputs.price,
-          free: inputs.isFree,
-          currency: inputs.currency,
-        },
+        pricing: { price: inputs.price, free: inputs.isFree, currency: inputs.currency },
         platforms: Object.fromEntries(inputs.platforms.map((enabled, index) => [inputs.platforms[index], enabled])),
         features: Object.fromEntries(inputs.features.map((enabled, index) => [inputs.features[index], enabled])),
       }),

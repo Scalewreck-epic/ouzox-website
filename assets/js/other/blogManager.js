@@ -1,5 +1,5 @@
-import { request } from "../../base/apiManager.js";
-import { endpoints } from "../../other/endpoints.js";
+import { request } from "../base/apiManager.js";
+import { endpoints } from "./endpoints.js";
 
 const blog_market = document.getElementById("blog-posts");
 

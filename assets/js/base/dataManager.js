@@ -277,7 +277,7 @@ const loadGames = async () => {
       resultsLabel.textContent = `(${resultItems.length} result${resultItems.length !== 1 ? 's' : ''})`;
     } else {
       displayErrorForGames(genreListElement, result.response);
-      resultsLabel.textContent = "(0 results)";
+      resultsLabel.textContent = "(error occured)";
     };
   } else {
     const endpointsList = {
@@ -303,14 +303,6 @@ const loadGames = async () => {
 };
 
 export const fetchGames = async () => {
-  const myHeaders = new Headers();
-  myHeaders.append("Content-Type", "application/json");
-
-  const priceRequestOptions = {
-    method: "GET",
-    headers: myHeaders,
-  };
-
   if (pathName.includes("/dashboard")) {
     await loadDashboard();
   } else {
