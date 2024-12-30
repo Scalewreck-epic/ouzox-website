@@ -7,7 +7,6 @@ const urlParams = new URLSearchParams(window.location.search);
 const searchQuery = urlParams.get("q") || "";
 const categoryName = urlParams.get("n") || "";
 
-const prices = [];
 const genres = [];
 const platformGames = [];
 
@@ -44,12 +43,15 @@ class Game {
     this.id = data.id;
     this.name = data.name;
     this.summary = data.summary;
-    this.icon = data.icon;
+    this.icon = new URL(data.icon.url);
     this.genre = data.genre;
     this.likes = data.likes;
     this.dislikes = data.dislikes;
     this.created = data.created;
     this.updated = data.updated;
+    this.price = data.pricing.price;
+    this.currency = data.pricing.currency;
+    this.free = data.pricing.free;
   }
 
   calculateDiffDays = (timestamp) => {
@@ -61,11 +63,11 @@ class Game {
     return createdDiffDays;
   };
 
-  createGamePage = (listElement, gamePrice) => {
-    const price = gamePrice.price / 100;
-    const currency = gamePrice.currency;
-
+  createGamePage = (listElement) => {
     const likeToDislikeRatio = (this.likes / (this.likes + this.dislikes)) * 100;
+
+    const price = this.price;
+    const currency = this.currency;
 
     const gameContainer = document.createElement("div");
     const gameImage = document.createElement("img");
@@ -85,14 +87,14 @@ class Game {
     gamePriceContainer.classList.add("product-price");
     gameRatioContainer.classList.add("product-ratio");
 
-    gameImage.src = this.icon.url;
+    gameImage.src = this.icon;
     gameImageContainer.href = `game?g=${this.id}`;
     gameTitle.href = `game?g=${this.id}`;
 
     gameTitle.textContent = this.name;
     gameSummary.textContent = this.summary;
 
-    gamePriceText.textContent = `${price} ${currency.toUpperCase()}`;
+    gamePriceText.textContent = this.free ? "FREE" : `${price} ${currency.toUpperCase()}`;
     gameRatioText.textContent = `${likeToDislikeRatio}%`;
 
     gamePriceContainer.appendChild(gamePriceText);
@@ -118,11 +120,6 @@ class Game {
     listElement.appendChild(gameContainer);
   };
 }
-
-const fetchGamePrice = (gameId) => {
-  const result = prices.find((item) => item.product === gameId);
-  return result ? {price: result.unit_amount, currency: result.currency} : {price: 0, currency: "USD"};
-};
 
 const createLabel = (labelText, numDays, targetElement) => {
   const label = document.createElement("div");
@@ -156,8 +153,7 @@ export const displayGames = async (listElement, categoryElement, games) => {
 
     games.forEach(async (gameData) => {
       const game = new Game(gameData);
-      const gamePrice = fetchGamePrice(game.id.toString());
-      game.createGamePage(listElement, gamePrice);
+      game.createGamePage(listElement);
 
       if (!platformGames.find((game) => game.id === gameData.id)) {
         platformGames.push(gameData);
@@ -314,18 +310,6 @@ export const fetchGames = async () => {
     method: "GET",
     headers: myHeaders,
   };
-
-  const setPrices = async () => {
-    const result = await request(endpoints.list.list_prices, priceRequestOptions, true);
-    if (result) {
-      result.response.data.forEach(price => {
-        prices.push(price);
-      });
-      prices.sort((a, b) => b.unit_amount - a.unit_amount);
-    }
-  };
-
-  await setPrices();
 
   if (pathName.includes("/dashboard")) {
     await loadDashboard();

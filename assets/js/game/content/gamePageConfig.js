@@ -6,10 +6,10 @@ const urlParams = new URLSearchParams(window.location.search);
 const gameIdParam = urlParams.get("g");
 const user = await fetchUser();
 
-// TODO: Update price and currency options.
+// TODO: Update price and currency options in stripe or create new ones when game changes from free to paid (destroy ones when game changes from paid to free).
 
 class GameData {
-  constructor(rawGameData, priceData, createdFormattedDate, updatedFormattedDate, datestodays) {
+  constructor(rawGameData, createdFormattedDate, updatedFormattedDate, datestodays) {
     Object.assign(this, {
       id: rawGameData.id,
       name: rawGameData.name,
@@ -27,7 +27,7 @@ class GameData {
       datestodays,
       features: rawGameData.features,
       platforms: rawGameData.platforms,
-      price: priceData,
+      pricing: rawGameData.pricing,
       download_key: rawGameData.product_id,
       page: rawGameData.page,
       developer: { username: rawGameData.developer.username, id: rawGameData.developer.id },
@@ -53,11 +53,6 @@ const getGameData = async (gameId) => {
   throw new Error(`Unable to get game data: ${result}`);
 };
 
-const fetchPriceData = async (rawGameData) => {
-  const result = await request(`${endpoints.game.get_price}${rawGameData.product_id}`, { method: "GET", headers: { "Content-Type": "application/json" } }, true);
-  return result.ok ? result.response : null;
-};
-
 const fetchGameData = async (gameId) => {
   const rawGameData = await getGameData(gameId);
   const createdDate = new Date(rawGameData.created_at);
@@ -72,16 +67,10 @@ const fetchGameData = async (gameId) => {
     updatedDaysAgo: Math.ceil((currentDate - updatedDate) / (1000 * 60 * 60 * 24)),
   };
 
-  let priceData = { currency: "USD", amount: "0" };
-  if (!rawGameData.free) {
-    const response = await fetchPriceData(rawGameData);
-    if (response?.currency) priceData = { currency: response.currency.toUpperCase(), amount: parseFloat(response.unit_amount / 100) };
-  }
-
-  return new GameData(rawGameData, priceData, createdFormattedDate, updatedFormattedDate, datestodays);
+  return new GameData(rawGameData, createdFormattedDate, updatedFormattedDate, datestodays);
 };
 
-const updateProduct = async (data, gameId, commitChangesButton) => {
+const updateGame = async (data, gameId, commitChangesButton) => {
   const result = await request(`${endpoints.game.update}${gameId}`, data, false);
   commitChangesButton.textContent = result.ok ? "Success" : result.response;
 };
@@ -122,7 +111,7 @@ const gameHandler = async (gameId) => {
 
   elements.gameTitle.textContent = gameData.name;
   elements.gameDesc.innerHTML = DOMPurify.sanitize(gameData.description);
-  elements.gamePrice.textContent = `${gameData.price.amount} ${gameData.price.currency}`;
+  elements.gamePrice.textContent = `${gameData.pricing.price} ${gameData.pricing.currency}`;
   elements.created.textContent = formatTime(gameData.created, gameData.datestodays.publishedYearsAgo, gameData.datestodays.publishedMonthsAgo, gameData.datestodays.publishedWeeksAgo, gameData.datestodays.publishedDaysAgo);
   elements.updated.textContent = formatTime(gameData.updated, gameData.datestodays.updatedYearsAgo, gameData.datestodays.updatedMonthsAgo, gameData.datestodays.updatedWeeksAgo, gameData.datestodays.updatedDaysAgo);
   elements.icon.setAttribute("href", gameData.icon);
@@ -243,6 +232,8 @@ const gameHandler = async (gameId) => {
       gameArtStyleInput: document.getElementById("art-style-input"),
       gameAgeInput: document.getElementById("age-sort"),
       gameThumbnailInput: document.getElementById("thumbnail-input"),
+      gamePriceInput: document.getElementById("price"),
+      gameCurrencyInput: document.getElementById("currency-sort"),
       commitChangesButton: document.createElement("button"),
     };
 
@@ -460,6 +451,8 @@ const gameHandler = async (gameId) => {
         ...shadowCheckboxes.map(checkbox => ({ Name: checkbox.Name, Enabled: checkbox.Enabled ? "true" : "false"})),
       ];
 
+      const isFree = editableElements.price.value <= 0;
+
       const updateGameOptionsBody = {
         name: elements.gameTitle.textContent,
         description: elements.gameDesc.innerHTML,
@@ -468,6 +461,11 @@ const gameHandler = async (gameId) => {
         artstyle: editableElements.gameArtStyleInput.value,
         age_rating: editableElements.gameAgeInput.value,
         active: isPublic.Enabled ? "true" : "false",
+        pricing: {
+          price: editableElements.price.value,
+          free: isFree,
+          currency: editableElements.currency.value,
+        },
         uploader_id: user.id,
         platforms: Object.fromEntries(gamePlatforms.map(p => [p.Name.toLowerCase(), p.Enabled ? "true" : "false"])),
         features: Object.fromEntries(gameFeatures.map(f => [f.Name, f.Enabled ? "true" : "false"])),
@@ -501,7 +499,7 @@ const gameHandler = async (gameId) => {
         await readFile();
       };
 
-      await updateProduct({ method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(updateGameOptionsBody) }, gameData.id, editableElements.commitChangesButton);
+      await updateGame({ method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(updateGameOptionsBody) }, gameData.id, editableElements.commitChangesButton);
       editableElements.commitChangesButton.disabled = false;
     });
 

@@ -36,7 +36,7 @@ const upload_game = async (gameRequestOptions) => {
   return result;
 };
 
-// TODO: Use create_product_price and set_product_price when the game is not free
+// TODO: Use create_product_price, set_product_price, and upload_product when game is not free.
 const crate_product_price = async (product_id, currency, unit_amount) => {
   const price = {
     currency: currency,
@@ -135,7 +135,6 @@ const on_submit = async (event) => {
       headers: myHeaders,
       body: JSON.stringify({
         name: inputs.title,
-        free: inputs.isFree,
         description: inputs.description,
         developer: { username: uploader_name, id: uploader_id },
         file_name: inputs.file.name,
@@ -146,6 +145,11 @@ const on_submit = async (event) => {
         size: Math.round(file_size),
         defaultColors: true,
         icon: imageURI,
+        pricing: {
+          price: inputs.price,
+          free: inputs.isFree,
+          currency: inputs.currency,
+        },
         product_id: product ? product.id : "none",
         payment_link: product ? await upload_payment_link(product.id) : "none",
         platforms: Object.fromEntries(inputs.platforms.map((enabled, index) => [inputs.platforms[index], enabled])),
