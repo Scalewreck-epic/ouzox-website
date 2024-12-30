@@ -2,6 +2,7 @@ import { fetchUser } from "../user/sessionManager.js";
 import { request } from "./apiManager.js";
 import { endpoints } from "../other/endpoints.js";
 
+const pathName = window.location.pathname;
 const urlParams = new URLSearchParams(window.location.search);
 const searchQuery = urlParams.get("q") || "";
 const categoryName = urlParams.get("n") || "";
@@ -177,7 +178,7 @@ export const displayGames = async (listElement, categoryElement, games) => {
 };
 
 const displayGenres = async () => {
-  if (window.location.pathname.includes("/search")) {
+  if (pathName.includes("/search")) {
     // Sort genres by relevancy
   } else {
     genres.sort((a, b) => b.count - a.count);
@@ -248,7 +249,9 @@ const loadGames = async () => {
     bestseller: { orderBy: "desc", sortColumn: "downloads" },
   };
 
-  const fetchGames = async (key, endpoint) => {
+  const topSearchOptions = options.bestseller;
+
+  const fetchGamesByEndpoint = async (key, endpoint) => {
     return await request(endpoint, {
       method: "POST",
       headers: myHeaders,
@@ -256,8 +259,30 @@ const loadGames = async () => {
     }, false);
   };
 
-  if (window.location.pathname.includes("/search") || window.location.pathname.includes("/category")) {
-    // TODO: Show the search or category results
+  // TODO: Show the search results
+
+  if (pathName.includes("/category")) {
+    const genreListElement = document.getElementById("genre-games-list");
+    const genreListCategory = document.getElementById("genre-games");
+    const searchLabel = document.getElementById("search-label");
+
+    searchLabel.textContent = `Top '${categoryName}' Games`;
+
+    const result = await request(endpoints.list.list_games, {
+      method: "POST",
+      headers: myHeaders,
+      body: JSON.stringify({ ...topSearchOptions, perPage, page: 1}),
+    });
+
+    if (result.ok) {
+      const resultItems = result.response.items;
+
+      displayGames(genreListElement, genreListCategory, resultItems);
+      resultsLabel.textContent = `(${resultItems.length} result${resultItems.length !== 1 ? 's' : ''})`;
+    } else {
+      displayErrorForGames(genreListElement, result.response);
+      resultsLabel.textContent = "(0 results)";
+    };
   } else {
     const endpointsList = {
       fresh: endpoints.list.list_games,
@@ -268,7 +293,7 @@ const loadGames = async () => {
       bestseller: endpoints.list.list_games,
     };
 
-    const promises = Object.keys(endpointsList).map((key) => fetchGames(key, endpointsList[key]));
+    const promises = Object.keys(endpointsList).map((key) => fetchGamesByEndpoint(key, endpointsList[key]));
     const results = await Promise.all(promises);
 
     Object.keys(endpointsList).forEach((key, index) => {
@@ -293,14 +318,16 @@ const fetchGames = async () => {
   const setPrices = async () => {
     const result = await request(endpoints.list.list_prices, priceRequestOptions, true);
     if (result) {
-      prices = result.response.data;
+      result.response.data.forEach(price => {
+        prices.push(price);
+      });
       prices.sort((a, b) => b.unit_amount - a.unit_amount);
     }
   };
 
   await setPrices();
 
-  if (window.location.pathname.includes("/dashboard")) {
+  if (pathName.includes("/dashboard")) {
     await loadDashboard();
   } else {
     await loadGames();
@@ -327,15 +354,8 @@ const setSearch = () => {
   }
 };
 
-const setCategory = () => {
-  if (window.location.pathname.includes("/category")) {
-    const searchLabel = document.getElementById("search-label");
-    searchLabel.textContent = `Top '${categoryName}' Games`;
-  }
-};
-
 (() => {
-  fetchGames();
-  setSearch();
-  setCategory();
 })
+
+fetchGames();
+setSearch();

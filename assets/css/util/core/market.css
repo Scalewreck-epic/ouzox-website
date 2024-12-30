@@ -7,6 +7,17 @@
   -ms-overflow-style: none;
 }
 
+.search-market {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  overflow-x: hidden;
+  overflow-y: auto;
+  gap: 1.25rem 1.25rem;
+  padding: 1rem;
+  justify-content: center;
+}
+
 .market::-webkit-scrollbar {
   width: 0.5rem;
   height: 0.5rem;

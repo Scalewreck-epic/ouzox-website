@@ -60,7 +60,7 @@ class RequestHandler {
       if (!errorMessage) {
         throw new Error(`Unknown error: ${statusCode}`);
       }
-      throw new Error(`${statusCode} ${errorMessage.header}: ${errorMessage.description}`);
+      throw new Error(`${statusCode}: ${errorMessage.header}`);
     }
   }
 
