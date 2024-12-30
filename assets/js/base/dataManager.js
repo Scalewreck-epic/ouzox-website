@@ -264,7 +264,7 @@ const loadGames = async () => {
 
     searchLabel.textContent = `Top '${categoryName}' Games`;
 
-    const result = await request(endpoints.list.list_games, {
+    const result = await request(endpoints.game.list, {
       method: "POST",
       headers: myHeaders,
       body: JSON.stringify({ ...topSearchOptions, perPage, page: 1}),
@@ -281,12 +281,12 @@ const loadGames = async () => {
     };
   } else {
     const endpointsList = {
-      fresh: endpoints.list.list_games,
-      hot: endpoints.list.list_games,
-      underrated: endpoints.list.list_games,
-      sponsored: endpoints.list.list_games,
-      freeandhot: endpoints.list.list_free_games,
-      bestseller: endpoints.list.list_games,
+      fresh: endpoints.game.list,
+      hot: endpoints.game.list,
+      underrated: endpoints.game.list,
+      sponsored: endpoints.game.list,
+      freeandhot: endpoints.game.list_free,
+      bestseller: endpoints.game.list,
     };
 
     const promises = Object.keys(endpointsList).map((key) => fetchGamesByEndpoint(key, endpointsList[key]));

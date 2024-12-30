@@ -36,7 +36,7 @@ const create_blog_post = (post) => {
   blog_market.appendChild(blog_card);
 };
 
-const result = await request(endpoints.list.list_blog, requestOptions, false);
+const result = await request(endpoints.blog.list, requestOptions, false);
 const posts = result.response.response.result.posts;
 
 posts

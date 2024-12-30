@@ -48,7 +48,7 @@ const updateBackgroundColor = (alphaInput, styleElement) => {
 };
 
 const getGameData = async (gameId) => {
-  const result = await request(`${endpoints.game.get_data}${gameId}`, { method: "GET", headers: { "Content-Type": "application/json" } }, true);
+  const result = await request(`${endpoints.game.view}${gameId}`, { method: "GET", headers: { "Content-Type": "application/json" } }, true);
   if (result.ok) return result.response;
   throw new Error(`Unable to get game data: ${result}`);
 };
