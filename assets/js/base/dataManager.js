@@ -306,7 +306,7 @@ const loadGames = async () => {
   }
 };
 
-const fetchGames = async () => {
+export const fetchGames = async () => {
   const myHeaders = new Headers();
   myHeaders.append("Content-Type", "application/json");
 
@@ -338,7 +338,7 @@ const fetchGames = async () => {
   }
 };
 
-const setSearch = () => {
+export const setSearch = () => {
   if (document.getElementById("search-query") != null) {
     const searchLabel = document.getElementById("search-label");
     const searchQueryInput = document.getElementById("search-query");
@@ -353,9 +353,3 @@ const setSearch = () => {
     }
   }
 };
-
-(() => {
-})
-
-fetchGames();
-setSearch();
