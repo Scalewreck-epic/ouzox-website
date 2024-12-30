@@ -36,63 +36,7 @@ const upload_game = async (gameRequestOptions) => {
   return result;
 };
 
-// TODO: Use create_product_price, set_product_price, and upload_product when game is not free.
-const crate_product_price = async (product_id, currency, unit_amount) => {
-  const price = {
-    currency: currency,
-    unit_amount: unit_amount,
-    active: false,
-    product: product_id,
-  }
-
-  const priceRequestOptions = {
-    method: "POST",
-    headers: myHeaders,
-    body: JSON.stringify({
-      price: price,
-    }),
-  };
-
-  const result = await request(endpoints.game.create_price, priceRequestOptions, true);
-  return result.ok ? result.response : null;
-}
-
-const set_product_price = async (product_id) => {
-  const priceRequestOptions = {
-    method: "POST",
-    headers: myHeaders,
-    body: JSON.stringify({
-      price: {
-        currency,
-        unit_amount: price_input.value * 100,
-        product: product_id,
-      },
-    }),
-  };
-
-  const result = await request(endpoints.game.update_price, priceRequestOptions, true);
-  return result.ok ? result.response : null;
-};
-
-const upload_product = async (title) => {
-  const result = await request(endpoints.game.create_product, {
-    method: "POST",
-    headers: myHeaders,
-    body: JSON.stringify({ product: { name: title, active: false } }),
-  }, true);
-  
-  return result.ok;
-};
-
-const upload_payment_link = async (price_id) => {
-  const result = await request(endpoints.game.create_payment_link, {
-    method: "POST",
-    headers: myHeaders,
-    body: JSON.stringify({ line_items: [{ price: price_id, quantity: 1 }] }),
-  }, true);
-  
-  return result.ok ? result.response : null;
-};
+// TODO: Create game product and price when uploaded.
 
 const on_submit = async (event) => {
   event.preventDefault();
@@ -128,8 +72,6 @@ const on_submit = async (event) => {
     });
 
     error_label.textContent = "Creating game page...";
-    const product = inputs.price > 0 ? await upload_product(inputs.title) : null;
-
     const gameRequestOptions = {
       method: "POST",
       headers: myHeaders,
@@ -150,8 +92,6 @@ const on_submit = async (event) => {
           free: inputs.isFree,
           currency: inputs.currency,
         },
-        product_id: product ? product.id : "none",
-        payment_link: product ? await upload_payment_link(product.id) : "none",
         platforms: Object.fromEntries(inputs.platforms.map((enabled, index) => [inputs.platforms[index], enabled])),
         features: Object.fromEntries(inputs.features.map((enabled, index) => [inputs.features[index], enabled])),
       }),
