@@ -1,4 +1,13 @@
-import { setSearch, fetchGames } from "./dataManager.js";
+import { fetchGames, loadSearchGames, loadGenreSearchGames, loadDashboard } from "./dataManager.js";
 
-setSearch();
-fetchGames();
+const pathName = window.location.pathname;
+
+if (pathName.includes("dashboard")) {
+    loadDashboard();
+} else if (pathName.includes("search")) {
+    loadSearchGames();
+} else if (pathName.includes("category")) {
+    loadGenreSearchGames();
+} else {
+    fetchGames();
+}

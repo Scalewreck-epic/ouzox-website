@@ -36,6 +36,7 @@ export const endpoints = {
     view: `${DATABASE_URL}/games/`, // + game ID
     list_frontpage: `${DATABASE_URL}/games/list/frontpage`,
     list_genresearch: `${DATABASE_URL}/games/list/genre/`, // + genre name
+    list_search: `${DATABASE_URL}/games/search/` // + search query
   },
   blog: {
     list: `${BLOG_BASE_URL}/posts`,

@@ -2,10 +2,7 @@ import { fetchUser } from "../user/sessionManager.js";
 import { request } from "./apiManager.js";
 import { endpoints } from "../other/endpoints.js";
 
-const pathName = window.location.pathname;
 const urlParams = new URLSearchParams(window.location.search);
-const searchQuery = urlParams.get("q") || "";
-const categoryName = urlParams.get("n") || "";
 
 const genres = [];
 const platformGames = [];
@@ -29,7 +26,8 @@ class Genre {
     genreName.textContent = name;
     genreButton.href = `category?n=${name}`;
 
-    genreGamesAmount.textContent = amount !== 1 ? `${amount} games` : `${amount} game`;
+    genreGamesAmount.textContent =
+      amount !== 1 ? `${amount} games` : `${amount} game`;
 
     genreButton.appendChild(genreName);
     genreButton.appendChild(genreGamesAmount);
@@ -64,7 +62,8 @@ class Game {
   };
 
   createGamePage = (listElement) => {
-    const likeToDislikeRatio = (this.likes / (this.likes + this.dislikes)) * 100
+    const likeToDislikeRatio =
+      (this.likes / (this.likes + this.dislikes)) * 100;
 
     const price = this.price;
     const currency = this.currency;
@@ -94,8 +93,12 @@ class Game {
     gameTitle.textContent = this.name;
     gameSummary.textContent = this.summary;
 
-    gamePriceText.textContent = this.free ? "FREE" : `${price} ${currency.toUpperCase()}`;
-    gameRatioText.textContent = isNaN(likeToDislikeRatio) ? "--" : `${likeToDislikeRatio}%`;
+    gamePriceText.textContent = this.free
+      ? "FREE"
+      : `${price} ${currency.toUpperCase()}`;
+    gameRatioText.textContent = isNaN(likeToDislikeRatio)
+      ? "--"
+      : `${likeToDislikeRatio}%`;
 
     gamePriceContainer.appendChild(gamePriceText);
     gameRatioContainer.appendChild(gameRatioText);
@@ -143,11 +146,11 @@ const createLabel = (labelText, numDays, targetElement) => {
 export const displayErrorForGames = async (categoryElement, response) => {
   const categoryNoneElement = categoryElement.querySelector(".category-none");
   categoryNoneElement.textContent = response;
-}
+};
 
 export const displayGames = async (listElement, categoryElement, games) => {
   const categoryNoneElement = categoryElement.querySelector(".category-none");
-  
+
   if (games.length > 0) {
     categoryNoneElement.remove();
 
@@ -158,7 +161,9 @@ export const displayGames = async (listElement, categoryElement, games) => {
       if (!platformGames.find((game) => game.id === gameData.id)) {
         platformGames.push(gameData);
 
-        const existingGenreIndex = genres.findIndex((genre) => genre.name === game.genre);
+        const existingGenreIndex = genres.findIndex(
+          (genre) => genre.name === game.genre
+        );
 
         if (existingGenreIndex !== -1) {
           genres[existingGenreIndex].count++;
@@ -174,11 +179,7 @@ export const displayGames = async (listElement, categoryElement, games) => {
 };
 
 const displayGenres = async () => {
-  if (pathName.includes("/search")) {
-    // Sort genres by relevancy
-  } else {
-    genres.sort((a, b) => b.count - a.count);
-  }
+  genres.sort((a, b) => b.count - a.count);
 
   if (genres.length > 0) {
     const categoryNoneElement = document
@@ -203,18 +204,32 @@ export const loadUserGames = async (newUser) => {
     headers: myHeaders,
   };
 
-  const userGamesRequest = await request(`${endpoints.user.list_public_games}${newUser.id}`, developerGameOptions, false);
+  const userGamesRequest = await request(
+    `${endpoints.user.list_public_games}${newUser.id}`,
+    developerGameOptions,
+    false
+  );
 
   if (userGamesRequest.ok) {
-    const downloads = userGamesRequest.response.reduce((acc, game) => acc + game.downloads, 0);
+    const downloads = userGamesRequest.response.reduce(
+      (acc, game) => acc + game.downloads,
+      0
+    );
     gameDownloads.textContent = downloads.toString();
-    displayGames(document.getElementById("user-games"), document.getElementById("user-games"), userGamesRequest.response);
+    displayGames(
+      document.getElementById("user-games"),
+      document.getElementById("user-games"),
+      userGamesRequest.response
+    );
   } else {
-    displayErrorForGames(document.getElementById("user-games"), userGamesRequest.response);
+    displayErrorForGames(
+      document.getElementById("user-games"),
+      userGamesRequest.response
+    );
   }
 };
 
-const loadDashboard = async () => {
+export const loadDashboard = async () => {
   const myHeaders = new Headers({ "Content-Type": "application/json" });
 
   const developerGameOptions = {
@@ -222,100 +237,138 @@ const loadDashboard = async () => {
     headers: myHeaders,
   };
 
-  const userGamesRequest = await request(`${endpoints.user.list_games}${user.id}`, developerGameOptions, true);
+  const userGamesRequest = await request(
+    `${endpoints.user.list_games}${user.id}`,
+    developerGameOptions,
+    true
+  );
 
   if (userGamesRequest.ok) {
-    displayGames(document.getElementById("dashboard-market"), document.getElementById("dashboard-market"), userGamesRequest.response);
+    displayGames(
+      document.getElementById("dashboard-market"),
+      document.getElementById("dashboard-market"),
+      userGamesRequest.response
+    );
   } else {
-    displayErrorForGames(document.getElementById("dashboard-market"), userGamesRequest.response);
+    displayErrorForGames(
+      document.getElementById("dashboard-market"),
+      userGamesRequest.response
+    );
   }
 };
 
-const loadGames = async () => {
+export const loadGenreSearchGames = async () => {
+  const genreListElement = document.getElementById("genre-games-list");
+  const genreListCategory = document.getElementById("genre-games");
+  const searchLabel = document.getElementById("search-label");
   const resultsLabel = document.getElementById("results-label");
+  
+  const categoryName = urlParams.get("n") || "";
+  const myHeaders = new Headers({ "Content-Type": "application/json" });
+
+  searchLabel.textContent = `Top '${categoryName}' Games`;
+
+  const perPage = 30;
+
+  const result = await request(
+    `${endpoints.game.list_genresearch}${categoryName}`,
+    {
+      method: "POST",
+      headers: myHeaders,
+      body: JSON.stringify({ perPage, page: 1 }),
+    }, true
+  );
+
+  if (result.ok) {
+    const resultItems = result.response.games;
+
+    displayGames(genreListElement, genreListCategory, resultItems);
+    resultsLabel.textContent = `(${resultItems.length} result${
+      resultItems.length !== 1 ? "s" : ""
+    })`;
+  } else {
+    displayErrorForGames(genreListElement, result.response);
+    resultsLabel.textContent = "(error occured)";
+  }
+};
+
+export const loadSearchGames = async() => {
+  const searchListElement = document.getElementById("relevant-games-list");
+  const searchListCategory = document.getElementById("relevant-games");
+  const searchLabel = document.getElementById("search-label");
+  const resultsLabel = document.getElementById("results-label");
+  const searchQueryInput = document.getElementById("search-query");
+
+  const searchQuery = urlParams.get("q") || "";
+  const myHeaders = new Headers({ "Content-Type": "application/json" });
+
+  const perPage = 30;
+
+  searchQueryInput.value = searchQuery;
+  searchLabel.textContent = `Results for '${searchQuery}'`;
+
+  const result = await request(`${endpoints.game.list_search}${searchQuery}`, {
+    method: "POST",
+    headers: myHeaders,
+    body: JSON.stringify({ perPage, page: 1 })
+  }, false);
+
+  if (result.ok) {
+    const resultItems = result.response.games;
+
+    displayGames(searchListElement, searchListCategory, resultItems);
+    resultsLabel.textContent = `(${resultItems.length} result${
+      resultItems.length !== 1 ? "s" : ""
+    })`;
+  } else {
+    displayErrorForGames(searchListElement, result.response);
+    resultsLabel.textContent = "(error occured)";
+  }
+}
+
+const loadGames = async () => {
   const myHeaders = new Headers({ "Content-Type": "application/json" });
   const perPage = 10;
 
   // TODO: Show the search results
-
-  if (pathName.includes("/category")) {
-    const genreListElement = document.getElementById("genre-games-list");
-    const genreListCategory = document.getElementById("genre-games");
-    const searchLabel = document.getElementById("search-label");
-
-    searchLabel.textContent = `Top '${categoryName}' Games`;
-
-    const result = await request(`${endpoints.game.list_genresearch}${categoryName}`, {
+  const rawGames = await request(
+    endpoints.game.list_frontpage,
+    {
       method: "POST",
       headers: myHeaders,
-      body: JSON.stringify({perPage, page: 1}),
+      body: JSON.stringify({ perPage, page: 1 }),
+    },
+    true
+  );
+
+  if (rawGames.ok) {
+    const games = rawGames.response.games[0];
+    const categoryGames = {
+      fresh: games.fresh,
+      hot: games.hot,
+      underrated: games.underrated,
+      sponsored: games.sponsored,
+      freeandhot: games.freeandhot,
+      bestseller: games.bestseller,
+    };
+
+    Object.keys(categoryGames).forEach((key) => {
+      const listElement = document.getElementById(`${key}-games-list`);
+      const categoryElement = document.getElementById(`${key}-games`);
+
+      if (categoryGames[key].itemsReceived > 0) {
+        displayGames(listElement, categoryElement, categoryGames[key].items);
+      } else {
+        displayErrorForGames(categoryElement, "None");
+      }
     });
-
-    if (result.ok) {
-      const resultItems = result.response.games;
-
-      displayGames(genreListElement, genreListCategory, resultItems);
-      resultsLabel.textContent = `(${resultItems.length} result${resultItems.length !== 1 ? 's' : ''})`;
-    } else {
-      displayErrorForGames(genreListElement, result.response);
-      resultsLabel.textContent = "(error occured)";
-    };
-  } else {
-    const rawGames = await request(endpoints.game.list_frontpage, {
-      method: "POST",
-      headers: myHeaders,
-      body: JSON.stringify({perPage, page: 1}),
-    }, true);
-
-    if (rawGames.ok) {
-      const games = rawGames.response.games[0];
-      const categoryGames = {
-        fresh: games.fresh,
-        hot: games.hot,
-        underrated: games.underrated,
-        sponsored: games.sponsored,
-        freeandhot: games.freeandhot,
-        bestseller: games.bestseller,
-      };
-
-      Object.keys(categoryGames).forEach((key) => {
-        const listElement = document.getElementById(`${key}-games-list`);
-        const categoryElement = document.getElementById(`${key}-games`);
-
-        if (categoryGames[key].itemsReceived > 0) {
-          displayGames(listElement, categoryElement, categoryGames[key].items);
-        } else {
-          displayErrorForGames(categoryElement, "None");
-        }
-      });
-    };
   }
 };
 
 export const fetchGames = async () => {
-  if (pathName.includes("/dashboard")) {
-    await loadDashboard();
-  } else {
-    await loadGames();
-  }
+  await loadGames();
 
   if (genres.length > 0 && document.getElementById("genres-list") != null) {
     displayGenres();
-  }
-};
-
-export const setSearch = () => {
-  if (document.getElementById("search-query") != null) {
-    const searchLabel = document.getElementById("search-label");
-    const searchQueryInput = document.getElementById("search-query");
-
-    searchQueryInput.value = searchQuery;
-    if (searchLabel != null) {
-      if (searchQuery != null) {
-        searchLabel.textContent = `Results for '${searchQuery}'`;
-      } else {
-        window.location.assign("index");
-      }
-    }
   }
 };
