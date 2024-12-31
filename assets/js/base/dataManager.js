@@ -47,7 +47,7 @@ class Game {
     this.genre = data.genre;
     this.likes = data.likes;
     this.dislikes = data.dislikes;
-    this.created = data.created;
+    this.created = data.created_at;
     this.updated = data.updated;
     this.price = data.pricing.price;
     this.currency = data.pricing.currency;
@@ -64,7 +64,7 @@ class Game {
   };
 
   createGamePage = (listElement) => {
-    const likeToDislikeRatio = (this.likes / (this.likes + this.dislikes)) * 100;
+    const likeToDislikeRatio = (this.likes / (this.likes + this.dislikes)) * 100
 
     const price = this.price;
     const currency = this.currency;
@@ -95,7 +95,7 @@ class Game {
     gameSummary.textContent = this.summary;
 
     gamePriceText.textContent = this.free ? "FREE" : `${price} ${currency.toUpperCase()}`;
-    gameRatioText.textContent = `${likeToDislikeRatio}%`;
+    gameRatioText.textContent = isNaN(likeToDislikeRatio) ? "--" : `${likeToDislikeRatio}%`;
 
     gamePriceContainer.appendChild(gamePriceText);
     gameRatioContainer.appendChild(gameRatioText);
@@ -234,26 +234,7 @@ const loadDashboard = async () => {
 const loadGames = async () => {
   const resultsLabel = document.getElementById("results-label");
   const myHeaders = new Headers({ "Content-Type": "application/json" });
-  const perPage = 30;
-
-  const options = {
-    fresh: { orderBy: "asc", sortColumn: "created_at" },
-    hot: { orderBy: "desc", sortColumn: "downloads" },
-    underrated: { orderBy: "asc", sortColumn: "downloads" },
-    sponsored: { orderBy: "desc", sortColumn: "sponsor_money" },
-    freeandhot: { orderBy: "desc", sortColumn: "downloads" },
-    bestseller: { orderBy: "desc", sortColumn: "downloads" },
-  };
-
-  const topSearchOptions = options.bestseller;
-
-  const fetchGamesByEndpoint = async (key, endpoint) => {
-    return await request(endpoint, {
-      method: "POST",
-      headers: myHeaders,
-      body: JSON.stringify({ ...options[key], perPage, page: 1 }),
-    }, false);
-  };
+  const perPage = 10;
 
   // TODO: Show the search results
 
@@ -264,14 +245,14 @@ const loadGames = async () => {
 
     searchLabel.textContent = `Top '${categoryName}' Games`;
 
-    const result = await request(endpoints.game.list, {
+    const result = await request(`${endpoints.game.list_genresearch}${categoryName}`, {
       method: "POST",
       headers: myHeaders,
-      body: JSON.stringify({ ...topSearchOptions, perPage, page: 1}),
+      body: JSON.stringify({perPage, page: 1}),
     });
 
     if (result.ok) {
-      const resultItems = result.response.items;
+      const resultItems = result.response.games;
 
       displayGames(genreListElement, genreListCategory, resultItems);
       resultsLabel.textContent = `(${resultItems.length} result${resultItems.length !== 1 ? 's' : ''})`;
@@ -280,25 +261,34 @@ const loadGames = async () => {
       resultsLabel.textContent = "(error occured)";
     };
   } else {
-    const endpointsList = {
-      fresh: endpoints.game.list,
-      hot: endpoints.game.list,
-      underrated: endpoints.game.list,
-      sponsored: endpoints.game.list,
-      freeandhot: endpoints.game.list_free,
-      bestseller: endpoints.game.list,
+    const rawGames = await request(endpoints.game.list_frontpage, {
+      method: "POST",
+      headers: myHeaders,
+      body: JSON.stringify({perPage, page: 1}),
+    }, true);
+
+    if (rawGames.ok) {
+      const games = rawGames.response.games[0];
+      const categoryGames = {
+        fresh: games.fresh,
+        hot: games.hot,
+        underrated: games.underrated,
+        sponsored: games.sponsored,
+        freeandhot: games.freeandhot,
+        bestseller: games.bestseller,
+      };
+
+      Object.keys(categoryGames).forEach((key) => {
+        const listElement = document.getElementById(`${key}-games-list`);
+        const categoryElement = document.getElementById(`${key}-games`);
+
+        if (categoryGames[key].itemsReceived > 0) {
+          displayGames(listElement, categoryElement, categoryGames[key].items);
+        } else {
+          displayErrorForGames(categoryElement, "None");
+        }
+      });
     };
-
-    const promises = Object.keys(endpointsList).map((key) => fetchGamesByEndpoint(key, endpointsList[key]));
-    const results = await Promise.all(promises);
-
-    Object.keys(endpointsList).forEach((key, index) => {
-      const result = results[index];
-      const listElement = document.getElementById(`${key}-games-list`);
-      const categoryElement = document.getElementById(`${key}-games`);
-
-      result.ok ? displayGames(listElement, categoryElement, result.response.items) : displayErrorForGames(categoryElement, result.response);
-    });
   }
 };
 
