@@ -63,7 +63,7 @@ class Game {
 
   createGamePage = (listElement) => {
     const likeToDislikeRatio =
-      Math.ceil(this.likes / (this.likes + this.dislikes)) * 100;
+      Math.ceil(this.likes / (this.likes + this.dislikes) * 100);
 
     const price = this.price;
     const currency = this.currency;
