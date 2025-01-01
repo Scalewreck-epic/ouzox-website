@@ -44,7 +44,6 @@ class Game {
     this.icon = new URL(data.icon.url);
     this.genre = data.genre;
     this.likes = data.likes;
-    this.dislikes = data.dislikes;
     this.created = data.created_at;
     this.updated = data.updated;
     this.price = data.pricing.price;
@@ -61,10 +60,20 @@ class Game {
     return createdDiffDays;
   };
 
-  createGamePage = (listElement) => {
-    const likeToDislikeRatio =
-      Math.ceil(this.likes / (this.likes + this.dislikes) * 100);
+  formatLikes = (likes) => {
+    const million = 1000000;
+    const thousand = 1000;
 
+    if (likes >= million) {
+      return `${(likes / million)}M`;
+    } else if (likes >= thousand) {
+      return `${(likes / thousand)}K`;
+    } else {
+      return likes.toString();
+    }
+  };
+
+  createGamePage = (listElement) => {
     const price = this.price;
     const currency = this.currency;
 
@@ -76,7 +85,7 @@ class Game {
     const gamePriceContainer = document.createElement("div");
     const gameRatioContainer = document.createElement("div");
     const gamePriceText = document.createElement("span");
-    const gameRatioText = document.createElement("span");
+    const gameUpvotesText = document.createElement("span");
 
     gameContainer.classList.add("game");
     gameImage.classList.add("product-image");
@@ -93,15 +102,11 @@ class Game {
     gameTitle.textContent = this.name;
     gameSummary.textContent = this.summary;
 
-    gamePriceText.textContent = this.free
-      ? "FREE"
-      : `${price} ${currency.toUpperCase()}`;
-    gameRatioText.textContent = isNaN(likeToDislikeRatio)
-      ? "--"
-      : `${likeToDislikeRatio}%`;
+    gamePriceText.textContent = this.free ? "FREE" : `${price} ${currency.toUpperCase()}`;
+    gameUpvotesText.textContent = `${this.formatLikes(this.likes)}^`;
 
     gamePriceContainer.appendChild(gamePriceText);
-    gameRatioContainer.appendChild(gameRatioText);
+    gameRatioContainer.appendChild(gameUpvotesText);
 
     gameImageContainer.appendChild(gameImage);
     gameImageContainer.appendChild(gamePriceContainer);
