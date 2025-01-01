@@ -95,7 +95,7 @@ class Game {
     gamePriceContainer.classList.add("product-price");
     gameRatioContainer.classList.add("product-ratio");
 
-    gameImage.src = this.icon;
+    gameImage.src = this.icon.href;
     gameImageContainer.href = `game?g=${this.id}`;
     gameTitle.href = `game?g=${this.id}`;
 
