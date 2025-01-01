@@ -14,8 +14,8 @@ export const endpoints = {
     edit_status: `${DATABASE_URL}/user/edit_status/`, // + user session
     get_data_with_id: `${DATABASE_URL}/user/id/`, // + user ID
     get_data_with_sess: `${DATABASE_URL}/user/session/`, // + user session
-    signup: `${DATABASE_URL}/auth/signup/`,
-    login: `${DATABASE_URL}/auth/login/`,
+    signup: `${DATABASE_URL}/auth/signup`,
+    login: `${DATABASE_URL}/auth/login`,
   },
   price: {
     create: `${PRICES_BASE_URL}/prices/create`,
