@@ -70,7 +70,7 @@ const createSessionData = async () => {
 
       errorLabel.textContent = result.ok ? "Successfully created account!" : result.response;
       if (result.ok) {
-        session.createCookie("session_id", result.authToken);
+        session.createCookie("session_id", result.response.authToken);
         window.location.assign("index");
       }
     } else {
@@ -97,7 +97,7 @@ const fetchSessionData = async () => {
 
       errorLabel.textContent = result.ok ? "Successfully logged in!" : result.response;
       if (result.ok) {
-        session.createCookie("session_id", result.authToken);
+        session.createCookie("session_id", result.response.authToken);
         window.location.assign("index");
       }
     }

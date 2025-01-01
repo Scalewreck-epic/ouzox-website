@@ -224,7 +224,8 @@ const gameHandler = async (gameId) => {
     }
   }
 
-  elements.downloadButton.setAttribute("href", gameData.paymentLink);
+  // TODO: Make the game available to download
+  //elements.downloadButton.setAttribute("href", gameData.paymentLink);
 
   if (user && user.id === gameData.developer.id) {
     const editableElements = {
