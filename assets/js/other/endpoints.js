@@ -33,7 +33,7 @@ export const endpoints = {
     create: `${DATABASE_URL}/games/create/`,
     remove: `${DATABASE_URL}/games/remove/`, // + game ID
     update: `${DATABASE_URL}/games/edit/`,
-    view: `${DATABASE_URL}/games/`, // + game ID
+    view: `${DATABASE_URL}/games/view/`, // + game ID
     list_frontpage: `${DATABASE_URL}/games/list/frontpage`,
     list_genresearch: `${DATABASE_URL}/games/list/genre/`, // + genre name
     list_search: `${DATABASE_URL}/games/search/` // + search query
