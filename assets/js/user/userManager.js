@@ -10,6 +10,8 @@ console.info("Ouzox is open source! https://github.com/Scalewreck-epic/ouzox-web
 const cookieData = session.fetchCookie("session_id");
 const user = await session.fetchUser();
 
+const today = new Date().toISOString().split('T')[0];
+
 const isValidCookie = cookieData.valid;
 
 const updateUsername = () => {
@@ -59,13 +61,17 @@ const createSessionData = async () => {
     const usernameInput = document.getElementById("username_input").value;
     const emailInput = document.getElementById("email_input").value;
     const passwordInput = document.getElementById("password_input").value;
+    const dobInput = document.getElementById("date_of_birth").value;
     const errorLabel = document.getElementById("error-label");
 
     if (isValidSignup()) {
+      const dateObject = new Date(dobInput);
+      const dobTimestamp = dateObject.getTime();
+
       const result = await request(endpoints.user.signup, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name: usernameInput, email: emailInput, password: passwordInput })
+        body: JSON.stringify({ name: usernameInput, email: emailInput, password: passwordInput, dob: dobTimestamp})
       }, false);
 
       errorLabel.textContent = result.ok ? "Successfully created account!" : result.response;
@@ -168,6 +174,17 @@ const setupSignupPage = () => {
   const signupButton = document.getElementById("signup-button");
   const passwordInput = document.getElementById("password_input");
   const icon = document.getElementById("show-password-icon");
+  const dobInput = document.getElementById("date_of_birth");
+
+  dobInput.setAttribute("max", today);
+
+  dobInput.addEventListener("input", () => {
+    const selectedDate = dobInput.value;
+    
+    if (selectedDate > today) {
+      dobInput.value = today;
+    }
+  })
 
   icon.addEventListener("click", () => togglePasswordVisibility(passwordInput, icon));
   signupForm.addEventListener("input", () => updateLoginButtons(isValidSignup(), signupButton));
