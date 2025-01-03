@@ -7,8 +7,6 @@ const urlParams = new URLSearchParams(window.location.search);
 const genres = [];
 const platformGames = [];
 
-const user = await fetchUser();
-
 class Genre {
   constructor(genre) {
     this.name = genre.name;
@@ -235,6 +233,8 @@ export const loadUserGames = async (newUser) => {
 };
 
 export const loadDashboard = async () => {
+  const user = await fetchUser();
+
   const myHeaders = new Headers({ "Content-Type": "application/json" });
 
   const developerGameOptions = {

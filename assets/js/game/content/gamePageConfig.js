@@ -110,7 +110,7 @@ const gameHandler = async (gameId) => {
   };
 
   elements.gameTitle.textContent = gameData.name;
-  elements.gameDesc.innerHTML = DOMPurify.sanitize(gameData.description);
+  elements.gameDesc.innerHTML = gameData.description;
   elements.gamePrice.textContent = `${gameData.pricing.price} ${gameData.pricing.currency}`;
   elements.created.textContent = formatTime(gameData.created, gameData.datestodays.publishedYearsAgo, gameData.datestodays.publishedMonthsAgo, gameData.datestodays.publishedWeeksAgo, gameData.datestodays.publishedDaysAgo);
   elements.updated.textContent = formatTime(gameData.updated, gameData.datestodays.updatedYearsAgo, gameData.datestodays.updatedMonthsAgo, gameData.datestodays.updatedWeeksAgo, gameData.datestodays.updatedDaysAgo);
@@ -124,7 +124,7 @@ const gameHandler = async (gameId) => {
   elements.gameSize.textContent = gameData.filesize;
 
   elements.developerName.setAttribute("href", `user?id=${gameData.developer.id}`);
-  elements.gameGenre.setAttribute("href", `category?n=${DOMPurify.sanitize(gameData.genre).toUpperCase()}`);
+  elements.gameGenre.setAttribute("href", `category?n=${gameData.genre.toUpperCase()}`);
 
   const features = ["Singleplayer", "Multiplayer", "Coop", "Achievements", "ControllerSupport", "Saves", "VRSupport"].map(name => ({ Name: name, Enabled: gameData.features[name] }));
   const platforms = ["windows", "mac", "linux", "android", "ios", "xbox", "playstation", "oculus"].map(name => ({ Name: name.charAt(0).toUpperCase() + name.slice(1), Enabled: gameData.platforms[name] }));
@@ -452,20 +452,20 @@ const gameHandler = async (gameId) => {
         ...shadowCheckboxes.map(checkbox => ({ Name: checkbox.Name, Enabled: checkbox.Enabled ? "true" : "false"})),
       ];
 
-      const isFree = editableElements.price.value <= 0;
+      const isFree = editableElements.gamePriceInput.value <= 0;
 
       const updateGameOptionsBody = {
         name: elements.gameTitle.textContent,
-        description: elements.gameDesc.innerHTML,
+        description: DOMPurify.sanitize(elements.gameDesc.innerHTML),
         summary: elements.gameSummary.textContent,
-        genre: editableElements.gameGenreInput.value,
+        genre: DOMPurify.sanitize(editableElements.gameGenreInput.value),
         artstyle: editableElements.gameArtStyleInput.value,
         age_rating: editableElements.gameAgeInput.value,
         active: isPublic.Enabled ? "true" : "false",
         pricing: {
-          price: editableElements.price.value,
+          price: editableElements.gamePriceInput.value,
           free: isFree,
-          currency: editableElements.currency.value,
+          currency: editableElements.gameCurrencyInput.value,
         },
         uploader_id: user.id,
         platforms: Object.fromEntries(gamePlatforms.map(p => [p.Name.toLowerCase(), p.Enabled ? "true" : "false"])),
