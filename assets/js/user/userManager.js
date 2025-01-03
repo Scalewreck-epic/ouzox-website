@@ -38,7 +38,7 @@ const updateUserStats = async () => {
   const joinTime = document.getElementById("creation-stat");
   const profileLink = document.getElementById("profile-link");
 
-  const formattedDate = new Date(Date.parse(user.created_at)).toLocaleDateString("en-US", { year: "2-digit", month: "2-digit", day: "2-digit" });
+  const formattedDate = new Date(user.created_at).toLocaleDateString("en-US", { year: "2-digit", month: "2-digit", day: "2-digit" });
   emailStat.textContent = `Email: ${user.email}`; joinTime.textContent = `Creation: ${formattedDate}`; profileLink.setAttribute("href", `user?id=${user.id}`);
 };
 
