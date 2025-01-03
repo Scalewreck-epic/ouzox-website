@@ -64,7 +64,7 @@ class RequestHandler {
       if (url.protocol !== "https:") {
         throw new Error("Invalid endpoint URL: HTTPS required");
       }
-      return url;
+      return url.href;
     } catch (error) {
       throw new Error(`Invalid endpoint URL: ${this.endpoint}`, error);
     }
@@ -120,7 +120,7 @@ class RequestHandler {
     try {
       const endpointUrl = this.validateEndpoint();
       this.validateOptions();
-      const response = await fetch(endpointUrl.href, this.options);
+      const response = await fetch(endpointUrl, this.options);
 
       if (!response.ok) {
         throw this.handleError(response);

@@ -15,7 +15,7 @@ class Genre {
     this.count = genre.count;
   }
 
-  createGenrePage = (name, amount) => {
+  createGenreCard = (name, amount) => {
     const genreButton = document.createElement("a");
     const genreName = document.createElement("div");
     const genreGamesAmount = document.createElement("h4");
@@ -73,7 +73,7 @@ class Game {
     }
   };
 
-  createGamePage = (listElement) => {
+  createGameCard = (listElement) => {
     const price = this.price;
     const currency = this.currency;
 
@@ -161,7 +161,7 @@ export const displayGames = async (listElement, categoryElement, games) => {
 
     games.forEach(async (gameData) => {
       const game = new Game(gameData);
-      game.createGamePage(listElement);
+      game.createGameCard(listElement);
 
       if (!platformGames.find((game) => game.id === gameData.id)) {
         platformGames.push(gameData);
@@ -195,7 +195,7 @@ const displayGenres = async () => {
 
   genres.forEach((genreData) => {
     const genre = new Genre(genreData);
-    genre.createGenrePage(genreData.name, genreData.count);
+    genre.createGenreCard(genreData.name, genreData.count);
   });
 };
 
@@ -335,7 +335,6 @@ const loadGames = async () => {
   const myHeaders = new Headers({ "Content-Type": "application/json" });
   const perPage = 10;
 
-  // TODO: Show the search results
   const rawGames = await request(
     endpoints.game.list_frontpage,
     {
