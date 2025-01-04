@@ -8,6 +8,10 @@ const user = await fetchUser();
 
 // TODO: Update price and currency options in stripe or create new ones when game changes from free to paid (destroy ones when game changes from paid to free).
 
+const maxDescriptionCharacters = 4000;
+const minPrice = 1, maxPrice = 5000;
+const maxFileSize = 5; // GB
+
 class GameData {
   constructor(rawGameData, createdFormattedDate, updatedFormattedDate, datestodays) {
     Object.assign(this, {
@@ -114,7 +118,6 @@ const gameHandler = async (gameId) => {
   elements.gamePrice.textContent = `${gameData.pricing.price} ${gameData.pricing.currency}`;
   elements.created.textContent = formatTime(gameData.created, gameData.datestodays.publishedYearsAgo, gameData.datestodays.publishedMonthsAgo, gameData.datestodays.publishedWeeksAgo, gameData.datestodays.publishedDaysAgo);
   elements.updated.textContent = formatTime(gameData.updated, gameData.datestodays.updatedYearsAgo, gameData.datestodays.updatedMonthsAgo, gameData.datestodays.updatedWeeksAgo, gameData.datestodays.updatedDaysAgo);
-  elements.icon.setAttribute("href", gameData.icon);
   elements.navigationTitle.textContent = `${gameData.name} By ${gameData.developer.username}`;
   elements.developerName.textContent = gameData.developer.username;
   elements.gameGenre.textContent = gameData.genre.toUpperCase();
@@ -123,6 +126,7 @@ const gameHandler = async (gameId) => {
   elements.gameAge.textContent = gameData.agerating.toUpperCase();
   elements.gameSize.textContent = gameData.filesize;
 
+  elements.icon.setAttribute("href", gameData.icon);
   elements.developerName.setAttribute("href", `user?id=${gameData.developer.id}`);
   elements.gameGenre.setAttribute("href", `category?n=${gameData.genre.toUpperCase()}`);
 
@@ -229,6 +233,8 @@ const gameHandler = async (gameId) => {
 
   if (user && user.id === gameData.developer.id) {
     const editableElements = {
+      gameTitleInput: document.getElementById("title-input"),
+      gameSummaryInput: document.getElementById("summary-input"),
       gameGenreInput: document.getElementById("genre-input"),
       gameArtStyleInput: document.getElementById("art-style-input"),
       gameAgeInput: document.getElementById("age-sort"),
@@ -358,15 +364,17 @@ const gameHandler = async (gameId) => {
       },
     ]
 
-    elements.gameTitle.contentEditable = true;
     elements.gameDesc.contentEditable = true;
-    elements.gameSummary.contentEditable = true;
 
     editableElements.commitChangesButton.setAttribute("class", "game-download-button");
     editableElements.commitChangesButton.textContent = "Commit Changes";
 
-    editableElements.gameGenreInput.value = gameData.genre;
-    editableElements.gameArtStyleInput.value = gameData.artstyle;
+    editableElements.gameTitleInput.value = gameData.name;
+    editableElements.gameSummaryInput.value = gameData.summary;
+    editableElements.gameGenreInput.value = gameData.genre.toUpperCase();
+    editableElements.gameArtStyleInput.value = gameData.artstyle.toUpperCase();
+    editableElements.gameCurrencyInput.value = gameData.pricing.currency;
+    editableElements.gamePriceInput.value = gameData.pricing.price;
 
     Array.from(editableElements.gameAgeInput.options).forEach((option, i) => {
       if (option.value === gameData.agerating.toLowerCase()) {
@@ -382,6 +390,23 @@ const gameHandler = async (gameId) => {
       editableElements.gameArtStyleInput.value = editableElements.gameArtStyleInput.value.toUpperCase();
     });
 
+    editableElements.gamePriceInput.addEventListener("input", () => {
+      editableElements.gamePriceInput.value = Math.min(maxPrice, Math.max(minPrice, editableElements.gamePriceInput.value.replace(/[^0-9]/g, "")));
+    });
+
+    editableElements.gameTitleInput.addEventListener("input", () => {
+      elements.gameTitle.textContent = editableElements.gameTitleInput.value;
+    });
+
+    editableElements.gameSummaryInput.addEventListener("input", () => {
+      elements.gameSummary.textContent = editableElements.gameSummaryInput.value;
+    });
+
+    elements.gameDesc.addEventListener("input", () => {
+      const text = DOMPurify.sanitize(elements.gameDesc.innerHTML);
+      elements.gameDesc.innerHTML = text.length > maxDescriptionCharacters ? text.substr(0, maxDescriptionCharacters) : text;
+    });
+
     const isPublic = { Enabled: gameData.active, Element: document.getElementById("public") };
     isPublic.Element.checked = isPublic.Enabled;
     isPublic.Element.addEventListener("change", () => {
@@ -391,7 +416,7 @@ const gameHandler = async (gameId) => {
     const gameFeatures = ["Singleplayer", "Multiplayer", "Coop", "Achievements", "ControllerSupport", "Saves", "VRSupport"].map(name => ({
       Name: name,
       Enabled: gameData.features[name],
-      Element: document.getElementById(name.toLowerCase().replace(" ", "-")),
+      Element: document.getElementById(name.toLowerCase()),
     }));
 
     gameFeatures.forEach(feature => {
