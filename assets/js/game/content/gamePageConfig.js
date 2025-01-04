@@ -475,7 +475,7 @@ const gameHandler = async (gameId) => {
           defaultColors: false,
           outlines: Object.fromEntries(combinedCheckboxes.map(o => [o.Name, o.Enabled])),
           alphas: Object.fromEntries(alphaInputs.map(a => [a.Name, a.Amount])),
-          colors: Object.fromEntries(colorInputs.map(c => [c.Name, c.ElementChanging.getPropertyValue(c.Property)])),
+          colors: Object.fromEntries(colorInputs.map(c => [c.Name, getComputedStyle(c.ElementChanging).getPropertyValue(c.Property)])),
         },
       };
 
