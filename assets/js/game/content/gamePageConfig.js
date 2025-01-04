@@ -6,6 +6,7 @@ const urlParams = new URLSearchParams(window.location.search);
 const gameIdParam = urlParams.get("g");
 
 // TODO: Update price and currency options in stripe or create new ones when game changes from free to paid (destroy ones when game changes from paid to free).
+// TODO: Add game page deletions.
 
 const maxDescriptionCharacters = 4000;
 const minPrice = 1, maxPrice = 5000;
