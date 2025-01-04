@@ -372,12 +372,17 @@ const gameHandler = async (gameId) => {
     editableElements.gameSummaryInput.value = gameData.summary;
     editableElements.gameGenreInput.value = gameData.genre.toUpperCase();
     editableElements.gameArtStyleInput.value = gameData.artstyle.toUpperCase();
-    editableElements.gameCurrencyInput.value = gameData.pricing.currency;
     editableElements.gamePriceInput.value = gameData.pricing.price;
 
     Array.from(editableElements.gameAgeInput.options).forEach((option, i) => {
       if (option.value === gameData.agerating.toLowerCase()) {
         editableElements.gameAgeInput.selectedIndex = i;
+      }
+    });
+
+    Array.from(editableElements.gameCurrencyInput.options).forEach((option, i) => {
+      if (option.value === gameData.agerating.toLowerCase()) {
+        editableElements.gameCurrencyInput.selectedIndex = i;
       }
     });
 
@@ -479,10 +484,10 @@ const gameHandler = async (gameId) => {
       const isFree = editableElements.gamePriceInput.value <= 0;
 
       const updateGameOptionsBody = {
-        name: elements.gameTitle.textContent,
+        name: editableElements.gameTitleInput.value,
         description: DOMPurify.sanitize(elements.gameDesc.innerHTML),
-        summary: elements.gameSummary.textContent,
-        genre: DOMPurify.sanitize(editableElements.gameGenreInput.value),
+        summary: editableElements.gameSummaryInput.value,
+        genre: editableElements.gameGenreInput.value,
         artstyle: editableElements.gameArtStyleInput.value,
         age_rating: editableElements.gameAgeInput.value,
         active: isPublic.Enabled ? "true" : "false",
