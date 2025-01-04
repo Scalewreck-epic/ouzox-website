@@ -121,7 +121,7 @@ const togglePasswordVisibility = (passwordInput, icon) => {
 };
 
 const logout = () => {
-  if (isValidCookie) clearCookie();
+  if (isValidCookie) session.clearCookie();
   window.location.assign("login");
 };
 
