@@ -126,7 +126,7 @@ const gameHandler = async (gameId) => {
   elements.gameAge.textContent = gameData.agerating.toUpperCase();
   elements.gameSize.textContent = gameData.filesize;
 
-  elements.icon.setAttribute("href", gameData.icon);
+  elements.icon.setAttribute("href", gameData.icon.href);
   elements.developerName.setAttribute("href", `user?id=${gameData.developer.id}`);
   elements.gameGenre.setAttribute("href", `category?n=${gameData.genre.toUpperCase()}`);
 

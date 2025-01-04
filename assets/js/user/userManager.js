@@ -26,7 +26,7 @@ const updateUsername = () => {
 
   if (isValidCookie) {
     if (loginPaths.some(path => window.location.pathname.includes(path))) window.location.assign("settings");
-    loginBtn.remove(); signupBtn.remove(); username.textContent = user.name;
+    loginBtn.remove(); signupBtn.remove(); username.textContent = user.name || "error";
   } else {
     if (restrictedPaths.some(path => window.location.pathname.includes(path))) window.location.assign("login");
     dashboardBtn.remove(); uploadBtn.remove(); username.remove();
