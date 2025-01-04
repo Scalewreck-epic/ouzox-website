@@ -100,5 +100,7 @@ export const fetchUser = async () => {
     );
     
     return result.ok ? result.response : null;
+  } else {
+    return null;
   }
 };
