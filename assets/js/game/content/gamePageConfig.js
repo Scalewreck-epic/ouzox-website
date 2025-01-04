@@ -6,7 +6,6 @@ const urlParams = new URLSearchParams(window.location.search);
 const gameIdParam = urlParams.get("g");
 
 // TODO: Update price and currency options in stripe or create new ones when game changes from free to paid (destroy ones when game changes from paid to free).
-// TODO: Add game page deletions.
 
 const maxDescriptionCharacters = 4000;
 const minPrice = 1, maxPrice = 5000;
@@ -78,6 +77,19 @@ const updateGame = async (data, gameId, commitChangesButton) => {
   const result = await request(`${endpoints.game.update}${gameId}`, data, false);
   commitChangesButton.textContent = result.ok ? "Success" : result.response;
 };
+
+const removeGame = async(gameId) => {
+  const deleteOptions = {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: {
+      uploader_id: user.id,
+    },
+  }
+
+  const response = await request(`${endpoints.game.remove}${gameId}`, deleteOptions);
+  return response.ok
+}
 
 const formatTimeSingle = (timeago, option, unit) => `${option} (${timeago === 1 ? "1" : timeago} ${unit}${timeago === 1 ? "" : "s"} Ago)`;
 const formatTime = (coru, yearsAgo, monthsAgo, weeksAgo, daysAgo) => {
@@ -242,6 +254,7 @@ const gameHandler = async (gameId) => {
       gamePriceInput: document.getElementById("price"),
       gameCurrencyInput: document.getElementById("currency-sort"),
       commitChangesButton: document.createElement("button"),
+      deleteButton: document.createElement("button"),
     };
 
     const colorInputs = [
@@ -366,8 +379,11 @@ const gameHandler = async (gameId) => {
 
     elements.gameDesc.contentEditable = true;
 
-    editableElements.commitChangesButton.setAttribute("class", "game-download-button");
+    editableElements.commitChangesButton.setAttribute("class", "commit-changes-button");
     editableElements.commitChangesButton.textContent = "Commit Changes";
+
+    editableElements.deleteButton.setAttribute("class", "game-delete-button");
+    editableElements.deleteButton.textContent = "Delete Game"
 
     editableElements.gameTitleInput.value = gameData.name;
     editableElements.gameSummaryInput.value = gameData.summary;
@@ -475,7 +491,7 @@ const gameHandler = async (gameId) => {
       });
     });
 
-    editableElements.commitChangesButton.addEventListener("click", async () => {
+    const commitChanges = async () => {
       editableElements.commitChangesButton.disabled = true;
       const combinedCheckboxes = [
         ...outlineCheckboxes.map(checkbox => ({ Name: checkbox.Name, Enabled: checkbox.Enabled ? "true" : "false"})),
@@ -532,9 +548,35 @@ const gameHandler = async (gameId) => {
 
       await updateGame({ method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(updateGameOptionsBody) }, gameData.id, editableElements.commitChangesButton);
       editableElements.commitChangesButton.disabled = false;
-    });
+    };
+
+    const deleteGame = async () => {
+      const isConfirmed = confirm("Do you want to delete this game?");
+
+      if (isConfirmed) {
+        const secondaryConfirm = prompt(`Type ${gameData.name} to confirm deletion:`);
+
+        if (secondaryConfirm == gameData.name) {
+          const response = await removeGame(gameData.id);
+  
+          if (response.ok) {
+            window.location.assign("dashboard");
+          } else {
+            alert("Failed to delete game.");
+          };
+        } else {
+          alert("Invalid confirmation.");
+        };
+      } else {
+        alert("Deletion Canceled");
+      };
+    };
+
+    editableElements.commitChangesButton.addEventListener("click", () => commitChanges());
+    editableElements.deleteButton.addEventListener("click", () => deleteGame());
 
     document.getElementById("buttons").appendChild(editableElements.commitChangesButton);
+    document.getElementById("buttons").appendChild(editableElements.deleteButton);
   } else {
     document.getElementById("game-editing").remove();
   }

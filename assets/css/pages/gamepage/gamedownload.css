@@ -3,18 +3,41 @@
 }
 
 .game-download-button {
+  border: solid #4caf50 0.2rem;
+}
+
+.game-delete-button {
+  border: solid #db0000 0.2rem;
+  background-color: #6d0000;
+}
+
+.commit-changes-button {
+  border: solid #4caf50 0.2rem;
+  background-color: #2c6e2c;
+}
+
+.game-download-button,
+.game-delete-button,
+.commit-changes-button {
   display: inline-block;
   padding: 0.313rem 0.625rem;
   font-size: 1.125rem;
   font-weight: bold;
   margin-right: 0.625rem;
-  border: solid #4caf50 0.2rem;
   border-radius: 0.25rem;
   cursor: pointer;
   color: white;
 }
 
 .game-download-button:hover {
+  color: #4caf50;
+}
+
+.game-delete-button:hover {
+  color: #db0000;
+}
+
+.commit-changes-button:hover {
   color: #4caf50;
 }
 
