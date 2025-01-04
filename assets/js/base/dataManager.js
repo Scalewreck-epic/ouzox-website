@@ -1,4 +1,4 @@
-import { fetchUser } from "../user/sessionManager.js";
+import { user } from "../user/userManager.js";
 import { request } from "./apiManager.js";
 import { endpoints } from "../other/endpoints.js";
 
@@ -233,8 +233,6 @@ export const loadUserGames = async (newUser) => {
 };
 
 export const loadDashboard = async () => {
-  const user = await fetchUser();
-
   const myHeaders = new Headers({ "Content-Type": "application/json" });
 
   const developerGameOptions = {

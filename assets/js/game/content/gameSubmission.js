@@ -1,4 +1,4 @@
-import { fetchUser } from "../../user/sessionManager.js";
+import { user } from "../../user/userManager.js";
 import { request } from "../../base/apiManager.js";
 import { endpoints } from "../../other/endpoints.js";
 

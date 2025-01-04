@@ -8,7 +8,7 @@ import { loadUserGames } from "../base/dataManager.js";
 console.info("Ouzox is open source! https://github.com/Scalewreck-epic/ouzox-website");
 
 const cookieData = session.fetchCookie("session_id");
-const user = await session.fetchUser();
+export const user = await session.fetchUser();
 
 const today = new Date().toISOString().split('T')[0];
 
