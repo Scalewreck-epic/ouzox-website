@@ -25,10 +25,10 @@ const updateUsername = () => {
   copyrightYear && (copyrightYear.textContent = new Date().getFullYear().toString());
 
   if (isValidCookie) {
-    if (loginPaths.some(path => window.location.pathname.includes(path))) window.location.assign("settings");
+    if (loginPaths.some(path => window.location.pathname.includes(path))) window.location.assign(restrictedPaths[0]);
     loginBtn.remove(); signupBtn.remove(); username.textContent = user.name || "error";
   } else {
-    if (restrictedPaths.some(path => window.location.pathname.includes(path))) window.location.assign("login");
+    if (restrictedPaths.some(path => window.location.pathname.includes(path))) window.location.assign(loginPaths[0]);
     dashboardBtn.remove(); uploadBtn.remove(); username.remove();
   }
 };
