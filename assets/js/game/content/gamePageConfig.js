@@ -552,11 +552,12 @@ const gameHandler = async (gameId) => {
 
     const deleteGame = async () => {
       const isConfirmed = confirm("Do you want to delete this game?");
+      const confirmation = gameData.name.toUpperCase();
 
       if (isConfirmed) {
-        const secondaryConfirm = prompt(`Type ${gameData.name} to confirm deletion:`);
+        const secondaryConfirm = prompt(`Type ${confirmation} to confirm deletion:`);
 
-        if (secondaryConfirm == gameData.name) {
+        if (secondaryConfirm == confirmation) {
           const response = await removeGame(gameData.id);
   
           if (response.ok) {
