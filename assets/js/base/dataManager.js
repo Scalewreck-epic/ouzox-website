@@ -1,3 +1,5 @@
+// Handles all the game data from the server to the page
+
 import { user } from "../user/userManager.js";
 import { request } from "./apiManager.js";
 import { endpoints } from "../other/endpoints.js";
@@ -7,12 +9,14 @@ const urlParams = new URLSearchParams(window.location.search);
 const genres = [];
 const platformGames = [];
 
+// Classes for each genre
 class Genre {
   constructor(genre) {
     this.name = genre.name;
     this.count = genre.count;
   }
 
+  // Create the genre card that shows how many games the genre has and redirects users to the genre page
   createGenreCard = (name, amount) => {
     const genreButton = document.createElement("a");
     const genreName = document.createElement("div");
@@ -34,6 +38,7 @@ class Genre {
   };
 }
 
+// Classes for each game
 class Game {
   constructor(data) {
     this.id = data.id;
@@ -49,6 +54,7 @@ class Game {
     this.free = data.pricing.free;
   }
 
+  // Calculates the days since the given timestamp
   calculateDiffDays = (timestamp) => {
     const currentDate = new Date();
 
@@ -58,6 +64,7 @@ class Game {
     return createdDiffDays;
   };
 
+  // Formats numbers by thousands and millions. Used for likes.
   formatLikes = (likes) => {
     const million = 1000000;
     const thousand = 1000;
@@ -71,6 +78,7 @@ class Game {
     }
   };
 
+  // Creates the game card that shows the game's information
   createGameCard = (listElement) => {
     const price = this.price;
     const currency = this.currency;
@@ -100,7 +108,7 @@ class Game {
     gameTitle.textContent = this.name;
     gameSummary.textContent = this.summary;
 
-    gamePriceText.textContent = this.free ? "FREE" : `${price} ${currency.toUpperCase()}`;
+    gamePriceText.textContent = this.free ? "FREE" : `${price} ${currency.toUpperCase()}`; // If it's free, just display the word 'FREE' otherwise, display the price and currency.
     gameUpvotesText.textContent = `${this.formatLikes(this.likes)}^`;
 
     gamePriceContainer.appendChild(gamePriceText);
@@ -113,6 +121,7 @@ class Game {
     const diffDaysCreated = this.calculateDiffDays(this.created);
     const diffDaysUpdated = this.calculateDiffDays(this.updated);
 
+    // Create a label if the game was recently created or updated.
     if (diffDaysCreated <= 7) {
       createLabel("NEW", diffDaysCreated, gameImageContainer);
     } else if (diffDaysUpdated <= 7) {
@@ -127,6 +136,7 @@ class Game {
   };
 }
 
+// Creates a label and shows the number of given days on hover. Used for new or updated labels on game cards.
 const createLabel = (labelText, numDays, targetElement) => {
   const label = document.createElement("div");
   label.setAttribute("class", `${labelText.toLowerCase()}-label`);
@@ -146,11 +156,13 @@ const createLabel = (labelText, numDays, targetElement) => {
   });
 };
 
+// If displaying games had errored, this is how it's handled.
 export const displayErrorForGames = async (categoryElement, response) => {
   const categoryNoneElement = categoryElement.querySelector(".category-none");
   categoryNoneElement.textContent = response;
 };
 
+// Display all the given games on the given elements
 export const displayGames = async (listElement, categoryElement, games) => {
   const categoryNoneElement = categoryElement.querySelector(".category-none");
 
@@ -164,13 +176,14 @@ export const displayGames = async (listElement, categoryElement, games) => {
       if (!platformGames.find((game) => game.id === gameData.id)) {
         platformGames.push(gameData);
 
+        // Adds the game's genre
         const existingGenreIndex = genres.findIndex(
           (genre) => genre.name === game.genre
         );
 
-        if (existingGenreIndex !== -1) {
+        if (existingGenreIndex !== -1) { // If the genre exists, add to the counter
           genres[existingGenreIndex].count++;
-        } else {
+        } else { // Otherwise, create a new genre
           genres.push({
             name: game.genre,
             count: 1,
@@ -181,6 +194,7 @@ export const displayGames = async (listElement, categoryElement, games) => {
   }
 };
 
+// Display all the genres
 const displayGenres = async () => {
   genres.sort((a, b) => b.count - a.count);
 
@@ -197,6 +211,7 @@ const displayGenres = async () => {
   });
 };
 
+// Load all the user's public games by the given user ID
 export const loadUserGames = async (newUser) => {
   const gameDownloads = document.getElementById("game-downloads");
 
@@ -232,6 +247,7 @@ export const loadUserGames = async (newUser) => {
   }
 };
 
+// Display all the user's games by the current user session ID
 export const loadDashboard = async () => {
   const myHeaders = new Headers({ "Content-Type": "application/json" });
 
@@ -260,6 +276,7 @@ export const loadDashboard = async () => {
   }
 };
 
+// Load games filtered by genre
 export const loadGenreSearchGames = async () => {
   const genreListElement = document.getElementById("genre-games-list");
   const genreListCategory = document.getElementById("genre-games");
@@ -295,6 +312,7 @@ export const loadGenreSearchGames = async () => {
   }
 };
 
+// Load games by search query
 export const loadSearchGames = async() => {
   const searchListElement = document.getElementById("relevant-games-list");
   const searchListCategory = document.getElementById("relevant-games");
@@ -329,6 +347,7 @@ export const loadSearchGames = async() => {
   }
 }
 
+// Load all the front page games
 const loadGames = async () => {
   const myHeaders = new Headers({ "Content-Type": "application/json" });
   const perPage = 10;
@@ -367,6 +386,7 @@ const loadGames = async () => {
   }
 };
 
+// Fetch the front page games
 export const fetchGames = async () => {
   await loadGames();
 

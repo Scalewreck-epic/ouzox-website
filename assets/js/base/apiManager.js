@@ -1,3 +1,5 @@
+// Handles all API reqeusts
+
 export const errorMessages = {
   400: {
     header: "Bad Request",
@@ -52,10 +54,11 @@ class RequestHandler {
     this.options = options;
     this.redirect = redirect;
     this.retries = 3;
-    this.timeout = 5;
-    this.errorTimeout = 3;
+    this.timeout = 5; // seconds
+    this.retryTimeout = 3; // seconds
   }
 
+  // Sanitizes the endpoint
   validateEndpoint() {
     if (typeof this.endpoint !== "string") {
       throw new Error(
@@ -63,6 +66,7 @@ class RequestHandler {
       );
     }
 
+    // Turn the endpoint into a new URL
     try {
       const url = new URL(this.endpoint);
       if (url.protocol !== "https:") {
@@ -74,6 +78,7 @@ class RequestHandler {
     }
   }
 
+  // Validates the options of the request
   validateOptions() {
     if (typeof this.options !== "object" || this.options === null) {
       throw new Error(
@@ -105,13 +110,14 @@ class RequestHandler {
     }
   }
 
+  // Handles the errors of the request
   handleError(response) {
-    const statusCode = response.status || 500;
+    const statusCode = response.status || 500; // Default 500 code error
 
     if (this.redirect) {
-      window.location.assign(`404?code=${statusCode}`);
+      window.location.assign(`404?code=${statusCode}`); // Assign the 404 page with the status code
       return;
-    } else {
+    } else { // Otherwise, throw the error
       const errorMessage = errorMessages[statusCode];
       if (!errorMessage) {
         throw new Error(`Unknown error: ${statusCode}`);
@@ -120,32 +126,38 @@ class RequestHandler {
     }
   }
 
+  // Makes the fetch request
   async makeRequest() {
+    // Create the abortions
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), this.timeout * 1000);
 
-    const errorDelay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+    // Create the retry delays
+    const retryDelay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
     const endpointUrl = this.validateEndpoint();
     this.validateOptions();
 
     for (let i = 0; i < this.retries; i++) {
       try {
+        // If the response has been taken in the past, return the previous response
         if (cache.has(endpointUrl)) {
           const {response, timestamp} = cache.get(endpointUrl);
           const cahceExpirationTime = 60 * 1000;
 
-          if (Date.now() - timestamp < cahceExpirationTime) {
+          if (Date.now() - timestamp < cahceExpirationTime) { // Return the previous response if it is recent
             return {response, ok: true};
-          } else {
+          } else { // Otherwise, delete the cache
             cache.delete(endpointUrl);
           }
         }
 
+        // Fetch reqeust with abortion controller
         const response = await fetch(endpointUrl, {...this.options, signal: controller.signal});
-        clearTimeout(timeoutId);
+        clearTimeout(timeoutId); // Clear the timeout once the response has been completed.
 
         if (response.ok) {
+          // Don't json parse if there is no response
           const jsonResponse = response.status == 204 ? null : await response.json();
 
           cache.set(endpointUrl, {response: jsonResponse, ok: true});
@@ -154,8 +166,9 @@ class RequestHandler {
 
         throw this.handleError(response);
       } catch(error) {
+        // If it's under the amount of retries, redo the request
         if (i == this.retries - 1) return {response: error, ok: false};
-        await errorDelay(this.errorTimeout * 1000);
+        await retryDelay(this.retryTimeout * 1000);
       }
     }
   }

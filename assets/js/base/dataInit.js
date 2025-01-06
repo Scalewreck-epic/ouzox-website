@@ -1,3 +1,5 @@
+// Handles loading games on load.
+
 import { fetchGames, loadSearchGames, loadGenreSearchGames, loadDashboard } from "./dataManager.js";
 
 const pathName = window.location.pathname;

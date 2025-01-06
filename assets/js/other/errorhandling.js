@@ -1,3 +1,5 @@
+// Handles displaying errors on the 404 page
+
 import { errorMessages } from "../base/apiManager.js";
 
 const urlParams = new URLSearchParams(window.location.search);

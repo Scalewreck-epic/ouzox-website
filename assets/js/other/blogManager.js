@@ -1,3 +1,5 @@
+// Handles showing blog posts from Ghost. Blog is currently inactive so API doesn't work.
+
 import { request } from "../base/apiManager.js";
 import { endpoints } from "./endpoints.js";
 

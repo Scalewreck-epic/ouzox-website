@@ -1,3 +1,5 @@
+// Handles the user
+
 const restrictedPaths = ["/settings", "/upload", "/dashboard"];
 const loginPaths = ["/login", "/signup"];
 import * as session from "./sessionManager.js";
@@ -8,12 +10,13 @@ import { loadUserGames } from "../base/dataManager.js";
 console.info("Ouzox is open source! https://github.com/Scalewreck-epic/ouzox-website");
 
 const cookieData = session.fetchCookie("session_id");
-export const user = await session.fetchUser();
+export const user = await session.fetchUser(); // Export the user to other pages that need it.
 
-const today = new Date().toISOString().split('T')[0];
+const today = new Date().toISOString().split('T')[0]; // Today
 
 const isValidCookie = cookieData.valid;
 
+// Updates the username in the navigation header
 const updateUsername = () => {
   const username = document.getElementById("username");
   const copyrightYear = document.getElementById("copyright-year");
@@ -24,15 +27,16 @@ const updateUsername = () => {
 
   copyrightYear && (copyrightYear.textContent = new Date().getFullYear().toString());
 
-  if (isValidCookie) {
+  if (isValidCookie) { // If there is a session cookie, there is no need to use the login and signup page
     if (loginPaths.some(path => window.location.pathname.includes(path))) window.location.assign(restrictedPaths[0]);
     loginBtn.remove(); signupBtn.remove(); username.textContent = user.name || "error";
-  } else {
+  } else { // If there isn't a session cookie, there is no need to use the dashboard and upload page.
     if (restrictedPaths.some(path => window.location.pathname.includes(path))) window.location.assign(loginPaths[0]);
     dashboardBtn.remove(); uploadBtn.remove(); username.remove();
   }
 };
 
+// Displays the user's current settings
 const updateUserStats = async () => {
   const emailStat = document.getElementById("email-stat");
   const joinTime = document.getElementById("creation-stat");
@@ -42,20 +46,21 @@ const updateUserStats = async () => {
   emailStat.textContent = `Email: ${user.email}`; joinTime.textContent = `Creation: ${formattedDate}`; profileLink.setAttribute("href", `user?id=${user.id}`);
 };
 
-const isValidPassword = passwordInput => /^(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*(),.?":{}|<>]).{8,}$/.test(passwordInput);
-const isValidSignup = () => {
+const isValidPassword = passwordInput => /^(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*(),.?":{}|<>]).{8,}$/.test(passwordInput); // Is the password valid?
+const isValidSignup = () => { // Is the signup valid?
   const usernameInput = document.getElementById("username_input").value;
   const emailInput = document.getElementById("email_input").value;
   const passwordInput = document.getElementById("password_input").value;
   return /^[a-zA-Z0-9]{3,20}$/.test(usernameInput) && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailInput) && isValidPassword(passwordInput);
 };
 
-const isValidLogin = () => {
+const isValidLogin = () => { // Is the login valid?
   const usernameInput = document.getElementById("username_login").value;
   const passwordInput = document.getElementById("password_login").value;
   return /^[a-zA-Z0-9]{3,20}$/.test(usernameInput) && isValidPassword(passwordInput);
 };
 
+// Creates a new account on the server
 const createSessionData = async () => {
   if (!isValidCookie) {
     const usernameInput = document.getElementById("username_input").value;
@@ -85,6 +90,7 @@ const createSessionData = async () => {
   }
 };
 
+// Fetches an account on the server
 const fetchSessionData = async () => {
   if (!isValidCookie) {
     const username = document.getElementById("username_login").value;
@@ -110,21 +116,25 @@ const fetchSessionData = async () => {
   }
 };
 
+// Only enable the buttons when the signup or login information are valid
 const updateLoginButtons = (isValid, button) => {
   button.disabled = !isValid;
 };
 
+// Toggle the password visibility
 const togglePasswordVisibility = (passwordInput, icon) => {
   const isPassword = passwordInput.type === "password";
   passwordInput.type = isPassword ? "text" : "password";
   icon.setAttribute("class", isPassword ? "show-icon" : "hide-icon");
 };
 
+// Clear cookies on logout
 const logout = () => {
   if (isValidCookie) session.clearCookie();
   window.location.assign("login");
 };
 
+// Setup the profile page of another user
 const setupProfilePage = async () => {
   const userId = new URLSearchParams(window.location.search).get("id");
   const otherUser = await session.fetchAlternativeUser(userId);
@@ -138,6 +148,7 @@ const setupProfilePage = async () => {
   loadUserGames(otherUser);
 };
 
+// Setup the settings page of the current user
 const setupSettingsPage = () => {
   const actions = {
     "save-email": session.changeEmailData,
@@ -153,6 +164,7 @@ const setupSettingsPage = () => {
   updateUserStats();
 };
 
+// Setup the login page
 const setupLoginPage = () => {
   const loginForm = document.getElementById("login-form");
   const loginButton = document.getElementById("login-button");
@@ -169,6 +181,7 @@ const setupLoginPage = () => {
   loginButton.disabled = true;
 };
 
+// Setup the signup page
 const setupSignupPage = () => {
   const signupForm = document.getElementById("signup-form");
   const signupButton = document.getElementById("signup-button");
@@ -196,7 +209,7 @@ const setupSignupPage = () => {
   signupButton.disabled = true;
 };
 
-updateUsername();
+updateUsername(); // Update the username on load
 
 if (window.location.pathname.includes("/user")) setupProfilePage();
 if (window.location.pathname.includes("/settings")) setupSettingsPage();

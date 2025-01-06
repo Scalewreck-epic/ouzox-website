@@ -1,3 +1,5 @@
+// not used yet
+
 const urlParams = new URLSearchParams(window.location.search);
 const gameIdParam = urlParams.get("g");
 const priceIdParam = urlParams.get("p");

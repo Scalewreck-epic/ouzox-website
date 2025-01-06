@@ -1,9 +1,11 @@
+// Handles displaying games and editing games
+
 import { user } from "../../user/userManager.js";
 import { request } from "../../base/apiManager.js";
 import { endpoints } from "../../other/endpoints.js";
 
 const urlParams = new URLSearchParams(window.location.search);
-const gameIdParam = urlParams.get("g");
+const gameIdParam = urlParams.get("g"); // the game ID
 
 // TODO: Update price and currency options in stripe or create new ones when game changes from free to paid (destroy ones when game changes from paid to free).
 
@@ -11,6 +13,7 @@ const maxDescriptionCharacters = 4000;
 const minPrice = 1, maxPrice = 5000;
 const maxFileSize = 5; // GB
 
+// New class for the current game
 class GameData {
   constructor(rawGameData, createdFormattedDate, updatedFormattedDate, datestodays) {
     Object.assign(this, {
@@ -38,24 +41,28 @@ class GameData {
   }
 }
 
+// converts colors to hex
 String.prototype.convertToHex = function () {
   if (/^#[0-9a-fA-F]{6}$/.test(this)) return this;
   const [r, g, b] = this.match(/\d+/g).map(Number);
   return `#${[r, g, b].map(v => v.toString(16).padStart(2, "0")).join("")}`;
 };
 
+// Updates the background color. Really only uses the alpha values
 const updateBackgroundColor = (alphaInput, styleElement) => {
   const alphaValue = alphaInput / 100;
   const [r, g, b] = getComputedStyle(styleElement).getPropertyValue("background-color").match(/\d+/g).map(Number);
   styleElement.style.setProperty("background-color", `rgba(${r}, ${g}, ${b}, ${alphaValue})`);
 };
 
+// Retrieves the game data
 const getGameData = async (gameId) => {
   const result = await request(`${endpoints.game.view}${gameId}`, { method: "GET", headers: { "Content-Type": "application/json" } }, true);
   if (result.ok) return result.response;
   throw new Error(`Unable to get game data: ${result}`);
 };
 
+// Edits the raw game data and returns new game data
 const fetchGameData = async (gameId) => {
   const rawGameData = await getGameData(gameId);
   const createdDate = new Date(rawGameData.created_at);
@@ -73,11 +80,13 @@ const fetchGameData = async (gameId) => {
   return new GameData(rawGameData, createdFormattedDate, updatedFormattedDate, datestodays);
 };
 
+// Request to update the game
 const updateGame = async (data, gameId, commitChangesButton) => {
   const result = await request(`${endpoints.game.update}${gameId}`, data, false);
   commitChangesButton.textContent = result.ok ? "Success" : result.response;
 };
 
+// Request to remove the game
 const removeGame = async(gameId) => {
   const deleteOptions = {
     method: "POST",
@@ -91,6 +100,7 @@ const removeGame = async(gameId) => {
   return response.ok
 }
 
+// Formats the time in a human-readable format
 const formatTimeSingle = (timeago, option, unit) => `${option} (${timeago === 1 ? "1" : timeago} ${unit}${timeago === 1 ? "" : "s"} Ago)`;
 const formatTime = (coru, yearsAgo, monthsAgo, weeksAgo, daysAgo) => {
   if (yearsAgo >= 1) return formatTimeSingle(yearsAgo, coru, "Year");
@@ -100,6 +110,7 @@ const formatTime = (coru, yearsAgo, monthsAgo, weeksAgo, daysAgo) => {
   return "Just Now";
 };
 
+// Displays the game and handles editing
 const gameHandler = async (gameId) => {
   const gameData = await fetchGameData(gameId);
   const elements = {
@@ -220,7 +231,7 @@ const gameHandler = async (gameId) => {
     updateBackgroundColor(alpha.Amount, alpha.ElementChanging);
   });
 
-  if (!gameData.page.default_colors) {
+  if (!gameData.page.default_colors) { // If the page doesn't use the default colors, use the modified ones
     const colors = gameData.page.colors;
     document.body.style.backgroundColor = colors.bg_color;
     elements.gameColumn.style.backgroundColor = colors.bg2_color;
@@ -243,7 +254,7 @@ const gameHandler = async (gameId) => {
   // TODO: Make the game available to download
   //elements.downloadButton.setAttribute("href", gameData.paymentLink);
 
-  if (user && user.id === gameData.developer.id) {
+  if (user && user.id === gameData.developer.id) { // If the user is the game developer, allow access to editing the game
     const editableElements = {
       gameTitleInput: document.getElementById("title-input"),
       gameSummaryInput: document.getElementById("summary-input"),
@@ -491,6 +502,7 @@ const gameHandler = async (gameId) => {
       });
     });
 
+    // Commiting the changes of the game
     const commitChanges = async () => {
       editableElements.commitChangesButton.disabled = true;
       const combinedCheckboxes = [
@@ -498,11 +510,11 @@ const gameHandler = async (gameId) => {
         ...shadowCheckboxes.map(checkbox => ({ Name: checkbox.Name, Enabled: checkbox.Enabled ? "true" : "false"})),
       ];
 
-      const isFree = editableElements.gamePriceInput.value <= 0;
+      const isFree = editableElements.gamePriceInput.value <= 0; // Identify if the game is free by the given price
 
       const updateGameOptionsBody = {
         name: editableElements.gameTitleInput.value,
-        description: DOMPurify.sanitize(elements.gameDesc.innerHTML),
+        description: DOMPurify.sanitize(elements.gameDesc.innerHTML), // Sanitize the description
         summary: editableElements.gameSummaryInput.value,
         genre: editableElements.gameGenreInput.value,
         artstyle: editableElements.gameArtStyleInput.value,
@@ -527,6 +539,7 @@ const gameHandler = async (gameId) => {
 
       const image = editableElements.gameThumbnailInput.files[0];
 
+      // If the developer gave an image, send it to the server. Otherwise, don't send a null value
       if (image) {
         const reader = new FileReader();
 
@@ -550,6 +563,7 @@ const gameHandler = async (gameId) => {
       editableElements.commitChangesButton.disabled = false;
     };
 
+    // Deleting the game
     const deleteGame = async () => {
       const isConfirmed = confirm("Do you want to delete this game?");
       const confirmation = gameData.name.toUpperCase();
@@ -557,11 +571,11 @@ const gameHandler = async (gameId) => {
       if (isConfirmed) {
         const secondaryConfirm = prompt(`Type ${confirmation} to confirm deletion:`);
 
-        if (secondaryConfirm == confirmation) {
+        if (secondaryConfirm == confirmation) { // Double confirmation to make sure no mistakes are made
           const response = await removeGame(gameData.id);
   
           if (response.ok) {
-            window.location.assign("dashboard");
+            window.location.assign("dashboard"); // Assign the user back to their dashboard
           } else {
             alert("Failed to delete game.");
           };
@@ -585,6 +599,6 @@ const gameHandler = async (gameId) => {
 
 if (gameIdParam) {
   gameHandler(gameIdParam);
-} else {
+} else { // If the game does not exist, continue no further.
   window.location.assign("404?code=404");
 }

@@ -1,3 +1,5 @@
+// Shows all endpoints from database.
+
 const DATABASE_URL = "https://x8ki-letl-twmt.n7.xano.io/api:V36A7Ayv";
 const PRODUCTS_BASE_URL = "https://x8ki-letl-twmt.n7.xano.io/api:iwAsZq4E";
 const PRICES_BASE_URL = "https://x8ki-letl-twmt.n7.xano.io/api:tFdG2Vz-";

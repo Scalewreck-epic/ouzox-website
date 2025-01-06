@@ -1,3 +1,5 @@
+// Handles editing text. Usually seen in descriptions only.
+
 const description = document.getElementById("description");
 const gameColumn = document.getElementById("game-column");
 

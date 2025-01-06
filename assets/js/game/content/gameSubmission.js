@@ -1,3 +1,5 @@
+// Handles game submissions
+
 import { user } from "../../user/userManager.js";
 import { request } from "../../base/apiManager.js";
 import { endpoints } from "../../other/endpoints.js";
@@ -23,6 +25,7 @@ const maxDescriptionCharacters = 4000;
 const minPrice = 1, maxPrice = 5000;
 const maxFileSize = 5; // GB
 
+// Format the file size
 const format_file_size = (fileSizeInBytes) => {
   const units = ["KB", "MB", "GB"];
   const size = fileSizeInBytes < 1024 ? fileSizeInBytes : 
@@ -31,6 +34,7 @@ const format_file_size = (fileSizeInBytes) => {
   return `${size.toFixed(2)} ${units[Math.floor(Math.log(size) / Math.log(1024))]}`;
 };
 
+// Request to upload the game
 const upload_game = async (gameRequestOptions) => {
   const result = await request(endpoints.game.create_game, gameRequestOptions, true);
   return result;
@@ -38,19 +42,21 @@ const upload_game = async (gameRequestOptions) => {
 
 // TODO: Create game product and price when uploaded.
 
+// Request to submit the game
 const on_submit = async (event) => {
   event.preventDefault();
 
-  uploadButton.disabled = true;
+  uploadButton.disabled = true; // Prevent spamming the button
 
+  // Make sure everything is up to date
   update_thumbnail();
   update_file_size();
   update_price();
 
-  if (!game_file_warn.innerText) {
+  if (!game_file_warn.innerText) { // If there is no file error
     const inputs = {
       title: document.getElementById("title").value,
-      description: DOMPurify.sanitize(game_description.innerHTML),
+      description: DOMPurify.sanitize(game_description.innerHTML), // Sanitize the description
       summary: document.getElementById("summary").value,
       thumbnail: game_thumbnail.files[0],
       file: download_file.files[0],
@@ -65,6 +71,8 @@ const on_submit = async (event) => {
     };
 
     const file_size = format_file_size(inputs.file.size);
+
+    // Wait for the image to load
     const imageURI = await new Promise(resolve => {
       const reader = new FileReader();
       reader.onloadend = () => resolve(reader.result);
@@ -106,6 +114,7 @@ const on_submit = async (event) => {
   uploadButton.disabled = false;
 };
 
+// Update the preview image
 const update_thumbnail = () => {
   const reader = new FileReader();
   const file = game_thumbnail.files[0];
@@ -113,17 +122,18 @@ const update_thumbnail = () => {
   if (file) reader.readAsDataURL(file);
 };
 
+// Update the file size
 const update_file_size = () => {
   const file = download_file.files[0];
-  const warn = document.getElementById("game-file-warn");
   if (file.size / Math.pow(1024, 3) > maxFileSize) {
-    warn.textContent = "File size too large, select a file under 5GB";
+    game_file_warn.textContent = "File size too large, select a file under 5GB";
     download_file.value = "";
   } else {
-    warn.textContent = "";
+    game_file_warn.textContent = "";
   }
 };
 
+// Update the prices
 const update_price = () => {
   game_price.value = game_isfree.checked ? 0 : Math.min(maxPrice, Math.max(minPrice, game_price.value.replace(/[^0-9]/g, "")));
 };
