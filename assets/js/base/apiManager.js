@@ -53,6 +53,7 @@ class RequestHandler {
     this.redirect = redirect;
     this.retries = 3;
     this.timeout = 5;
+    this.errorTimeout = 3;
   }
 
   validateEndpoint() {
@@ -120,11 +121,13 @@ class RequestHandler {
   }
 
   async makeRequest() {
-    const endpointUrl = this.validateEndpoint();
-    this.validateOptions();
-
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), this.timeout * 1000);
+
+    const errorDelay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+
+    const endpointUrl = this.validateEndpoint();
+    this.validateOptions();
 
     for (let i = 0; i < this.retries; i++) {
       try {
@@ -143,7 +146,7 @@ class RequestHandler {
         clearTimeout(timeoutId);
 
         if (response.ok) {
-          const jsonResponse = await response.json();
+          const jsonResponse = response.status == 204 ? null : await response.json();
 
           cache.set(endpointUrl, {response: jsonResponse, ok: true});
           return {response: jsonResponse, ok: true};
@@ -152,6 +155,7 @@ class RequestHandler {
         throw this.handleError(response);
       } catch(error) {
         if (i == this.retries - 1) return {response: error, ok: false};
+        await errorDelay(this.errorTimeout * 1000);
       }
     }
   }
