@@ -44,12 +44,15 @@ export const errorMessages = {
   },
 };
 
+const cache = new Map();
+
 class RequestHandler {
   constructor(endpoint, options = {}, redirect = false) {
     this.endpoint = endpoint;
     this.options = options;
     this.redirect = redirect;
     this.retries = 3;
+    this.timeout = 5;
   }
 
   validateEndpoint() {
@@ -117,26 +120,39 @@ class RequestHandler {
   }
 
   async makeRequest() {
-    try {
-      const endpointUrl = this.validateEndpoint();
-      this.validateOptions();
-      const response = await fetch(endpointUrl, this.options);
+    const endpointUrl = this.validateEndpoint();
+    this.validateOptions();
 
-      if (!response.ok) {
-        throw this.handleError(response);
-      }
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), this.timeout * 1000);
 
+    for (let i = 0; i < this.retries; i++) {
       try {
-        const jsonResponse = await response.json();
-        return { response: jsonResponse, ok: true };
-      } catch (jsonError) {
-        if (response.status === 204) {
-          return { response: null, ok: true };
+        if (cache.has(endpointUrl)) {
+          const {response, timestamp} = cache.get(endpointUrl);
+          const cahceExpirationTime = 60 * 1000;
+
+          if (Date.now() - timestamp < cahceExpirationTime) {
+            return {response, ok: true};
+          } else {
+            cache.delete(endpointUrl);
+          }
         }
-        throw new Error(`Failed to parse JSON response: ${jsonError.message}`);
+
+        const response = await fetch(endpointUrl, {...this.options, signal: controller.signal});
+        clearTimeout(timeoutId);
+
+        if (response.ok) {
+          const jsonResponse = await response.json();
+
+          cache.set(endpointUrl, {response: jsonResponse, ok: true});
+          return {response: jsonResponse, ok: true};
+        }
+
+        throw this.handleError(response);
+      } catch(error) {
+        if (i == this.retries - 1) return {response: error, ok: false};
       }
-    } catch (error) {
-      return { response: error, ok: false };
     }
   }
 }
