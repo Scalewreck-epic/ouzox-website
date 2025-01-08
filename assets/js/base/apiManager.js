@@ -49,23 +49,18 @@ export const errorMessages = {
 const cache = new Map();
 
 class RequestHandler {
-  constructor(endpoint, options = {}, redirect = false) {
+  constructor(endpoint, options, redirect = false) {
     this.endpoint = endpoint;
     this.options = options;
     this.redirect = redirect;
     this.retries = 3;
     this.timeout = 5; // seconds
     this.retryTimeout = 3; // seconds
+    this.cacheExpiration = 120; // seconds
   }
 
   // Sanitizes the endpoint
   validateEndpoint() {
-    if (typeof this.endpoint !== "string") {
-      throw new Error(
-        `Expected endpoint to be a string: ${typeof this.endpoint}`
-      );
-    }
-
     // Turn the endpoint into a new URL
     try {
       const url = new URL(this.endpoint);
@@ -80,12 +75,6 @@ class RequestHandler {
 
   // Validates the options of the request
   validateOptions() {
-    if (typeof this.options !== "object" || this.options === null) {
-      throw new Error(
-        `Expected options to be an object: ${typeof this.options}`
-      );
-    }
-
     if (
       this.options.body &&
       typeof this.options.body !== "string" &&
@@ -111,69 +100,70 @@ class RequestHandler {
   }
 
   // Handles the errors of the request
-  handleError(response) {
+  handleError(response, retryCount) {
     const statusCode = response.status || 500; // Default 500 code error
 
-    if (this.redirect) {
+    if (this.redirect && retryCount == this.retries - 1) {
       window.location.assign(`404?code=${statusCode}`); // Assign the 404 page with the status code
       return;
     } else { // Otherwise, throw the error
       const errorMessage = errorMessages[statusCode];
       if (!errorMessage) {
-        throw new Error(`Unknown error: ${statusCode}`);
+        throw new Error(`Unknown error: ${statusCode}: ${response}`);
       }
-      throw new Error(`${statusCode}: ${errorMessage.header}`);
+      throw new Error(`${statusCode} ${errorMessage.header}: ${response}`);
     }
   }
 
   // Makes the fetch request
   async makeRequest() {
-    // Create the abortions
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), this.timeout * 1000);
-
-    // Create the retry delays
-    const retryDelay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
     const endpointUrl = this.validateEndpoint();
     this.validateOptions();
 
     for (let i = 0; i < this.retries; i++) {
       try {
-        // If the response has been taken in the past, return the previous response
+        // Check for previous responses
         if (cache.has(endpointUrl)) {
           const {response, timestamp} = cache.get(endpointUrl);
-          const cahceExpirationTime = 60 * 1000;
+          const cacheExpirationTime = this.cacheExpiration * 1000;
 
-          if (Date.now() - timestamp < cahceExpirationTime) { // Return the previous response if it is recent
-            return {response, ok: true};
-          } else { // Otherwise, delete the cache
-            cache.delete(endpointUrl);
+          if (Date.now() - timestamp < cacheExpirationTime) {
+            return {response, ok: true}; // Return the cached response
+          } else {
+            cache.delete(endpointUrl); // Delete stale responses
           }
         }
 
-        // Fetch reqeust with abortion controller
+        // Fetch reqeust with abort controller
         const response = await fetch(endpointUrl, {...this.options, signal: controller.signal});
-        clearTimeout(timeoutId); // Clear the timeout once the response has been completed.
+        clearTimeout(timeoutId); // Clear the timeout aftre request
 
         if (response.ok) {
           // Don't json parse if there is no response
           const jsonResponse = response.status == 204 ? null : await response.json();
 
-          cache.set(endpointUrl, {response: jsonResponse, ok: true});
+          cache.set(endpointUrl, {response: jsonResponse, ok: true}); // Cache successful responses
           return {response: jsonResponse, ok: true};
         }
 
-        throw this.handleError(response);
+        throw this.handleError(response, i);
       } catch(error) {
-        // If it's under the amount of retries, redo the request
         if (i == this.retries - 1) return {response: error, ok: false};
-        await retryDelay(this.retryTimeout * 1000);
+        await new Promise(resolve => setTimeout(resolve, this.retryTimeout * 1000));
       }
     }
   }
 }
-
+/**
+ * 
+ * @param {string} endpoint 
+ * @param {object} options 
+ * @param {boolean} redirect 
+ * @returns 
+ */
 export const request = (endpoint, options, redirect = false) => {
   const handler = new RequestHandler(endpoint, options, redirect);
   return handler.makeRequest();

@@ -214,6 +214,7 @@ const displayGenres = async () => {
 // Load all the user's public games by the given user ID
 export const loadUserGames = async (newUser) => {
   const gameDownloads = document.getElementById("game-downloads");
+  const userGamesElement = document.getElementById("user-games");
 
   const myHeaders = new Headers({ "Content-Type": "application/json" });
 
@@ -229,20 +230,19 @@ export const loadUserGames = async (newUser) => {
   );
 
   if (userGamesRequest.ok) {
-    const downloads = userGamesRequest.response.reduce(
+    const userGames = userGamesRequest.response;
+
+    userGames.length > 0 ? displayGames(userGamesElement, userGamesElement, userGames ) : displayErrorForGames(userGamesElement, "None");
+
+    const downloads = userGames.reduce(
       (acc, game) => acc + game.downloads,
       0
     );
     gameDownloads.textContent = downloads.toString();
-    displayGames(
-      document.getElementById("user-games"),
-      document.getElementById("user-games"),
-      userGamesRequest.response
-    );
   } else {
     displayErrorForGames(
-      document.getElementById("user-games"),
-      userGamesRequest.response
+      userGamesElement,
+      userGames
     );
   }
 };
@@ -250,6 +250,7 @@ export const loadUserGames = async (newUser) => {
 // Display all the user's games by the current user session ID
 export const loadDashboard = async () => {
   const myHeaders = new Headers({ "Content-Type": "application/json" });
+  const dashboardElement = document.getElementById("dashboard-market");
 
   const developerGameOptions = {
     method: "GET",
@@ -259,18 +260,17 @@ export const loadDashboard = async () => {
   const userGamesRequest = await request(
     `${endpoints.user.list_games}${user.id}`,
     developerGameOptions,
-    true
+    false
   );
 
   if (userGamesRequest.ok) {
-    displayGames(
-      document.getElementById("dashboard-market"),
-      document.getElementById("dashboard-market"),
-      userGamesRequest.response
-    );
+    const userGames = userGamesRequest.response;
+
+    userGames.length > 0 ? displayGames(dashboardElement, dashboardElement, userGames) : displayErrorForGames(dashboardElement, "None");
+    
   } else {
     displayErrorForGames(
-      document.getElementById("dashboard-market"),
+      dashboardElement,
       userGamesRequest.response
     );
   }
@@ -296,13 +296,13 @@ export const loadGenreSearchGames = async () => {
       method: "POST",
       headers: myHeaders,
       body: JSON.stringify({ perPage, page: 1 }),
-    }, true
+    }, false
   );
 
   if (result.ok) {
     const resultItems = result.response.games;
 
-    displayGames(genreListElement, genreListCategory, resultItems);
+    resultItems.length > 0 ? displayGames(genreListElement, genreListCategory, resultItems) : displayErrorForGames(genreListCategory, "None");
     resultsLabel.textContent = `(${resultItems.length} result${
       resultItems.length !== 1 ? "s" : ""
     })`;
@@ -337,7 +337,7 @@ export const loadSearchGames = async() => {
   if (result.ok) {
     const resultItems = result.response.games;
 
-    displayGames(searchListElement, searchListCategory, resultItems);
+    resultItems.length > 0 ? displayGames(searchListElement, searchListCategory, resultItems) : displayErrorForGames(searchListElement, "None");
     resultsLabel.textContent = `(${resultItems.length} result${
       resultItems.length !== 1 ? "s" : ""
     })`;
@@ -359,7 +359,7 @@ const loadGames = async () => {
       headers: myHeaders,
       body: JSON.stringify({ perPage, page: 1 }),
     },
-    true
+    false
   );
 
   if (rawGames.ok) {
