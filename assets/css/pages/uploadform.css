@@ -1,14 +1,16 @@
 .upload-game {
   display: flex;
+  
   flex-direction: column;
   align-items: center;
 }
 
 .main-upload-form,
 .extra-upload-form,
-.upload-game-conclusion {
+.upload-game-conclusion,
+.advanced-upload-form {
   width: 50%;
-  margin: 0 2rem;
+  margin: 1.5rem 0;
   padding: 2rem;
   border-radius: 1rem;
   background-color: #222222;
@@ -19,19 +21,41 @@
 
 .main-upload-form:hover,
 .extra-upload-form:hover,
+.advanced-upload-form:hover,
 .upload-game-conclusion:hover {
   transform: scale(1.015);
 }
 
+.extra-upload-form,
+.main-upload-form {
+  display: flex;
+  overflow: auto;
+  justify-content: space-between;
+}
+
+.game-features-form,
+.main-form {
+  flex: 1;
+  margin-right: 10px;
+}
+
+.game-platforms-form,
+.pricing-form {
+  flex: 1;
+  margin-left: 10px;
+}
+
 .main-upload-form h1,
 .extra-upload-form h1,
-.upload-game-conclusion h1 {
+.upload-game-conclusion h1,
+.advanced-upload-form h1 {
   text-align: center;
   color: white;
   margin: 1rem;
 }
 .extra-upload-form div,
 .main-upload-form div,
+.advanced-upload-form div,
 .upload-game-conclusion div {
   color: white;
   margin: 0.25rem;
@@ -39,6 +63,15 @@
 
 .upload-game-conclusion label,
 .extra-upload-form label,
+.advanced-upload-form label,
 .main-upload-form label {
   margin-right: 0.25rem;
+  display: inline-block;
+  width: fit-content;
+}
+
+.title-label,
+.game-setting-feature {
+  display: inline-block;
+  width: fit-content;
 }

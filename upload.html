@@ -54,201 +54,209 @@
 		<div class="content">
 			<div class="container">
 				<form class="upload-game" id="upload-game">
+					<div class="advanced-upload-form"><h1>Upload a Game</h1></div>
 					<div class="main-upload-form">
-						<h1>Main</h1>
-						<div class="game-setting">
-							<div class="title-label">Title:</div>
-							<div class="game-setting-feature">
-								<input type="text" class="text-box" id="title" placeholder="Game Title." value="My new project!" autocorrect="on" maxlength="40" minlength="1" required/>
+						<div class="main-form">
+							<h1>Main</h1>
+							<div class="game-setting">
+								<div class="title-label">Title:</div>
+								<div class="game-setting-feature">
+									<input type="text" class="text-box" id="title" placeholder="Game Title." value="My new project!" autocorrect="on" maxlength="40" minlength="1" required/>
+								</div>
+							</div>
+							<div class="game-setting">
+								<div class="title-label">Summary:</div>
+								<div class="game-setting-feature">
+									<input type="text" class="text-box" id="summary" placeholder="Game Summary." value="What's best about your project?" autocorrect="on" maxlength="100" minlength="1" required/>
+								</div>
+							</div>
+							<div class="game-setting">
+								<div class="title-label">Thumbnail:</div>
+								<div class="game-setting-feature">
+									<input type="file" id="thumbnail" class="upload-box" accept="image/jpeg, image/png" required/>
+								</div>
+							</div>
+							<div class="game-setting">
+								<div class="title-label">File:</div>
+								<div class="game-setting-feature">
+									<input type="file" id="download-file" class="upload-box" accept=".exe, .zip, .apk, .ipa" required/>
+								</div>
 							</div>
 						</div>
-						<div class="game-setting">
-							<div class="title-label">Summary:</div>
-							<div class="game-setting-feature">
-								<input type="text" class="text-box" id="summary" placeholder="Game Summary." value="What's best about your project?" autocorrect="on" maxlength="100" minlength="1" required/>
+						<div class="pricing-form">
+							<h1>Pricing</h1>
+							<div class="game-setting">
+								<div class="title-label" id="price-label">Price ($):</div>
+								<div class="game-setting-feature">
+									<input type="text" class="text-box" id="price" pattern="[0-9]*" placeholder="0" value="0"/>
+								</div>
 							</div>
-						</div>
-						<div class="game-setting">
-							<div class="title-label">Thumbnail:</div>
-							<div class="game-setting-feature">
-								<input type="file" id="thumbnail" class="upload-box" accept="image/jpeg, image/png" required/>
+							<div class="game-setting">
+								<div class="title-label">Currency:</div>
+								<div class="game-setting-feature">
+									<select class="game-sort" id="currency-sort">
+										<option value="usd">USD</option>
+										<option value="eur">EUR</option>
+										<option value="gbp">GBP</option>
+										<option value="cad">CAD</option>
+									</select>
+								</div>
 							</div>
-						</div>
-						<div class="game-setting">
-							<div class="title-label">Game:</div>
-							<div class="game-setting-feature">
-								<input type="file" id="download-file" class="upload-box" accept=".exe, .zip, .apk, .ipa" required/>
-							</div>
-						</div>
-						<div class="game-setting">
-							<div class="title-label" id="price-label">Price ($):</div>
-							<div class="game-setting-feature">
-								<input type="text" class="text-box" id="price" pattern="[0-9]*" placeholder="0" value="0"/>
-							</div>
-						</div>
-						<div class="game-setting">
-							<div class="title-label">Currency:</div>
-							<div class="game-setting-feature">
-								<select class="game-sort" id="currency-sort">
-									<option value="usd">USD</option>
-									<option value="eur">EUR</option>
-									<option value="gbp">GBP</option>
-									<option value="cad">CAD</option>
-								</select>
-							</div>
-						</div>
-						<div class="game-setting">
-							<div class="title-label">Free:</div>
-							<div class="game-setting-feature">
-								<label class="cl-checkbox">
-									<input type="checkbox" value="1" id="isfree">
-									<span class="cl-checkbox-box"></span>
-								</label>
-							</div>
-						</div>
-					</div>
-					<div class="extra-upload-form">
-						<h1>Game Features</h1>
-						<div class="game-setting">
-							<div class="title-label">Single-player:</div>
-							<div class="game-setting-feature">
-								<label class="cl-checkbox">
-									<input type="checkbox" value="1" id="single-player">
-									<span class="cl-checkbox-box"></span>
-								</label>
-							</div>
-						</div>
-						<div class="game-setting">
-							<div class="title-label">Multi-player:</div>
-							<div class="game-setting-feature">
-								<label class="cl-checkbox">
-									<input type="checkbox" value="1" id="multi-player">
-									<span class="cl-checkbox-box"></span>
-								</label>
-							</div>
-						</div>
-						<div class="game-setting">
-							<div class="title-label">Co-op:</div>
-							<div class="game-setting-feature">
-								<label class="cl-checkbox">
-									<input type="checkbox" value="1" id="co-op">
-									<span class="cl-checkbox-box"></span>
-								</label>
-							</div>
-						</div>
-						<div class="game-setting">
-							<div class="title-label">Achievements:</div>
-							<div class="game-setting-feature">
-								<label class="cl-checkbox">
-									<input type="checkbox" value="1" id="achievements">
-									<span class="cl-checkbox-box"></span>
-								</label>
-							</div>
-						</div>
-						<div class="game-setting">
-							<div class="title-label">Controller Support:</div>
-							<div class="game-setting-feature">
-								<label class="cl-checkbox">
-									<input type="checkbox" value="1" id="controller-support">
-									<span class="cl-checkbox-box"></span>
-								</label>
-							</div>
-						</div>
-						<div class="game-setting">
-							<div class="title-label">VR Support:</div>
-							<div class="game-setting-feature">
-								<label class="cl-checkbox">
-									<input type="checkbox" value="1" id="vr-support">
-									<span class="cl-checkbox-box"></span>
-								</label>
-							</div>
-						</div>
-						<div class="game-setting">
-							<div class="title-label">Saves:</div>
-							<div class="game-setting-feature">
-								<label class="cl-checkbox">
-									<input type="checkbox" value="1" id="saves">
-									<span class="cl-checkbox-box"></span>
-								</label>
+							<div class="game-setting">
+								<div class="title-label">Free:</div>
+								<div class="game-setting-feature">
+									<label class="cl-checkbox">
+										<input type="checkbox" value="1" id="isfree">
+										<span class="cl-checkbox-box"></span>
+									</label>
+								</div>
 							</div>
 						</div>
 					</div>
 					<div class="extra-upload-form">
-						<h1>Platforms</h1>
-						<div class="game-setting">
-							<div class="title-label">Windows:</div>
-							<div class="game-setting-feature">
-								<label class="cl-checkbox">
-									<input type="checkbox" value="1" id="windows">
-									<span class="cl-checkbox-box"></span>
-								</label>
+						<div class="game-features-form">
+							<h1>Available Features</h1>
+							<div class="game-setting">
+								<div class="title-label">Single-player:</div>
+								<div class="game-setting-feature">
+									<label class="cl-checkbox">
+										<input type="checkbox" value="1" id="single-player">
+										<span class="cl-checkbox-box"></span>
+									</label>
+								</div>
+							</div>
+							<div class="game-setting">
+								<div class="title-label">Multi-player:</div>
+								<div class="game-setting-feature">
+									<label class="cl-checkbox">
+										<input type="checkbox" value="1" id="multi-player">
+										<span class="cl-checkbox-box"></span>
+									</label>
+								</div>
+							</div>
+							<div class="game-setting">
+								<div class="title-label">Co-op:</div>
+								<div class="game-setting-feature">
+									<label class="cl-checkbox">
+										<input type="checkbox" value="1" id="co-op">
+										<span class="cl-checkbox-box"></span>
+									</label>
+								</div>
+							</div>
+							<div class="game-setting">
+								<div class="title-label">Achievements:</div>
+								<div class="game-setting-feature">
+									<label class="cl-checkbox">
+										<input type="checkbox" value="1" id="achievements">
+										<span class="cl-checkbox-box"></span>
+									</label>
+								</div>
+							</div>
+							<div class="game-setting">
+								<div class="title-label">Controller Support:</div>
+								<div class="game-setting-feature">
+									<label class="cl-checkbox">
+										<input type="checkbox" value="1" id="controller-support">
+										<span class="cl-checkbox-box"></span>
+									</label>
+								</div>
+							</div>
+							<div class="game-setting">
+								<div class="title-label">VR Support:</div>
+								<div class="game-setting-feature">
+									<label class="cl-checkbox">
+										<input type="checkbox" value="1" id="vr-support">
+										<span class="cl-checkbox-box"></span>
+									</label>
+								</div>
+							</div>
+							<div class="game-setting">
+								<div class="title-label">Saves:</div>
+								<div class="game-setting-feature">
+									<label class="cl-checkbox">
+										<input type="checkbox" value="1" id="saves">
+										<span class="cl-checkbox-box"></span>
+									</label>
+								</div>
 							</div>
 						</div>
-						<div class="game-setting">
-							<div class="title-label">Mac:</div>
-							<div class="game-setting-feature">
-								<label class="cl-checkbox">
-									<input type="checkbox" value="1" id="mac">
-									<span class="cl-checkbox-box"></span>
-								</label>
+						<div class="game-platforms-form">
+							<h1>Available Platforms</h1>
+							<div class="game-setting">
+								<div class="title-label">Windows:</div>
+								<div class="game-setting-feature">
+									<label class="cl-checkbox">
+										<input type="checkbox" value="1" id="windows">
+										<span class="cl-checkbox-box"></span>
+									</label>
+								</div>
 							</div>
-						</div>
-						<div class="game-setting">
-							<div class="title-label">Linux:</div>
-							<div class="game-setting-feature">
-								<label class="cl-checkbox">
-									<input type="checkbox" value="1" id="linux">
-									<span class="cl-checkbox-box"></span>
-								</label>
+							<div class="game-setting">
+								<div class="title-label">Mac:</div>
+								<div class="game-setting-feature">
+									<label class="cl-checkbox">
+										<input type="checkbox" value="1" id="mac">
+										<span class="cl-checkbox-box"></span>
+									</label>
+								</div>
 							</div>
-						</div>
-						<div class="game-setting">
-							<div class="title-label">Android:</div>
-							<div class="game-setting-feature">
-								<label class="cl-checkbox">
-									<input type="checkbox" value="1" id="android">
-									<span class="cl-checkbox-box"></span>
-								</label>
+							<div class="game-setting">
+								<div class="title-label">Linux:</div>
+								<div class="game-setting-feature">
+									<label class="cl-checkbox">
+										<input type="checkbox" value="1" id="linux">
+										<span class="cl-checkbox-box"></span>
+									</label>
+								</div>
 							</div>
-						</div>
-						<div class="game-setting">
-							<div class="title-label">IOS:</div>
-							<div class="game-setting-feature">
-								<label class="cl-checkbox">
-									<input type="checkbox" value="1" id="ios">
-									<span class="cl-checkbox-box"></span>
-								</label>
+							<div class="game-setting">
+								<div class="title-label">Android:</div>
+								<div class="game-setting-feature">
+									<label class="cl-checkbox">
+										<input type="checkbox" value="1" id="android">
+										<span class="cl-checkbox-box"></span>
+									</label>
+								</div>
 							</div>
-						</div>
-						<div class="game-setting">
-							<div class="title-label">XBOX:</div>
-							<div class="game-setting-feature">
-								<label class="cl-checkbox">
-									<input type="checkbox" value="1" id="xbox">
-									<span class="cl-checkbox-box"></span>
-								</label>
+							<div class="game-setting">
+								<div class="title-label">IOS:</div>
+								<div class="game-setting-feature">
+									<label class="cl-checkbox">
+										<input type="checkbox" value="1" id="ios">
+										<span class="cl-checkbox-box"></span>
+									</label>
+								</div>
 							</div>
-						</div>
-						<div class="game-setting">
-							<div class="title-label">PlayStation:</div>
-							<div class="game-setting-feature">
-								<label class="cl-checkbox">
-									<input type="checkbox" value="1" id="playstation">
-									<span class="cl-checkbox-box"></span>
-								</label>
+							<div class="game-setting">
+								<div class="title-label">XBOX:</div>
+								<div class="game-setting-feature">
+									<label class="cl-checkbox">
+										<input type="checkbox" value="1" id="xbox">
+										<span class="cl-checkbox-box"></span>
+									</label>
+								</div>
 							</div>
-						</div>
-						<div class="game-setting">
-							<div class="title-label">Oculus:</div>
-							<div class="game-setting-feature">
-								<label class="cl-checkbox">
-									<input type="checkbox" value="1" id="oculus">
-									<span class="cl-checkbox-box"></span>
-								</label>
+							<div class="game-setting">
+								<div class="title-label">PlayStation:</div>
+								<div class="game-setting-feature">
+									<label class="cl-checkbox">
+										<input type="checkbox" value="1" id="playstation">
+										<span class="cl-checkbox-box"></span>
+									</label>
+								</div>
+							</div>
+							<div class="game-setting">
+								<div class="title-label">Oculus:</div>
+								<div class="game-setting-feature">
+									<label class="cl-checkbox">
+										<input type="checkbox" value="1" id="oculus">
+										<span class="cl-checkbox-box"></span>
+									</label>
+								</div>
 							</div>
 						</div>
 					</div>
-					<div class="extra-upload-form">
+					<div class="advanced-upload-form">
 						<h1>Advanced</h1>
 						<div class="game-setting">
 							<div class="title-label">Genre:</div>

@@ -18,7 +18,6 @@ const game_art = document.getElementById("art-style-input");
 const download_file = document.getElementById("download-file");
 const game_description = document.getElementById("description");
 
-const user = await fetchUser();
 const uploader_name = user.name, uploader_id = user.id;
 
 const maxDescriptionCharacters = 4000;
