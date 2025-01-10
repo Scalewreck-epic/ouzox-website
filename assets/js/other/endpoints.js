@@ -19,6 +19,10 @@ export const endpoints = {
     signup: `${DATABASE_URL}/auth/signup`,
     login: `${DATABASE_URL}/auth/login`,
   },
+  checkout: {
+    create: `${CHECKOUT_BASE_URL}/sessions/create`,
+    retrieve: `${CHECKOUT_BASE_URL}/sessions/retrieve` // + session ID
+  },
   price: {
     create: `${PRICES_BASE_URL}/prices/create`,
     edit: `${PRICES_BASE_URL}/prices/edit/`, // + price ID
