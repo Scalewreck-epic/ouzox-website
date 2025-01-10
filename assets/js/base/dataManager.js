@@ -359,7 +359,7 @@ const loadGames = async () => {
       headers: myHeaders,
       body: JSON.stringify({ perPage, page: 1 }),
     },
-    false
+    true
   );
 
   if (rawGames.ok) {

@@ -60,7 +60,7 @@ const on_submit = async (event) => {
       thumbnail: game_thumbnail.files[0],
       file: download_file.files[0],
       price: game_price.value,
-      currency: document.getElementById("currency-sort").value,
+      currency: document.getElementById("currency-sort").value.toUpperCase(),
       isFree: game_isfree.checked,
       genre: genre_input.value.toUpperCase(),
       artStyle: game_art.value.toUpperCase(),
