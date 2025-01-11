@@ -1,5 +1,6 @@
 .upload-button,
-.login-button {
+.login-button,
+.game-download-button {
   font-size: 1.25rem;
   font-family: "Secular One", sans-serif;
   background: #4d0101;
