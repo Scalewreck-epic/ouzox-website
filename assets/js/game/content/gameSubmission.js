@@ -17,7 +17,7 @@ const game_art = document.getElementById("art-style-input");
 const download_file = document.getElementById("download-file");
 const game_description = document.getElementById("description");
 
-//const uploader_name = user.name, uploader_id = user.id;
+const uploader_name = user.name, uploader_id = user.id;
 
 const maxDescriptionCharacters = 4000;
 const minPrice = 1, maxPrice = 5000;
@@ -86,7 +86,7 @@ const on_submit = async (event) => {
       headers: myHeaders,
       body: JSON.stringify({
         name: inputs.title,
-        description: inputs.description,
+        description: DOMPurify.sanitize(inputs.description),
         developer: { username: uploader_name, id: uploader_id },
         summary: inputs.summary,
         genre: inputs.genre,
@@ -129,7 +129,7 @@ const newFilePreview = (file) => {
   fileCardDiv.appendChild(fileSizeDiv);
 
   filesList.appendChild(fileCardDiv);
-}
+};
 
 // Update the preview image
 const update_thumbnail = () => {
@@ -176,7 +176,7 @@ const update_price = () => {
 const update_genre = () => genre_input.value = genre_input.value.toUpperCase();
 const update_art = () => game_art.value = game_art.value.toUpperCase();
 const update_description = () => {
-  const text = DOMPurify.sanitize(game_description.innerHTML);
+  const text = game_description.innerHTML;
   game_description.innerHTML = text.length > maxDescriptionCharacters ? text.substr(0, maxDescriptionCharacters) : text;
 };
 

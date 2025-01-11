@@ -12,6 +12,7 @@ const gameIdParam = urlParams.get("g"); // the game ID
 const maxDescriptionCharacters = 4000;
 const minPrice = 1, maxPrice = 5000;
 const maxFileSize = 5; // GB
+const files = [];
 
 // New class for the current game
 class GameData {
@@ -77,6 +78,34 @@ const fetchGameData = async (gameId) => {
   };
 
   return new GameData(rawGameData, createdFormattedDate, updatedFormattedDate, datestodays);
+};
+
+const format_file_size = (fileSizeInBytes) => {
+  const units = ["KB", "MB", "GB"];
+  const size = fileSizeInBytes < 1024 ? fileSizeInBytes : 
+               fileSizeInBytes < Math.pow(1024, 2) ? fileSizeInBytes / 1024 : 
+               fileSizeInBytes / Math.pow(1024, 2);
+  return `${size.toFixed(2)} ${units[Math.floor(Math.log(size) / Math.log(1024))]}`;
+};
+
+const newFilePreview = (file) => {
+  const filesList = document.getElementById("files-list");
+
+  const fileCardDiv = document.createElement("div");
+  const fileNameDiv = document.createElement("div");
+  const fileSizeDiv = document.createElement("div");
+
+  fileCardDiv.classList.add("file-card");
+  fileNameDiv.classList.add("file-name");
+  fileSizeDiv.classList.add("file-size");
+
+  fileNameDiv.textContent = file.name;
+  fileSizeDiv.textContent = format_file_size(file.size);
+
+  fileCardDiv.appendChild(fileNameDiv);
+  fileCardDiv.appendChild(fileSizeDiv);
+
+  filesList.appendChild(fileCardDiv);
 };
 
 // Request to update the game
@@ -260,7 +289,9 @@ const gameHandler = async (gameId) => {
       gameArtStyleInput: document.getElementById("art-style-input"),
       gameAgeInput: document.getElementById("age-sort"),
       gameThumbnailInput: document.getElementById("thumbnail-input"),
+      gameFileInput: document.getElementById("download-file"),
       gamePriceInput: document.getElementById("price"),
+      gameIsFreeInput: document.getElementById("isfree"),
       gameCurrencyInput: document.getElementById("currency-sort"),
       commitChangesButton: document.createElement("button"),
       deleteButton: document.createElement("button"),
@@ -421,8 +452,12 @@ const gameHandler = async (gameId) => {
     });
 
     editableElements.gamePriceInput.addEventListener("input", () => {
-      editableElements.gamePriceInput.value = Math.min(maxPrice, Math.max(minPrice, editableElements.gamePriceInput.value.replace(/[^0-9]/g, "")));
+      editableElements.gamePriceInput.value = editableElements.gameIsFreeInput.checked ? 0 : Math.min(maxPrice, Math.max(minPrice, editableElements.gamePriceInput.value.replace(/[^0-9]/g, "")));
     });
+
+    editableElements.gameIsFreeInput.addEventListener("change", () => {
+      editableElements.gamePriceInput.value = editableElements.gameIsFreeInput.checked ? 0 : Math.min(maxPrice, Math.max(minPrice, editableElements.gamePriceInput.value.replace(/[^0-9]/g, "")));
+    })
 
     editableElements.gameTitleInput.addEventListener("input", () => {
       elements.gameTitle.textContent = editableElements.gameTitleInput.value;
@@ -432,8 +467,43 @@ const gameHandler = async (gameId) => {
       elements.gameSummary.textContent = editableElements.gameSummaryInput.value;
     });
 
+    editableElements.gameThumbnailInput.addEventListener("change", () => {
+      const reader = new FileReader();
+      const file = editableElements.gameThumbnailInput.files[0];
+      reader.onload = () => document.getElementById("previewImage").src = reader.result;
+      if (file) reader.readAsDataURL(file);
+    });
+
+    editableElements.gameFileInput.addEventListener("change", () => {
+      const file = editableElements.gameFileInput.files[0];
+      const isAboveMaxSize = file.size / Math.pow(1024, 3) > maxFileSize;
+      const isAlreadyUploaded = files.findIndex((fle) => fle.name == file.name) !== -1;
+    
+      const fileErrorLabel = document.getElementById("file-error-label")
+    
+      let canUpload = true;
+    
+      if (isAboveMaxSize) {
+        fileErrorLabel.textContent = "File size too large, select a file under 5GB";
+        canUpload = false;
+      };
+    
+      if (isAlreadyUploaded) {
+        fileErrorLabel.textContent = "File already uploaded, select a different file";
+        canUpload = false;
+      };
+    
+      if (canUpload) {
+        files.push(file);
+        newFilePreview(file);
+        fileErrorLabel.textContent = "";
+      };
+    
+      editableElements.gameFileInput.value = "";
+    });
+
     elements.gameDesc.addEventListener("input", () => {
-      const text = DOMPurify.sanitize(elements.gameDesc.innerHTML);
+      const text = game_description.innerHTML;
       elements.gameDesc.innerHTML = text.length > maxDescriptionCharacters ? text.substr(0, maxDescriptionCharacters) : text;
     });
 
@@ -508,8 +578,6 @@ const gameHandler = async (gameId) => {
         ...shadowCheckboxes.map(checkbox => ({ Name: checkbox.Name, Enabled: checkbox.Enabled ? "true" : "false"})),
       ];
 
-      const isFree = editableElements.gamePriceInput.value <= 0; // Identify if the game is free by the given price
-
       const updateGameOptionsBody = {
         name: editableElements.gameTitleInput.value,
         description: DOMPurify.sanitize(elements.gameDesc.innerHTML), // Sanitize the description
@@ -520,7 +588,7 @@ const gameHandler = async (gameId) => {
         active: isPublic.Enabled ? "true" : "false",
         pricing: {
           price: editableElements.gamePriceInput.value,
-          free: isFree,
+          free: editableElements.gameIsFreeInput.checked ? "true" : "false",
           currency: editableElements.gameCurrencyInput.value,
         },
         uploader_id: user.id,

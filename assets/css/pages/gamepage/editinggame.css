@@ -36,3 +36,11 @@
   justify-content: flex-end;
   align-items: center;
 }
+
+.preview-image {
+  width: 18rem;
+  height: 14rem;
+  margin: 1rem;
+  border: 0.25rem dashed;
+  border-radius: 1rem;
+}

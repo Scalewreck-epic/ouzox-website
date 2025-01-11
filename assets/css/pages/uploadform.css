@@ -5,10 +5,16 @@
   align-items: center;
 }
 
+.editing-game {
+  color: white;
+}
+
 .main-upload-form,
 .extra-upload-form,
 .upload-game-conclusion,
-.advanced-upload-form {
+.advanced-upload-form,
+.advanced-editing-form,
+.main-editing-form {
   width: 50%;
   margin: 1.5rem 0;
   padding: 2rem;
@@ -19,15 +25,23 @@
   transition: transform 0.3s ease;
 }
 
+.main-editing-form,
+.advanced-editing-form {
+  width: 100%;
+}
+
 .main-upload-form:hover,
 .extra-upload-form:hover,
 .advanced-upload-form:hover,
-.upload-game-conclusion:hover {
+.upload-game-conclusion:hover,
+.main-editing-form:hover,
+.advanced-editing-form:hover {
   transform: scale(1.015);
 }
 
 .extra-upload-form,
-.main-upload-form {
+.main-upload-form,
+.main-editing-form {
   display: flex;
   overflow: auto;
   justify-content: space-between;
@@ -48,7 +62,9 @@
 .main-upload-form h1,
 .extra-upload-form h1,
 .upload-game-conclusion h1,
-.advanced-upload-form h1 {
+.advanced-upload-form h1,
+.advanced-editing-form h1,
+.main-editing-form h1 {
   text-align: center;
   color: white;
   margin: 1rem;
@@ -56,14 +72,18 @@
 .extra-upload-form div,
 .main-upload-form div,
 .advanced-upload-form div,
-.upload-game-conclusion div {
+.upload-game-conclusion div
+.advanced-editing-form div,
+.main-editing-form div {
   margin: 0.25rem;
 }
 
 .upload-game-conclusion label,
 .extra-upload-form label,
 .advanced-upload-form label,
-.main-upload-form label {
+.main-upload-form label
+.advanced-editing-form label,
+.main-editing-form label {
   margin-right: 0.25rem;
   display: inline-block;
   width: fit-content;

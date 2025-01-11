@@ -11,7 +11,9 @@
 		<link rel="stylesheet" href="assets/css/pages/gamepage/gamedownload.css">
 		<link rel="stylesheet" href="assets/css/pages/gamepage/gamestats.css">
 		<link rel="stylesheet" href="assets/css/pages/gamepage/gametext.css">
-		<link rel="stylesheet" href="assets/css/pages/gamepage/editinggame.css">
+		<!--<link rel="stylesheet" href="assets/css/pages/gamepage/editinggame.css">-->
+		<link rel="stylesheet" href="assets/css/pages/uploadform.css">
+		<link rel="stylesheet" href="assets/css/util/other/labels.css">
 		<link rel="stylesheet" href="assets/css/util/other/checkbox.css">
 		<link rel="stylesheet" href="assets/css/util/other/fontbuttons.css">
 		<link rel="stylesheet" href="assets/css/util/other/textbox.css">
@@ -132,11 +134,166 @@
 			</div>
 			<div class="user-divider"></div>
 			<div class="editing-game" id="game-editing">
-				<div class="left-column-gameediting">
-					<h1>Game editing</h1>
-					<div class="game-settings" id="game-settings">
+				<div class="main-editing-form">
+					<div class="game-features-form">
+						<h1>Text editing</h1>
+						<div class="game-settings">
+							<div class="game-setting">
+								<div class="title-label">Text:</div>
+								<div class="text-options">
+									<button class="bold-button" id="bold" type="button">B</button>
+									<button class="italic-button" id="italic" type="button">I</button>
+									<button class="underline-button" id="underline" type="button">U</button>
+									<button class="link-button" id="link" type="button">L</button>
+									<button class="strike-through-button" id="strikethrough" type="button">ST</button>
+									<button class="order-list-button" id="insertUnorderedList" type="button">OL</button>
+									<button class="number-list-button" id="insertOrderedList" type="button">1L</button>
+								</div>
+							</div>
+							<div class="game-setting">
+								<div class="title-label">Align:</div>
+								<div class="align-options">
+									<button class="description-button" id="Left" type="button">L</button>
+									<button class="description-button" id="Right" type="button">R</button>
+									<button class="description-button" id="Center" type="button">C</button>
+								</div>
+							</div>
+							<div class="game-setting">
+								<div class="title-label">Header:</div>
+								<div class="header-options">
+									<button class="description-button" id="1" type="button">1</button>
+									<button class="description-button" id="2" type="button">2</button>
+									<button class="description-button" id="3" type="button">3</button>
+									<button class="description-button" id="4" type="button">4</button>
+								</div>
+							</div>
+							<div class="game-setting">
+								<div class="title-label">Font:</div>
+								<select class="game-sort" id="font-sort">
+									<option class="sans-button" value="sans">Sans</option>
+									<option class="sans-serif-button" value="sans-serif">Sans Serif</option>
+									<option class="lato-button" value="lato">Lato</option>
+									<option class="anonymous-pro-button" value="Anonymous Pro">Anonymous Pro</option>
+									<option class="roboto-button" value="Roboto">Roboto</option>
+									<option class="montserrat-button" value="Montserrat">Montserrat</option>
+									<option class="poppins-button" value="Poppins">Poppins</option>
+									<option class="raleway-button" value="Raleway">Raleway</option>
+									<option class="nunito-button" value="nunito">Nuinto</option>
+								</select>
+							</div>
+						</div>
+					</div>
+					<div class="game-platforms-form">
+						<h1>Page editing</h1>
 						<div class="game-setting">
-							<div class="game-setting-title">Public:</div>
+							<div class="title-label">BG2 Alpha:</div>
+							<input type="range" id="bg2-alpha" min="0" max="100" step="1">
+						</div>
+						<div class="game-setting">
+							<div class="title-label">Description BG Alpha:</div>
+							<input type="range" id="description-bg-alpha" min="0" max="100" step="1">
+						</div>
+						<div class="game-setting">
+							<div class="title-label">Game Details BG Alpha:</div>
+							<input type="range" id="game-details-bg-alpha" min="0" max="100" step="1">
+						</div>
+						<div class="game-setting">
+							<div class="title-label">Game Details Outline:</div>
+							<div class="game-setting-feature">
+								<label class="cl-checkbox">
+									<input type="checkbox" checked id="game-details-outline-checkbox">
+									<span class="cl-checkbox-box"></span>
+								</label>
+							</div>
+						</div>
+						<div class="game-setting">
+							<div class="title-label">Game Details Shadow:</div>
+							<div class="game-setting-feature">
+								<label class="cl-checkbox">
+									<input type="checkbox" checked id="game-details-shadow-checkbox">
+									<span class="cl-checkbox-box"></span>
+								</label>
+							</div>
+						</div>
+						<div class="game-setting">
+							<div class="title-label">Description Outline:</div>
+							<div class="game-setting-feature">
+								<label class="cl-checkbox">
+									<input type="checkbox" checked id="description-outline-checkbox">
+									<span class="cl-checkbox-box"></span>
+								</label>
+							</div>
+						</div>
+						<div class="game-setting">
+							<div class="title-label">Description Shadow:</div>
+							<div class="game-setting-feature">
+								<label class="cl-checkbox">
+									<input type="checkbox" checked id="description-shadow-checkbox">
+									<span class="cl-checkbox-box"></span>
+								</label>
+							</div>
+						</div>
+						<div class="game-setting">
+							<div class="title-label">BG2 Outline:</div>
+							<div class="game-setting-feature">
+								<label class="cl-checkbox">
+									<input type="checkbox" checked id="bg2-outline-checkbox">
+									<span class="cl-checkbox-box"></span>
+								</label>
+							</div>
+						</div>
+						<div class="game-setting">
+							<div class="title-label">BG2 Shadow:</div>
+							<div class="game-setting-feature">
+								<label class="cl-checkbox">
+									<input type="checkbox" checked id="bg2-shadow-checkbox">
+									<span class="cl-checkbox-box"></span>
+								</label>
+							</div>
+						</div>
+						<div class="game-setting">
+							<div class="title-label">BG Color:</div>
+							<input class="game-download-input" type="color" id="bg-color"></input>
+						</div>
+						<div class="game-setting">
+							<div class="title-label">BG2 Color:</div>
+							<input class="game-download-input" type="color" id="bg2-color"></input>
+						</div>
+						<div class="game-setting">
+							<div class="title-label">Title Color:</div>
+							<input class="game-download-input" type="color" id="title-color"></input>
+						</div>
+						<div class="game-setting">
+							<div class="title-label">Description Color:</div>
+							<input class="game-download-input" type="color" id="description-color"></input>
+						</div>
+						<div class="game-setting">
+							<div class="title-label">Description BG Color:</div>
+							<input class="game-download-input" type="color" id="description-bg-color"></input>
+						</div>
+						<div class="game-setting">
+							<div class="title-label">Game Details Color:</div>
+							<input class="game-download-input" type="color" id="game-details-color"></input>
+						</div>
+						<div class="game-setting">
+							<div class="title-label">Game Details BG Color:</div>
+							<input class="game-download-input" type="color" id="game-details-bg-color"></input>
+						</div>
+						<div class="game-setting">
+							<div class="title-label">Button BG Color:</div>
+							<input class="game-download-input" type="color" id="button-bg-color"></input>
+						</div>
+						<div class="game-setting">
+							<div class="title-label">Button Text Color:</div>
+							<input class="game-download-input" type="color" id="button-text-color"></input>
+						</div>
+					</div>
+				</div>
+				<div class="main-editing-form">
+					<div class="main-form">
+						<h1>Main</h1>
+						<div class="game-setting">
+							<div class="title-label">Public:</div>
 							<div class="game-setting-feature">
 								<label class="cl-checkbox">
 									<input type="checkbox" value="1" id="public">
@@ -145,59 +302,35 @@
 							</div>
 						</div>
 						<div class="game-setting">
-							<div class="game-setting-title">Title:</div>
+							<div class="title-label">Title:</div>
 							<div class="game-setting-feature">
-								<input type="text" class="text-box" id="title-input" placeholder="Game Title" autocorrect="on" maxlength="40" minlength="1" required/>
+								<input type="text" class="text-box" id="title-input" placeholder="Game Title." value="My new project!" autocorrect="on" maxlength="40" minlength="1" required/>
 							</div>
 						</div>
 						<div class="game-setting">
-							<div class="game-setting-title">Summary:</div>
+							<div class="title-label">Summary:</div>
 							<div class="game-setting-feature">
-								<input type="text" class="text-box" id="summary-input" placeholder="Game Summary" autocorrect="on" maxlength="100" minlength="1" required/>
+								<input type="text" class="text-box" id="summary-input" placeholder="Game Summary." value="What's best about your project?" autocorrect="on" maxlength="100" minlength="1" required/>
 							</div>
 						</div>
 						<div class="game-setting">
-							<div class="game-setting-title">Game:</div>
-							<div class="game-setting-feature">
-								<input type="file" id="download-file" class="upload-box" accept=".exe, .zip, .apk, .ipa" required/>
-							</div>
-						</div>
-						<div class="game-setting">
-							<div class="game-setting-title">Thumbnail:</div>
+							<div class="title-label">Thumbnail:</div>
 							<div class="game-setting-feature">
 								<input type="file" id="thumbnail-input" class="upload-box" accept="image/jpeg, image/png" required/>
 							</div>
+							<img id="previewImage" class="preview-image"/>
 						</div>
+					</div>
+					<div class="pricing-form">
+						<h1>Pricing</h1>
 						<div class="game-setting">
-							<div class="game-setting-title">Genre:</div>
-							<div class="game-setting-feature">
-								<input type="text" class="text-box" id="genre-input" placeholder="Genre" autocorrect="on" maxlength="120" minlength="1" required/>
-							</div>
-						</div>
-						<div class="game-setting">
-							<div class="game-setting-title">Art Style:</div>
-							<div class="game-setting-feature">
-								<input type="text" class="text-box" id="art-style-input" placeholder="Art" autocorrect="on" maxlength="120" minlength="1" required/>
-							</div>
-						</div>
-						<div class="game-setting">
-							<div class="game-setting-title">Age Rating:</div>
-							<div class="game-setting-feature">
-								<select class="game-sort" id="age-sort">
-									<option value="everyone">Everyone</option>
-									<option value="teen">Teen</option>
-									<option value="mature">Mature</option>
-								</select>
-							</div>
-						</div>
-						<div class="game-setting">
-							<div class="game-setting-title">Price:</div>
+							<div class="title-label" id="price-label">Price ($):</div>
 							<div class="game-setting-feature">
 								<input type="text" class="text-box" id="price" pattern="[0-9]*" placeholder="0" value="0"/>
 							</div>
 						</div>
 						<div class="game-setting">
-							<div class="game-setting-title">Currency:</div>
+							<div class="title-label">Currency:</div>
 							<div class="game-setting-feature">
 								<select class="game-sort" id="currency-sort">
 									<option value="usd">USD</option>
@@ -207,9 +340,64 @@
 								</select>
 							</div>
 						</div>
-						<h1>Game Features</h1>
 						<div class="game-setting">
-							<div class="game-setting-title">Single-player:</div>
+							<div class="title-label">Free:</div>
+							<div class="game-setting-feature">
+								<label class="cl-checkbox">
+									<input type="checkbox" value="1" id="isfree">
+									<span class="cl-checkbox-box"></span>
+								</label>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="advanced-editing-form">
+					<h1>Advanced</h1>
+					<div class="game-setting">
+						<div class="title-label">Genre:</div>
+						<div class="game-setting-feature">
+							<input type="text" class="text-box" id="genre-input" placeholder="Genre" value="ALL" autocorrect="on" maxlength="80" minlength="1" required/>
+						</div>
+					</div>
+					<div class="game-setting">
+						<div class="title-label">Art Style:</div>
+						<div class="game-setting-feature">
+							<input type="text" class="text-box" id="art-style-input" placeholder="Art" value="REALISTIC" autocorrect="on" maxlength="80" minlength="1" required/>
+						</div>
+					</div>
+					<div class="game-setting">
+						<div class="title-label">Age Rating:</div>
+						<div class="game-setting-feature">
+							<select class="game-sort" id="age-sort">
+								<option value="everyone">Everyone</option>
+								<option value="teen">Teen</option>
+								<option value="mature">Mature</option>
+							</select>
+						</div>
+					</div>
+				</div>
+				<div class="main-editing-form">
+					<div class="main-form">
+						<h1>Uploads</h1>
+						<div class="game-setting">
+							<div class="title-label">Upload Files:</div>
+							<div class="game-setting-feature">
+								<input type="file" id="download-file" class="upload-box" accept=".exe, .zip, .apk, .ipa"/>
+							</div>
+							<div class="error-label" id="file-error-label"></div>
+						</div>
+					</div>
+					<div class="pricing-form">
+						<h1>Files</h1>
+						<div class="files" id="files-list">
+						</div>
+					</div>
+				</div>
+				<div class="main-editing-form">
+					<div class="game-features-form">
+						<h1>Available Features</h1>
+						<div class="game-setting">
+							<div class="title-label">Single-player:</div>
 							<div class="game-setting-feature">
 								<label class="cl-checkbox">
 									<input type="checkbox" value="1" id="singleplayer">
@@ -218,7 +406,7 @@
 							</div>
 						</div>
 						<div class="game-setting">
-							<div class="game-setting-title">Multi-player:</div>
+							<div class="title-label">Multi-player:</div>
 							<div class="game-setting-feature">
 								<label class="cl-checkbox">
 									<input type="checkbox" value="1" id="multiplayer">
@@ -227,7 +415,7 @@
 							</div>
 						</div>
 						<div class="game-setting">
-							<div class="game-setting-title">Co-op:</div>
+							<div class="title-label">Co-op:</div>
 							<div class="game-setting-feature">
 								<label class="cl-checkbox">
 									<input type="checkbox" value="1" id="coop">
@@ -236,7 +424,7 @@
 							</div>
 						</div>
 						<div class="game-setting">
-							<div class="game-setting-title">Achievements:</div>
+							<div class="title-label">Achievements:</div>
 							<div class="game-setting-feature">
 								<label class="cl-checkbox">
 									<input type="checkbox" value="1" id="achievements">
@@ -245,7 +433,7 @@
 							</div>
 						</div>
 						<div class="game-setting">
-							<div class="game-setting-title">Controller Support:</div>
+							<div class="title-label">Controller Support:</div>
 							<div class="game-setting-feature">
 								<label class="cl-checkbox">
 									<input type="checkbox" value="1" id="controllersupport">
@@ -254,7 +442,7 @@
 							</div>
 						</div>
 						<div class="game-setting">
-							<div class="game-setting-title">VR Support:</div>
+							<div class="title-label">VR Support:</div>
 							<div class="game-setting-feature">
 								<label class="cl-checkbox">
 									<input type="checkbox" value="1" id="vrsupport">
@@ -263,7 +451,7 @@
 							</div>
 						</div>
 						<div class="game-setting">
-							<div class="game-setting-title">Saves:</div>
+							<div class="title-label">Saves:</div>
 							<div class="game-setting-feature">
 								<label class="cl-checkbox">
 									<input type="checkbox" value="1" id="saves">
@@ -271,10 +459,11 @@
 								</label>
 							</div>
 						</div>
-						
-						<h1>Platforms</h1>
+					</div>
+					<div class="game-platforms-form">
+						<h1>Available Platforms</h1>
 						<div class="game-setting">
-							<div class="game-setting-title">Windows:</div>
+							<div class="title-label">Windows:</div>
 							<div class="game-setting-feature">
 								<label class="cl-checkbox">
 									<input type="checkbox" value="1" id="windows">
@@ -283,7 +472,7 @@
 							</div>
 						</div>
 						<div class="game-setting">
-							<div class="game-setting-title">Mac:</div>
+							<div class="title-label">Mac:</div>
 							<div class="game-setting-feature">
 								<label class="cl-checkbox">
 									<input type="checkbox" value="1" id="mac">
@@ -292,7 +481,7 @@
 							</div>
 						</div>
 						<div class="game-setting">
-							<div class="game-setting-title">Linux:</div>
+							<div class="title-label">Linux:</div>
 							<div class="game-setting-feature">
 								<label class="cl-checkbox">
 									<input type="checkbox" value="1" id="linux">
@@ -301,7 +490,7 @@
 							</div>
 						</div>
 						<div class="game-setting">
-							<div class="game-setting-title">Android:</div>
+							<div class="title-label">Android:</div>
 							<div class="game-setting-feature">
 								<label class="cl-checkbox">
 									<input type="checkbox" value="1" id="android">
@@ -310,7 +499,7 @@
 							</div>
 						</div>
 						<div class="game-setting">
-							<div class="game-setting-title">IOS:</div>
+							<div class="title-label">IOS:</div>
 							<div class="game-setting-feature">
 								<label class="cl-checkbox">
 									<input type="checkbox" value="1" id="ios">
@@ -319,7 +508,7 @@
 							</div>
 						</div>
 						<div class="game-setting">
-							<div class="game-setting-title">XBOX:</div>
+							<div class="title-label">XBOX:</div>
 							<div class="game-setting-feature">
 								<label class="cl-checkbox">
 									<input type="checkbox" value="1" id="xbox">
@@ -328,7 +517,7 @@
 							</div>
 						</div>
 						<div class="game-setting">
-							<div class="game-setting-title">PlayStation:</div>
+							<div class="title-label">PlayStation:</div>
 							<div class="game-setting-feature">
 								<label class="cl-checkbox">
 									<input type="checkbox" value="1" id="playstation">
@@ -337,7 +526,7 @@
 							</div>
 						</div>
 						<div class="game-setting">
-							<div class="game-setting-title">Oculus:</div>
+							<div class="title-label">Oculus:</div>
 							<div class="game-setting-feature">
 								<label class="cl-checkbox">
 									<input type="checkbox" value="1" id="oculus">
@@ -345,158 +534,6 @@
 								</label>
 							</div>
 						</div>
-					</div>
-				</div>
-				<div class="column-border"></div>
-				<div class="right-column-gameediting">
-					<h1>Text editing</h1>
-					<div class="game-settings">
-						<div class="game-setting">
-							<div class="game-setting-title">Text:</div>
-							<div class="text-options">
-								<button class="bold-button" id="bold" type="button">B</button>
-								<button class="italic-button" id="italic" type="button">I</button>
-								<button class="underline-button" id="underline" type="button">U</button>
-								<button class="link-button" id="link" type="button">L</button>
-								<button class="strike-through-button" id="strikethrough" type="button">ST</button>
-								<button class="order-list-button" id="insertUnorderedList" type="button">OL</button>
-								<button class="number-list-button" id="insertOrderedList" type="button">1L</button>
-							</div>
-						</div>
-						<div class="game-setting">
-							<div class="game-setting-title">Align:</div>
-							<div class="align-options">
-								<button class="description-button" id="Left" type="button">L</button>
-								<button class="description-button" id="Right" type="button">R</button>
-								<button class="description-button" id="Center" type="button">C</button>
-							</div>
-						</div>
-						<div class="game-setting">
-							<div class="game-setting-title">Header:</div>
-							<div class="header-options">
-								<button class="description-button" id="1" type="button">1</button>
-								<button class="description-button" id="2" type="button">2</button>
-								<button class="description-button" id="3" type="button">3</button>
-								<button class="description-button" id="4" type="button">4</button>
-							</div>
-						</div>
-						<div class="game-setting">
-							<div class="game-setting-title">Font:</div>
-							<select class="game-sort" id="font-sort">
-								<option class="sans-button" value="sans">Sans</option>
-								<option class="sans-serif-button" value="sans-serif">Sans Serif</option>
-								<option class="lato-button" value="lato">Lato</option>
-								<option class="anonymous-pro-button" value="Anonymous Pro">Anonymous Pro</option>
-								<option class="roboto-button" value="Roboto">Roboto</option>
-								<option class="montserrat-button" value="Montserrat">Montserrat</option>
-								<option class="poppins-button" value="Poppins">Poppins</option>
-								<option class="raleway-button" value="Raleway">Raleway</option>
-								<option class="nunito-button" value="nunito">Nuinto</option>
-							</select>
-						</div>
-					</div>
-					<h1>Page editing</h1>
-					<div class="game-setting">
-						<div class="game-setting-title">BG2 Alpha:</div>
-						<input type="range" id="bg2-alpha" min="0" max="100" value="100" step="1">
-					</div>
-					<div class="game-setting">
-						<div class="game-setting-title">Description BG Alpha:</div>
-						<input type="range" id="description-bg-alpha" min="0" max="100" value="100" step="1">
-					</div>
-					<div class="game-setting">
-						<div class="game-setting-title">Game Details BG Alpha:</div>
-						<input type="range" id="game-details-bg-alpha" min="0" max="100" value="100" step="1">
-					</div>
-					<div class="game-setting">
-						<div class="game-setting-title">Game Details Outline:</div>
-						<div class="game-setting-feature">
-							<label class="cl-checkbox">
-								<input type="checkbox" checked id="game-details-outline-checkbox">
-								<span class="cl-checkbox-box"></span>
-							</label>
-						</div>
-					</div>
-					<div class="game-setting">
-						<div class="game-setting-title">Game Details Shadow:</div>
-						<div class="game-setting-feature">
-							<label class="cl-checkbox">
-								<input type="checkbox" checked id="game-details-shadow-checkbox">
-								<span class="cl-checkbox-box"></span>
-							</label>
-						</div>
-					</div>
-					<div class="game-setting">
-						<div class="game-setting-title">Description Outline:</div>
-						<div class="game-setting-feature">
-							<label class="cl-checkbox">
-								<input type="checkbox" checked id="description-outline-checkbox">
-								<span class="cl-checkbox-box"></span>
-							</label>
-						</div>
-					</div>
-					<div class="game-setting">
-						<div class="game-setting-title">Description Shadow:</div>
-						<div class="game-setting-feature">
-							<label class="cl-checkbox">
-								<input type="checkbox" checked id="description-shadow-checkbox">
-								<span class="cl-checkbox-box"></span>
-							</label>
-						</div>
-					</div>
-					<div class="game-setting">
-						<div class="game-setting-title">BG2 Outline:</div>
-						<div class="game-setting-feature">
-							<label class="cl-checkbox">
-								<input type="checkbox" checked id="bg2-outline-checkbox">
-								<span class="cl-checkbox-box"></span>
-							</label>
-						</div>
-					</div>
-					<div class="game-setting">
-						<div class="game-setting-title">BG2 Shadow:</div>
-						<div class="game-setting-feature">
-							<label class="cl-checkbox">
-								<input type="checkbox" checked id="bg2-shadow-checkbox">
-								<span class="cl-checkbox-box"></span>
-							</label>
-						</div>
-					</div>
-					<div class="game-setting">
-						<div class="game-setting-title">BG Color:</div>
-						<input class="game-download-input" type="color" id="bg-color"></input>
-					</div>
-					<div class="game-setting">
-						<div class="game-setting-title">BG2 Color:</div>
-						<input class="game-download-input" type="color" id="bg2-color"></input>
-					</div>
-					<div class="game-setting">
-						<div class="game-setting-title">Title Color:</div>
-						<input class="game-download-input" type="color" id="title-color"></input>
-					</div>
-					<div class="game-setting">
-						<div class="game-setting-title">Description Color:</div>
-						<input class="game-download-input" type="color" id="description-color"></input>
-					</div>
-					<div class="game-setting">
-						<div class="game-setting-title">Description BG Color:</div>
-						<input class="game-download-input" type="color" id="description-bg-color"></input>
-					</div>
-					<div class="game-setting">
-						<div class="game-setting-title">Game Details Color:</div>
-						<input class="game-download-input" type="color" id="game-details-color"></input>
-					</div>
-					<div class="game-setting">
-						<div class="game-setting-title">Game Details BG Color:</div>
-						<input class="game-download-input" type="color" id="game-details-bg-color"></input>
-					</div>
-					<div class="game-setting">
-						<div class="game-setting-title">Button BG Color:</div>
-						<input class="game-download-input" type="color" id="button-bg-color"></input>
-					</div>
-					<div class="game-setting">
-						<div class="game-setting-title">Button Text Color:</div>
-						<input class="game-download-input" type="color" id="button-text-color"></input>
 					</div>
 				</div>
 			</div>
