@@ -1,34 +1,31 @@
-# Welcome to Ouzox!
+# Ouzox
 
-Ouzox is an open-source platform where independent game developers can showcase their creations and gamers can discover unique gaming experiences.
+A gaming distribution platform.
 
-We're passionate about fostering a community that celebrates creativity, diversity, and collaboration within the indie game development scene.
+Learn more [here](https://ouzox-games.gitbook.io/ouzox-docs)
 
-# Why is Ouzox Open-source?
+## Free, open source and community-driven
 
-Ouzox wants the community to contribute to the code to find possible vulnerabilities and suggest better code for the platform.
+Ouzox allows users to contribute to the platform by being open-source under the MIT license. This allows users to suggest and improve features and report bugs and security vulnerabilities.
 
-Additionally, developers can learn from the platform's code and how it works.
+### Pull Requests
 
-## Documentation:
+If you want to create a pull request, it should follow these rules:
 
-Find detailed information on how to use Ouzox, contribute to the codebase, and more in our [documentation](https://ouzox-games.gitbook.io/ouzox-docs/)
+- One Feature/Fix per Pull Request: Keep pull requests focused on a single feature, bug fix, or improvement. This makes it easier to review and understand the changes.
+- Keep Pull Requests Small: Aim for smaller, more manageable pull requests. This makes them easier to review and reduces the likelihood of conflicts.
+- Clear and Concise Title: Use a descriptive title that summarizes the changes made in the pull request.
+- Detailed Description: Provide a comprehensive description of the changes made, the motivation behind them, and any relevant context. Include screenshots if applicable, especially for visual changes.
+- Reference Related Issues: If the pull request addresses an existing issue, reference it in the description.
+- Follow Coding Style: Adhere to the established coding style guidelines for the project. This ensures consistency and readability across the codebase.
+- Write Tests: Include appropriate unit or integration tests for the code changes. This helps to prevent regressions and ensure the code works as expected.
 
-## Contributing:
+### Reporting Bugs and Security Vulnerabilities
 
-We welcome contributions! Whether you're a developer, designer, or just a passionate gamer, there are many ways to get involved.
+You can report bugs on the GitHub repository's issue tracker. Make sure that you write the issue in as much detail as possible.
 
-To contribute, you can suggest features, report bugs, report security vulnerabilities, and more.
+If you found a security vulnerability on Ouzox, please do not create an issue in the issue tracker. Please [report it here](https://forms.gle/ZVefbwJP6zqQeGf28).
 
-## Security:
+### Feature requests or improvements
 
-We take security seriously. Read our security policy for details on how we protect the platform and its users
-
-## License:
-
-Ouzox is licensed under the MIT License. See the LICENSE file for details
-
-## Community:
-
-Join us on [Discord](https://discord.gg/ksS2RXe26v)! Connect with fellow developers and gamers, share ideas, and get involved in the community!
-Here, you can suggest features, report bugs, and vote on new updates. Don't miss out!
+Don't post feature requests in the issue tracker. Join us on [Discord](https://discord.gg/ksS2RXe26v) and you can request features there.
