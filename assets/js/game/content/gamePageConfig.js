@@ -24,7 +24,6 @@ class GameData {
       genre: rawGameData.genre,
       summary: rawGameData.summary,
       artstyle: rawGameData.artstyle,
-      filesize: rawGameData.size,
       agerating: rawGameData.age_rating,
       icon: new URL(rawGameData.icon.url),
       paymentLink: rawGameData.paymentLink ? new URL(rawGameData.paymentLink) : null,
@@ -147,7 +146,6 @@ const gameHandler = async (gameId) => {
   elements.gameSummary.textContent = gameData.summary;
   elements.gameArt.textContent = gameData.artstyle.toUpperCase();
   elements.gameAge.textContent = gameData.agerating.toUpperCase();
-  elements.gameSize.textContent = gameData.filesize;
 
   elements.icon.setAttribute("href", gameData.icon.href);
   elements.developerName.setAttribute("href", `user?id=${gameData.developer.id}`);

@@ -75,12 +75,7 @@
 								<div class="game-setting-feature">
 									<input type="file" id="thumbnail" class="upload-box" accept="image/jpeg, image/png" required/>
 								</div>
-							</div>
-							<div class="game-setting">
-								<div class="title-label">File:</div>
-								<div class="game-setting-feature">
-									<input type="file" id="download-file" class="upload-box" accept=".exe, .zip, .apk, .ipa" required/>
-								</div>
+								<img id="previewImage" class="preview-image"/>
 							</div>
 						</div>
 						<div class="pricing-form">
@@ -110,6 +105,23 @@
 										<span class="cl-checkbox-box"></span>
 									</label>
 								</div>
+							</div>
+						</div>
+					</div>
+					<div class="extra-upload-form">
+						<div class="main-form">
+							<h1>Uploads</h1>
+							<div class="game-setting">
+								<div class="title-label">Upload Files:</div>
+								<div class="game-setting-feature">
+									<input type="file" id="download-file" class="upload-box" accept=".exe, .zip, .apk, .ipa"/>
+								</div>
+								<div class="error-label" id="file-error-label"></div>
+							</div>
+						</div>
+						<div class="pricing-form">
+							<h1>Files</h1>
+							<div class="files" id="files-list">
 							</div>
 						</div>
 					</div>
@@ -315,9 +327,6 @@
 						<div class="columns">
 							<div class="left-column">
 								<div contenteditable="true" class="game-description" id="description"></div>
-							</div>
-							<div class="right-column">
-								<img id="previewImage" class="product-image-preview"/><br>
 							</div>
 						</div>
 						<button class="upload-button" id="upload-button" type="submit">Publish Game</button>

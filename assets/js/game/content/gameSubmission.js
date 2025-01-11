@@ -8,7 +8,6 @@ const myHeaders = new Headers({ "Content-Type": "application/json" });
 const uploadGame = document.getElementById("upload-game");
 const uploadButton = document.getElementById("upload-button");
 const error_label = document.getElementById("error-label");
-const game_file_warn = document.getElementById("game-file-warn");
 
 const game_thumbnail = document.getElementById("thumbnail");
 const game_price = document.getElementById("price");
@@ -18,11 +17,12 @@ const game_art = document.getElementById("art-style-input");
 const download_file = document.getElementById("download-file");
 const game_description = document.getElementById("description");
 
-const uploader_name = user.name, uploader_id = user.id;
+//const uploader_name = user.name, uploader_id = user.id;
 
 const maxDescriptionCharacters = 4000;
 const minPrice = 1, maxPrice = 5000;
 const maxFileSize = 5; // GB
+const files = []
 
 // Format the file size
 const format_file_size = (fileSizeInBytes) => {
@@ -47,18 +47,22 @@ const on_submit = async (event) => {
 
   uploadButton.disabled = true; // Prevent spamming the button
 
+  let canUpload = true;
+
+  if (files.length == 0) {
+    canUpload = false;
+  }
+
   // Make sure everything is up to date
   update_thumbnail();
-  update_file_size();
   update_price();
 
-  if (!game_file_warn.innerText) { // If there is no file error
+  if (canUpload) {
     const inputs = {
       title: document.getElementById("title").value,
       description: DOMPurify.sanitize(game_description.innerHTML), // Sanitize the description
       summary: document.getElementById("summary").value,
       thumbnail: game_thumbnail.files[0],
-      file: download_file.files[0],
       price: game_price.value,
       currency: document.getElementById("currency-sort").value.toUpperCase(),
       isFree: game_isfree.checked,
@@ -68,16 +72,14 @@ const on_submit = async (event) => {
       features: ["single-player", "multi-player", "co-op", "achievements", "controller-support", "saves"].map(id => document.getElementById(id).checked),
       platforms: ["windows", "mac", "linux", "android", "ios", "xbox", "playstation", "oculus"].map(id => document.getElementById(id).checked),
     };
-
-    const file_size = format_file_size(inputs.file.size);
-
+  
     // Wait for the image to load
     const imageURI = await new Promise(resolve => {
       const reader = new FileReader();
       reader.onloadend = () => resolve(reader.result);
       reader.readAsDataURL(inputs.thumbnail);
     });
-
+  
     error_label.textContent = "Creating game page...";
     const gameRequestOptions = {
       method: "POST",
@@ -86,12 +88,10 @@ const on_submit = async (event) => {
         name: inputs.title,
         description: inputs.description,
         developer: { username: uploader_name, id: uploader_id },
-        file_name: inputs.file.name,
         summary: inputs.summary,
         genre: inputs.genre,
         artstyle: inputs.artStyle,
         age_rating: inputs.ageRating,
-        size: Math.round(file_size),
         defaultColors: true,
         icon: imageURI,
         pricing: { price: inputs.price, free: inputs.isFree, currency: inputs.currency },
@@ -99,19 +99,37 @@ const on_submit = async (event) => {
         features: Object.fromEntries(inputs.features.map((enabled, index) => [inputs.features[index], enabled])),
       }),
     };
-
+  
     const game = await upload_game(gameRequestOptions);
     if (game.ok) {
         window.location.assign("dashboard");
     } else {
         error_label.textContent = game.response;
     }
-  } else {
-    error_label.textContent = "Incomplete form.";
   }
 
   uploadButton.disabled = false;
 };
+
+const newFilePreview = (file) => {
+  const filesList = document.getElementById("files-list");
+
+  const fileCardDiv = document.createElement("div");
+  const fileNameDiv = document.createElement("div");
+  const fileSizeDiv = document.createElement("div");
+
+  fileCardDiv.classList.add("file-card");
+  fileNameDiv.classList.add("file-name");
+  fileSizeDiv.classList.add("file-size");
+
+  fileNameDiv.textContent = file.name;
+  fileSizeDiv.textContent = format_file_size(file.size);
+
+  fileCardDiv.appendChild(fileNameDiv);
+  fileCardDiv.appendChild(fileSizeDiv);
+
+  filesList.appendChild(fileCardDiv);
+}
 
 // Update the preview image
 const update_thumbnail = () => {
@@ -122,14 +140,32 @@ const update_thumbnail = () => {
 };
 
 // Update the file size
-const update_file_size = () => {
+const updateFiles = () => {
   const file = download_file.files[0];
-  if (file.size / Math.pow(1024, 3) > maxFileSize) {
-    game_file_warn.textContent = "File size too large, select a file under 5GB";
-    download_file.value = "";
-  } else {
-    game_file_warn.textContent = "";
-  }
+  const isAboveMaxSize = file.size / Math.pow(1024, 3) > maxFileSize;
+  const isAlreadyUploaded = files.findIndex((fle) => fle.name == file.name) !== -1;
+
+  const fileErrorLabel = document.getElementById("file-error-label")
+
+  let canUpload = true;
+
+  if (isAboveMaxSize) {
+    fileErrorLabel.textContent = "File size too large, select a file under 5GB";
+    canUpload = false;
+  };
+
+  if (isAlreadyUploaded) {
+    fileErrorLabel.textContent = "File already uploaded, select a different file";
+    canUpload = false;
+  };
+
+  if (canUpload) {
+    files.push(file);
+    newFilePreview(file);
+    fileErrorLabel.textContent = "";
+  };
+
+  download_file.value = "";
 };
 
 // Update the prices
@@ -148,7 +184,7 @@ game_description.addEventListener("input", update_description);
 game_price.addEventListener("input", update_price);
 genre_input.addEventListener("input", update_genre);
 game_art.addEventListener("input", update_art);
-download_file.addEventListener("change", update_file_size);
+download_file.addEventListener("change", updateFiles);
 game_thumbnail.addEventListener("change", update_thumbnail);
 game_isfree.addEventListener("change", update_price);
 uploadGame.addEventListener("submit", async () => await on_submit());

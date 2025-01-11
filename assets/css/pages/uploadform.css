@@ -57,7 +57,6 @@
 .main-upload-form div,
 .advanced-upload-form div,
 .upload-game-conclusion div {
-  color: white;
   margin: 0.25rem;
 }
 
@@ -74,4 +73,38 @@
 .game-setting-feature {
   display: inline-block;
   width: fit-content;
+}
+
+.preview-image {
+  width: 18rem;
+  height: 14rem;
+  margin: 1rem;
+  border: 0.25rem dashed;
+  border-radius: 1rem;
+}
+
+.file-card {
+  display: flex;
+  width: 100%;
+  background-color: #000000;
+  color: white;
+  border-radius: 1rem;
+  border: 1px dashed;
+  padding: 0.25rem;
+}
+
+.file-name {
+  flex: 1;
+  margin-left: 1rem;
+}
+
+.file-size {
+  flex: 1;
+  text-align: end;
+  margin-right: 1rem;
+}
+
+.error-label {
+  font-size: medium;
+  color: red;
 }

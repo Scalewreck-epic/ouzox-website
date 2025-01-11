@@ -100,7 +100,7 @@ class RequestHandler {
   }
 
   // Handles the errors of the request
-  handleError(response, retryCount) {
+  async handleError(response, retryCount) {
     const statusCode = response.status || 500; // Default 500 code error
 
     if (this.redirect && retryCount == this.retries - 1) {
@@ -109,9 +109,9 @@ class RequestHandler {
     } else { // Otherwise, throw the error
       const errorMessage = errorMessages[statusCode];
       if (!errorMessage) {
-        throw new Error(`Unknown error: ${statusCode}: ${response}`);
+        throw new Error(`Unknown error: ${statusCode}`);
       }
-      throw new Error(`${statusCode} ${errorMessage.header}: ${response}`);
+      throw new Error(`${statusCode}: ${errorMessage.header}`);
     }
   }
 
