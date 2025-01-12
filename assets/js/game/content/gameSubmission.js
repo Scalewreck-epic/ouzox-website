@@ -118,7 +118,7 @@ const on_submit = async () => {
         artstyle: inputs.artStyle,
         age_rating: inputs.ageRating,
         defaultColors: true,
-        icon: imageURI,
+        icon_upload: imageURI,
         pricing: {
           price: inputs.price,
           free: inputs.isFree,

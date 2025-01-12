@@ -795,7 +795,7 @@ const gameHandler = async (gameId) => {
         const readFile = () => {
           return new Promise((resolve, reject) => {
             reader.onload = (event) => {
-              updateGameOptionsBody.icon = event.target.result;
+              updateGameOptionsBody.icon_upload = event.target.result;
               resolve();
             };
             reader.onerror = () => {
