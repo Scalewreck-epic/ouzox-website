@@ -17,8 +17,8 @@ const game_art = document.getElementById("art-style-input");
 const download_file = document.getElementById("download-file");
 const game_description = document.getElementById("description");
 
-const uploader_name = user.name,
-  uploader_id = user.id;
+const uploader_name = user.name
+const uploader_id = user.id;
 
 const maxDescriptionCharacters = 4000;
 const minPrice = 1,
@@ -45,7 +45,7 @@ const upload_game = async (gameRequestOptions) => {
   const result = await request(
     endpoints.game.create,
     gameRequestOptions,
-    true
+    false
   );
   return result;
 };
@@ -163,6 +163,12 @@ const newFilePreview = (file) => {
 
   fileNameDiv.textContent = file.name;
   fileSizeDiv.textContent = format_file_size(file.size);
+
+  fileCardDiv.addEventListener("click", () => {
+    const fileIndex = files.findIndex((fle) => fle.name == file.name);
+    fileCardDiv.remove();
+    files.splice(fileIndex, 1);
+  })
 
   fileCardDiv.appendChild(fileNameDiv);
   fileCardDiv.appendChild(fileSizeDiv);
