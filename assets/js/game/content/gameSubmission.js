@@ -59,6 +59,12 @@ const on_submit = async () => {
   let canUpload = true;
 
   if (files.length == 0) {
+    error_label.textContent = "No game file detected";
+    canUpload = false;
+  }
+
+  if (game_description.innerHTML.length == 0) {
+    error_label.textContent = "No description detected";
     canUpload = false;
   }
 

@@ -514,6 +514,14 @@ const gameHandler = async (gameId) => {
       },
     ];
 
+    const thumbnailChanged = () => {
+      const reader = new FileReader();
+      const file = editableElements.gameThumbnailInput.files[0];
+      reader.onload = () =>
+        (document.getElementById("previewImage").src = reader.result);
+      if (file) reader.readAsDataURL(file);
+    };
+
     elements.gameDesc.contentEditable = true;
 
     editableElements.commitChangesButton.setAttribute(
@@ -530,6 +538,9 @@ const gameHandler = async (gameId) => {
     editableElements.gameGenreInput.value = gameData.genre.toUpperCase();
     editableElements.gameArtStyleInput.value = gameData.artstyle.toUpperCase();
     editableElements.gamePriceInput.value = gameData.pricing.price;
+    editableElements.gameIsFreeInput.checked = gameData.pricing.free;
+    editableElements.gameThumbnailInput.value = gameData.icon;
+    thumbnailChanged();
 
     Array.from(editableElements.gameAgeInput.options).forEach((option, i) => {
       if (option.value === gameData.agerating.toLowerCase()) {
@@ -590,13 +601,7 @@ const gameHandler = async (gameId) => {
         editableElements.gameSummaryInput.value;
     });
 
-    editableElements.gameThumbnailInput.addEventListener("change", () => {
-      const reader = new FileReader();
-      const file = editableElements.gameThumbnailInput.files[0];
-      reader.onload = () =>
-        (document.getElementById("previewImage").src = reader.result);
-      if (file) reader.readAsDataURL(file);
-    });
+    editableElements.gameThumbnailInput.addEventListener("change", thumbnailChanged);
 
     editableElements.gameFileInput.addEventListener("change", () => {
       const file = editableElements.gameFileInput.files[0];
@@ -750,11 +755,12 @@ const gameHandler = async (gameId) => {
         genre: editableElements.gameGenreInput.value,
         artstyle: editableElements.gameArtStyleInput.value,
         age_rating: editableElements.gameAgeInput.value,
+        icon_upload: editableElements.gameThumbnailInput.files[0],
         active: isPublic.Enabled ? "true" : "false",
         pricing: {
           price: editableElements.gamePriceInput.value,
           free: editableElements.gameIsFreeInput.checked ? "true" : "false",
-          currency: editableElements.gameCurrencyInput.value,
+          currency: editableElements.gameCurrencyInput.value.toUpperCase(),
         },
         uploader_id: user.id,
         platforms: Object.fromEntries(
@@ -785,28 +791,6 @@ const gameHandler = async (gameId) => {
           ),
         },
       };
-
-      const image = editableElements.gameThumbnailInput.files[0];
-
-      // If the developer gave an image, send it to the server. Otherwise, don't send a null value
-      if (image) {
-        const reader = new FileReader();
-
-        const readFile = () => {
-          return new Promise((resolve, reject) => {
-            reader.onload = (event) => {
-              updateGameOptionsBody.icon_upload = event.target.result;
-              resolve();
-            };
-            reader.onerror = () => {
-              reject(error);
-            };
-            reader.readAsDataURL(image);
-          });
-        };
-
-        await readFile();
-      }
 
       await updateGame(
         {
