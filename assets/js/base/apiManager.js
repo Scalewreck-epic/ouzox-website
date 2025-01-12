@@ -106,7 +106,8 @@ class RequestHandler {
     if (this.redirect && retryCount == this.retries - 1) {
       window.location.assign(`404?code=${statusCode}`); // Assign the 404 page with the status code
       return;
-    } else { // Otherwise, throw the error
+    } else {
+      // Otherwise, throw the error
       const errorMessage = errorMessages[statusCode];
       if (!errorMessage) {
         throw new Error(`Unknown error: ${statusCode}`);
@@ -127,42 +128,48 @@ class RequestHandler {
       try {
         // Check for previous responses
         if (cache.has(endpointUrl)) {
-          const {response, timestamp} = cache.get(endpointUrl);
+          const { response, timestamp } = cache.get(endpointUrl);
           const cacheExpirationTime = this.cacheExpiration * 1000;
 
           if (Date.now() - timestamp < cacheExpirationTime) {
-            return {response, ok: true}; // Return the cached response
+            return { response, ok: true }; // Return the cached response
           } else {
             cache.delete(endpointUrl); // Delete stale responses
           }
         }
 
         // Fetch reqeust with abort controller
-        const response = await fetch(endpointUrl, {...this.options, signal: controller.signal});
+        const response = await fetch(endpointUrl, {
+          ...this.options,
+          signal: controller.signal,
+        });
         clearTimeout(timeoutId); // Clear the timeout aftre request
 
         if (response.ok) {
           // Don't json parse if there is no response
-          const jsonResponse = response.status == 204 ? null : await response.json();
+          const jsonResponse =
+            response.status == 204 ? null : await response.json();
 
-          cache.set(endpointUrl, {response: jsonResponse, ok: true}); // Cache successful responses
-          return {response: jsonResponse, ok: true};
+          cache.set(endpointUrl, { response: jsonResponse, ok: true }); // Cache successful responses
+          return { response: jsonResponse, ok: true };
         }
 
         throw this.handleError(response, i);
-      } catch(error) {
-        if (i == this.retries - 1) return {response: error, ok: false};
-        await new Promise(resolve => setTimeout(resolve, this.retryTimeout * 1000));
+      } catch (error) {
+        if (i == this.retries - 1) return { response: error, ok: false };
+        await new Promise((resolve) =>
+          setTimeout(resolve, this.retryTimeout * 1000)
+        );
       }
     }
   }
 }
 /**
- * 
- * @param {string} endpoint 
- * @param {object} options 
- * @param {boolean} redirect 
- * @returns 
+ *
+ * @param {string} endpoint
+ * @param {object} options
+ * @param {boolean} redirect
+ * @returns
  */
 export const request = (endpoint, options, redirect = false) => {
   const handler = new RequestHandler(endpoint, options, redirect);

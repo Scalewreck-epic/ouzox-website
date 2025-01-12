@@ -1,15 +1,20 @@
 // Handles loading games on load.
 
-import { fetchGames, loadSearchGames, loadGenreSearchGames, loadDashboard } from "./dataManager.js";
+import {
+  fetchGames,
+  loadSearchGames,
+  loadGenreSearchGames,
+  loadDashboard,
+} from "./dataManager.js";
 
 const pathName = window.location.pathname;
 
 if (pathName.includes("dashboard")) {
-    loadDashboard();
+  loadDashboard();
 } else if (pathName.includes("search")) {
-    loadSearchGames();
+  loadSearchGames();
 } else if (pathName.includes("category")) {
-    loadGenreSearchGames();
+  loadGenreSearchGames();
 } else {
-    fetchGames();
+  fetchGames();
 }

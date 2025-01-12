@@ -17,25 +17,36 @@ const game_art = document.getElementById("art-style-input");
 const download_file = document.getElementById("download-file");
 const game_description = document.getElementById("description");
 
-const uploader_name = user.name, uploader_id = user.id;
+const uploader_name = user.name,
+  uploader_id = user.id;
 
 const maxDescriptionCharacters = 4000;
-const minPrice = 1, maxPrice = 5000;
+const minPrice = 1,
+  maxPrice = 5000;
 const maxFileSize = 5; // GB
-const files = []
+const files = [];
 
 // Format the file size
 const format_file_size = (fileSizeInBytes) => {
   const units = ["KB", "MB", "GB"];
-  const size = fileSizeInBytes < 1024 ? fileSizeInBytes : 
-               fileSizeInBytes < Math.pow(1024, 2) ? fileSizeInBytes / 1024 : 
-               fileSizeInBytes / Math.pow(1024, 2);
-  return `${size.toFixed(2)} ${units[Math.floor(Math.log(size) / Math.log(1024))]}`;
+  const size =
+    fileSizeInBytes < 1024
+      ? fileSizeInBytes
+      : fileSizeInBytes < Math.pow(1024, 2)
+      ? fileSizeInBytes / 1024
+      : fileSizeInBytes / Math.pow(1024, 2);
+  return `${size.toFixed(2)} ${
+    units[Math.floor(Math.log(size) / Math.log(1024))]
+  }`;
 };
 
 // Request to upload the game
 const upload_game = async (gameRequestOptions) => {
-  const result = await request(endpoints.game.create_game, gameRequestOptions, true);
+  const result = await request(
+    endpoints.game.create_game,
+    gameRequestOptions,
+    true
+  );
   return result;
 };
 
@@ -67,17 +78,33 @@ const on_submit = async () => {
       genre: genre_input.value.toUpperCase(),
       artStyle: game_art.value.toUpperCase(),
       ageRating: document.getElementById("age-sort").value,
-      features: ["single-player", "multi-player", "co-op", "achievements", "controller-support", "saves"].map(id => document.getElementById(id).checked),
-      platforms: ["windows", "mac", "linux", "android", "ios", "xbox", "playstation", "oculus"].map(id => document.getElementById(id).checked),
+      features: [
+        "single-player",
+        "multi-player",
+        "co-op",
+        "achievements",
+        "controller-support",
+        "saves",
+      ].map((id) => document.getElementById(id).checked),
+      platforms: [
+        "windows",
+        "mac",
+        "linux",
+        "android",
+        "ios",
+        "xbox",
+        "playstation",
+        "oculus",
+      ].map((id) => document.getElementById(id).checked),
     };
-  
+
     // Wait for the image to load
-    const imageURI = await new Promise(resolve => {
+    const imageURI = await new Promise((resolve) => {
       const reader = new FileReader();
       reader.onloadend = () => resolve(reader.result);
       reader.readAsDataURL(inputs.thumbnail);
     });
-  
+
     error_label.textContent = "Creating game page...";
     const gameRequestOptions = {
       method: "POST",
@@ -92,17 +119,31 @@ const on_submit = async () => {
         age_rating: inputs.ageRating,
         defaultColors: true,
         icon: imageURI,
-        pricing: { price: inputs.price, free: inputs.isFree, currency: inputs.currency },
-        platforms: Object.fromEntries(inputs.platforms.map((enabled, index) => [inputs.platforms[index], enabled])),
-        features: Object.fromEntries(inputs.features.map((enabled, index) => [inputs.features[index], enabled])),
+        pricing: {
+          price: inputs.price,
+          free: inputs.isFree,
+          currency: inputs.currency,
+        },
+        platforms: Object.fromEntries(
+          inputs.platforms.map((enabled, index) => [
+            inputs.platforms[index],
+            enabled,
+          ])
+        ),
+        features: Object.fromEntries(
+          inputs.features.map((enabled, index) => [
+            inputs.features[index],
+            enabled,
+          ])
+        ),
       }),
     };
-  
+
     const game = await upload_game(gameRequestOptions);
     if (game.ok) {
-        window.location.assign("dashboard");
+      window.location.assign("dashboard");
     } else {
-        error_label.textContent = game.response;
+      error_label.textContent = game.response;
     }
   }
 
@@ -133,7 +174,8 @@ const newFilePreview = (file) => {
 const update_thumbnail = () => {
   const reader = new FileReader();
   const file = game_thumbnail.files[0];
-  reader.onload = () => document.getElementById("previewImage").src = reader.result;
+  reader.onload = () =>
+    (document.getElementById("previewImage").src = reader.result);
   if (file) reader.readAsDataURL(file);
 };
 
@@ -141,41 +183,52 @@ const update_thumbnail = () => {
 const updateFiles = () => {
   const file = download_file.files[0];
   const isAboveMaxSize = file.size / Math.pow(1024, 3) > maxFileSize;
-  const isAlreadyUploaded = files.findIndex((fle) => fle.name == file.name) !== -1;
+  const isAlreadyUploaded =
+    files.findIndex((fle) => fle.name == file.name) !== -1;
 
-  const fileErrorLabel = document.getElementById("file-error-label")
+  const fileErrorLabel = document.getElementById("file-error-label");
 
   let canUpload = true;
 
   if (isAboveMaxSize) {
     fileErrorLabel.textContent = "File size too large, select a file under 5GB";
     canUpload = false;
-  };
+  }
 
   if (isAlreadyUploaded) {
-    fileErrorLabel.textContent = "File already uploaded, select a different file";
+    fileErrorLabel.textContent =
+      "File already uploaded, select a different file";
     canUpload = false;
-  };
+  }
 
   if (canUpload) {
     files.push(file);
     newFilePreview(file);
     fileErrorLabel.textContent = "";
-  };
+  }
 
   download_file.value = "";
 };
 
 // Update the prices
 const update_price = () => {
-  game_price.value = game_isfree.checked ? 0 : Math.min(maxPrice, Math.max(minPrice, game_price.value.replace(/[^0-9]/g, "")));
+  game_price.value = game_isfree.checked
+    ? 0
+    : Math.min(
+        maxPrice,
+        Math.max(minPrice, game_price.value.replace(/[^0-9]/g, ""))
+      );
 };
 
-const update_genre = () => genre_input.value = genre_input.value.toUpperCase();
-const update_art = () => game_art.value = game_art.value.toUpperCase();
+const update_genre = () =>
+  (genre_input.value = genre_input.value.toUpperCase());
+const update_art = () => (game_art.value = game_art.value.toUpperCase());
 const update_description = () => {
   const text = game_description.innerHTML;
-  game_description.innerHTML = text.length > maxDescriptionCharacters ? text.substr(0, maxDescriptionCharacters) : text;
+  game_description.innerHTML =
+    text.length > maxDescriptionCharacters
+      ? text.substr(0, maxDescriptionCharacters)
+      : text;
 };
 
 game_description.addEventListener("input", update_description);

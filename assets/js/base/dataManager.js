@@ -70,9 +70,9 @@ class Game {
     const thousand = 1000;
 
     if (likes >= million) {
-      return `${(likes / million)}M`;
+      return `${likes / million}M`;
     } else if (likes >= thousand) {
-      return `${(likes / thousand)}K`;
+      return `${likes / thousand}K`;
     } else {
       return likes.toString();
     }
@@ -108,7 +108,9 @@ class Game {
     gameTitle.textContent = this.name;
     gameSummary.textContent = this.summary;
 
-    gamePriceText.textContent = this.free ? "FREE" : `${price} ${currency.toUpperCase()}`; // If it's free, just display the word 'FREE' otherwise, display the price and currency.
+    gamePriceText.textContent = this.free
+      ? "FREE"
+      : `${price} ${currency.toUpperCase()}`; // If it's free, just display the word 'FREE' otherwise, display the price and currency.
     gameUpvotesText.textContent = `${this.formatLikes(this.likes)}^`;
 
     gamePriceContainer.appendChild(gamePriceText);
@@ -181,9 +183,11 @@ export const displayGames = async (listElement, categoryElement, games) => {
           (genre) => genre.name === game.genre
         );
 
-        if (existingGenreIndex !== -1) { // If the genre exists, add to the counter
+        if (existingGenreIndex !== -1) {
+          // If the genre exists, add to the counter
           genres[existingGenreIndex].count++;
-        } else { // Otherwise, create a new genre
+        } else {
+          // Otherwise, create a new genre
           genres.push({
             name: game.genre,
             count: 1,
@@ -232,18 +236,14 @@ export const loadUserGames = async (newUser) => {
   if (userGamesRequest.ok) {
     const userGames = userGamesRequest.response;
 
-    userGames.length > 0 ? displayGames(userGamesElement, userGamesElement, userGames ) : displayErrorForGames(userGamesElement, "None");
+    userGames.length > 0
+      ? displayGames(userGamesElement, userGamesElement, userGames)
+      : displayErrorForGames(userGamesElement, "None");
 
-    const downloads = userGames.reduce(
-      (acc, game) => acc + game.downloads,
-      0
-    );
+    const downloads = userGames.reduce((acc, game) => acc + game.downloads, 0);
     gameDownloads.textContent = downloads.toString();
   } else {
-    displayErrorForGames(
-      userGamesElement,
-      userGames
-    );
+    displayErrorForGames(userGamesElement, userGames);
   }
 };
 
@@ -266,13 +266,11 @@ export const loadDashboard = async () => {
   if (userGamesRequest.ok) {
     const userGames = userGamesRequest.response;
 
-    userGames.length > 0 ? displayGames(dashboardElement, dashboardElement, userGames) : displayErrorForGames(dashboardElement, "None");
-    
+    userGames.length > 0
+      ? displayGames(dashboardElement, dashboardElement, userGames)
+      : displayErrorForGames(dashboardElement, "None");
   } else {
-    displayErrorForGames(
-      dashboardElement,
-      userGamesRequest.response
-    );
+    displayErrorForGames(dashboardElement, userGamesRequest.response);
   }
 };
 
@@ -282,7 +280,7 @@ export const loadGenreSearchGames = async () => {
   const genreListCategory = document.getElementById("genre-games");
   const searchLabel = document.getElementById("search-label");
   const resultsLabel = document.getElementById("results-label");
-  
+
   const categoryName = urlParams.get("n") || "";
   const myHeaders = new Headers({ "Content-Type": "application/json" });
 
@@ -296,13 +294,16 @@ export const loadGenreSearchGames = async () => {
       method: "POST",
       headers: myHeaders,
       body: JSON.stringify({ perPage, page: 1 }),
-    }, false
+    },
+    false
   );
 
   if (result.ok) {
     const resultItems = result.response.games;
 
-    resultItems.length > 0 ? displayGames(genreListElement, genreListCategory, resultItems) : displayErrorForGames(genreListCategory, "None");
+    resultItems.length > 0
+      ? displayGames(genreListElement, genreListCategory, resultItems)
+      : displayErrorForGames(genreListCategory, "None");
     resultsLabel.textContent = `(${resultItems.length} result${
       resultItems.length !== 1 ? "s" : ""
     })`;
@@ -313,7 +314,7 @@ export const loadGenreSearchGames = async () => {
 };
 
 // Load games by search query
-export const loadSearchGames = async() => {
+export const loadSearchGames = async () => {
   const searchListElement = document.getElementById("relevant-games-list");
   const searchListCategory = document.getElementById("relevant-games");
   const searchLabel = document.getElementById("search-label");
@@ -328,16 +329,22 @@ export const loadSearchGames = async() => {
   searchQueryInput.value = searchQuery;
   searchLabel.textContent = `Results for '${searchQuery}'`;
 
-  const result = await request(`${endpoints.game.list_search}${searchQuery}`, {
-    method: "POST",
-    headers: myHeaders,
-    body: JSON.stringify({ perPage, page: 1 })
-  }, false);
+  const result = await request(
+    `${endpoints.game.list_search}${searchQuery}`,
+    {
+      method: "POST",
+      headers: myHeaders,
+      body: JSON.stringify({ perPage, page: 1 }),
+    },
+    false
+  );
 
   if (result.ok) {
     const resultItems = result.response.games;
 
-    resultItems.length > 0 ? displayGames(searchListElement, searchListCategory, resultItems) : displayErrorForGames(searchListElement, "None");
+    resultItems.length > 0
+      ? displayGames(searchListElement, searchListCategory, resultItems)
+      : displayErrorForGames(searchListElement, "None");
     resultsLabel.textContent = `(${resultItems.length} result${
       resultItems.length !== 1 ? "s" : ""
     })`;
@@ -345,7 +352,7 @@ export const loadSearchGames = async() => {
     displayErrorForGames(searchListElement, result.response);
     resultsLabel.textContent = "(error occured)";
   }
-}
+};
 
 // Load all the front page games
 const loadGames = async () => {

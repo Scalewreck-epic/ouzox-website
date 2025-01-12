@@ -29,9 +29,14 @@ const create_blog_post = (post) => {
 
   const blog_date = document.createElement("div");
   blog_date.className = "blog-date";
-  blog_date.textContent = new Date(post.created_at).toLocaleDateString("en-US", {
-    year: "2-digit", month: "2-digit", day: "2-digit"
-  });
+  blog_date.textContent = new Date(post.created_at).toLocaleDateString(
+    "en-US",
+    {
+      year: "2-digit",
+      month: "2-digit",
+      day: "2-digit",
+    }
+  );
 
   blog_column.append(blog_title, blog_date);
   blog_card.append(blog_image, blog_column);
@@ -42,6 +47,6 @@ const result = await request(endpoints.blog.list, requestOptions, false);
 const posts = result.response.response.result.posts;
 
 posts
-  .filter(post => post.visibility === "public")
+  .filter((post) => post.visibility === "public")
   .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
   .forEach(create_blog_post);

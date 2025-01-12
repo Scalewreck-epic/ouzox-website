@@ -7,12 +7,14 @@ import { request } from "../base/apiManager.js";
 import { endpoints } from "../other/endpoints.js";
 import { loadUserGames } from "../base/dataManager.js";
 
-console.info("Ouzox is open source! https://github.com/Scalewreck-epic/ouzox-website");
+console.info(
+  "Ouzox is open source! https://github.com/Scalewreck-epic/ouzox-website"
+);
 
 const cookieData = session.fetchCookie("session_id");
 export const user = await session.fetchUser(); // Export the user to other pages that need it.
 
-const today = new Date().toISOString().split('T')[0]; // Today
+const today = new Date().toISOString().split("T")[0]; // Today
 
 const isValidCookie = cookieData.valid;
 
@@ -25,14 +27,23 @@ const updateUsername = () => {
   const dashboardBtn = document.getElementById("dashboard-btn");
   const uploadBtn = document.getElementById("upload-btn");
 
-  copyrightYear && (copyrightYear.textContent = new Date().getFullYear().toString());
+  copyrightYear &&
+    (copyrightYear.textContent = new Date().getFullYear().toString());
 
-  if (isValidCookie) { // If there is a session cookie, there is no need to use the login and signup page
-    if (loginPaths.some(path => window.location.pathname.includes(path))) window.location.assign(restrictedPaths[0]);
-    loginBtn.remove(); signupBtn.remove(); username.textContent = user.name || "error";
-  } else { // If there isn't a session cookie, there is no need to use the dashboard and upload page.
-    if (restrictedPaths.some(path => window.location.pathname.includes(path))) window.location.assign(loginPaths[0]);
-    dashboardBtn.remove(); uploadBtn.remove(); username.remove();
+  if (isValidCookie) {
+    // If there is a session cookie, there is no need to use the login and signup page
+    if (loginPaths.some((path) => window.location.pathname.includes(path)))
+      window.location.assign(restrictedPaths[0]);
+    loginBtn.remove();
+    signupBtn.remove();
+    username.textContent = user.name || "error";
+  } else {
+    // If there isn't a session cookie, there is no need to use the dashboard and upload page.
+    if (restrictedPaths.some((path) => window.location.pathname.includes(path)))
+      window.location.assign(loginPaths[0]);
+    dashboardBtn.remove();
+    uploadBtn.remove();
+    username.remove();
   }
 };
 
@@ -42,22 +53,39 @@ const updateUserStats = async () => {
   const joinTime = document.getElementById("creation-stat");
   const profileLink = document.getElementById("profile-link");
 
-  const formattedDate = new Date(user.created_at).toLocaleDateString("en-US", { year: "2-digit", month: "2-digit", day: "2-digit" });
-  emailStat.textContent = `Email: ${user.email}`; joinTime.textContent = `Creation: ${formattedDate}`; profileLink.setAttribute("href", `user?id=${user.id}`);
+  const formattedDate = new Date(user.created_at).toLocaleDateString("en-US", {
+    year: "2-digit",
+    month: "2-digit",
+    day: "2-digit",
+  });
+  emailStat.textContent = `Email: ${user.email}`;
+  joinTime.textContent = `Creation: ${formattedDate}`;
+  profileLink.setAttribute("href", `user?id=${user.id}`);
 };
 
-const isValidPassword = passwordInput => /^(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*(),.?":{}|<>]).{8,}$/.test(passwordInput); // Is the password valid?
-const isValidSignup = () => { // Is the signup valid?
+const isValidPassword = (passwordInput) =>
+  /^(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*(),.?":{}|<>]).{8,}$/.test(
+    passwordInput
+  ); // Is the password valid?
+const isValidSignup = () => {
+  // Is the signup valid?
   const usernameInput = document.getElementById("username_input").value;
   const emailInput = document.getElementById("email_input").value;
   const passwordInput = document.getElementById("password_input").value;
-  return /^[a-zA-Z0-9]{3,20}$/.test(usernameInput) && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailInput) && isValidPassword(passwordInput);
+  return (
+    /^[a-zA-Z0-9]{3,20}$/.test(usernameInput) &&
+    /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailInput) &&
+    isValidPassword(passwordInput)
+  );
 };
 
-const isValidLogin = () => { // Is the login valid?
+const isValidLogin = () => {
+  // Is the login valid?
   const usernameInput = document.getElementById("username_login").value;
   const passwordInput = document.getElementById("password_login").value;
-  return /^[a-zA-Z0-9]{3,20}$/.test(usernameInput) && isValidPassword(passwordInput);
+  return (
+    /^[a-zA-Z0-9]{3,20}$/.test(usernameInput) && isValidPassword(passwordInput)
+  );
 };
 
 // Creates a new account on the server
@@ -73,13 +101,24 @@ const createSessionData = async () => {
       const dateObject = new Date(dobInput);
       const dobTimestamp = dateObject.getTime();
 
-      const result = await request(endpoints.user.signup, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name: usernameInput, email: emailInput, password: passwordInput, dob: dobTimestamp})
-      }, false);
+      const result = await request(
+        endpoints.user.signup,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            name: usernameInput,
+            email: emailInput,
+            password: passwordInput,
+            dob: dobTimestamp,
+          }),
+        },
+        false
+      );
 
-      errorLabel.textContent = result.ok ? "Successfully created account!" : result.response;
+      errorLabel.textContent = result.ok
+        ? "Successfully created account!"
+        : result.response;
       if (result.ok) {
         session.createCookie("session_id", result.response.authToken);
         window.location.assign("index");
@@ -107,7 +146,9 @@ const fetchSessionData = async () => {
       errorLabel.textContent = "Logging you in...";
       const result = await request(endpoints.user.login, requestOptions, false);
 
-      errorLabel.textContent = result.ok ? "Successfully logged in!" : result.response;
+      errorLabel.textContent = result.ok
+        ? "Successfully logged in!"
+        : result.response;
       if (result.ok) {
         session.createCookie("session_id", result.response.authToken);
         window.location.assign("index");
@@ -138,7 +179,10 @@ const logout = () => {
 const setupProfilePage = async () => {
   const userId = new URLSearchParams(window.location.search).get("id");
   const otherUser = await session.fetchAlternativeUser(userId);
-  const formattedDate = new Date(otherUser.created_at).toLocaleDateString("en-US", { year: "2-digit", month: "2-digit", day: "2-digit" });
+  const formattedDate = new Date(otherUser.created_at).toLocaleDateString(
+    "en-US",
+    { year: "2-digit", month: "2-digit", day: "2-digit" }
+  );
 
   document.getElementById("user-username").textContent = otherUser.name;
   document.getElementById("user-status").textContent = otherUser.status;
@@ -171,8 +215,12 @@ const setupLoginPage = () => {
   const passwordInput = document.getElementById("password_login");
   const icon = document.getElementById("show-password-icon");
 
-  icon.addEventListener("click", () => togglePasswordVisibility(passwordInput, icon));
-  loginForm.addEventListener("input", () => updateLoginButtons(isValidLogin(), loginButton));
+  icon.addEventListener("click", () =>
+    togglePasswordVisibility(passwordInput, icon)
+  );
+  loginForm.addEventListener("input", () =>
+    updateLoginButtons(isValidLogin(), loginButton)
+  );
   loginForm.addEventListener("submit", (event) => {
     event.preventDefault();
     fetchSessionData();
@@ -193,14 +241,18 @@ const setupSignupPage = () => {
 
   dobInput.addEventListener("input", () => {
     const selectedDate = dobInput.value;
-    
+
     if (selectedDate > today) {
       dobInput.value = today;
     }
-  })
+  });
 
-  icon.addEventListener("click", () => togglePasswordVisibility(passwordInput, icon));
-  signupForm.addEventListener("input", () => updateLoginButtons(isValidSignup(), signupButton));
+  icon.addEventListener("click", () =>
+    togglePasswordVisibility(passwordInput, icon)
+  );
+  signupForm.addEventListener("input", () =>
+    updateLoginButtons(isValidSignup(), signupButton)
+  );
   signupForm.addEventListener("submit", (event) => {
     event.preventDefault();
     createSessionData();

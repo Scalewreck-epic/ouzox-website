@@ -37,13 +37,13 @@ const isInList = (selection) => {
 
 const applyFormat = (formatType) => {
   const selection = window.getSelection();
-  
+
   if (!isInList(selection)) {
     const selectedText = selection.toString();
 
     if (description.contains(selection.anchorNode)) {
       document.execCommand(formatType);
-      
+
       if (selection.rangeCount > 0) {
         const range = selection.getRangeAt(0);
         range.deleteContents();
@@ -55,11 +55,14 @@ const applyFormat = (formatType) => {
 
 const applyHeader = (level) => {
   const selection = window.getSelection();
-  
+
   if (!isInList(selection)) {
     const selectedText = selection.toString();
 
-    if (description.contains(selection.anchorNode) && selection.rangeCount > 0) {
+    if (
+      description.contains(selection.anchorNode) &&
+      selection.rangeCount > 0
+    ) {
       const range = selection.getRangeAt(0);
       const header = document.createElement(`h${level}`);
       header.textContent = selectedText;
@@ -72,8 +75,12 @@ const applyHeader = (level) => {
 
 const createLink = () => {
   const selection = window.getSelection();
-  
-  if (!isInList(selection) && description.contains(selection.anchorNode) && selection.rangeCount > 0) {
+
+  if (
+    !isInList(selection) &&
+    description.contains(selection.anchorNode) &&
+    selection.rangeCount > 0
+  ) {
     const url = prompt("Enter the link URL:");
 
     if (url) {
@@ -94,7 +101,7 @@ const createLink = () => {
 
 description.addEventListener("keydown", (e) => {
   const selection = window.getSelection();
-  
+
   if (e.key === "Enter" && !isInList(selection)) {
     e.preventDefault();
     applyFormat("insertLineBreak");
@@ -105,7 +112,7 @@ description.addEventListener("paste", (e) => {
   e.preventDefault();
   const text = e.clipboardData.getData("text/plain");
   const range = window.getSelection().getRangeAt(0);
-  
+
   if (!isInList(range) && description.contains(range.startContainer)) {
     range.deleteContents();
     range.insertNode(document.createTextNode(text));
@@ -119,7 +126,7 @@ const justify = (level) => {
 if (fontSort) {
   fontSort.addEventListener("change", function () {
     gameColumn.style.fontFamily =
-    fontSort.options[fontSort.selectedIndex].value;
+      fontSort.options[fontSort.selectedIndex].value;
   });
 }
 

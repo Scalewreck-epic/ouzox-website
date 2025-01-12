@@ -12,17 +12,23 @@ const calculateExpiration = (past) => {
 
 // Deletes a cookie
 const deleteCookie = (cookieName) => {
-  document.cookie = `${cookieName}=; expires=${calculateExpiration(true).toUTCString()}`;
+  document.cookie = `${cookieName}=; expires=${calculateExpiration(
+    true
+  ).toUTCString()}`;
 };
 
 // Creates a cookie
 export const createCookie = (cookieName, token) => {
-  document.cookie = `${cookieName}=${token}; expires=${calculateExpiration(false).toUTCString()}; samesite=lax; secure;`;
+  document.cookie = `${cookieName}=${token}; expires=${calculateExpiration(
+    false
+  ).toUTCString()}; samesite=lax; secure;`;
 };
 
 // Clears all cookies
 export const clearCookie = () => {
-  document.cookie.split(";").forEach((cookie) => deleteCookie(cookie.split("=")[0].trim()));
+  document.cookie
+    .split(";")
+    .forEach((cookie) => deleteCookie(cookie.split("=")[0].trim()));
 };
 
 // Fetches one cookie
@@ -44,7 +50,9 @@ const changeSessionData = async (headers, endpoint) => {
   errorLabel.textContent = "Changing settings...";
 
   const result = await request(endpoint, headers, false);
-  errorLabel.textContent = result.ok ? result.response.message : result.response;
+  errorLabel.textContent = result.ok
+    ? result.response.message
+    : result.response;
 };
 
 // Changes one type of data from user settings
@@ -112,7 +120,7 @@ export const fetchUser = async () => {
       { method: "GET", headers: { "Content-Type": "application/json" } },
       false
     );
-    
+
     return result.ok ? result.response : null;
   } else {
     return null;

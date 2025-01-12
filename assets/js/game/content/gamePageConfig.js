@@ -10,13 +10,19 @@ const gameIdParam = urlParams.get("g"); // the game ID
 // TODO: Update price and currency options in stripe or create new ones when game changes from free to paid (destroy ones when game changes from paid to free).
 
 const maxDescriptionCharacters = 4000;
-const minPrice = 1, maxPrice = 5000;
+const minPrice = 1,
+  maxPrice = 5000;
 const maxFileSize = 5; // GB
 const files = [];
 
 // New class for the current game
 class GameData {
-  constructor(rawGameData, createdFormattedDate, updatedFormattedDate, datestodays) {
+  constructor(
+    rawGameData,
+    createdFormattedDate,
+    updatedFormattedDate,
+    datestodays
+  ) {
     Object.assign(this, {
       id: rawGameData.id,
       name: rawGameData.name,
@@ -27,7 +33,9 @@ class GameData {
       artstyle: rawGameData.artstyle,
       agerating: rawGameData.age_rating,
       icon: new URL(rawGameData.icon.url),
-      paymentLink: rawGameData.paymentLink ? new URL(rawGameData.paymentLink) : null,
+      paymentLink: rawGameData.paymentLink
+        ? new URL(rawGameData.paymentLink)
+        : null,
       created: createdFormattedDate,
       updated: updatedFormattedDate,
       datestodays,
@@ -36,7 +44,10 @@ class GameData {
       pricing: rawGameData.pricing,
       download_key: rawGameData.product_id,
       page: rawGameData.page,
-      developer: { username: rawGameData.developer.username, id: rawGameData.developer.id },
+      developer: {
+        username: rawGameData.developer.username,
+        id: rawGameData.developer.id,
+      },
     });
   }
 }
@@ -45,19 +56,29 @@ class GameData {
 String.prototype.convertToHex = function () {
   if (/^#[0-9a-fA-F]{6}$/.test(this)) return this;
   const [r, g, b] = this.match(/\d+/g).map(Number);
-  return `#${[r, g, b].map(v => v.toString(16).padStart(2, "0")).join("")}`;
+  return `#${[r, g, b].map((v) => v.toString(16).padStart(2, "0")).join("")}`;
 };
 
 // Updates the background color. Really only uses the alpha values
 const updateBackgroundColor = (alphaInput, styleElement) => {
   const alphaValue = alphaInput / 100;
-  const [r, g, b] = getComputedStyle(styleElement).getPropertyValue("background-color").match(/\d+/g).map(Number);
-  styleElement.style.setProperty("background-color", `rgba(${r}, ${g}, ${b}, ${alphaValue})`);
+  const [r, g, b] = getComputedStyle(styleElement)
+    .getPropertyValue("background-color")
+    .match(/\d+/g)
+    .map(Number);
+  styleElement.style.setProperty(
+    "background-color",
+    `rgba(${r}, ${g}, ${b}, ${alphaValue})`
+  );
 };
 
 // Retrieves the game data
 const getGameData = async (gameId) => {
-  const result = await request(`${endpoints.game.view}${gameId}`, { method: "GET", headers: { "Content-Type": "application/json" } }, true);
+  const result = await request(
+    `${endpoints.game.view}${gameId}`,
+    { method: "GET", headers: { "Content-Type": "application/json" } },
+    true
+  );
   if (result.ok) return result.response;
   throw new Error(`Unable to get game data: ${result}`);
 };
@@ -69,23 +90,45 @@ const fetchGameData = async (gameId) => {
   const updatedDate = new Date(rawGameData.updated);
   const currentDate = new Date();
 
-  const createdFormattedDate = createdDate.toLocaleDateString("en-US", { year: "2-digit", month: "2-digit", day: "2-digit" });
-  const updatedFormattedDate = updatedDate.toLocaleDateString("en-US", { year: "2-digit", month: "2-digit", day: "2-digit" });
+  const createdFormattedDate = createdDate.toLocaleDateString("en-US", {
+    year: "2-digit",
+    month: "2-digit",
+    day: "2-digit",
+  });
+  const updatedFormattedDate = updatedDate.toLocaleDateString("en-US", {
+    year: "2-digit",
+    month: "2-digit",
+    day: "2-digit",
+  });
 
   const datestodays = {
-    publishedDaysAgo: Math.ceil((currentDate - createdDate) / (1000 * 60 * 60 * 24)),
-    updatedDaysAgo: Math.ceil((currentDate - updatedDate) / (1000 * 60 * 60 * 24)),
+    publishedDaysAgo: Math.ceil(
+      (currentDate - createdDate) / (1000 * 60 * 60 * 24)
+    ),
+    updatedDaysAgo: Math.ceil(
+      (currentDate - updatedDate) / (1000 * 60 * 60 * 24)
+    ),
   };
 
-  return new GameData(rawGameData, createdFormattedDate, updatedFormattedDate, datestodays);
+  return new GameData(
+    rawGameData,
+    createdFormattedDate,
+    updatedFormattedDate,
+    datestodays
+  );
 };
 
 const format_file_size = (fileSizeInBytes) => {
   const units = ["KB", "MB", "GB"];
-  const size = fileSizeInBytes < 1024 ? fileSizeInBytes : 
-               fileSizeInBytes < Math.pow(1024, 2) ? fileSizeInBytes / 1024 : 
-               fileSizeInBytes / Math.pow(1024, 2);
-  return `${size.toFixed(2)} ${units[Math.floor(Math.log(size) / Math.log(1024))]}`;
+  const size =
+    fileSizeInBytes < 1024
+      ? fileSizeInBytes
+      : fileSizeInBytes < Math.pow(1024, 2)
+      ? fileSizeInBytes / 1024
+      : fileSizeInBytes / Math.pow(1024, 2);
+  return `${size.toFixed(2)} ${
+    units[Math.floor(Math.log(size) / Math.log(1024))]
+  }`;
 };
 
 const newFilePreview = (file) => {
@@ -110,26 +153,36 @@ const newFilePreview = (file) => {
 
 // Request to update the game
 const updateGame = async (data, gameId, commitChangesButton) => {
-  const result = await request(`${endpoints.game.update}${gameId}`, data, false);
+  const result = await request(
+    `${endpoints.game.update}${gameId}`,
+    data,
+    false
+  );
   commitChangesButton.textContent = result.ok ? "Success" : result.response;
 };
 
 // Request to remove the game
-const removeGame = async(gameId) => {
+const removeGame = async (gameId) => {
   const deleteOptions = {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: {
       uploader_id: user.id,
     },
-  }
+  };
 
-  const response = await request(`${endpoints.game.remove}${gameId}`, deleteOptions);
-  return response.ok
-}
+  const response = await request(
+    `${endpoints.game.remove}${gameId}`,
+    deleteOptions
+  );
+  return response.ok;
+};
 
 // Formats the time in a human-readable format
-const formatTimeSingle = (timeago, option, unit) => `${option} (${timeago === 1 ? "1" : timeago} ${unit}${timeago === 1 ? "" : "s"} Ago)`;
+const formatTimeSingle = (timeago, option, unit) =>
+  `${option} (${timeago === 1 ? "1" : timeago} ${unit}${
+    timeago === 1 ? "" : "s"
+  } Ago)`;
 const formatTime = (coru, yearsAgo, monthsAgo, weeksAgo, daysAgo) => {
   if (yearsAgo >= 1) return formatTimeSingle(yearsAgo, coru, "Year");
   if (monthsAgo >= 1) return formatTimeSingle(monthsAgo, coru, "Month");
@@ -167,8 +220,20 @@ const gameHandler = async (gameId) => {
   elements.gameTitle.textContent = gameData.name;
   elements.gameDesc.innerHTML = gameData.description;
   elements.gamePrice.textContent = `${gameData.pricing.price} ${gameData.pricing.currency}`;
-  elements.created.textContent = formatTime(gameData.created, gameData.datestodays.publishedYearsAgo, gameData.datestodays.publishedMonthsAgo, gameData.datestodays.publishedWeeksAgo, gameData.datestodays.publishedDaysAgo);
-  elements.updated.textContent = formatTime(gameData.updated, gameData.datestodays.updatedYearsAgo, gameData.datestodays.updatedMonthsAgo, gameData.datestodays.updatedWeeksAgo, gameData.datestodays.updatedDaysAgo);
+  elements.created.textContent = formatTime(
+    gameData.created,
+    gameData.datestodays.publishedYearsAgo,
+    gameData.datestodays.publishedMonthsAgo,
+    gameData.datestodays.publishedWeeksAgo,
+    gameData.datestodays.publishedDaysAgo
+  );
+  elements.updated.textContent = formatTime(
+    gameData.updated,
+    gameData.datestodays.updatedYearsAgo,
+    gameData.datestodays.updatedMonthsAgo,
+    gameData.datestodays.updatedWeeksAgo,
+    gameData.datestodays.updatedDaysAgo
+  );
   elements.navigationTitle.textContent = `${gameData.name} By ${gameData.developer.username}`;
   elements.developerName.textContent = gameData.developer.username;
   elements.gameGenre.textContent = gameData.genre.toUpperCase();
@@ -177,11 +242,37 @@ const gameHandler = async (gameId) => {
   elements.gameAge.textContent = gameData.agerating.toUpperCase();
 
   elements.icon.setAttribute("href", gameData.icon.href);
-  elements.developerName.setAttribute("href", `user?id=${gameData.developer.id}`);
-  elements.gameGenre.setAttribute("href", `category?n=${gameData.genre.toUpperCase()}`);
+  elements.developerName.setAttribute(
+    "href",
+    `user?id=${gameData.developer.id}`
+  );
+  elements.gameGenre.setAttribute(
+    "href",
+    `category?n=${gameData.genre.toUpperCase()}`
+  );
 
-  const features = ["Singleplayer", "Multiplayer", "Coop", "Achievements", "ControllerSupport", "Saves", "VRSupport"].map(name => ({ Name: name, Enabled: gameData.features[name] }));
-  const platforms = ["windows", "mac", "linux", "android", "ios", "xbox", "playstation", "oculus"].map(name => ({ Name: name.charAt(0).toUpperCase() + name.slice(1), Enabled: gameData.platforms[name] }));
+  const features = [
+    "Singleplayer",
+    "Multiplayer",
+    "Coop",
+    "Achievements",
+    "ControllerSupport",
+    "Saves",
+    "VRSupport",
+  ].map((name) => ({ Name: name, Enabled: gameData.features[name] }));
+  const platforms = [
+    "windows",
+    "mac",
+    "linux",
+    "android",
+    "ios",
+    "xbox",
+    "playstation",
+    "oculus",
+  ].map((name) => ({
+    Name: name.charAt(0).toUpperCase() + name.slice(1),
+    Enabled: gameData.platforms[name],
+  }));
 
   const elementAlphas = [
     {
@@ -196,7 +287,7 @@ const gameHandler = async (gameId) => {
       Amount: gameData.page.alphas.game_details_bg_alpha,
       ElementChanging: elements.gameStats,
     },
-  ]
+  ];
 
   const elementShadows = [
     {
@@ -211,7 +302,7 @@ const gameHandler = async (gameId) => {
       Enabled: gameData.page.outlines.bg2_outline,
       ElementChanging: elements.gameColumn,
     },
-  ]
+  ];
 
   const elementOutlines = [
     {
@@ -226,9 +317,9 @@ const gameHandler = async (gameId) => {
       Enabled: gameData.page.outlines.bg2_shadow,
       ElementChanging: elements.gameColumn,
     },
-  ]
+  ];
 
-  features.forEach(feature => {
+  features.forEach((feature) => {
     if (feature.Enabled) {
       const featureContainer = document.createElement("div");
       featureContainer.setAttribute("class", "game-feature");
@@ -237,7 +328,7 @@ const gameHandler = async (gameId) => {
     }
   });
 
-  platforms.forEach(platform => {
+  platforms.forEach((platform) => {
     if (platform.Enabled) {
       const platformContainer = document.createElement("div");
       platformContainer.setAttribute("class", "game-feature");
@@ -246,19 +337,24 @@ const gameHandler = async (gameId) => {
     }
   });
 
-  elementShadows.forEach(shadow => {
-    shadow.Enabled ? shadow.ElementChanging.classList.add("shadow-input") : shadow.ElementChanging.classList.remove("shadow-input")
+  elementShadows.forEach((shadow) => {
+    shadow.Enabled
+      ? shadow.ElementChanging.classList.add("shadow-input")
+      : shadow.ElementChanging.classList.remove("shadow-input");
   });
 
-  elementOutlines.forEach(outline => {
-    outline.Enabled ? outline.ElementChanging.classList.add("outline-input") : outline.ElementChanging.classList.remove("outline-input")
+  elementOutlines.forEach((outline) => {
+    outline.Enabled
+      ? outline.ElementChanging.classList.add("outline-input")
+      : outline.ElementChanging.classList.remove("outline-input");
   });
 
-  elementAlphas.forEach(alpha => {
+  elementAlphas.forEach((alpha) => {
     updateBackgroundColor(alpha.Amount, alpha.ElementChanging);
   });
 
-  if (!gameData.page.default_colors) { // If the page doesn't use the default colors, use the modified ones
+  if (!gameData.page.default_colors) {
+    // If the page doesn't use the default colors, use the modified ones
     const colors = gameData.page.colors;
     document.body.style.backgroundColor = colors.bg_color;
     elements.gameColumn.style.backgroundColor = colors.bg2_color;
@@ -269,7 +365,7 @@ const gameHandler = async (gameId) => {
     elements.downloadButton.style.color = colors.button_text_color;
     elements.gameStats.style.backgroundColor = colors.stats_bg_color;
 
-    Array.from(document.getElementsByClassName("game-stat")).forEach(stat => {
+    Array.from(document.getElementsByClassName("game-stat")).forEach((stat) => {
       stat.style.color = colors.stats_text_color;
     });
 
@@ -281,7 +377,8 @@ const gameHandler = async (gameId) => {
   // TODO: Make the game available to download
   //elements.downloadButton.setAttribute("href", gameData.paymentLink);
 
-  if (user && user.id === gameData.developer.id) { // If the user is the game developer, allow access to editing the game
+  if (user && user.id === gameData.developer.id) {
+    // If the user is the game developer, allow access to editing the game
     const editableElements = {
       gameTitleInput: document.getElementById("title-input"),
       gameSummaryInput: document.getElementById("summary-input"),
@@ -352,28 +449,28 @@ const gameHandler = async (gameId) => {
         Property: "color",
         ElementChanging: elements.downloadButton,
       },
-    ]
+    ];
 
     const alphaInputs = [
       {
         Name: "bg2_alpha",
         Element: document.getElementById("bg2-alpha"),
         Amount: gameData.page.alphas.bg2_alpha,
-        ElementChanging: elements.gameColumn
+        ElementChanging: elements.gameColumn,
       },
       {
         Name: "description_bg_alpha",
         Element: document.getElementById("description-bg-alpha"),
         Amount: gameData.page.alphas.description_bg_alpha,
-        ElementChanging: elements.gameDescBackground
+        ElementChanging: elements.gameDescBackground,
       },
       {
         Name: "game_details_bg_alpha",
         Element: document.getElementById("game-details-bg-alpha"),
         Amount: gameData.page.alphas.game_details_bg_alpha,
-        ElementChanging: elements.gameStats
+        ElementChanging: elements.gameStats,
       },
-    ]
+    ];
 
     const shadowCheckboxes = [
       {
@@ -394,7 +491,7 @@ const gameHandler = async (gameId) => {
         Enabled: gameData.page.outlines.bg2_shadow,
         ElementChanging: elements.gameColumn,
       },
-    ]
+    ];
 
     const outlineCheckboxes = [
       {
@@ -415,15 +512,18 @@ const gameHandler = async (gameId) => {
         Enabled: gameData.page.outlines.bg2_outline,
         ElementChanging: elements.gameColumn,
       },
-    ]
+    ];
 
     elements.gameDesc.contentEditable = true;
 
-    editableElements.commitChangesButton.setAttribute("class", "commit-changes-button");
+    editableElements.commitChangesButton.setAttribute(
+      "class",
+      "commit-changes-button"
+    );
     editableElements.commitChangesButton.textContent = "Commit Changes";
 
     editableElements.deleteButton.setAttribute("class", "game-delete-button");
-    editableElements.deleteButton.textContent = "Delete Game"
+    editableElements.deleteButton.textContent = "Delete Game";
 
     editableElements.gameTitleInput.value = gameData.name;
     editableElements.gameSummaryInput.value = gameData.summary;
@@ -437,116 +537,172 @@ const gameHandler = async (gameId) => {
       }
     });
 
-    Array.from(editableElements.gameCurrencyInput.options).forEach((option, i) => {
-      if (option.value === gameData.agerating.toLowerCase()) {
-        editableElements.gameCurrencyInput.selectedIndex = i;
+    Array.from(editableElements.gameCurrencyInput.options).forEach(
+      (option, i) => {
+        if (option.value === gameData.agerating.toLowerCase()) {
+          editableElements.gameCurrencyInput.selectedIndex = i;
+        }
       }
-    });
+    );
 
     editableElements.gameGenreInput.addEventListener("input", () => {
-      editableElements.gameGenreInput.value = editableElements.gameGenreInput.value.toUpperCase();
+      editableElements.gameGenreInput.value =
+        editableElements.gameGenreInput.value.toUpperCase();
     });
 
     editableElements.gameArtStyleInput.addEventListener("input", () => {
-      editableElements.gameArtStyleInput.value = editableElements.gameArtStyleInput.value.toUpperCase();
+      editableElements.gameArtStyleInput.value =
+        editableElements.gameArtStyleInput.value.toUpperCase();
     });
 
     editableElements.gamePriceInput.addEventListener("input", () => {
-      editableElements.gamePriceInput.value = editableElements.gameIsFreeInput.checked ? 0 : Math.min(maxPrice, Math.max(minPrice, editableElements.gamePriceInput.value.replace(/[^0-9]/g, "")));
+      editableElements.gamePriceInput.value = editableElements.gameIsFreeInput
+        .checked
+        ? 0
+        : Math.min(
+            maxPrice,
+            Math.max(
+              minPrice,
+              editableElements.gamePriceInput.value.replace(/[^0-9]/g, "")
+            )
+          );
     });
 
     editableElements.gameIsFreeInput.addEventListener("change", () => {
-      editableElements.gamePriceInput.value = editableElements.gameIsFreeInput.checked ? 0 : Math.min(maxPrice, Math.max(minPrice, editableElements.gamePriceInput.value.replace(/[^0-9]/g, "")));
-    })
+      editableElements.gamePriceInput.value = editableElements.gameIsFreeInput
+        .checked
+        ? 0
+        : Math.min(
+            maxPrice,
+            Math.max(
+              minPrice,
+              editableElements.gamePriceInput.value.replace(/[^0-9]/g, "")
+            )
+          );
+    });
 
     editableElements.gameTitleInput.addEventListener("input", () => {
       elements.gameTitle.textContent = editableElements.gameTitleInput.value;
     });
 
     editableElements.gameSummaryInput.addEventListener("input", () => {
-      elements.gameSummary.textContent = editableElements.gameSummaryInput.value;
+      elements.gameSummary.textContent =
+        editableElements.gameSummaryInput.value;
     });
 
     editableElements.gameThumbnailInput.addEventListener("change", () => {
       const reader = new FileReader();
       const file = editableElements.gameThumbnailInput.files[0];
-      reader.onload = () => document.getElementById("previewImage").src = reader.result;
+      reader.onload = () =>
+        (document.getElementById("previewImage").src = reader.result);
       if (file) reader.readAsDataURL(file);
     });
 
     editableElements.gameFileInput.addEventListener("change", () => {
       const file = editableElements.gameFileInput.files[0];
       const isAboveMaxSize = file.size / Math.pow(1024, 3) > maxFileSize;
-      const isAlreadyUploaded = files.findIndex((fle) => fle.name == file.name) !== -1;
-    
-      const fileErrorLabel = document.getElementById("file-error-label")
-    
+      const isAlreadyUploaded =
+        files.findIndex((fle) => fle.name == file.name) !== -1;
+
+      const fileErrorLabel = document.getElementById("file-error-label");
+
       let canUpload = true;
-    
+
       if (isAboveMaxSize) {
-        fileErrorLabel.textContent = "File size too large, select a file under 5GB";
+        fileErrorLabel.textContent =
+          "File size too large, select a file under 5GB";
         canUpload = false;
-      };
-    
+      }
+
       if (isAlreadyUploaded) {
-        fileErrorLabel.textContent = "File already uploaded, select a different file";
+        fileErrorLabel.textContent =
+          "File already uploaded, select a different file";
         canUpload = false;
-      };
-    
+      }
+
       if (canUpload) {
         files.push(file);
         newFilePreview(file);
         fileErrorLabel.textContent = "";
-      };
-    
+      }
+
       editableElements.gameFileInput.value = "";
     });
 
     elements.gameDesc.addEventListener("input", () => {
       const text = game_description.innerHTML;
-      elements.gameDesc.innerHTML = text.length > maxDescriptionCharacters ? text.substr(0, maxDescriptionCharacters) : text;
+      elements.gameDesc.innerHTML =
+        text.length > maxDescriptionCharacters
+          ? text.substr(0, maxDescriptionCharacters)
+          : text;
     });
 
-    const isPublic = { Enabled: gameData.active, Element: document.getElementById("public") };
+    const isPublic = {
+      Enabled: gameData.active,
+      Element: document.getElementById("public"),
+    };
     isPublic.Element.checked = isPublic.Enabled;
     isPublic.Element.addEventListener("change", () => {
       isPublic.Enabled = isPublic.Element.checked;
     });
 
-    const gameFeatures = ["Singleplayer", "Multiplayer", "Coop", "Achievements", "ControllerSupport", "Saves", "VRSupport"].map(name => ({
+    const gameFeatures = [
+      "Singleplayer",
+      "Multiplayer",
+      "Coop",
+      "Achievements",
+      "ControllerSupport",
+      "Saves",
+      "VRSupport",
+    ].map((name) => ({
       Name: name,
       Enabled: gameData.features[name],
       Element: document.getElementById(name.toLowerCase()),
     }));
 
-    gameFeatures.forEach(feature => {
+    gameFeatures.forEach((feature) => {
       feature.Element.checked = feature.Enabled;
       feature.Element.addEventListener("change", () => {
         feature.Enabled = feature.Element.checked;
       });
     });
 
-    const gamePlatforms = ["Windows", "Mac", "Linux", "Android", "IOS", "XBOX", "PlayStation", "Oculus"].map(name => ({
+    const gamePlatforms = [
+      "Windows",
+      "Mac",
+      "Linux",
+      "Android",
+      "IOS",
+      "XBOX",
+      "PlayStation",
+      "Oculus",
+    ].map((name) => ({
       Name: name,
       Enabled: gameData.platforms[name.toLowerCase()],
       Element: document.getElementById(name.toLowerCase()),
     }));
 
-    gamePlatforms.forEach(platform => {
+    gamePlatforms.forEach((platform) => {
       platform.Element.checked = platform.Enabled;
       platform.Element.addEventListener("change", () => {
         platform.Enabled = platform.Element.checked;
       });
     });
 
-    colorInputs.forEach(colorInput => {
-      colorInput.Element.value = getComputedStyle(colorInput.ElementChanging).getPropertyValue("color").toString().convertToHex();
+    colorInputs.forEach((colorInput) => {
+      colorInput.Element.value = getComputedStyle(colorInput.ElementChanging)
+        .getPropertyValue("color")
+        .toString()
+        .convertToHex();
       colorInput.Element.addEventListener("input", function () {
-        colorInput.ElementChanging.style.setProperty(colorInput.Property, this.value);
+        colorInput.ElementChanging.style.setProperty(
+          colorInput.Property,
+          this.value
+        );
       });
     });
 
-    alphaInputs.forEach(alphaInput => {
+    alphaInputs.forEach((alphaInput) => {
       alphaInput.Element.value = alphaInput.Amount * 100;
       alphaInput.Element.addEventListener("input", function () {
         alphaInput.Amount = alphaInput.Element.value;
@@ -554,19 +710,23 @@ const gameHandler = async (gameId) => {
       });
     });
 
-    shadowCheckboxes.forEach(shadowCheckbox => {
+    shadowCheckboxes.forEach((shadowCheckbox) => {
       shadowCheckbox.Element.checked = shadowCheckbox.Enabled;
-      shadowCheckbox.Element.addEventListener("change", function() {
+      shadowCheckbox.Element.addEventListener("change", function () {
         shadowCheckbox.Enabled = this.checked;
-        this.checked ? shadowCheckbox.ElementChanging.classList.add("shadow-input") : shadowCheckbox.ElementChanging.classList.remove("shadow-input");
+        this.checked
+          ? shadowCheckbox.ElementChanging.classList.add("shadow-input")
+          : shadowCheckbox.ElementChanging.classList.remove("shadow-input");
       });
     });
 
-    outlineCheckboxes.forEach(outlineCheckbox => {
+    outlineCheckboxes.forEach((outlineCheckbox) => {
       outlineCheckbox.Element.checked = outlineCheckbox.Enabled;
-      outlineCheckbox.Element.addEventListener("change", function() {
+      outlineCheckbox.Element.addEventListener("change", function () {
         outlineCheckbox.Enabled = this.checked;
-        this.checked ? outlineCheckbox.ElementChanging.classList.add("outline-input") : outlineCheckbox.ElementChanging.classList.remove("outline-input");
+        this.checked
+          ? outlineCheckbox.ElementChanging.classList.add("outline-input")
+          : outlineCheckbox.ElementChanging.classList.remove("outline-input");
       });
     });
 
@@ -574,8 +734,14 @@ const gameHandler = async (gameId) => {
     const commitChanges = async () => {
       editableElements.commitChangesButton.disabled = true;
       const combinedCheckboxes = [
-        ...outlineCheckboxes.map(checkbox => ({ Name: checkbox.Name, Enabled: checkbox.Enabled ? "true" : "false"})),
-        ...shadowCheckboxes.map(checkbox => ({ Name: checkbox.Name, Enabled: checkbox.Enabled ? "true" : "false"})),
+        ...outlineCheckboxes.map((checkbox) => ({
+          Name: checkbox.Name,
+          Enabled: checkbox.Enabled ? "true" : "false",
+        })),
+        ...shadowCheckboxes.map((checkbox) => ({
+          Name: checkbox.Name,
+          Enabled: checkbox.Enabled ? "true" : "false",
+        })),
       ];
 
       const updateGameOptionsBody = {
@@ -592,14 +758,32 @@ const gameHandler = async (gameId) => {
           currency: editableElements.gameCurrencyInput.value,
         },
         uploader_id: user.id,
-        platforms: Object.fromEntries(gamePlatforms.map(p => [p.Name.toLowerCase(), p.Enabled ? "true" : "false"])),
-        features: Object.fromEntries(gameFeatures.map(f => [f.Name, f.Enabled ? "true" : "false"])),
+        platforms: Object.fromEntries(
+          gamePlatforms.map((p) => [
+            p.Name.toLowerCase(),
+            p.Enabled ? "true" : "false",
+          ])
+        ),
+        features: Object.fromEntries(
+          gameFeatures.map((f) => [f.Name, f.Enabled ? "true" : "false"])
+        ),
         page: {
-          font_family: getComputedStyle(elements.gameColumn).getPropertyValue("font-family"),
+          font_family: getComputedStyle(elements.gameColumn).getPropertyValue(
+            "font-family"
+          ),
           defaultColors: false,
-          outlines: Object.fromEntries(combinedCheckboxes.map(o => [o.Name, o.Enabled])),
-          alphas: Object.fromEntries(alphaInputs.map(a => [a.Name, a.Amount])),
-          colors: Object.fromEntries(colorInputs.map(c => [c.Name, getComputedStyle(c.ElementChanging).getPropertyValue(c.Property)])),
+          outlines: Object.fromEntries(
+            combinedCheckboxes.map((o) => [o.Name, o.Enabled])
+          ),
+          alphas: Object.fromEntries(
+            alphaInputs.map((a) => [a.Name, a.Amount])
+          ),
+          colors: Object.fromEntries(
+            colorInputs.map((c) => [
+              c.Name,
+              getComputedStyle(c.ElementChanging).getPropertyValue(c.Property),
+            ])
+          ),
         },
       };
 
@@ -623,9 +807,17 @@ const gameHandler = async (gameId) => {
         };
 
         await readFile();
-      };
+      }
 
-      await updateGame({ method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(updateGameOptionsBody) }, gameData.id, editableElements.commitChangesButton);
+      await updateGame(
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(updateGameOptionsBody),
+        },
+        gameData.id,
+        editableElements.commitChangesButton
+      );
       editableElements.commitChangesButton.disabled = false;
     };
 
@@ -635,29 +827,38 @@ const gameHandler = async (gameId) => {
       const confirmation = gameData.name.toUpperCase();
 
       if (isConfirmed) {
-        const secondaryConfirm = prompt(`Type ${confirmation} to confirm deletion:`);
+        const secondaryConfirm = prompt(
+          `Type ${confirmation} to confirm deletion:`
+        );
 
-        if (secondaryConfirm == confirmation) { // Double confirmation to make sure no mistakes are made
+        if (secondaryConfirm == confirmation) {
+          // Double confirmation to make sure no mistakes are made
           const response = await removeGame(gameData.id);
-  
+
           if (response.ok) {
             window.location.assign("dashboard"); // Assign the user back to their dashboard
           } else {
             alert("Failed to delete game.");
-          };
+          }
         } else {
           alert("Invalid confirmation.");
-        };
+        }
       } else {
         alert("Deletion Canceled");
-      };
+      }
     };
 
-    editableElements.commitChangesButton.addEventListener("click", () => commitChanges());
+    editableElements.commitChangesButton.addEventListener("click", () =>
+      commitChanges()
+    );
     editableElements.deleteButton.addEventListener("click", () => deleteGame());
 
-    document.getElementById("buttons").appendChild(editableElements.commitChangesButton);
-    document.getElementById("buttons").appendChild(editableElements.deleteButton);
+    document
+      .getElementById("buttons")
+      .appendChild(editableElements.commitChangesButton);
+    document
+      .getElementById("buttons")
+      .appendChild(editableElements.deleteButton);
   } else {
     document.getElementById("game-editing").remove();
   }
@@ -665,6 +866,7 @@ const gameHandler = async (gameId) => {
 
 if (gameIdParam) {
   gameHandler(gameIdParam);
-} else { // If the game does not exist, continue no further.
+} else {
+  // If the game does not exist, continue no further.
   window.location.assign("404?code=404");
 }
