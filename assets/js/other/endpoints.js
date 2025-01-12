@@ -21,7 +21,7 @@ export const endpoints = {
   },
   checkout: {
     create: `${CHECKOUT_BASE_URL}/sessions/create`,
-    retrieve: `${CHECKOUT_BASE_URL}/sessions/retrieve`, // + session ID
+    retrieve: `${CHECKOUT_BASE_URL}/sessions/retrieve/`, // + session ID
   },
   price: {
     create: `${PRICES_BASE_URL}/prices/create`,
@@ -36,9 +36,9 @@ export const endpoints = {
     remove: `${PRICES_BASE_URL}/products/remove`, // + product ID
   },
   game: {
-    create: `${DATABASE_URL}/games/create/`,
+    create: `${DATABASE_URL}/games/create`,
     remove: `${DATABASE_URL}/games/remove/`, // + game ID
-    update: `${DATABASE_URL}/games/edit/`,
+    update: `${DATABASE_URL}/games/edit/`, // + game ID
     view: `${DATABASE_URL}/games/view/`, // + game ID
     list_frontpage: `${DATABASE_URL}/games/list/frontpage`,
     list_genresearch: `${DATABASE_URL}/games/list/genre/`, // + genre name

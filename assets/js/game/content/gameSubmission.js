@@ -143,7 +143,7 @@ const on_submit = async () => {
     if (game.ok) {
       window.location.assign("dashboard");
     } else {
-      error_label.textContent = game.response;
+      error_label.textContent = "An error occured";
     }
   }
 
