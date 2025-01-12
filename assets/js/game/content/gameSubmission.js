@@ -21,8 +21,8 @@ const uploader_name = user.name
 const uploader_id = user.id;
 
 const maxDescriptionCharacters = 4000;
-const minPrice = 1,
-  maxPrice = 5000;
+const minPrice = 1;
+const maxPrice = 5000;
 const maxFileSize = 5; // GB
 const files = [];
 
@@ -111,7 +111,7 @@ const on_submit = async () => {
       headers: myHeaders,
       body: JSON.stringify({
         name: inputs.title,
-        description: DOMPurify.sanitize(inputs.description),
+        description: inputs.description,
         developer: { username: uploader_name, id: uploader_id },
         summary: inputs.summary,
         genre: inputs.genre,
