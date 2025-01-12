@@ -377,7 +377,8 @@ const gameHandler = async (gameId) => {
   // TODO: Make the game available to download
   //elements.downloadButton.setAttribute("href", gameData.paymentLink);
 
-  if (user && user.id === gameData.developer.id) {
+  if (true) {
+  //if (user && user.id === gameData.developer.id) {
     // If the user is the game developer, allow access to editing the game
     const editableElements = {
       gameTitleInput: document.getElementById("title-input"),

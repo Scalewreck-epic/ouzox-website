@@ -89,10 +89,20 @@
   width: fit-content;
 }
 
-.title-label,
+.game-setting {
+  display: flex;
+  justify-content: space-between;
+}
+
+.title-label {
+  flex: 1;
+  margin-left: 0.15rem;
+  white-space: nowrap;
+}
+
 .game-setting-feature {
-  display: inline-block;
-  width: fit-content;
+  flex: 1;
+  margin-right: 0.15rem;
 }
 
 .preview-image {
