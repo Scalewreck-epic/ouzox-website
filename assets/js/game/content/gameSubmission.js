@@ -42,9 +42,7 @@ const upload_game = async (gameRequestOptions) => {
 // TODO: Create game product and price when uploaded.
 
 // Request to submit the game
-const on_submit = async (event) => {
-  event.preventDefault();
-
+const on_submit = async () => {
   uploadButton.disabled = true; // Prevent spamming the button
 
   let canUpload = true;
@@ -187,4 +185,7 @@ game_art.addEventListener("input", update_art);
 download_file.addEventListener("change", updateFiles);
 game_thumbnail.addEventListener("change", update_thumbnail);
 game_isfree.addEventListener("change", update_price);
-uploadGame.addEventListener("submit", async () => await on_submit());
+uploadGame.addEventListener("submit", async (event) => {
+  event.preventDefault();
+  await on_submit();
+});
