@@ -539,8 +539,6 @@ const gameHandler = async (gameId) => {
     editableElements.gameArtStyleInput.value = gameData.artstyle.toUpperCase();
     editableElements.gamePriceInput.value = gameData.pricing.price;
     editableElements.gameIsFreeInput.checked = gameData.pricing.free;
-    editableElements.gameThumbnailInput.value = gameData.icon;
-    thumbnailChanged();
 
     Array.from(editableElements.gameAgeInput.options).forEach((option, i) => {
       if (option.value === gameData.agerating.toLowerCase()) {
