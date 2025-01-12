@@ -43,7 +43,7 @@ const format_file_size = (fileSizeInBytes) => {
 // Request to upload the game
 const upload_game = async (gameRequestOptions) => {
   const result = await request(
-    endpoints.game.create_game,
+    endpoints.game.create,
     gameRequestOptions,
     true
   );
@@ -225,10 +225,9 @@ const update_genre = () =>
 const update_art = () => (game_art.value = game_art.value.toUpperCase());
 const update_description = () => {
   const text = game_description.innerHTML;
-  game_description.innerHTML =
-    text.length > maxDescriptionCharacters
-      ? text.substr(0, maxDescriptionCharacters)
-      : text;
+  if (text.length > maxDescriptionCharacters) {
+    game_description.innerHTML = text.substring(0, maxDescriptionCharacters);
+  };
 };
 
 game_description.addEventListener("input", update_description);

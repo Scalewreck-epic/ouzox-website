@@ -3,6 +3,8 @@
 import { request } from "../base/apiManager.js";
 import { endpoints } from "../other/endpoints.js";
 
+const userCache = new Map();
+
 // Returns expiration date
 const calculateExpiration = (past) => {
   const currentDate = new Date();
@@ -115,11 +117,17 @@ export const fetchAlternativeUser = async (userId) => {
 // Fetch the current user logged in using the user's session ID
 export const fetchUser = async () => {
   if (sessionId) {
+    if (userCache.get(sessionId)) {
+      return userCache.get(sessionId);
+    }
+
     const result = await request(
       `${endpoints.user.get_data_with_sess}${sessionId}`,
       { method: "GET", headers: { "Content-Type": "application/json" } },
       false
     );
+
+    userCache.set(sessionId, result);
 
     return result.ok ? result.response : null;
   } else {

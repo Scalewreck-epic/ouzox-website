@@ -631,10 +631,9 @@ const gameHandler = async (gameId) => {
 
     elements.gameDesc.addEventListener("input", () => {
       const text = game_description.innerHTML;
-      elements.gameDesc.innerHTML =
-        text.length > maxDescriptionCharacters
-          ? text.substr(0, maxDescriptionCharacters)
-          : text;
+      if (text.length > maxDescriptionCharacters) {
+        game_description.innerHTML = text.substring(0, maxDescriptionCharacters);
+      };
     });
 
     const isPublic = {
