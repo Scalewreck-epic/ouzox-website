@@ -2,7 +2,7 @@
 
 ### Feature requests or improvements
 
-Don't post feature requests in the issue tracker. Join us on [Discord](https://discord.gg/ksS2RXe26v) and you can request features there.
+Don't post feature requests in the issue tracker. Join us on [Discord](https://discord.gg/zZV3sQcwzH) and you can request features there.
 
 ## Finding a Bug
 
