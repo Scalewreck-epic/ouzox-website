@@ -250,13 +250,13 @@ const gameHandler = async (gameId) => {
   );
 
   const features = [
-    "Singleplayer",
-    "Multiplayer",
-    "Coop",
+    "Single1player",
+    "Multi1player",
+    "Co1op",
     "Achievements",
-    "ControllerSupport",
+    "Controller_Support",
     "Saves",
-    "VRSupport",
+    "VR_Support",
   ].map((name) => ({ Name: name, Enabled: gameData.features[name] }));
   const platforms = [
     "windows",
@@ -321,7 +321,7 @@ const gameHandler = async (gameId) => {
     if (feature.Enabled) {
       const featureContainer = document.createElement("div");
       featureContainer.setAttribute("class", "game-feature");
-      featureContainer.textContent = feature.Name;
+      featureContainer.textContent = feature.Name.replace(/_/g, " ").replace(/1/g, "-");
       elements.gameFeatures.appendChild(featureContainer);
     }
   });
@@ -647,17 +647,17 @@ const gameHandler = async (gameId) => {
     });
 
     const gameFeatures = [
-      "Singleplayer",
-      "Multiplayer",
-      "Coop",
+      "Single1player",
+      "Multi1player",
+      "Co1op",
       "Achievements",
-      "ControllerSupport",
+      "Controller_Support",
       "Saves",
-      "VRSupport",
+      "VR_Support",
     ].map((name) => ({
       Name: name,
       Enabled: gameData.features[name],
-      Element: document.getElementById(name.toLowerCase()),
+      Element: document.getElementById(name.toLowerCase().replace(/1/g, '').replace(/_/g, '')),
     }));
 
     gameFeatures.forEach((feature) => {
