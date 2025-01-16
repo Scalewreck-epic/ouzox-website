@@ -735,6 +735,7 @@ const gameHandler = async (gameId) => {
     // Commiting the changes of the game
     const commitChanges = async () => {
       editableElements.commitChangesButton.disabled = true;
+
       const combinedCheckboxes = [
         ...outlineCheckboxes.map((checkbox) => ({
           Name: checkbox.Name,
@@ -746,6 +747,13 @@ const gameHandler = async (gameId) => {
         })),
       ];
 
+
+      const imageURI = editableElements.gameThumbnailInput.files.length > 0 ? await new Promise((resolve) => {
+        const reader = new FileReader();
+        reader.onloadend = () => resolve(reader.result);
+        reader.readAsDataURL(editableElements.gameThumbnailInput.files[0]);
+      }) : null;
+
       const updateGameOptionsBody = {
         name: editableElements.gameTitleInput.value,
         description: DOMPurify.sanitize(elements.gameDesc.innerHTML), // Sanitize the description
@@ -753,7 +761,7 @@ const gameHandler = async (gameId) => {
         genre: editableElements.gameGenreInput.value,
         artstyle: editableElements.gameArtStyleInput.value,
         age_rating: editableElements.gameAgeInput.value,
-        icon_upload: editableElements.gameThumbnailInput.files[0],
+        icon_upload: imageURI,
         active: isPublic.Enabled ? "true" : "false",
         pricing: {
           price: editableElements.gamePriceInput.value,
