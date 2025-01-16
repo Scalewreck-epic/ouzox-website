@@ -157,7 +157,7 @@ const updateGame = async (data, gameId, commitChangesButton) => {
     data,
     false
   );
-  commitChangesButton.textContent = result.ok ? "Success" : result.response;
+  commitChangesButton.textContent = result.ok ? "Success" : "An error occured";
 };
 
 // Request to remove the game
