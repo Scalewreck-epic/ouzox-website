@@ -747,7 +747,6 @@ const gameHandler = async (gameId) => {
         })),
       ];
 
-
       const imageURI = editableElements.gameThumbnailInput.files.length > 0 ? await new Promise((resolve) => {
         const reader = new FileReader();
         reader.onloadend = () => resolve(reader.result);
