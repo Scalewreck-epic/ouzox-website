@@ -124,11 +124,10 @@ const format_file_size = (fileSizeInBytes) => {
     fileSizeInBytes < 1024
       ? fileSizeInBytes
       : fileSizeInBytes < Math.pow(1024, 2)
-      ? fileSizeInBytes / 1024
-      : fileSizeInBytes / Math.pow(1024, 2);
-  return `${size.toFixed(2)} ${
-    units[Math.floor(Math.log(size) / Math.log(1024))]
-  }`;
+        ? fileSizeInBytes / 1024
+        : fileSizeInBytes / Math.pow(1024, 2);
+  return `${size.toFixed(2)} ${units[Math.floor(Math.log(size) / Math.log(1024))]
+    }`;
 };
 
 const newFilePreview = (file) => {
@@ -180,8 +179,7 @@ const removeGame = async (gameId) => {
 
 // Formats the time in a human-readable format
 const formatTimeSingle = (timeago, option, unit) =>
-  `${option} (${timeago === 1 ? "1" : timeago} ${unit}${
-    timeago === 1 ? "" : "s"
+  `${option} (${timeago === 1 ? "1" : timeago} ${unit}${timeago === 1 ? "" : "s"
   } Ago)`;
 const formatTime = (coru, yearsAgo, monthsAgo, weeksAgo, daysAgo) => {
   if (yearsAgo >= 1) return formatTimeSingle(yearsAgo, coru, "Year");
@@ -219,7 +217,7 @@ const gameHandler = async (gameId) => {
 
   elements.gameTitle.textContent = gameData.name;
   elements.gameDesc.innerHTML = gameData.description;
-  elements.gamePrice.textContent = `${gameData.pricing.price} ${gameData.pricing.currency}`;
+  elements.gamePrice.textContent = gameData.pricing.free ? "FREE" : `${gameData.pricing.price} ${gameData.pricing.currency}`;
   elements.created.textContent = formatTime(
     gameData.created,
     gameData.datestodays.publishedYearsAgo,
@@ -569,12 +567,12 @@ const gameHandler = async (gameId) => {
         .checked
         ? 0
         : Math.min(
-            maxPrice,
-            Math.max(
-              minPrice,
-              editableElements.gamePriceInput.value.replace(/[^0-9]/g, "")
-            )
-          );
+          maxPrice,
+          Math.max(
+            minPrice,
+            editableElements.gamePriceInput.value.replace(/[^0-9]/g, "")
+          )
+        );
     });
 
     editableElements.gameIsFreeInput.addEventListener("change", () => {
@@ -582,12 +580,12 @@ const gameHandler = async (gameId) => {
         .checked
         ? 0
         : Math.min(
-            maxPrice,
-            Math.max(
-              minPrice,
-              editableElements.gamePriceInput.value.replace(/[^0-9]/g, "")
-            )
-          );
+          maxPrice,
+          Math.max(
+            minPrice,
+            editableElements.gamePriceInput.value.replace(/[^0-9]/g, "")
+          )
+        );
     });
 
     editableElements.gameTitleInput.addEventListener("input", () => {
