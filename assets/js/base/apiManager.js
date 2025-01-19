@@ -114,7 +114,7 @@ class RequestHandler {
     const statusCode = response.status || 500; // Default 500 code error
     const errorMessage = errorMessages[statusCode];
 
-    if (this.redirect && (retryCount == this.retries - 1 && errorMessage.retry)) {
+    if (this.redirect && retryCount == this.retries - 1) {
       window.location.assign(`404?code=${statusCode}`); // Assign the 404 page with the status code
       return;
     } else {
@@ -170,7 +170,7 @@ class RequestHandler {
         throw error;
       } catch (error) {
         console.error(error);
-        if (i == this.retries - 1) return { response: error.errorMessage, ok: false };
+        if (i == this.retries - 1 && errorMessages[error.errorCode].retry) return { response: error.errorMessage, ok: false };
         await new Promise((resolve) =>
           setTimeout(resolve, this.retryTimeout * 1000)
         );
