@@ -4,45 +4,55 @@ export const errorMessages = {
   400: {
     header: "Bad Request",
     description: "The request was invalid or cannot be processed.",
+    retry: true,
   },
   401: {
     header: "Unauthorized",
     description: "Authentication is required to access this resource.",
+    retry: false,
   },
   402: {
     header: "Payment Required",
     description: "Payment is required to access this resource.",
+    retry: false,
   },
   403: {
     header: "Access Denied",
     description: "Permission is required to access this resource.",
+    retry: false,
   },
   404: {
     header: "Not Found",
     description: "This resource could not be found.",
+    retry: true,
   },
   405: {
     header: "Method Not Allowed",
     description: "The request method is not supported by this resource.",
+    retry: false,
   },
   409: {
     header: "Conflict",
     description:
       "The request could not be completed due to a conflict with the current state of the resource.",
+    retry: true,
   },
   429: {
     header: "Too Many Requests",
     description: "Sent too many requests in a given amount of time.",
+    retry: true,
   },
   500: {
     header: "Internal Server Error",
     description:
       "An unexpected error occured. If this keeps happening, contact us.",
+    retry: true,
   },
   503: {
     header: "Service Unavailable",
     description:
       "Ouzox is currently down for maintenance. We will be up shortly.",
+    retry: false,
   },
 };
 
@@ -102,19 +112,19 @@ class RequestHandler {
   // Handles the errors of the request
   async handleError(response, retryCount) {
     const statusCode = response.status || 500; // Default 500 code error
+    const errorMessage = errorMessages[statusCode];
 
-    if (this.redirect && retryCount == this.retries - 1) {
+    if (this.redirect && (retryCount == this.retries - 1 && errorMessage.retry)) {
       window.location.assign(`404?code=${statusCode}`); // Assign the 404 page with the status code
       return;
     } else {
       // Otherwise, throw the error
       const jsonResponse = await response.json();
+      const newError = new Error(`${statusCode}: ${!errorMessage ? "Unknown Error" : errorMessage.header}: ${jsonResponse.message}`);
+      newError.errorMessage = jsonResponse.message;
+      newError.errorCode = statusCode;
 
-      const errorMessage = errorMessages[statusCode];
-      if (!errorMessage) {
-        throw new Error(`Unknown error: ${statusCode}: ${jsonResponse.message}`);
-      }
-      throw new Error(`${statusCode}: ${errorMessage.header}: ${jsonResponse.message}`);
+      return newError
     }
   }
 
@@ -145,7 +155,7 @@ class RequestHandler {
           ...this.options,
           signal: controller.signal,
         });
-        clearTimeout(timeoutId); // Clear the timeout aftre request
+        clearTimeout(timeoutId); // Clear the timeout after request
 
         if (response.ok) {
           // Don't json parse if there is no response
@@ -155,9 +165,12 @@ class RequestHandler {
           return { response: jsonResponse, ok: true };
         }
 
-        throw this.handleError(response, i);
+        const error = await this.handleError(response, i);
+
+        throw error;
       } catch (error) {
-        if (i == this.retries - 1) return { response: error, ok: false };
+        console.error(error);
+        if (i == this.retries - 1) return { response: error.errorMessage, ok: false };
         await new Promise((resolve) =>
           setTimeout(resolve, this.retryTimeout * 1000)
         );
