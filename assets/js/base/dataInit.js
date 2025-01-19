@@ -1,4 +1,4 @@
-// Handles loading games on load.
+// Handles initializing game displaying depending on the page
 
 import {
   fetchGames,
