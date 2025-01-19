@@ -157,7 +157,7 @@ const updateGame = async (data, gameId, commitChangesButton) => {
     data,
     false
   );
-  commitChangesButton.textContent = result.ok ? "Success" : "An error occured";
+  commitChangesButton.textContent = result.ok ? "Success" : result.response;
 };
 
 // Request to remove the game
@@ -824,7 +824,7 @@ const gameHandler = async (gameId) => {
           if (response.ok) {
             window.location.assign("dashboard"); // Assign the user back to their dashboard
           } else {
-            alert("Failed to delete game.");
+            alert(`Deletion Failed: ${response.response}`);
           }
         } else {
           alert("Invalid confirmation.");
