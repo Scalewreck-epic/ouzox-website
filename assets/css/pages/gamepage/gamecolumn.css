@@ -58,7 +58,10 @@
 }
 
 .right-column h1,
+.right-column h3,
 .right-column-gameediting h1,
+.right-column-gameediting h3,
+.left-column-gameediting h3,
 .left-column-gameediting h1 {
   text-align: center;
 }

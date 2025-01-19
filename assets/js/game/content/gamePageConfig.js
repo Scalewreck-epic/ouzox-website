@@ -42,6 +42,7 @@ class GameData {
       features: rawGameData.features,
       platforms: rawGameData.platforms,
       pricing: rawGameData.pricing,
+      refundPolicy: rawGameData.refund_policy,
       download_key: rawGameData.product_id,
       page: rawGameData.page,
       developer: {
@@ -207,6 +208,8 @@ const gameHandler = async (gameId) => {
     gameAge: document.getElementById("game-age"),
     gameSize: document.getElementById("game-size"),
     gamePrice: document.getElementById("game-price"),
+    gameRefundTimeframe: document.getElementById("game-refund-timeframe"),
+    gameRefundPercentage: document.getElementById("game-refund-percentage"),
     gameFeatures: document.getElementById("features"),
     gamePlatforms: document.getElementById("platforms"),
     gameColumn: document.getElementById("game-column"),
@@ -238,6 +241,8 @@ const gameHandler = async (gameId) => {
   elements.gameSummary.textContent = gameData.summary;
   elements.gameArt.textContent = gameData.artstyle.toUpperCase();
   elements.gameAge.textContent = gameData.agerating.toUpperCase();
+  elements.gameRefundPercentage.textContent = `${gameData.refundPolicy.percentage}%`;
+  elements.gameRefundTimeframe.textContent = `${gameData.refundPolicy.timeframe} Days`;
 
   elements.icon.setAttribute("href", gameData.icon.href);
   elements.developerName.setAttribute(
