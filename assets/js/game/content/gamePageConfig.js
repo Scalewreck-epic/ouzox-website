@@ -387,6 +387,8 @@ const gameHandler = async (gameId) => {
       gameFileInput: document.getElementById("download-file"),
       gamePriceInput: document.getElementById("price"),
       gameIsFreeInput: document.getElementById("isfree"),
+      gameRefundTimeframeInput: document.getElementById("refund-timeframe"),
+      gameRefundPercentageInput: document.getElementById("refund-percentage"),
       gameCurrencyInput: document.getElementById("currency-sort"),
       commitChangesButton: document.createElement("button"),
       deleteButton: document.createElement("button"),
@@ -520,6 +522,24 @@ const gameHandler = async (gameId) => {
       if (file) reader.readAsDataURL(file);
     };
 
+    const priceChanged = () => {
+      editableElements.gamePriceInput.value = editableElements.gameIsFreeInput
+        .checked
+        ? 0
+        : Math.min(
+          maxPrice,
+          Math.max(
+            minPrice,
+            editableElements.gamePriceInput.value.replace(/[^0-9]/g, "")
+          )
+        );
+    };
+
+    const updateRefund = () => {
+      editableElements.gameRefundPercentageInput.value = Math.min(100, Math.max(25, editableElements.gameRefundPercentageInput.value.replace(/[^0-9]/g, "")));
+      editableElements.gameRefundTimeframeInput.value = Math.max(1, editableElements.gameRefundTimeframeInput.value.replace(/[^0-9]/g, ""));
+    };
+
     elements.gameDesc.contentEditable = true;
 
     editableElements.commitChangesButton.setAttribute(
@@ -562,31 +582,10 @@ const gameHandler = async (gameId) => {
         editableElements.gameArtStyleInput.value.toUpperCase();
     });
 
-    editableElements.gamePriceInput.addEventListener("input", () => {
-      editableElements.gamePriceInput.value = editableElements.gameIsFreeInput
-        .checked
-        ? 0
-        : Math.min(
-          maxPrice,
-          Math.max(
-            minPrice,
-            editableElements.gamePriceInput.value.replace(/[^0-9]/g, "")
-          )
-        );
-    });
-
-    editableElements.gameIsFreeInput.addEventListener("change", () => {
-      editableElements.gamePriceInput.value = editableElements.gameIsFreeInput
-        .checked
-        ? 0
-        : Math.min(
-          maxPrice,
-          Math.max(
-            minPrice,
-            editableElements.gamePriceInput.value.replace(/[^0-9]/g, "")
-          )
-        );
-    });
+    editableElements.gamePriceInput.addEventListener("input", priceChanged);
+    editableElements.gameIsFreeInput.addEventListener("change", priceChanged);
+    editableElements.gameRefundPercentageInput.addEventListener("input", updateRefund);
+    editableElements.gameRefundTimeframeInput.addEventListener("input", updateRefund);
 
     editableElements.gameTitleInput.addEventListener("input", () => {
       elements.gameTitle.textContent = editableElements.gameTitleInput.value;
@@ -764,6 +763,10 @@ const gameHandler = async (gameId) => {
           price: editableElements.gamePriceInput.value,
           free: editableElements.gameIsFreeInput.checked ? "true" : "false",
           currency: editableElements.gameCurrencyInput.value.toUpperCase(),
+        },
+        refund_policy: {
+          timeframe: editableElements.gameRefundTimeframeInput.value,
+          percentage: editableElements.gameRefundPercentageInput.value,
         },
         uploader_id: user.id,
         platforms: Object.fromEntries(

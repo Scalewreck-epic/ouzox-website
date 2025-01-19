@@ -11,14 +11,16 @@ const error_label = document.getElementById("error-label");
 
 const game_thumbnail = document.getElementById("thumbnail");
 const game_price = document.getElementById("price");
-const genre_input = document.getElementById("genre-input");
 const game_isfree = document.getElementById("isfree");
+const game_refund_timeframe = document.getElementById("refund-timeframe");
+const game_refund_percentage = document.getElementById("refund-percentage");
+const genre_input = document.getElementById("genre-input");
 const game_art = document.getElementById("art-style-input");
 const download_file = document.getElementById("download-file");
 const game_description = document.getElementById("description");
 
-const uploader_name = user.name
-const uploader_id = user.id;
+//const uploader_name = user.name
+//const uploader_id = user.id;
 
 const maxDescriptionCharacters = 4000;
 const minPrice = 1;
@@ -71,6 +73,7 @@ const on_submit = async () => {
   // Make sure everything is up to date
   update_thumbnail();
   update_price();
+  update_refund();
 
   if (canUpload) {
     const inputs = {
@@ -81,6 +84,8 @@ const on_submit = async () => {
       price: game_price.value,
       currency: document.getElementById("currency-sort").value.toUpperCase(),
       isFree: game_isfree.checked,
+      refundTimeframe: game_refund_timeframe.value,
+      refundPercentage: game_refund_percentage.value,
       genre: genre_input.value.toUpperCase(),
       artStyle: game_art.value.toUpperCase(),
       ageRating: document.getElementById("age-sort").value,
@@ -130,6 +135,10 @@ const on_submit = async () => {
           price: inputs.price,
           free: inputs.isFree,
           currency: inputs.currency,
+        },
+        refund_policy: {
+          timeframe: inputs.refundTimeframe,
+          percentage: inputs.refundPercentage,
         },
         platforms: Object.fromEntries(
           inputs.platforms.map((enabled, index) => [
@@ -223,6 +232,12 @@ const updateFiles = () => {
   download_file.value = "";
 };
 
+// Update the refund form
+const update_refund = () => {
+  game_refund_percentage.value = Math.min(100, Math.max(25, game_refund_percentage.value.replace(/[^0-9]/g, "")));
+  game_refund_timeframe.value = Math.max(1, game_refund_timeframe.value.replace(/[^0-9]/g, ""));
+}
+
 // Update the prices
 const update_price = () => {
   game_price.value = game_isfree.checked
@@ -245,11 +260,13 @@ const update_description = () => {
 
 game_description.addEventListener("input", update_description);
 game_price.addEventListener("input", update_price);
+game_isfree.addEventListener("change", update_price);
+game_refund_percentage.addEventListener("input", update_refund);
+game_refund_timeframe.addEventListener("input", update_refund);
 genre_input.addEventListener("input", update_genre);
 game_art.addEventListener("input", update_art);
 download_file.addEventListener("change", updateFiles);
 game_thumbnail.addEventListener("change", update_thumbnail);
-game_isfree.addEventListener("change", update_price);
 uploadGame.addEventListener("submit", async (event) => {
   event.preventDefault();
   await on_submit();
