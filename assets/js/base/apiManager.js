@@ -110,9 +110,9 @@ class RequestHandler {
       // Otherwise, throw the error
       const errorMessage = errorMessages[statusCode];
       if (!errorMessage) {
-        throw new Error(`Unknown error: ${statusCode}`);
+        throw new Error(`Unknown error: ${statusCode}: ${response.message}`);
       }
-      throw new Error(`${statusCode}: ${errorMessage.header}`);
+      throw new Error(`${statusCode}: ${errorMessage.header}: ${response.message}`);
     }
   }
 
@@ -145,16 +145,15 @@ class RequestHandler {
         });
         clearTimeout(timeoutId); // Clear the timeout aftre request
 
-        if (response.ok) {
-          // Don't json parse if there is no response
-          const jsonResponse =
-            response.status == 204 ? null : await response.json();
+        // Don't json parse if there is no response
+        const jsonResponse = response.status == 204 ? null : await response.json();
 
+        if (response.ok) {
           cache.set(endpointUrl, { response: jsonResponse, ok: true }); // Cache successful responses
           return { response: jsonResponse, ok: true };
         }
 
-        throw this.handleError(response, i);
+        throw this.handleError(jsonResponse, i);
       } catch (error) {
         if (i == this.retries - 1) return { response: error, ok: false };
         await new Promise((resolve) =>

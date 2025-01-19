@@ -101,6 +101,7 @@ const createSessionData = async () => {
       const dateObject = new Date(dobInput);
       const dobTimestamp = dateObject.getTime();
 
+      errorLabel.textContent = "Signing you up...";
       const result = await request(
         endpoints.user.signup,
         {
@@ -118,7 +119,7 @@ const createSessionData = async () => {
 
       errorLabel.textContent = result.ok
         ? "Successfully created account!"
-        : result.response;
+        : result.response.message;
       if (result.ok) {
         session.createCookie("session_id", result.response.authToken);
         window.location.assign("index");
@@ -148,7 +149,7 @@ const fetchSessionData = async () => {
 
       errorLabel.textContent = result.ok
         ? "Successfully logged in!"
-        : result.response;
+        : result.response.message;
       if (result.ok) {
         session.createCookie("session_id", result.response.authToken);
         window.location.assign("index");
