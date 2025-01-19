@@ -119,7 +119,7 @@ const createSessionData = async () => {
 
       errorLabel.textContent = result.ok
         ? "Successfully created account!"
-        : result.response.message;
+        : result.response;
       if (result.ok) {
         session.createCookie("session_id", result.response.authToken);
         window.location.assign("index");
@@ -149,7 +149,7 @@ const fetchSessionData = async () => {
 
       errorLabel.textContent = result.ok
         ? "Successfully logged in!"
-        : result.response.message;
+        : result.response;
       if (result.ok) {
         session.createCookie("session_id", result.response.authToken);
         window.location.assign("index");
