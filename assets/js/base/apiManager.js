@@ -170,7 +170,11 @@ class RequestHandler {
         throw error;
       } catch (error) {
         console.error(error);
-        if (i == this.retries - 1 && errorMessages[error.errorCode].retry) return { response: error.errorMessage, ok: false };
+        if (i == this.retries - 1) {
+          return { response: error.errorMessage, ok: false };
+        } else if (!errorMessages[error.errorCode].retry) {
+          return { response: error.errorMessage, ok: false };
+        }
         await new Promise((resolve) =>
           setTimeout(resolve, this.retryTimeout * 1000)
         );
