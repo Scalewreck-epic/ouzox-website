@@ -121,7 +121,8 @@ const createSessionData = async () => {
         ? "Successfully created account!"
         : result.response;
       if (result.ok) {
-        session.createCookie("session_id", result.response.authToken);
+        session.createCookie("session_id", result.response.user.session_id);
+        session.updateUserCache(result.response.user);
         window.location.assign("index");
       }
     } else {
@@ -151,7 +152,8 @@ const fetchSessionData = async () => {
         ? "Successfully logged in!"
         : result.response;
       if (result.ok) {
-        session.createCookie("session_id", result.response.authToken);
+        session.createCookie("session_id", result.response.user.session_id);
+        session.updateUserCache(result.response.user);
         window.location.assign("index");
       }
     }
@@ -173,6 +175,7 @@ const togglePasswordVisibility = (passwordInput, icon) => {
 // Clear cookies on logout
 const logout = () => {
   if (isValidCookie) session.clearCookie();
+  if (localStorage.getItem("userCache")) localStorage.removeItem("userCache");
   window.location.assign("login");
 };
 
@@ -203,7 +206,12 @@ const setupSettingsPage = () => {
   };
 
   Object.entries(actions).forEach(([id, action]) => {
-    document.getElementById(id).addEventListener("click", action);
+    const actionButton = document.getElementById(id);
+    actionButton.addEventListener("click", async () => {
+      actionButton.disabled = true;
+      await action();
+      actionButton.disabled = false;
+    });
   });
 
   updateUserStats();
