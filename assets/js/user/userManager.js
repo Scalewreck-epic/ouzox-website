@@ -11,12 +11,13 @@ console.info(
   "Ouzox is open source! https://github.com/Scalewreck-epic/ouzox-website"
 );
 
-export const cookie = session.fetchCookie("session_id").data;
+const cookieData = session.fetchCookie("session_id");
 export const user = await session.fetchUser(); // Export the user to other pages that need it.
+export const cookie = cookieData.data;
 
 const today = new Date().toISOString().split("T")[0]; // Today
 
-const isValidCookie = cookie.valid;
+const isValidCookie = cookieData.valid;
 
 // Updates the username in the navigation header
 const updateUsername = () => {
