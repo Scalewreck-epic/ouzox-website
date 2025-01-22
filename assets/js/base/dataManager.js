@@ -1,6 +1,6 @@
 // Handles all the game data from the server to the page
 
-import { user } from "../user/userManager.js";
+import { cookie } from "../user/userManager.js";
 import { request } from "./apiManager.js";
 import { endpoints } from "../other/endpoints.js";
 
@@ -258,7 +258,7 @@ export const loadDashboard = async () => {
   };
 
   const userGamesRequest = await request(
-    `${endpoints.user.list_games}${user.id}`,
+    `${endpoints.user.list_games}${cookie}`,
     developerGameOptions,
     false
   );

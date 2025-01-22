@@ -1,6 +1,6 @@
 // Handles game submissions
 
-import { user } from "../../user/userManager.js";
+import { cookie } from "../../user/userManager.js";
 import { request } from "../../base/apiManager.js";
 import { endpoints } from "../../other/endpoints.js";
 
@@ -18,9 +18,6 @@ const genre_input = document.getElementById("genre-input");
 const game_art = document.getElementById("art-style-input");
 const download_file = document.getElementById("download-file");
 const game_description = document.getElementById("description");
-
-//const uploader_name = user.name
-//const uploader_id = user.id;
 
 const maxDescriptionCharacters = 4000;
 const minPrice = 1;
@@ -44,8 +41,7 @@ const format_file_size = (fileSizeInBytes) => {
 
 // Request to upload the game
 const upload_game = async (gameRequestOptions) => {
-  const result = await request(
-    endpoints.game.create,
+  const result = await request(`${endpoints.game.create}${cookie}`,
     gameRequestOptions,
     false
   );
@@ -124,7 +120,6 @@ const on_submit = async () => {
       body: JSON.stringify({
         name: inputs.title,
         description: inputs.description,
-        developer: { username: uploader_name, id: uploader_id },
         summary: inputs.summary,
         genre: inputs.genre,
         artstyle: inputs.artStyle,

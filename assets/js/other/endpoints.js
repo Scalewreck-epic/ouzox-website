@@ -9,8 +9,8 @@ const CHECKOUT_BASE_URL = "https://x8ki-letl-twmt.n7.xano.io/api:nrRyaavp";
 // Add payment links
 export const endpoints = {
   user: {
-    list_public_games: `${DATABASE_URL}/user/games/public/`,
-    list_games: `${DATABASE_URL}/user/games/`,
+    list_public_games: `${DATABASE_URL}/user/games/public/`, // + user ID
+    list_games: `${DATABASE_URL}/user/games/`, // + user session
     edit_email: `${DATABASE_URL}/user/edit_email/`, // + user session
     edit_password: `${DATABASE_URL}/user/edit_pass/`, // + user session
     edit_status: `${DATABASE_URL}/user/edit_status/`, // + user session
@@ -36,9 +36,9 @@ export const endpoints = {
     remove: `${PRICES_BASE_URL}/products/remove`, // + product ID
   },
   game: {
-    create: `${DATABASE_URL}/games/create`,
-    remove: `${DATABASE_URL}/games/remove/`, // + game ID
-    update: `${DATABASE_URL}/games/edit/`, // + game ID
+    create: `${DATABASE_URL}/games/create/`, // + user session
+    remove: `${DATABASE_URL}/games/remove/`, // + game ID + user session
+    update: `${DATABASE_URL}/games/edit/`, // + game ID + user session
     view: `${DATABASE_URL}/games/view/`, // + game ID
     list_frontpage: `${DATABASE_URL}/games/list/frontpage`,
     list_genresearch: `${DATABASE_URL}/games/list/genre/`, // + genre name

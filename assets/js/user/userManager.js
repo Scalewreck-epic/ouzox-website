@@ -11,12 +11,12 @@ console.info(
   "Ouzox is open source! https://github.com/Scalewreck-epic/ouzox-website"
 );
 
-const cookieData = session.fetchCookie("session_id");
+export const cookie = session.fetchCookie("session_id").data;
 export const user = await session.fetchUser(); // Export the user to other pages that need it.
 
 const today = new Date().toISOString().split("T")[0]; // Today
 
-const isValidCookie = cookieData.valid;
+const isValidCookie = cookie.valid;
 
 // Updates the username in the navigation header
 const updateUsername = () => {
@@ -122,7 +122,6 @@ const createSessionData = async () => {
         : result.response;
       if (result.ok) {
         session.createCookie("session_id", result.response.user.session_id);
-        session.updateUserCache(result.response.user);
         window.location.assign("index");
       }
     } else {
@@ -153,7 +152,6 @@ const fetchSessionData = async () => {
         : result.response;
       if (result.ok) {
         session.createCookie("session_id", result.response.user.session_id);
-        session.updateUserCache(result.response.user);
         window.location.assign("index");
       }
     }

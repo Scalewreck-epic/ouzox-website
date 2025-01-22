@@ -42,11 +42,6 @@ export const fetchCookie = (cookieName) => {
     : { data: null, valid: false };
 };
 
-// Creates user cache
-export const updateUserCache = (userData) => {
-  localStorage.setItem("cachedUser", JSON.stringify(userData));
-};
-
 const sessionId = fetchCookie("session_id").data; // Fetches session ID
 
 // Request to change user settings
@@ -64,12 +59,10 @@ const changeSessionData = async (headers, endpoint) => {
 const changeData = async (data, endpoint) => {
   if (sessionId) {
     const myHeaders = new Headers({ "Content-Type": "application/json" });
-    const newSessionData = await changeSessionData(
+    await changeSessionData(
       { method: "POST", headers: myHeaders, body: JSON.stringify(data) },
       endpoint
     );
-
-    updateUserCache(newSessionData);
   }
 };
 
@@ -121,10 +114,9 @@ export const fetchAlternativeUser = async (userId) => {
 
 // Fetch the current user logged in using the user's session ID
 export const fetchUser = async () => {
-  const cachedUser = localStorage.getItem("cachedUser");
-
-  if (cachedUser) {
-    return JSON.parse(cachedUser);
+  if (sessionId) {
+    const result = await request(`${endpoints.user.get_data_with_sess}${sessionId}`, { method: "GET", headers: { "Content-Type": "application/json" } }, true);
+    return result.ok ? result.response : null;
   } else {
     return null;
   }

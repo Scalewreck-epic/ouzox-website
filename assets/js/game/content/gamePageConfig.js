@@ -1,6 +1,6 @@
 // Handles displaying games and editing games
 
-import { user } from "../../user/userManager.js";
+import { user, cookie } from "../../user/userManager.js";
 import { request } from "../../base/apiManager.js";
 import { endpoints } from "../../other/endpoints.js";
 
@@ -154,7 +154,7 @@ const newFilePreview = (file) => {
 // Request to update the game
 const updateGame = async (data, gameId, commitChangesButton) => {
   const result = await request(
-    `${endpoints.game.update}${gameId}`,
+    `${endpoints.game.update}${gameId}/${cookie}`,
     data,
     false
   );
@@ -164,15 +164,12 @@ const updateGame = async (data, gameId, commitChangesButton) => {
 // Request to remove the game
 const removeGame = async (gameId) => {
   const deleteOptions = {
-    method: "POST",
+    method: "DELETE",
     headers: { "Content-Type": "application/json" },
-    body: {
-      uploader_id: user.id,
-    },
   };
 
   const response = await request(
-    `${endpoints.game.remove}${gameId}`,
+    `${endpoints.game.remove}${gameId}/${cookie}`,
     deleteOptions
   );
   return response.ok;
@@ -773,7 +770,6 @@ const gameHandler = async (gameId) => {
           timeframe: editableElements.gameRefundTimeframeInput.value,
           percentage: editableElements.gameRefundPercentageInput.value,
         },
-        uploader_id: user.id,
         platforms: Object.fromEntries(
           gamePlatforms.map((p) => [
             p.Name.toLowerCase(),
