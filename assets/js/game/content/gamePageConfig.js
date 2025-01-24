@@ -632,9 +632,9 @@ const gameHandler = async (gameId) => {
     });
 
     elements.gameDesc.addEventListener("input", () => {
-      const text = game_description.innerHTML;
+      const text = elements.gameDesc.innerHTML;
       if (text.length > maxDescriptionCharacters) {
-        game_description.innerHTML = text.substring(0, maxDescriptionCharacters);
+        elements.gameDesc.innerHTML = text.substring(0, maxDescriptionCharacters);
       };
     });
 
