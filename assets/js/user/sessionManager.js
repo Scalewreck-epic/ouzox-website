@@ -45,8 +45,7 @@ export const fetchCookie = (cookieName) => {
 const sessionId = fetchCookie("session_id").data; // Fetches session ID
 
 // Request to change user settings
-const changeSessionData = async (headers, endpoint) => {
-  const errorLabel = document.getElementById("error-label");
+const changeSessionData = async (headers, endpoint, errorLabel) => {
   errorLabel.textContent = "Changing settings...";
 
   const result = await request(endpoint, headers, false);
@@ -56,12 +55,12 @@ const changeSessionData = async (headers, endpoint) => {
 };
 
 // Changes one type of data from user settings
-const changeData = async (data, endpoint) => {
+const changeData = async (data, endpoint, errorLabel) => {
   if (sessionId) {
     const myHeaders = new Headers({ "Content-Type": "application/json" });
     await changeSessionData(
       { method: "POST", headers: myHeaders, body: JSON.stringify(data) },
-      endpoint
+      endpoint, errorLabel
     );
   }
 };
@@ -72,7 +71,8 @@ export const changeEmailData = async () => {
   if (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(newEmail)) {
     await changeData(
       { session_id: sessionId, new_email: newEmail },
-      `${endpoints.user.edit_email}${sessionId}`
+      `${endpoints.user.edit_email}${sessionId}`,
+      document.getElementById("email-error-label")
     );
   }
 };
@@ -88,7 +88,8 @@ export const changePasswordData = async () => {
         old_password: previousPassword,
         new_password: newPassword,
       },
-      `${endpoints.user.edit_password}${sessionId}`
+      `${endpoints.user.edit_password}${sessionId}`,
+      document.getElementById("password-error-label")
     );
   }
 };
@@ -98,7 +99,8 @@ export const changeStatusData = async () => {
   const newStatus = document.getElementById("status-input").value;
   await changeData(
     { session_id: sessionId, status: newStatus },
-    `${endpoints.user.edit_status}${sessionId}`
+    `${endpoints.user.edit_status}${sessionId}`,
+    document.getElementById("status-error-label")
   );
 };
 
