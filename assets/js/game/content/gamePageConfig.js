@@ -164,7 +164,7 @@ const updateGame = async (data, gameId, commitChangesButton) => {
 // Request to remove the game
 const removeGame = async (gameId) => {
   const deleteOptions = {
-    method: "DELETE",
+    method: "POST",
     headers: { "Content-Type": "application/json" },
   };
 
