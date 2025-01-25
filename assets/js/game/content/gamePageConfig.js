@@ -168,11 +168,10 @@ const removeGame = async (gameId) => {
     headers: { "Content-Type": "application/json" },
   };
 
-  const response = await request(
+  await request(
     `${endpoints.game.remove}${gameId}/${cookie}`,
     deleteOptions
   );
-  return response.ok;
 };
 
 // Formats the time in a human-readable format
@@ -820,13 +819,8 @@ const gameHandler = async (gameId) => {
 
         if (secondaryConfirm == confirmation) {
           // Double confirmation to make sure no mistakes are made
-          const response = await removeGame(gameData.id);
-
-          if (response.ok) {
-            window.location.assign("dashboard"); // Assign the user back to their dashboard
-          } else {
-            alert(`Deletion Failed: ${response.response}`);
-          }
+          await removeGame(gameData.id);
+          window.location.assign("dashboard"); // Assign the user back to their dashboard
         } else {
           alert("Invalid confirmation.");
         }
