@@ -116,7 +116,11 @@ description.addEventListener("paste", (e) => {
   if (selection.rangeCount > 0) {
     const range = selection.getRangeAt(0);
 
-    if (range.startContainer && description && description.contains(range.startContainer)) {
+    if (
+      range.startContainer &&
+      description &&
+      description.contains(range.startContainer)
+    ) {
       range.deleteContents();
       range.insertNode(document.createTextNode(text));
     }

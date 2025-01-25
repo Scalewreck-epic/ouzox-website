@@ -83,32 +83,6 @@ class RequestHandler {
     }
   }
 
-  // Validates the options of the request
-  validateOptions() {
-    if (
-      this.options.body &&
-      typeof this.options.body !== "string" &&
-      !(this.options.body instanceof FormData)
-    ) {
-      try {
-        JSON.stringify(this.options.body);
-        this.options.body = JSON.stringify(this.options.body);
-        if (!this.options.headers) this.options.headers = {};
-        if (!this.options.headers["Content-Type"])
-          this.options.headers["Content-Type"] = "application/json";
-      } catch (error) {
-        throw new Error(
-          "Invalid options body: Must be a string, FormData, or an object that can be stringified to JSON."
-        );
-      }
-    }
-    if (this.options.method) {
-      if (typeof this.options.method !== "string") {
-        throw new Error("Invalid options method: Must be a string");
-      }
-    }
-  }
-
   // Handles the errors of the request
   async handleError(response, retryCount) {
     const statusCode = response.status || 500; // Default 500 code error
@@ -120,11 +94,15 @@ class RequestHandler {
     } else {
       // Otherwise, throw the error
       const jsonResponse = await response.json();
-      const newError = new Error(`${statusCode}: ${!errorMessage ? "Unknown Error" : errorMessage.header}: ${jsonResponse.message}`);
+      const newError = new Error(
+        `${statusCode}: ${
+          !errorMessage ? "Unknown Error" : errorMessage.header
+        }: ${jsonResponse.message}`
+      );
       newError.errorMessage = jsonResponse.message;
       newError.errorCode = statusCode;
 
-      return newError
+      return newError;
     }
   }
 
@@ -134,7 +112,6 @@ class RequestHandler {
     const timeoutId = setTimeout(() => controller.abort(), this.timeout * 1000);
 
     const endpointUrl = this.validateEndpoint();
-    this.validateOptions();
 
     for (let i = 0; i < this.retries; i++) {
       try {
@@ -159,7 +136,8 @@ class RequestHandler {
 
         if (response.ok) {
           // Don't json parse if there is no response
-          const jsonResponse = response.status == 204 ? null : await response.json();
+          const jsonResponse =
+            response.status == 204 ? null : await response.json();
 
           cache.set(endpointUrl, { response: jsonResponse, ok: true }); // Cache successful responses
           return { response: jsonResponse, ok: true };

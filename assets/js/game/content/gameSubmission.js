@@ -41,7 +41,8 @@ const format_file_size = (fileSizeInBytes) => {
 
 // Request to upload the game
 const upload_game = async (gameRequestOptions) => {
-  const result = await request(`${endpoints.game.create}${cookie}`,
+  const result = await request(
+    `${endpoints.game.create}${cookie}`,
     gameRequestOptions,
     false
   );
@@ -93,7 +94,12 @@ const on_submit = async () => {
         "Controller_Support",
         "VR_Support",
         "Saves",
-      ].map((id) => document.getElementById(id.toLowerCase().replace(/1/g, '').replace(/_/g, '')).checked),
+      ].map(
+        (id) =>
+          document.getElementById(
+            id.toLowerCase().replace(/1/g, "").replace(/_/g, "")
+          ).checked
+      ),
       platforms: [
         "windows",
         "mac",
@@ -179,7 +185,7 @@ const newFilePreview = (file) => {
     const fileIndex = files.findIndex((fle) => fle.name == file.name);
     fileCardDiv.remove();
     files.splice(fileIndex, 1);
-  })
+  });
 
   fileCardDiv.appendChild(fileNameDiv);
   fileCardDiv.appendChild(fileSizeDiv);
@@ -229,9 +235,15 @@ const updateFiles = () => {
 
 // Update the refund form
 const update_refund = () => {
-  game_refund_percentage.value = Math.min(100, Math.max(25, game_refund_percentage.value.replace(/[^0-9]/g, "")));
-  game_refund_timeframe.value = Math.max(1, game_refund_timeframe.value.replace(/[^0-9]/g, ""));
-}
+  game_refund_percentage.value = Math.min(
+    100,
+    Math.max(25, game_refund_percentage.value.replace(/[^0-9]/g, ""))
+  );
+  game_refund_timeframe.value = Math.max(
+    1,
+    game_refund_timeframe.value.replace(/[^0-9]/g, "")
+  );
+};
 
 // Update the prices
 const update_price = () => {
@@ -250,7 +262,7 @@ const update_description = () => {
   const text = game_description.innerHTML;
   if (text.length > maxDescriptionCharacters) {
     game_description.innerHTML = text.substring(0, maxDescriptionCharacters);
-  };
+  }
 };
 
 game_description.addEventListener("input", update_description);

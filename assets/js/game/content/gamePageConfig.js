@@ -125,10 +125,11 @@ const format_file_size = (fileSizeInBytes) => {
     fileSizeInBytes < 1024
       ? fileSizeInBytes
       : fileSizeInBytes < Math.pow(1024, 2)
-        ? fileSizeInBytes / 1024
-        : fileSizeInBytes / Math.pow(1024, 2);
-  return `${size.toFixed(2)} ${units[Math.floor(Math.log(size) / Math.log(1024))]
-    }`;
+      ? fileSizeInBytes / 1024
+      : fileSizeInBytes / Math.pow(1024, 2);
+  return `${size.toFixed(2)} ${
+    units[Math.floor(Math.log(size) / Math.log(1024))]
+  }`;
 };
 
 const newFilePreview = (file) => {
@@ -168,15 +169,13 @@ const removeGame = async (gameId) => {
     headers: { "Content-Type": "application/json" },
   };
 
-  await request(
-    `${endpoints.game.remove}${gameId}/${cookie}`,
-    deleteOptions
-  );
+  await request(`${endpoints.game.remove}${gameId}/${cookie}`, deleteOptions);
 };
 
 // Formats the time in a human-readable format
 const formatTimeSingle = (timeago, option, unit) =>
-  `${option} (${timeago === 1 ? "1" : timeago} ${unit}${timeago === 1 ? "" : "s"
+  `${option} (${timeago === 1 ? "1" : timeago} ${unit}${
+    timeago === 1 ? "" : "s"
   } Ago)`;
 const formatTime = (coru, yearsAgo, monthsAgo, weeksAgo, daysAgo) => {
   if (yearsAgo >= 1) return formatTimeSingle(yearsAgo, coru, "Year");
@@ -216,7 +215,9 @@ const gameHandler = async (gameId) => {
 
   elements.gameTitle.textContent = gameData.name;
   elements.gameDesc.innerHTML = gameData.description;
-  elements.gamePrice.textContent = gameData.pricing.free ? "FREE" : `${gameData.pricing.price} ${gameData.pricing.currency}`;
+  elements.gamePrice.textContent = gameData.pricing.free
+    ? "FREE"
+    : `${gameData.pricing.price} ${gameData.pricing.currency}`;
   elements.created.textContent = formatTime(
     gameData.created,
     gameData.datestodays.publishedYearsAgo,
@@ -322,7 +323,10 @@ const gameHandler = async (gameId) => {
     if (feature.Enabled) {
       const featureContainer = document.createElement("div");
       featureContainer.setAttribute("class", "game-feature");
-      featureContainer.textContent = feature.Name.replace(/_/g, " ").replace(/1/g, "-");
+      featureContainer.textContent = feature.Name.replace(/_/g, " ").replace(
+        /1/g,
+        "-"
+      );
       elements.gameFeatures.appendChild(featureContainer);
     }
   });
@@ -525,17 +529,29 @@ const gameHandler = async (gameId) => {
         .checked
         ? 0
         : Math.min(
-          maxPrice,
-          Math.max(
-            minPrice,
-            editableElements.gamePriceInput.value.replace(/[^0-9]/g, "")
-          )
-        );
+            maxPrice,
+            Math.max(
+              minPrice,
+              editableElements.gamePriceInput.value.replace(/[^0-9]/g, "")
+            )
+          );
     };
 
     const updateRefund = () => {
-      editableElements.gameRefundPercentageInput.value = Math.min(100, Math.max(25, editableElements.gameRefundPercentageInput.value.replace(/[^0-9]/g, "")));
-      editableElements.gameRefundTimeframeInput.value = Math.max(1, editableElements.gameRefundTimeframeInput.value.replace(/[^0-9]/g, ""));
+      editableElements.gameRefundPercentageInput.value = Math.min(
+        100,
+        Math.max(
+          25,
+          editableElements.gameRefundPercentageInput.value.replace(
+            /[^0-9]/g,
+            ""
+          )
+        )
+      );
+      editableElements.gameRefundTimeframeInput.value = Math.max(
+        1,
+        editableElements.gameRefundTimeframeInput.value.replace(/[^0-9]/g, "")
+      );
     };
 
     elements.gameDesc.contentEditable = true;
@@ -582,8 +598,14 @@ const gameHandler = async (gameId) => {
 
     editableElements.gamePriceInput.addEventListener("input", priceChanged);
     editableElements.gameIsFreeInput.addEventListener("change", priceChanged);
-    editableElements.gameRefundPercentageInput.addEventListener("input", updateRefund);
-    editableElements.gameRefundTimeframeInput.addEventListener("input", updateRefund);
+    editableElements.gameRefundPercentageInput.addEventListener(
+      "input",
+      updateRefund
+    );
+    editableElements.gameRefundTimeframeInput.addEventListener(
+      "input",
+      updateRefund
+    );
 
     editableElements.gameTitleInput.addEventListener("input", () => {
       elements.gameTitle.textContent = editableElements.gameTitleInput.value;
@@ -594,7 +616,10 @@ const gameHandler = async (gameId) => {
         editableElements.gameSummaryInput.value;
     });
 
-    editableElements.gameThumbnailInput.addEventListener("change", thumbnailChanged);
+    editableElements.gameThumbnailInput.addEventListener(
+      "change",
+      thumbnailChanged
+    );
 
     editableElements.gameFileInput.addEventListener("change", () => {
       const file = editableElements.gameFileInput.files[0];
@@ -630,8 +655,11 @@ const gameHandler = async (gameId) => {
     elements.gameDesc.addEventListener("input", () => {
       const text = elements.gameDesc.innerHTML;
       if (text.length > maxDescriptionCharacters) {
-        elements.gameDesc.innerHTML = text.substring(0, maxDescriptionCharacters);
-      };
+        elements.gameDesc.innerHTML = text.substring(
+          0,
+          maxDescriptionCharacters
+        );
+      }
     });
 
     const isPublic = {
@@ -654,7 +682,9 @@ const gameHandler = async (gameId) => {
     ].map((name) => ({
       Name: name,
       Enabled: gameData.features[name],
-      Element: document.getElementById(name.toLowerCase().replace(/1/g, '').replace(/_/g, '')),
+      Element: document.getElementById(
+        name.toLowerCase().replace(/1/g, "").replace(/_/g, "")
+      ),
     }));
 
     gameFeatures.forEach((feature) => {
@@ -742,11 +772,16 @@ const gameHandler = async (gameId) => {
         })),
       ];
 
-      const imageURI = editableElements.gameThumbnailInput.files.length > 0 ? await new Promise((resolve) => {
-        const reader = new FileReader();
-        reader.onloadend = () => resolve(reader.result);
-        reader.readAsDataURL(editableElements.gameThumbnailInput.files[0]);
-      }) : null;
+      const imageURI =
+        editableElements.gameThumbnailInput.files.length > 0
+          ? await new Promise((resolve) => {
+              const reader = new FileReader();
+              reader.onloadend = () => resolve(reader.result);
+              reader.readAsDataURL(
+                editableElements.gameThumbnailInput.files[0]
+              );
+            })
+          : null;
 
       const updateGameOptionsBody = {
         name: editableElements.gameTitleInput.value,

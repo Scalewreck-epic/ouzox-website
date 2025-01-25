@@ -60,7 +60,8 @@ const changeData = async (data, endpoint, errorLabel) => {
     const myHeaders = new Headers({ "Content-Type": "application/json" });
     await changeSessionData(
       { method: "POST", headers: myHeaders, body: JSON.stringify(data) },
-      endpoint, errorLabel
+      endpoint,
+      errorLabel
     );
   }
 };
@@ -117,7 +118,11 @@ export const fetchAlternativeUser = async (userId) => {
 // Fetch the current user logged in using the user's session ID
 export const fetchUser = async () => {
   if (sessionId) {
-    const result = await request(`${endpoints.user.get_data_with_sess}${sessionId}`, { method: "GET", headers: { "Content-Type": "application/json" } }, true);
+    const result = await request(
+      `${endpoints.user.get_data_with_sess}${sessionId}`,
+      { method: "GET", headers: { "Content-Type": "application/json" } },
+      true
+    );
     return result.ok ? result.response : null;
   } else {
     return null;
