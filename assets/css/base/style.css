@@ -90,7 +90,8 @@ p {
 }
 
 input[type="color"] {
-  width: 100px;
+  width: 10rem;
+  height: 2rem;
   padding: 0.3rem;
   outline: solid 2px black;
   border-radius: 0.5rem;

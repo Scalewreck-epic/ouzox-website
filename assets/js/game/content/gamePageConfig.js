@@ -364,10 +364,7 @@ const gameHandler = async (gameId) => {
     elements.downloadButton.style.backgroundColor = colors.button_color;
     elements.downloadButton.style.color = colors.button_text_color;
     elements.gameStats.style.backgroundColor = colors.stats_bg_color;
-
-    Array.from(document.getElementsByClassName("game-stat")).forEach((stat) => {
-      stat.style.color = colors.stats_text_color;
-    });
+    elements.gameStats.style.color = colors.stats_text_color;
 
     if (gameData.page.font_family) {
       elements.gameColumn.style.fontFamily = gameData.page.font_family;
@@ -419,7 +416,7 @@ const gameHandler = async (gameId) => {
         Name: "desc_color",
         Element: document.getElementById("description-color"),
         Property: "color",
-        ElementChanging: elements.gameDescBackground,
+        ElementChanging: elements.gameDesc,
       },
       {
         Name: "desc_bg_color",
