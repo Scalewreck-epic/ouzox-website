@@ -281,7 +281,7 @@ const gameHandler = async (gameId) => {
     },
     {
       Amount: gameData.page.alphas.description_bg_alpha,
-      ElementChanging: elements.gameDesc,
+      ElementChanging: elements.gameDescBackground,
     },
     {
       Amount: gameData.page.alphas.game_details_bg_alpha,
@@ -296,7 +296,7 @@ const gameHandler = async (gameId) => {
     },
     {
       Enabled: gameData.page.outlines.description_outline,
-      ElementChanging: elements.gameDesc,
+      ElementChanging: elements.gameDescBackground,
     },
     {
       Enabled: gameData.page.outlines.bg2_outline,
@@ -311,7 +311,7 @@ const gameHandler = async (gameId) => {
     },
     {
       Enabled: gameData.page.outlines.description_shadow,
-      ElementChanging: elements.gameDesc,
+      ElementChanging: elements.gameDescBackground,
     },
     {
       Enabled: gameData.page.outlines.bg2_shadow,
