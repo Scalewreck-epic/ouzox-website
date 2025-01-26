@@ -408,14 +408,11 @@ export const loadSearchGames = async () => {
  */
 const loadGames = async () => {
   const myHeaders = new Headers({ "Content-Type": "application/json" });
-  const perPage = 10;
-
   const rawGames = await request(
     endpoints.game.list_frontpage,
     {
-      method: "POST",
+      method: "GET",
       headers: myHeaders,
-      body: JSON.stringify({ perPage, page: 1 }),
     },
     true
   );
