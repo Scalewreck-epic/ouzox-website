@@ -430,6 +430,7 @@ const gameHandler = async (gameId) => {
       gameRefundTimeframeInput: document.getElementById("refund-timeframe"),
       gameRefundPercentageInput: document.getElementById("refund-percentage"),
       gameCurrencyInput: document.getElementById("currency-sort"),
+      fontSort: document.getElementById("font-sort"),
       commitChangesButton: document.createElement("button"),
       deleteButton: document.createElement("button"),
     };
@@ -612,12 +613,19 @@ const gameHandler = async (gameId) => {
     editableElements.deleteButton.setAttribute("class", "game-delete-button");
     editableElements.deleteButton.textContent = "Delete Game";
 
+    // Setting all the changable elements to match the current game data.
     editableElements.gameTitleInput.value = gameData.name;
     editableElements.gameSummaryInput.value = gameData.summary;
     editableElements.gameGenreInput.value = gameData.genre.toUpperCase();
     editableElements.gameArtStyleInput.value = gameData.artstyle.toUpperCase();
     editableElements.gamePriceInput.value = gameData.pricing.price;
     editableElements.gameIsFreeInput.checked = gameData.pricing.free;
+
+    Array.from(editableElements.fontSort.options).forEach((option, i) => {
+      if (option.value == gameData.font_family.toLowerCase()) {
+        editableElements.fontSort.selectedIndex = i;
+      }
+    });
 
     Array.from(editableElements.gameAgeInput.options).forEach((option, i) => {
       if (option.value === gameData.agerating.toLowerCase()) {
@@ -667,6 +675,10 @@ const gameHandler = async (gameId) => {
       "change",
       thumbnailChanged
     );
+
+    editableElements.fontSort.addEventListener("change", () => {
+      elements.gameColumn.style.fontFamily = editableElements.fontSort.options[fontSort.selectedIndex].value;
+    });
 
     editableElements.gameFileInput.addEventListener("change", () => {
       const file = editableElements.gameFileInput.files[0];

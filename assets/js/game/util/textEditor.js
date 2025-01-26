@@ -6,7 +6,6 @@
 
 
 const description = document.getElementById("description");
-const gameColumn = document.getElementById("game-column");
 
 const buttons = {
   formatting: {
@@ -32,7 +31,6 @@ const buttons = {
   },
 };
 
-const fontSort = document.getElementById("font-sort");
 const link = document.getElementById("link");
 
 /**
@@ -161,13 +159,6 @@ description.addEventListener("paste", (e) => {
 const justify = (level) => {
   document.execCommand(`justify${level}`);
 };
-
-if (fontSort) {
-  fontSort.addEventListener("change", function () {
-    gameColumn.style.fontFamily =
-      fontSort.options[fontSort.selectedIndex].value;
-  });
-}
 
 link.addEventListener("click", createLink);
 
