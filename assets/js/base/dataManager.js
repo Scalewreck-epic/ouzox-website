@@ -13,6 +13,10 @@ const urlParams = new URLSearchParams(window.location.search);
 const genres = [];
 const platformGames = [];
 
+/** TODO:
+ * Progressively load new games when scrolling down on search pages
+ */
+
 /**
  * @class Genre
  * @description Represents a game genre.
@@ -333,14 +337,11 @@ export const loadGenreSearchGames = async () => {
 
   searchLabel.textContent = `Top '${categoryName}' Games`;
 
-  const perPage = 30;
-
   const result = await request(
-    `${endpoints.game.list_genresearch}${categoryName}`,
+    `${endpoints.game.list_genresearch}${categoryName}/${1}`,
     {
-      method: "POST",
+      method: "GET",
       headers: myHeaders,
-      body: JSON.stringify({ perPage, page: 1 }),
     },
     false
   );
@@ -373,17 +374,14 @@ export const loadSearchGames = async () => {
   const searchQuery = urlParams.get("q") || "";
   const myHeaders = new Headers({ "Content-Type": "application/json" });
 
-  const perPage = 30;
-
   searchQueryInput.value = searchQuery;
   searchLabel.textContent = `Results for '${searchQuery}'`;
 
   const result = await request(
-    `${endpoints.game.list_search}${searchQuery}`,
+    `${endpoints.game.list_search}${searchQuery}/${1}`,
     {
-      method: "POST",
+      method: "GET",
       headers: myHeaders,
-      body: JSON.stringify({ perPage, page: 1 }),
     },
     false
   );

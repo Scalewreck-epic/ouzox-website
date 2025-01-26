@@ -186,14 +186,14 @@ export const endpoints = {
      * @description Lists games by genre.
      * @param {string} genreName - The name of the genre.
      */
-    list_genresearch: `${DATABASE_URL}/games/list/genre/`, // + genre name
+    list_genresearch: `${DATABASE_URL}/games/list/genre/`, // + genre name + current page
 
     /**
      * @endpoint list_search
      * @description Searches for games based on a query.
      * @param {string} searchQuery - The search query.
      */
-    list_search: `${DATABASE_URL}/games/search/`, // + search query
+    list_search: `${DATABASE_URL}/games/search/`, // + search query + current page
   },
   blog: {
     /**
