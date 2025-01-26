@@ -891,7 +891,6 @@ const gameHandler = async (gameId) => {
       editableElements.commitChangesButton.disabled = false;
     };
 
-    // Deleting the game
     /**
      * Deletes the game with confirmation
      */
