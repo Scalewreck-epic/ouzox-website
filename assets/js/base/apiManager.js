@@ -1,5 +1,23 @@
-// Handles all API reqeusts
+/**
+ * @file apiManager.js
+ * @description Handles all API requests for the Ouzox application.
+ * This module provides a centralized way to manage API interactions, including error handling and response caching.
+ */
 
+/**
+ * @constant {Object} errorMessages
+ * @description Contains predefined error messages for various HTTP status codes.
+ * @property {Object} 400 - Bad Request
+ * @property {Object} 401 - Unauthorized
+ * @property {Object} 402 - Payment Required
+ * @property {Object} 403 - Access Denied
+ * @property {Object} 404 - Not Found
+ * @property {Object} 405 - Method Not Allowed
+ * @property {Object} 409 - Conflict
+ * @property {Object} 429 - Too Many Requests
+ * @property {Object} 500 - Internal Server Error
+ * @property {Object} 503 - Service Unavailable
+ */
 export const errorMessages = {
   400: {
     header: "Bad Request",
@@ -45,7 +63,7 @@ export const errorMessages = {
   500: {
     header: "Internal Server Error",
     description:
-      "An unexpected error occured. If this keeps happening, contact us.",
+      "An unexpected error occurred. If this keeps happening, contact us.",
     retry: true,
   },
   503: {
@@ -58,6 +76,10 @@ export const errorMessages = {
 
 const cache = new Map();
 
+/**
+ * @class RequestHandler
+ * @description Handles API requests, including validation, error handling, and caching.
+ */
 class RequestHandler {
   constructor(endpoint, options, redirect = false) {
     this.endpoint = endpoint;
@@ -69,7 +91,11 @@ class RequestHandler {
     this.cacheExpiration = 120; // seconds
   }
 
-  // Sanitizes the endpoint
+  /**
+   * Validates the endpoint URL.
+   * @returns {string} The validated URL.
+   * @throws {Error} If the URL is invalid.
+   */
   validateEndpoint() {
     // Turn the endpoint into a new URL
     try {
@@ -83,7 +109,12 @@ class RequestHandler {
     }
   }
 
-  // Handles the errors of the request
+  /**
+   * Handles errors from the API request.
+   * @param {Response} response - The response object from the fetch request.
+   * @param {number} retryCount - The current retry attempt count.
+   * @returns {Promise<Error>} A promise that resolves to an error object.
+   */
   async handleError(response, retryCount) {
     const statusCode = response.status || 500; // Default 500 code error
     const errorMessage = errorMessages[statusCode];
@@ -106,7 +137,10 @@ class RequestHandler {
     }
   }
 
-  // Makes the fetch request
+  /**
+   * Makes the fetch request to the API.
+   * @returns {Promise<Object>} The response object or error response.
+   */
   async makeRequest() {
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), this.timeout * 1000);
@@ -127,7 +161,7 @@ class RequestHandler {
           }
         }
 
-        // Fetch reqeust with abort controller
+        // Fetch request with abort controller
         const response = await fetch(endpointUrl, {
           ...this.options,
           signal: controller.signal,
@@ -161,12 +195,13 @@ class RequestHandler {
     }
   }
 }
+
 /**
- *
- * @param {string} endpoint
- * @param {object} options
- * @param {boolean} redirect
- * @returns
+ * Makes an API request.
+ * @param {string} endpoint - The API endpoint to request.
+ * @param {object} options - The options for the fetch request.
+ * @param {boolean} redirect - Whether to redirect on error.
+ * @returns {Promise<Object>} The response object or error response.
  */
 export const request = (endpoint, options, redirect = false) => {
   const handler = new RequestHandler(endpoint, options, redirect);

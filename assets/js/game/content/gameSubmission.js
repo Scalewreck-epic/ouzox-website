@@ -1,11 +1,15 @@
-// Handles game submissions
+/**
+ * @file gameSubmission.js
+ * @description Handles game submissions, including uploading game files and managing user interactions.
+ * This module manages the submission process for new games.
+ */
 
 import { cookie } from "../../user/userManager.js";
 import { request } from "../../base/apiManager.js";
 import { endpoints } from "../../other/endpoints.js";
 
 const myHeaders = new Headers({ "Content-Type": "application/json" });
-const uploadGame = document.getElementById("upload-game");
+const uploadGameForm = document.getElementById("upload-game");
 const uploadButton = document.getElementById("upload-button");
 const error_label = document.getElementById("error-label");
 
@@ -25,8 +29,16 @@ const maxPrice = 5000;
 const maxFileSize = 5; // GB
 const files = [];
 
-// Format the file size
-const format_file_size = (fileSizeInBytes) => {
+/** TODO:
+ * Create game product and price when uploaded.
+ */
+
+/**
+ * Formats the file size to make it readable.
+ * @param {number} fileSizeInBytes - The file size in bytes
+ * @returns {string} - The readable file size
+ */
+const formatFileSize = (fileSizeInBytes) => {
   const units = ["KB", "MB", "GB"];
   const size =
     fileSizeInBytes < 1024
@@ -39,8 +51,12 @@ const format_file_size = (fileSizeInBytes) => {
   }`;
 };
 
-// Request to upload the game
-const upload_game = async (gameRequestOptions) => {
+/**
+ * Requests to create a new game.
+ * @param {object} gameRequestOptions 
+ * @returns 
+ */
+const uploadGame = async (gameRequestOptions) => {
   const result = await request(
     `${endpoints.game.create}${cookie}`,
     gameRequestOptions,
@@ -49,10 +65,10 @@ const upload_game = async (gameRequestOptions) => {
   return result;
 };
 
-// TODO: Create game product and price when uploaded.
-
-// Request to submit the game
-const on_submit = async () => {
+/**
+ * Handles submitting the game.
+ */
+const onSubmit = async () => {
   uploadButton.disabled = true; // Prevent spamming the button
 
   let canUpload = true;
@@ -67,15 +83,15 @@ const on_submit = async () => {
     canUpload = false;
   }
 
-  // Make sure everything is up to date
-  update_thumbnail();
-  update_price();
-  update_refund();
+  // Make sure everything is up to date.
+  updateThumbnail();
+  updatePrice();
+  updateRefund();
 
   if (canUpload) {
     const inputs = {
       title: document.getElementById("title").value,
-      description: DOMPurify.sanitize(game_description.innerHTML), // Sanitize the description
+      description: DOMPurify.sanitize(game_description.innerHTML), // Sanitize the description before upload.
       summary: document.getElementById("summary").value,
       thumbnail: game_thumbnail.files[0],
       price: game_price.value,
@@ -112,7 +128,7 @@ const on_submit = async () => {
       ].map((id) => document.getElementById(id).checked),
     };
 
-    // Wait for the image to load
+    // Wait for the image to load.
     const imageURI = await new Promise((resolve) => {
       const reader = new FileReader();
       reader.onloadend = () => resolve(reader.result);
@@ -156,7 +172,7 @@ const on_submit = async () => {
       }),
     };
 
-    const game = await upload_game(gameRequestOptions);
+    const game = await uploadGame(gameRequestOptions);
     if (game.ok) {
       window.location.assign("dashboard");
     } else {
@@ -179,7 +195,7 @@ const newFilePreview = (file) => {
   fileSizeDiv.classList.add("file-size");
 
   fileNameDiv.textContent = file.name;
-  fileSizeDiv.textContent = format_file_size(file.size);
+  fileSizeDiv.textContent = formatFileSize(file.size);
 
   fileCardDiv.addEventListener("click", () => {
     const fileIndex = files.findIndex((fle) => fle.name == file.name);
@@ -193,8 +209,10 @@ const newFilePreview = (file) => {
   filesList.appendChild(fileCardDiv);
 };
 
-// Update the preview image
-const update_thumbnail = () => {
+/**
+ * Previews the thumbnail on input change.
+ */
+const updateThumbnail = () => {
   const reader = new FileReader();
   const file = game_thumbnail.files[0];
   reader.onload = () =>
@@ -202,7 +220,9 @@ const update_thumbnail = () => {
   if (file) reader.readAsDataURL(file);
 };
 
-// Update the file size
+/**
+ * Handles uploading files.
+ */
 const updateFiles = () => {
   const file = download_file.files[0];
   const isAboveMaxSize = file.size / Math.pow(1024, 3) > maxFileSize;
@@ -233,8 +253,10 @@ const updateFiles = () => {
   download_file.value = "";
 };
 
-// Update the refund form
-const update_refund = () => {
+/**
+ * Handles refund minimum and maximum values for timeframe and percentage.
+ */
+const updateRefund = () => {
   game_refund_percentage.value = Math.min(
     100,
     Math.max(25, game_refund_percentage.value.replace(/[^0-9]/g, ""))
@@ -245,8 +267,10 @@ const update_refund = () => {
   );
 };
 
-// Update the prices
-const update_price = () => {
+/**
+ * Handles price minimum and maximum values.
+ */
+const updatePrice = () => {
   game_price.value = game_isfree.checked
     ? 0
     : Math.min(
@@ -255,26 +279,26 @@ const update_price = () => {
       );
 };
 
-const update_genre = () =>
+const updateGenre = () =>
   (genre_input.value = genre_input.value.toUpperCase());
-const update_art = () => (game_art.value = game_art.value.toUpperCase());
-const update_description = () => {
+const updateArt = () => (game_art.value = game_art.value.toUpperCase());
+const updateDescription = () => {
   const text = game_description.innerHTML;
   if (text.length > maxDescriptionCharacters) {
     game_description.innerHTML = text.substring(0, maxDescriptionCharacters);
   }
 };
 
-game_description.addEventListener("input", update_description);
-game_price.addEventListener("input", update_price);
-game_isfree.addEventListener("change", update_price);
-game_refund_percentage.addEventListener("input", update_refund);
-game_refund_timeframe.addEventListener("input", update_refund);
-genre_input.addEventListener("input", update_genre);
-game_art.addEventListener("input", update_art);
+game_description.addEventListener("input", updateDescription);
+game_price.addEventListener("input", updatePrice);
+game_isfree.addEventListener("change", updatePrice);
+game_refund_percentage.addEventListener("input", updateRefund);
+game_refund_timeframe.addEventListener("input", updateRefund);
+genre_input.addEventListener("input", updateGenre);
+game_art.addEventListener("input", updateArt);
 download_file.addEventListener("change", updateFiles);
-game_thumbnail.addEventListener("change", update_thumbnail);
-uploadGame.addEventListener("submit", async (event) => {
+game_thumbnail.addEventListener("change", updateThumbnail);
+uploadGameForm.addEventListener("submit", async (event) => {
   event.preventDefault();
-  await on_submit();
+  await onSubmit();
 });

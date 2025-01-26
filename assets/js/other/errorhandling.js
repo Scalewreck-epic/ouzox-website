@@ -1,4 +1,8 @@
-// Handles displaying errors on the 404 page
+/**
+ * @file errorhandling.js
+ * @description Handles the 404 page with more error codes.
+ * Displays a header and message according to the error code given.
+ */
 
 import { errorMessages } from "../base/apiManager.js";
 

@@ -1,4 +1,9 @@
-// Handles editing text. Usually seen in descriptions only.
+/**
+ * @file textEditor.js
+ * @description This module handles text editing functionalities for game descriptions.
+ * It provides options for formatting text, creating lists, headers, and links.
+ */
+
 
 const description = document.getElementById("description");
 const gameColumn = document.getElementById("game-column");
@@ -30,11 +35,20 @@ const buttons = {
 const fontSort = document.getElementById("font-sort");
 const link = document.getElementById("link");
 
+/**
+ * Checks if the selected text is in a number list or bullet point list.
+ * @param {Selection} selection - The selected text.
+ * @returns 
+ */
 const isInList = (selection) => {
   const parentElement = selection.anchorNode.parentElement;
   return parentElement.closest("ul, ol") !== null;
 };
 
+/**
+ * Applies the format according to the given format type.
+ * @param {string} formatType - The format type.
+ */
 const applyFormat = (formatType) => {
   const selection = window.getSelection();
 
@@ -51,8 +65,12 @@ const applyFormat = (formatType) => {
       }
     }
   }
-};
+}
 
+/**
+ * Applies a header according to the header level.
+ * @param {number} level - The header level.
+ */
 const applyHeader = (level) => {
   const selection = window.getSelection();
 
@@ -73,6 +91,9 @@ const applyHeader = (level) => {
   }
 };
 
+/**
+ * Creates a link element.
+ */
 const createLink = () => {
   const selection = window.getSelection();
 
@@ -99,6 +120,9 @@ const createLink = () => {
   }
 };
 
+/**
+ * Inserts a line break when creating a new line using 'enter'
+ */
 description.addEventListener("keydown", (e) => {
   const selection = window.getSelection();
 
@@ -108,6 +132,9 @@ description.addEventListener("keydown", (e) => {
   }
 });
 
+/**
+ * Pastes text without formatting.
+ */
 description.addEventListener("paste", (e) => {
   e.preventDefault();
   const text = e.clipboardData.getData("text/plain");
@@ -127,6 +154,10 @@ description.addEventListener("paste", (e) => {
   }
 });
 
+/**
+ * Justifies the position of the element.
+ * @param {string} level - The wanted position of the element (left, right, center).
+ */
 const justify = (level) => {
   document.execCommand(`justify${level}`);
 };

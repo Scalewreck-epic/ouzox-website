@@ -1,4 +1,8 @@
-// Handles the user
+/**
+ * @file userManager.js
+ * @description This module handles user-related functionalities.
+ * It manages user sessions, login, signup, and updates user information on the UI.
+ */
 
 const restrictedPaths = ["/settings", "/upload", "/dashboard"];
 const loginPaths = ["/login", "/signup"];
@@ -19,7 +23,10 @@ const today = new Date().toISOString().split("T")[0]; // Today
 
 const isValidCookie = cookieData.valid;
 
-// Updates the username in the navigation header
+/**
+ * Updates the username displayed in the navigation header based on the user's session status.
+ * Redirects to login or restricted pages as necessary.
+ */
 const updateUsername = () => {
   const username = document.getElementById("username");
   const copyrightYear = document.getElementById("copyright-year");
@@ -48,7 +55,9 @@ const updateUsername = () => {
   }
 };
 
-// Displays the user's current settings
+/**
+ * Displays the user's current settings, including email and account creation date.
+ */
 const updateUserStats = async () => {
   const emailStat = document.getElementById("email-stat");
   const joinTime = document.getElementById("creation-stat");
@@ -64,10 +73,18 @@ const updateUserStats = async () => {
   profileLink.setAttribute("href", `user?id=${user.id}`);
 };
 
+/**
+ * @param {string} passwordInput - The password input to validate.
+ * @returns {boolean} True if the password meets security criteria, false otherwise.
+ */
 const isValidPassword = (passwordInput) =>
   /^(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*(),.?":{}|<>]).{8,}$/.test(
     passwordInput
-  ); // Is the password valid?
+  );
+
+/**
+ * @returns {boolean} True if the signup form inputs are valid, false otherwise.
+ */
 const isValidSignup = () => {
   // Is the signup valid?
   const usernameInput = document.getElementById("username_input").value;
@@ -80,6 +97,9 @@ const isValidSignup = () => {
   );
 };
 
+/**
+ * @returns {boolean} True if the login form inputs are valid, false otherwise.
+ */
 const isValidLogin = () => {
   // Is the login valid?
   const usernameInput = document.getElementById("username_login").value;
@@ -131,7 +151,9 @@ const createSessionData = async () => {
   }
 };
 
-// Fetches an account on the server
+/**
+ * Fetches an account.
+ */
 const fetchSessionData = async () => {
   if (!isValidCookie) {
     const username = document.getElementById("username_login").value;

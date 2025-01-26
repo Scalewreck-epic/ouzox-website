@@ -1,4 +1,8 @@
-// Handles displaying games and editing games
+/**
+ * @file gamePageConfig.js
+ * @description Handles displaying one game's information.
+ * This module manages displaying one individual game page.
+ */
 
 import { user, cookie } from "../../user/userManager.js";
 import { request } from "../../base/apiManager.js";
@@ -7,7 +11,10 @@ import { endpoints } from "../../other/endpoints.js";
 const urlParams = new URLSearchParams(window.location.search);
 const gameIdParam = urlParams.get("g"); // the game ID
 
-// TODO: Update price and currency options in stripe or create new ones when game changes from free to paid (destroy ones when game changes from paid to free).
+/** TODO
+ * Update price and currency options in stripe.
+ * Make the game file available to download
+ */
 
 const maxDescriptionCharacters = 4000;
 const minPrice = 1,
@@ -15,7 +22,10 @@ const minPrice = 1,
 const maxFileSize = 5; // GB
 const files = [];
 
-// New class for the current game
+/**
+ * @class GameData
+ * @description Represents the game's data.
+ */
 class GameData {
   constructor(
     rawGameData,
@@ -53,14 +63,17 @@ class GameData {
   }
 }
 
-// converts colors to hex
 String.prototype.convertToHex = function () {
   if (/^#[0-9a-fA-F]{6}$/.test(this)) return this;
   const [r, g, b] = this.match(/\d+/g).map(Number);
   return `#${[r, g, b].map((v) => v.toString(16).padStart(2, "0")).join("")}`;
 };
 
-// Updates the background color. Really only uses the alpha values
+/**
+ * Updates the background color and alpha of an element.
+ * @param {number} alphaInput - Transparency of the element.
+ * @param {HTMLElement} styleElement - The element we are changing.
+ */
 const updateBackgroundColor = (alphaInput, styleElement) => {
   const alphaValue = alphaInput / 100;
   const [r, g, b] = getComputedStyle(styleElement)
@@ -73,7 +86,10 @@ const updateBackgroundColor = (alphaInput, styleElement) => {
   );
 };
 
-// Retrieves the game data
+/**
+ * Retrieves the game data via game ID.
+ * @param {number} gameId - The game ID we are retrieving data from.
+ */
 const getGameData = async (gameId) => {
   const result = await request(
     `${endpoints.game.view}${gameId}`,
@@ -84,7 +100,10 @@ const getGameData = async (gameId) => {
   throw new Error(`Unable to get game data: ${result}`);
 };
 
-// Edits the raw game data and returns new game data
+/**
+ * Modifies the retrieved game data.
+ * @param {number} gameId - The game ID we are retrieving data from.
+ */
 const fetchGameData = async (gameId) => {
   const rawGameData = await getGameData(gameId);
   const createdDate = new Date(rawGameData.created_at);
@@ -119,7 +138,11 @@ const fetchGameData = async (gameId) => {
   );
 };
 
-const format_file_size = (fileSizeInBytes) => {
+/**
+ * Formats the file size to make it readable.
+ * @param {number} fileSizeInBytes - The file size in bytes.
+ */
+const formatFileSize = (fileSizeInBytes) => {
   const units = ["KB", "MB", "GB"];
   const size =
     fileSizeInBytes < 1024
@@ -132,6 +155,10 @@ const format_file_size = (fileSizeInBytes) => {
   }`;
 };
 
+/**
+ * Previews the file when trying to upload one.
+ * @param {File} file - The uploaded file.
+ */
 const newFilePreview = (file) => {
   const filesList = document.getElementById("files-list");
 
@@ -144,7 +171,7 @@ const newFilePreview = (file) => {
   fileSizeDiv.classList.add("file-size");
 
   fileNameDiv.textContent = file.name;
-  fileSizeDiv.textContent = format_file_size(file.size);
+  fileSizeDiv.textContent = formatFileSize(file.size);
 
   fileCardDiv.appendChild(fileNameDiv);
   fileCardDiv.appendChild(fileSizeDiv);
@@ -152,7 +179,12 @@ const newFilePreview = (file) => {
   filesList.appendChild(fileCardDiv);
 };
 
-// Request to update the game
+/**
+ * Requests to overrite the game's original data with a new one.
+ * @param {object} data - The new game data
+ * @param {number} gameId - The game's ID to the one we're trying to update.
+ * @param {HTMLButtonElement} - The button used to call the function.
+ */
 const updateGame = async (data, gameId, commitChangesButton) => {
   const result = await request(
     `${endpoints.game.update}${gameId}/${cookie}`,
@@ -162,7 +194,10 @@ const updateGame = async (data, gameId, commitChangesButton) => {
   commitChangesButton.textContent = result.ok ? "Success" : result.response;
 };
 
-// Request to remove the game
+/**
+ * Requests to delete's the game
+ * @param {number} gameId - The game's ID to the one we're trying to remove.
+ */
 const removeGame = async (gameId) => {
   const deleteOptions = {
     method: "POST",
@@ -172,11 +207,14 @@ const removeGame = async (gameId) => {
   await request(`${endpoints.game.remove}${gameId}/${cookie}`, deleteOptions);
 };
 
-// Formats the time in a human-readable format
-const formatTimeSingle = (timeago, option, unit) =>
-  `${option} (${timeago === 1 ? "1" : timeago} ${unit}${
-    timeago === 1 ? "" : "s"
-  } Ago)`;
+/**
+ * Formats the time to make it readable.
+ * @param {number} timeago - The amount of days since today.
+ * @param {string} date - The exact date.
+ * @param {string} unit - Time displaying unit (days, weeks, months, years).
+ */
+const formatTimeSingle = (timeago, date, unit) =>
+  `${date} (${timeago} ${unit}${timeago === 1 ? "" : "s"} Ago)`;
 const formatTime = (coru, yearsAgo, monthsAgo, weeksAgo, daysAgo) => {
   if (yearsAgo >= 1) return formatTimeSingle(yearsAgo, coru, "Year");
   if (monthsAgo >= 1) return formatTimeSingle(monthsAgo, coru, "Month");
@@ -185,7 +223,10 @@ const formatTime = (coru, yearsAgo, monthsAgo, weeksAgo, daysAgo) => {
   return "Just Now";
 };
 
-// Displays the game and handles editing
+/**
+ * Handles all of the game data and editing.
+ * @param {number} gameId - The game ID to the game we're trying to display.
+ */
 const gameHandler = async (gameId) => {
   const gameData = await fetchGameData(gameId);
   const elements = {
@@ -374,9 +415,6 @@ const gameHandler = async (gameId) => {
     }
   }
 
-  // TODO: Make the game available to download
-  //elements.downloadButton.setAttribute("href", gameData.paymentLink);
-
   if (user && user.id === gameData.developer.id) {
     // If the user is the game developer, allow access to editing the game
     const editableElements = {
@@ -516,6 +554,9 @@ const gameHandler = async (gameId) => {
       },
     ];
 
+    /**
+     * Previews the thumbnail when the input changes
+     */
     const thumbnailChanged = () => {
       const reader = new FileReader();
       const file = editableElements.gameThumbnailInput.files[0];
@@ -524,6 +565,9 @@ const gameHandler = async (gameId) => {
       if (file) reader.readAsDataURL(file);
     };
 
+    /**
+     * Handles setting a minimum and maximum price when the input changes
+     */
     const priceChanged = () => {
       editableElements.gamePriceInput.value = editableElements.gameIsFreeInput
         .checked
@@ -537,6 +581,9 @@ const gameHandler = async (gameId) => {
           );
     };
 
+    /**
+     * Handles setting a minimum and maximum for refund timeframe and percentage
+     */
     const updateRefund = () => {
       editableElements.gameRefundPercentageInput.value = Math.min(
         100,
@@ -757,7 +804,9 @@ const gameHandler = async (gameId) => {
       });
     });
 
-    // Commiting the changes of the game
+    /**
+     * Commits changes to the game.
+     */
     const commitChanges = async () => {
       editableElements.commitChangesButton.disabled = true;
 
@@ -785,7 +834,7 @@ const gameHandler = async (gameId) => {
 
       const updateGameOptionsBody = {
         name: editableElements.gameTitleInput.value,
-        description: DOMPurify.sanitize(elements.gameDesc.innerHTML), // Sanitize the description
+        description: DOMPurify.sanitize(elements.gameDesc.innerHTML), // Sanitize the description before uploading.
         summary: editableElements.gameSummaryInput.value,
         genre: editableElements.gameGenreInput.value,
         artstyle: editableElements.gameArtStyleInput.value,
@@ -843,6 +892,9 @@ const gameHandler = async (gameId) => {
     };
 
     // Deleting the game
+    /**
+     * Deletes the game with confirmation
+     */
     const deleteGame = async () => {
       const isConfirmed = confirm("Do you want to delete this game?");
       const confirmation = gameData.name.toUpperCase();
@@ -853,7 +905,6 @@ const gameHandler = async (gameId) => {
         );
 
         if (secondaryConfirm == confirmation) {
-          // Double confirmation to make sure no mistakes are made
           await removeGame(gameData.id);
           window.location.assign("dashboard"); // Assign the user back to their dashboard
         } else {

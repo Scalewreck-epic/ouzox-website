@@ -1,4 +1,8 @@
-// Handles all the game data from the server to the page
+/**
+ * @file dataManager.js
+ * @description Handles all game data interactions from the server to the page.
+ * This module manages displaying the game data, including genres and individual games.
+ */
 
 import { cookie } from "../user/userManager.js";
 import { request } from "./apiManager.js";
@@ -9,14 +13,21 @@ const urlParams = new URLSearchParams(window.location.search);
 const genres = [];
 const platformGames = [];
 
-// Classes for each genre
+/**
+ * @class Genre
+ * @description Represents a game genre.
+ */
 class Genre {
   constructor(genre) {
     this.name = genre.name;
     this.count = genre.count;
   }
 
-  // Create the genre card that shows how many games the genre has and redirects users to the genre page
+  /**
+   * Creates a genre card that shows how many games the genre has and redirects users to the genre page.
+   * @param {string} name - The name of the genre.
+   * @param {number} amount - The number of games in the genre.
+   */
   createGenreCard = (name, amount) => {
     const genreButton = document.createElement("a");
     const genreName = document.createElement("div");
@@ -38,7 +49,10 @@ class Genre {
   };
 }
 
-// Classes for each game
+/**
+ * @class Game
+ * @description Represents a game with its details.
+ */
 class Game {
   constructor(data) {
     this.id = data.id;
@@ -54,17 +68,23 @@ class Game {
     this.free = data.pricing.free;
   }
 
-  // Calculates the days since the given timestamp
+  /**
+   * Calculates the number of days since the given timestamp.
+   * @param {number} timestamp - The timestamp to compare against.
+   * @returns {number} The number of days since the timestamp.
+   */
   calculateDiffDays = (timestamp) => {
     const currentDate = new Date();
-
     const createdTimeDiff = Math.abs(currentDate.getTime() - timestamp);
     const createdDiffDays = Math.ceil(createdTimeDiff / (1000 * 3600 * 24));
-
     return createdDiffDays;
   };
 
-  // Formats numbers by thousands and millions. Used for likes.
+  /**
+   * Formats the number of likes for display.
+   * @param {number} likes - The number of likes.
+   * @returns {string} The formatted likes string.
+   */
   formatLikes = (likes) => {
     const million = 1000000;
     const thousand = 1000;
@@ -78,7 +98,10 @@ class Game {
     }
   };
 
-  // Creates the game card that shows the game's information
+  /**
+   * Creates a game card that shows the game's information.
+   * @param {HTMLElement} listElement - The element to append the game card to.
+   */
   createGameCard = (listElement) => {
     const price = this.price;
     const currency = this.currency;
@@ -138,7 +161,13 @@ class Game {
   };
 }
 
-// Creates a label and shows the number of given days on hover. Used for new or updated labels on game cards.
+/**
+ * Creates a label and shows the number of given days on hover.
+ * Used for new or updated labels on game cards.
+ * @param {string} labelText - The text for the label.
+ * @param {number} numDays - The number of days since the game was created or updated.
+ * @param {HTMLElement} targetElement - The element to append the label to.
+ */
 const createLabel = (labelText, numDays, targetElement) => {
   const label = document.createElement("div");
   label.setAttribute("class", `${labelText.toLowerCase()}-label`);
@@ -158,13 +187,22 @@ const createLabel = (labelText, numDays, targetElement) => {
   });
 };
 
-// If displaying games had errored, this is how it's handled.
+/**
+ * Displays an error message for games.
+ * @param {HTMLElement} categoryElement - The element to display the error in.
+ * @param {string} response - The error message.
+ */
 export const displayErrorForGames = async (categoryElement, response) => {
   const categoryNoneElement = categoryElement.querySelector(".category-none");
   categoryNoneElement.textContent = response;
 };
 
-// Display all the given games on the given elements
+/**
+ * Displays all the given games on the specified elements.
+ * @param {HTMLElement} listElement - The element to display the games in.
+ * @param {HTMLElement} categoryElement - The category element.
+ * @param {Array} games - The array of game data to display.
+ */
 export const displayGames = async (listElement, categoryElement, games) => {
   const categoryNoneElement = categoryElement.querySelector(".category-none");
 
@@ -198,7 +236,9 @@ export const displayGames = async (listElement, categoryElement, games) => {
   }
 };
 
-// Display all the genres
+/**
+ * Displays all the genres.
+ */
 const displayGenres = async () => {
   genres.sort((a, b) => b.count - a.count);
 
@@ -215,7 +255,10 @@ const displayGenres = async () => {
   });
 };
 
-// Load all the user's public games by the given user ID
+/**
+ * Loads all the user's public games by the given user ID.
+ * @param {Object} newUser - The user object containing the user ID.
+ */
 export const loadUserGames = async (newUser) => {
   const gameDownloads = document.getElementById("game-downloads");
   const userGamesElement = document.getElementById("user-games");
@@ -247,7 +290,9 @@ export const loadUserGames = async (newUser) => {
   }
 };
 
-// Display all the user's games by the current user session ID
+/**
+ * Loads all the games for the dashboard.
+ */
 export const loadDashboard = async () => {
   const myHeaders = new Headers({ "Content-Type": "application/json" });
   const dashboardElement = document.getElementById("dashboard-market");
@@ -274,7 +319,9 @@ export const loadDashboard = async () => {
   }
 };
 
-// Load games filtered by genre
+/**
+ * Loads games filtered by genre.
+ */
 export const loadGenreSearchGames = async () => {
   const genreListElement = document.getElementById("genre-games-list");
   const genreListCategory = document.getElementById("genre-games");
@@ -309,11 +356,13 @@ export const loadGenreSearchGames = async () => {
     })`;
   } else {
     displayErrorForGames(genreListElement, result.response);
-    resultsLabel.textContent = "(error occured)";
+    resultsLabel.textContent = "(error occurred)";
   }
 };
 
-// Load games by search query
+/**
+ * Loads games by search query.
+ */
 export const loadSearchGames = async () => {
   const searchListElement = document.getElementById("relevant-games-list");
   const searchListCategory = document.getElementById("relevant-games");
@@ -350,11 +399,13 @@ export const loadSearchGames = async () => {
     })`;
   } else {
     displayErrorForGames(searchListElement, result.response);
-    resultsLabel.textContent = "(error occured)";
+    resultsLabel.textContent = "(error occurred)";
   }
 };
 
-// Load all the front page games
+/**
+ * Loads all the front page games.
+ */
 const loadGames = async () => {
   const myHeaders = new Headers({ "Content-Type": "application/json" });
   const perPage = 10;
@@ -393,7 +444,9 @@ const loadGames = async () => {
   }
 };
 
-// Fetch the front page games
+/**
+ * Fetches the front page games.
+ */
 export const fetchGames = async () => {
   await loadGames();
 
