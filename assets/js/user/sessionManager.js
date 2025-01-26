@@ -5,6 +5,7 @@
  */
 
 import { request } from "../base/apiManager.js";
+import { endpoints } from "../other/endpoints.js";
 
 /**
  * Calculates the expiration date for cookies.
