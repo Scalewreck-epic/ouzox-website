@@ -4,6 +4,8 @@
  * It provides functionalities to create, fetch, delete cookies, and change user settings such as email, password, and status.
  */
 
+import { request } from "../base/apiManager.js";
+
 /**
  * Calculates the expiration date for cookies.
  * @param {boolean} past - If true, sets the expiration date to one year in the past; otherwise, sets it to one year in the future.
