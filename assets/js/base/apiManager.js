@@ -182,10 +182,12 @@ class RequestHandler {
         throw error;
       } catch (error) {
         const errorResponse = { response: error.errorMessage, ok: false };
+        const errorMsg = errorMessages[error.errorCode];
         console.error(error);
+
         if (i == this.retries - 1) {
           return errorResponse;
-        } else if (!errorMessages[error.errorCode].retry) {
+        } else if (errorMsg !== null && !errorMsg.retry) {
           return errorResponse;
         }
         await new Promise((resolve) =>
