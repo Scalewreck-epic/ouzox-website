@@ -55,7 +55,15 @@
 		<div class="content">
 			<div class="container">
 				<form class="upload-game" id="upload-game">
-					<div class="advanced-upload-form"><h1>Upload a Game</h1></div>
+					<div class="advanced-upload-form">
+						<h1>Upload a Game</h1>
+						<p class="policy-nag">
+							Before uploading, please read the
+							<a href="https://ouzox-games.gitbook.io/ouzox-docs/disbribute/content-policy" target="_blank">Quality Guidelines</a>
+							and the
+							<a href="https://ouzox-games.gitbook.io/ouzox-docs/disbribute/quality-guidelines" target="_blank">Content Policy</a>
+						</p>
+					</div>
 					<div class="main-upload-form">
 						<div class="main-form">
 							<h1>Main</h1>
@@ -343,6 +351,16 @@
 								<div contenteditable="true" class="game-description" id="description"></div>
 							</div>
 						</div>
+						<p class="policy-nag">
+							<label class="cl-checkbox">
+								<input type="checkbox" value="1" id="policy-agreement" required>
+								<spam class="cl-checkbox-box"></spam>
+							</label>
+							You agree that your content abides by both the
+							<a href="https://ouzox-games.gitbook.io/ouzox-docs/disbribute/content-policy" target="_blank">Quality Guidelines</a>
+							and the
+							<a href="https://ouzox-games.gitbook.io/ouzox-docs/disbribute/quality-guidelines" target="_blank">Content Policy</a>
+						</p>
 						<button class="upload-button" id="upload-button" type="submit">Publish Game</button>
 						<div class="error-label" id="error-label"></div>
 						<div class="acceptance-label">View your projects <a href="dashboard">on your dashboard</a></div>

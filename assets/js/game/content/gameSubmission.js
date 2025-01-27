@@ -22,6 +22,7 @@ const genre_input = document.getElementById("genre-input");
 const game_art = document.getElementById("art-style-input");
 const download_file = document.getElementById("download-file");
 const game_description = document.getElementById("description");
+const gameAgreement = document.getElementById("policy-agreement")
 
 const maxDescriptionCharacters = 4000;
 const minPrice = 1;
@@ -72,6 +73,11 @@ const onSubmit = async () => {
   uploadButton.disabled = true; // Prevent spamming the button
 
   let canUpload = true;
+
+  if (!gameAgreement.checked) {
+    error_label.textContent = "You did not agree to the Quality Guidelines and Content Policy";
+    canUpload = false;
+  }
 
   if (files.length == 0) {
     error_label.textContent = "No game file detected";
