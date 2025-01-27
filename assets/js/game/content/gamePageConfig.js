@@ -622,7 +622,7 @@ const gameHandler = async (gameId) => {
     editableElements.gameIsFreeInput.checked = gameData.pricing.free;
 
     Array.from(editableElements.fontSort.options).forEach((option, i) => {
-      if (option.value == gameData.font_family.toLowerCase()) {
+      if (option.value == gameData.page.font_family.toLowerCase()) {
         editableElements.fontSort.selectedIndex = i;
       }
     });
