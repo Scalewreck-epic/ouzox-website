@@ -347,13 +347,14 @@ export const loadGenreSearchGames = async () => {
   );
 
   if (result.ok) {
-    const resultItems = result.response.games;
+    const itemsReceived = result.response.games.itemsReceived;
+    const resultItems = result.response.games.items;
 
-    resultItems.length > 0
+    itemsReceived > 0
       ? displayGames(genreListElement, genreListCategory, resultItems)
       : displayErrorForGames(genreListCategory, "None");
-    resultsLabel.textContent = `(${resultItems.length} result${
-      resultItems.length !== 1 ? "s" : ""
+    resultsLabel.textContent = `(${itemsReceived} result${
+      itemsReceived !== 1 ? "s" : ""
     })`;
   } else {
     displayErrorForGames(genreListElement, result.response);
@@ -387,13 +388,14 @@ export const loadSearchGames = async () => {
   );
 
   if (result.ok) {
-    const resultItems = result.response.games;
+    const itemsReceived = result.response.games.itemsReceived;
+    const resultItems = result.response.games.items;
 
-    resultItems.length > 0
+    itemsReceived > 0
       ? displayGames(searchListElement, searchListCategory, resultItems)
       : displayErrorForGames(searchListElement, "None");
-    resultsLabel.textContent = `(${resultItems.length} result${
-      resultItems.length !== 1 ? "s" : ""
+    resultsLabel.textContent = `(${itemsReceived} result${
+      itemsReceived !== 1 ? "s" : ""
     })`;
   } else {
     displayErrorForGames(searchListElement, result.response);
