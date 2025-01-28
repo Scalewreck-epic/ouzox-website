@@ -16,6 +16,7 @@
 .game-description h2,
 .game-description h3,
 .game-description h4 {
+  text-align: left;
   margin: 0.3rem 0;
 }
 
