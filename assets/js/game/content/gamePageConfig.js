@@ -677,7 +677,7 @@ const gameHandler = async (gameId) => {
     );
 
     editableElements.fontSort.addEventListener("change", () => {
-      elements.gameColumn.style.fontFamily = editableElements.fontSort.options[fontSort.selectedIndex].value;
+      elements.gameColumn.style.fontFamily = editableElements.fontSort.options[editableElements.fontSort.selectedIndex].value;
     });
 
     editableElements.gameFileInput.addEventListener("change", () => {
