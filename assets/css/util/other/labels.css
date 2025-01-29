@@ -18,14 +18,6 @@
   margin: 0.313rem;
 }
 
-.socal-nag {
-  display: block;
-  font-size: 1.1rem;
-  color: white;
-  margin: 0.3rem 0.938rem;
-}
-
-.acceptance-label a,
-.socal-nag a {
+.acceptance-label a {
   color: #4d0101;
 }
