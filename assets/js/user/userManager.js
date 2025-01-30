@@ -74,15 +74,6 @@ const updateUserStats = async () => {
 };
 
 /**
- * @param {string} passwordInput - The password input to validate.
- * @returns {boolean} True if the password meets security criteria, false otherwise.
- */
-const isValidPassword = (passwordInput) =>
-  /^(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*(),.?":{}|<>]).{8,}$/.test(
-    passwordInput
-  );
-
-/**
  * @returns {boolean} True if the signup form inputs are valid, false otherwise.
  */
 const isValidSignup = () => {
@@ -93,7 +84,7 @@ const isValidSignup = () => {
   return (
     /^[a-zA-Z0-9]{3,20}$/.test(usernameInput) &&
     /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailInput) &&
-    isValidPassword(passwordInput)
+    session.isValidPassword(passwordInput)
   );
 };
 
@@ -105,7 +96,7 @@ const isValidLogin = () => {
   const usernameInput = document.getElementById("username_login").value;
   const passwordInput = document.getElementById("password_login").value;
   return (
-    /^[a-zA-Z0-9]{3,20}$/.test(usernameInput) && isValidPassword(passwordInput)
+    /^[a-zA-Z0-9]{3,20}$/.test(usernameInput) && session.isValidPassword(passwordInput)
   );
 };
 

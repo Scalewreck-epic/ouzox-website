@@ -67,6 +67,15 @@ const changeSessionData = async (headers, endpoint, errorLabel) => {
 };
 
 /**
+ * @param {string} passwordInput - The password input to validate.
+ * @returns {boolean} True if the password meets security criteria, false otherwise.
+ */
+const isValidPassword = (passwordInput) =>
+  /^(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*(),.?":{}|<>]).{8,}$/.test(
+    passwordInput
+  );
+
+/**
  * Changes one type of data from user settings.
  * @param {Object} data - The data to change.
  * @param {string} endpoint - The API endpoint to send the request to.
@@ -95,7 +104,7 @@ export const changeEmailData = async () => {
 export const changePasswordData = async () => {
   const newPassword = document.getElementById("password_input").value;
   const previousPassword = document.getElementById("old_password_input").value;
-  if (newPassword.length >= 8) {
+  if (isValidPassword(newPassword)) {
     await changeData({ session_id: sessionId, old_password: previousPassword, new_password: newPassword }, `${endpoints.user.edit_password}${sessionId}`, document.getElementById("password-error-label"));
   }
 };
