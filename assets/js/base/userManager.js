@@ -8,7 +8,7 @@ const restrictedPaths = ["/settings", "/upload", "/dashboard"];
 const loginPaths = ["/login", "/signup"];
 import * as session from "./sessionManager.js";
 import { request } from "../base/apiManager.js";
-import { endpoints } from "../other/endpoints.js";
+import { endpoints } from "../util/endpoints.js";
 import { loadUserGames } from "../base/dataManager.js";
 
 console.info(

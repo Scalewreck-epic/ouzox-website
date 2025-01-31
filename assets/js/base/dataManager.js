@@ -4,9 +4,9 @@
  * This module manages displaying the game data, including genres and individual games.
  */
 
-import { cookie } from "../user/userManager.js";
-import { request } from "./apiManager.js";
-import { endpoints } from "../other/endpoints.js";
+import { cookie } from "./userManager.js";
+import { request } from "../util/apiManager.js";
+import { endpoints } from "../util/endpoints.js";
 
 const urlParams = new URLSearchParams(window.location.search);
 

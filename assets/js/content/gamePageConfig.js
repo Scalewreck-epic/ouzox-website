@@ -4,9 +4,9 @@
  * This module manages displaying one individual game page.
  */
 
-import { user, cookie } from "../../user/userManager.js";
+import { user, cookie } from "../base/userManager.js";
 import { request } from "../../base/apiManager.js";
-import { endpoints } from "../../other/endpoints.js";
+import { endpoints } from "../util/endpoints.js";
 
 const urlParams = new URLSearchParams(window.location.search);
 const gameIdParam = urlParams.get("g"); // the game ID

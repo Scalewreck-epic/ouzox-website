@@ -4,9 +4,9 @@
  * This module manages the submission process for new games.
  */
 
-import { cookie } from "../../user/userManager.js";
+import { cookie } from "../base/userManager.js";
 import { request } from "../../base/apiManager.js";
-import { endpoints } from "../../other/endpoints.js";
+import { endpoints } from "../util/endpoints.js";
 
 const myHeaders = new Headers({ "Content-Type": "application/json" });
 const uploadGameForm = document.getElementById("upload-game");
