@@ -1,6 +1,6 @@
 // Handles showing blog posts from Ghost. Blog is currently inactive so API doesn't work.
 
-import { request } from "../base/apiManager.js";
+import { request } from "../util/apiManager.js"
 import { endpoints } from "./endpoints.js";
 
 const blog_market = document.getElementById("blog-posts");

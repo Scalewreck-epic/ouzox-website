@@ -4,7 +4,7 @@
  * Displays a header and message according to the error code given.
  */
 
-import { errorMessages } from "../base/apiManager.js";
+import { errorMessages } from "./apiManager.js";
 
 const urlParams = new URLSearchParams(window.location.search);
 const errorCode = Number(urlParams.get("code")) || 404;

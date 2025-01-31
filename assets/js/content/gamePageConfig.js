@@ -5,7 +5,7 @@
  */
 
 import { user, cookie } from "../base/userManager.js";
-import { request } from "../../base/apiManager.js";
+import { request } from "../util/apiManager.js";
 import { endpoints } from "../util/endpoints.js";
 
 const urlParams = new URLSearchParams(window.location.search);

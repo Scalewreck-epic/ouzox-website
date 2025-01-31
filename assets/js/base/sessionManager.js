@@ -4,7 +4,7 @@
  * It provides functionalities to create, fetch, delete cookies, and change user settings such as email, password, and status.
  */
 
-import { request } from "../base/apiManager.js";
+import { request } from "../util/apiManager.js";
 import { endpoints } from "../../js/util/endpoints.js";
 
 /**
