@@ -23,7 +23,9 @@ const calculateExpiration = (past) => {
  * @param {string} cookieName - The name of the cookie to delete.
  */
 const deleteCookie = (cookieName) => {
-  document.cookie = `${cookieName}=; expires=${calculateExpiration(true).toUTCString()}`;
+  document.cookie = `${cookieName}=; expires=${calculateExpiration(
+    true
+  ).toUTCString()}`;
 };
 
 /**
@@ -32,12 +34,14 @@ const deleteCookie = (cookieName) => {
  * @param {string} token - The value to store in the cookie.
  */
 export const createCookie = (cookieName, token) => {
-  document.cookie = `${cookieName}=${token}; expires=${calculateExpiration(false).toUTCString()}; samesite=lax; secure;`;
+  document.cookie = `${cookieName}=${token}; expires=${calculateExpiration(
+    false
+  ).toUTCString()}; samesite=lax; secure;`;
 };
 
 /**
  * Updates the stored user cache or creates a new one.
- * @param {object} user 
+ * @param {object} user
  */
 export const updateUserCache = (user) => {
   localStorage.setItem("cachedUser", JSON.stringify(user));
@@ -54,7 +58,9 @@ export const removeUserCache = () => {
  * Clears all cookies by deleting each one.
  */
 export const clearCookie = () => {
-  document.cookie.split(";").forEach((cookie) => deleteCookie(cookie.split("=")[0].trim()));
+  document.cookie
+    .split(";")
+    .forEach((cookie) => deleteCookie(cookie.split("=")[0].trim()));
 };
 
 /**
@@ -63,8 +69,13 @@ export const clearCookie = () => {
  * @returns {Object} An object containing the cookie data and its validity.
  */
 export const fetchCookie = (cookieName) => {
-  const matchingCookie = document.cookie.split(";").map((pair) => pair.trim().split("=")).find(([name]) => name === cookieName);
-  return matchingCookie ? { data: matchingCookie[1], valid: true } : { data: null, valid: false };
+  const matchingCookie = document.cookie
+    .split(";")
+    .map((pair) => pair.trim().split("="))
+    .find(([name]) => name === cookieName);
+  return matchingCookie
+    ? { data: matchingCookie[1], valid: true }
+    : { data: null, valid: false };
 };
 
 const sessionId = fetchCookie("session_id").data; // Fetches session ID
@@ -79,7 +90,9 @@ const changeSessionData = async (headers, endpoint, errorLabel) => {
   errorLabel.textContent = "Changing settings...";
   const result = await request(endpoint, headers, false);
   updateUserCache(result.response.user);
-  errorLabel.textContent = result.ok ? result.response.message : result.response;
+  errorLabel.textContent = result.ok
+    ? result.response.message
+    : result.response;
 };
 
 /**
@@ -100,7 +113,11 @@ export const isValidPassword = (passwordInput) =>
 const changeData = async (data, endpoint, errorLabel) => {
   if (sessionId) {
     const myHeaders = new Headers({ "Content-Type": "application/json" });
-    await changeSessionData({ method: "POST", headers: myHeaders, body: JSON.stringify(data) }, endpoint, errorLabel);
+    await changeSessionData(
+      { method: "POST", headers: myHeaders, body: JSON.stringify(data) },
+      endpoint,
+      errorLabel
+    );
   }
 };
 
@@ -110,7 +127,11 @@ const changeData = async (data, endpoint, errorLabel) => {
 export const changeEmailData = async () => {
   const newEmail = document.getElementById("email_input").value;
   if (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(newEmail)) {
-    await changeData({ session_id: sessionId, new_email: newEmail }, `${endpoints.user.edit_email}${sessionId}`, document.getElementById("email-error-label"));
+    await changeData(
+      { session_id: sessionId, new_email: newEmail },
+      `${endpoints.user.edit_email}${sessionId}`,
+      document.getElementById("email-error-label")
+    );
   }
 };
 
@@ -121,7 +142,15 @@ export const changePasswordData = async () => {
   const newPassword = document.getElementById("password_input").value;
   const previousPassword = document.getElementById("old_password_input").value;
   if (isValidPassword(newPassword)) {
-    await changeData({ session_id: sessionId, old_password: previousPassword, new_password: newPassword }, `${endpoints.user.edit_password}${sessionId}`, document.getElementById("password-error-label"));
+    await changeData(
+      {
+        session_id: sessionId,
+        old_password: previousPassword,
+        new_password: newPassword,
+      },
+      `${endpoints.user.edit_password}${sessionId}`,
+      document.getElementById("password-error-label")
+    );
   }
 };
 
@@ -130,7 +159,11 @@ export const changePasswordData = async () => {
  */
 export const changeStatusData = async () => {
   const newStatus = document.getElementById("status-input").value;
-  await changeData({ session_id: sessionId, status: newStatus }, `${endpoints.user.edit_status}${sessionId}`, document.getElementById("status-error-label"));
+  await changeData(
+    { session_id: sessionId, status: newStatus },
+    `${endpoints.user.edit_status}${sessionId}`,
+    document.getElementById("status-error-label")
+  );
 };
 
 /**
@@ -139,7 +172,11 @@ export const changeStatusData = async () => {
  * @returns {Object|null} The user data or null if not found.
  */
 export const fetchAlternativeUser = async (userId) => {
-  const result = await request(`${endpoints.user.get_data_with_id}${userId}`, { method: "GET", headers: { "Content-Type": "application/json" } }, true);
+  const result = await request(
+    `${endpoints.user.get_data_with_id}${userId}`,
+    { method: "GET", headers: { "Content-Type": "application/json" } },
+    true
+  );
   return result.response;
 };
 
@@ -154,7 +191,11 @@ export const fetchUser = async () => {
     if (cachedUser) {
       return cachedUser;
     } else {
-      const userResult = await request(`${endpoints.user.get_data_with_sess}${sessionId}`, { method: "GET", headers: { "Content-Type": "application/json" } }, true);
+      const userResult = await request(
+        `${endpoints.user.get_data_with_sess}${sessionId}`,
+        { method: "GET", headers: { "Content-Type": "application/json" } },
+        true
+      );
       return userResult.response;
     }
   }

@@ -22,7 +22,7 @@ const genre_input = document.getElementById("genre-input");
 const game_art = document.getElementById("art-style-input");
 const download_file = document.getElementById("download-file");
 const game_description = document.getElementById("description");
-const gameAgreement = document.getElementById("policy-agreement")
+const gameAgreement = document.getElementById("policy-agreement");
 
 const maxDescriptionCharacters = 4000;
 const minPrice = 1;
@@ -45,16 +45,17 @@ const formatFileSize = (fileSizeInBytes) => {
     fileSizeInBytes < 1024
       ? fileSizeInBytes
       : fileSizeInBytes < Math.pow(1024, 2)
-        ? fileSizeInBytes / 1024
-        : fileSizeInBytes / Math.pow(1024, 2);
-  return `${size.toFixed(2)} ${units[Math.floor(Math.log(size) / Math.log(1024))]
-    }`;
+      ? fileSizeInBytes / 1024
+      : fileSizeInBytes / Math.pow(1024, 2);
+  return `${size.toFixed(2)} ${
+    units[Math.floor(Math.log(size) / Math.log(1024))]
+  }`;
 };
 
 /**
  * Requests to create a new game.
- * @param {object} gameRequestOptions 
- * @returns 
+ * @param {object} gameRequestOptions
+ * @returns
  */
 const uploadGame = async (gameRequestOptions) => {
   const result = await request(
@@ -74,7 +75,8 @@ const onSubmit = async () => {
   let canUpload = true;
 
   if (!gameAgreement.checked) {
-    error_label.textContent = "You did not agree to the Quality Guidelines and Content Policy";
+    error_label.textContent =
+      "You did not agree to the Quality Guidelines and Content Policy";
     canUpload = false;
   }
 
@@ -279,13 +281,12 @@ const updatePrice = () => {
   game_price.value = game_isfree.checked
     ? 0
     : Math.min(
-      maxPrice,
-      Math.max(minPrice, game_price.value.replace(/[^0-9]/g, ""))
-    );
+        maxPrice,
+        Math.max(minPrice, game_price.value.replace(/[^0-9]/g, ""))
+      );
 };
 
-const updateGenre = () =>
-  (genre_input.value = genre_input.value.toUpperCase());
+const updateGenre = () => (genre_input.value = genre_input.value.toUpperCase());
 const updateArt = () => (game_art.value = game_art.value.toUpperCase());
 const updateDescription = () => {
   const text = game_description.innerHTML;

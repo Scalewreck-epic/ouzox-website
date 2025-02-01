@@ -4,7 +4,7 @@
  * This module manages displaying all the Ouzox blog posts.
  */
 
-import { request } from "../util/apiManager.js"
+import { request } from "../util/apiManager.js";
 import { endpoints } from "./endpoints.js";
 
 const blogMarket = document.getElementById("blog-posts");
@@ -33,14 +33,11 @@ const createBlogPost = (post) => {
 
   const blogDate = document.createElement("div");
   blogDate.className = "blog-date";
-  blogDate.textContent = new Date(post.created_at).toLocaleDateString(
-    "en-US",
-    {
-      year: "2-digit",
-      month: "2-digit",
-      day: "2-digit",
-    }
-  );
+  blogDate.textContent = new Date(post.created_at).toLocaleDateString("en-US", {
+    year: "2-digit",
+    month: "2-digit",
+    day: "2-digit",
+  });
 
   blogColumn.append(blogTitle, blogDate);
   blogCard.append(blogImage, blogColumn);

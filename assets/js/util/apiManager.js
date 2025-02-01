@@ -124,7 +124,8 @@ class RequestHandler {
       // Otherwise, throw the error
       const jsonResponse = await response.json();
       const newError = new Error(
-        `${statusCode}: ${!errorMessage ? "Unknown Error" : errorMessage.header
+        `${statusCode}: ${
+          !errorMessage ? "Unknown Error" : errorMessage.header
         }: ${jsonResponse.message}`
       );
       newError.errorMessage = jsonResponse.message;
@@ -149,13 +150,18 @@ class RequestHandler {
       try {
         // Check for previous responses in localStorage
         const cachedResponse = localStorage.getItem(endpointUrl);
-        const cachedTimestamp = localStorage.getItem(`${endpointUrl}_timestamp`);
+        const cachedTimestamp = localStorage.getItem(
+          `${endpointUrl}_timestamp`
+        );
 
         if (cachedResponse && cachedTimestamp) {
           const cacheExpirationTime = this.cacheExpiration * 1000;
 
           // If the cache was recent or the user is offline, use the cached response.
-          if (Date.now() - cachedTimestamp < cacheExpirationTime || !navigator.onLine) {
+          if (
+            Date.now() - cachedTimestamp < cacheExpirationTime ||
+            !navigator.onLine
+          ) {
             return { response: JSON.parse(cachedResponse), ok: true }; // Return the cached response
           } else {
             localStorage.removeItem(endpointUrl); // Delete stale responses

@@ -96,7 +96,8 @@ const isValidLogin = () => {
   const usernameInput = document.getElementById("username_login").value;
   const passwordInput = document.getElementById("password_login").value;
   return (
-    /^[a-zA-Z0-9]{3,20}$/.test(usernameInput) && session.isValidPassword(passwordInput)
+    /^[a-zA-Z0-9]{3,20}$/.test(usernameInput) &&
+    session.isValidPassword(passwordInput)
   );
 };
 

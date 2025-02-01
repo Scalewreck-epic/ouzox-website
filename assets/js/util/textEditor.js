@@ -4,7 +4,6 @@
  * It provides options for formatting text, creating lists, headers, and links.
  */
 
-
 const description = document.getElementById("description");
 
 const buttons = {
@@ -36,7 +35,7 @@ const link = document.getElementById("link");
 /**
  * Checks if the selected text is in a number list or bullet point list.
  * @param {Selection} selection - The selected text.
- * @returns 
+ * @returns
  */
 const isInList = (selection) => {
   const parentElement = selection.anchorNode.parentElement;
@@ -63,7 +62,7 @@ const applyFormat = (formatType) => {
       }
     }
   }
-}
+};
 
 /**
  * Applies a header according to the header level.
