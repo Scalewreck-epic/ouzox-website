@@ -45,11 +45,10 @@ const formatFileSize = (fileSizeInBytes) => {
     fileSizeInBytes < 1024
       ? fileSizeInBytes
       : fileSizeInBytes < Math.pow(1024, 2)
-      ? fileSizeInBytes / 1024
-      : fileSizeInBytes / Math.pow(1024, 2);
-  return `${size.toFixed(2)} ${
-    units[Math.floor(Math.log(size) / Math.log(1024))]
-  }`;
+        ? fileSizeInBytes / 1024
+        : fileSizeInBytes / Math.pow(1024, 2);
+  return `${size.toFixed(2)} ${units[Math.floor(Math.log(size) / Math.log(1024))]
+    }`;
 };
 
 /**
@@ -280,9 +279,9 @@ const updatePrice = () => {
   game_price.value = game_isfree.checked
     ? 0
     : Math.min(
-        maxPrice,
-        Math.max(minPrice, game_price.value.replace(/[^0-9]/g, ""))
-      );
+      maxPrice,
+      Math.max(minPrice, game_price.value.replace(/[^0-9]/g, ""))
+    );
 };
 
 const updateGenre = () =>
