@@ -147,7 +147,10 @@ description.addEventListener("paste", (e) => {
       description.contains(range.startContainer)
     ) {
       range.deleteContents();
-      range.insertNode(document.createTextNode(text));
+      const textNode = document.createTextNode(text);
+      range.insertNode(textNode);
+      const selectionRange = window.getSelection().getRangeAt(0);
+      selectionRange.selectNodeContents(textNode);
     }
   }
 });
