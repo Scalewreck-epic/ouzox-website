@@ -144,6 +144,7 @@ class RequestHandler {
     const timeoutId = setTimeout(() => controller.abort(), this.timeout * 1000);
 
     const endpointUrl = this.validateEndpoint();
+    const cacheResponse = this.options.method == "GET";
 
     for (let i = 0; i < this.retries; i++) {
       try {
@@ -174,8 +175,11 @@ class RequestHandler {
           const jsonResponse =
             response.status == 204 ? null : await response.json();
 
-          localStorage.setItem(endpointUrl, JSON.stringify(jsonResponse)); // Cache successful responses
-          localStorage.setItem(`${endpointUrl}_timestamp`, Date.now()); // Store timestamp
+          // Cache successful responses only if method is GET
+          if (cacheResponse) {
+            localStorage.setItem(endpointUrl, JSON.stringify(jsonResponse)); // Cache successful responses
+            localStorage.setItem(`${endpointUrl}_timestamp`, Date.now()); // Store timestamp
+          }
           return { response: jsonResponse, ok: true };
         }
 
