@@ -134,6 +134,7 @@ const createSessionData = async () => {
         : result.response;
       if (result.ok) {
         session.createCookie("session_id", result.response.user.session_id);
+        session.updateUserCache(result.response.user);
         window.location.assign("index");
       }
     } else {
@@ -166,6 +167,7 @@ const fetchSessionData = async () => {
         : result.response;
       if (result.ok) {
         session.createCookie("session_id", result.response.user.session_id);
+        session.updateUserCache(result.response.user);
         window.location.assign("index");
       }
     }
@@ -187,7 +189,7 @@ const togglePasswordVisibility = (passwordInput, icon) => {
 // Clear cookies on logout
 const logout = () => {
   if (isValidCookie) session.clearCookie();
-  if (localStorage.getItem("userCache")) localStorage.removeItem("userCache");
+  session.removeUserCache();
   window.location.assign("login");
 };
 

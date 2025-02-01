@@ -36,6 +36,21 @@ export const createCookie = (cookieName, token) => {
 };
 
 /**
+ * Updates the stored user cache or creates a new one.
+ * @param {object} user 
+ */
+export const updateUserCache = (user) => {
+  localStorage.setItem("cachedUser", JSON.stringify(user));
+};
+
+/**
+ * Removes all user cache.
+ */
+export const removeUserCache = () => {
+  localStorage.removeItem("cachedUser");
+};
+
+/**
  * Clears all cookies by deleting each one.
  */
 export const clearCookie = () => {
@@ -63,6 +78,7 @@ const sessionId = fetchCookie("session_id").data; // Fetches session ID
 const changeSessionData = async (headers, endpoint, errorLabel) => {
   errorLabel.textContent = "Changing settings...";
   const result = await request(endpoint, headers, false);
+  updateUserCache(result.response.user);
   errorLabel.textContent = result.ok ? result.response.message : result.response;
 };
 
@@ -70,7 +86,7 @@ const changeSessionData = async (headers, endpoint, errorLabel) => {
  * @param {string} passwordInput - The password input to validate.
  * @returns {boolean} True if the password meets security criteria, false otherwise.
  */
-const isValidPassword = (passwordInput) =>
+export const isValidPassword = (passwordInput) =>
   /^(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*(),.?":{}|<>]).{8,}$/.test(
     passwordInput
   );
@@ -132,10 +148,5 @@ export const fetchAlternativeUser = async (userId) => {
  * @returns {Object|null} The user data or null if not logged in.
  */
 export const fetchUser = async () => {
-  if (sessionId) {
-    const result = await request(`${endpoints.user.get_data_with_sess}${sessionId}`, { method: "GET", headers: { "Content-Type": "application/json" } }, true);
-    return result.ok ? result.response : null;
-  } else {
-    return null;
-  }
+  return sessionId == null ? null : JSON.parse(localStorage.getItem("cachedUser"));
 };

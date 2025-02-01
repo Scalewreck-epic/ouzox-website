@@ -74,8 +74,6 @@ export const errorMessages = {
   },
 };
 
-const cache = new Map();
-
 /**
  * @class RequestHandler
  * @description Handles API requests, including validation, error handling, and caching.
@@ -149,15 +147,18 @@ class RequestHandler {
 
     for (let i = 0; i < this.retries; i++) {
       try {
-        // Check for previous responses
-        if (cache.has(endpointUrl)) {
-          const { response, timestamp } = cache.get(endpointUrl);
+        // Check for previous responses in localStorage
+        const cachedResponse = localStorage.getItem(endpointUrl);
+        const cachedTimestamp = localStorage.getItem(`${endpointUrl}_timestamp`);
+
+        if (cachedResponse && cachedTimestamp) {
           const cacheExpirationTime = this.cacheExpiration * 1000;
 
-          if (Date.now() - timestamp < cacheExpirationTime) {
-            return { response, ok: true }; // Return the cached response
+          if (Date.now() - cachedTimestamp < cacheExpirationTime) {
+            return { response: JSON.parse(cachedResponse), ok: true }; // Return the cached response
           } else {
-            cache.delete(endpointUrl); // Delete stale responses
+            localStorage.removeItem(endpointUrl); // Delete stale responses
+            localStorage.removeItem(`${endpointUrl}_timestamp`);
           }
         }
 
@@ -173,7 +174,8 @@ class RequestHandler {
           const jsonResponse =
             response.status == 204 ? null : await response.json();
 
-          cache.set(endpointUrl, { response: jsonResponse, ok: true }); // Cache successful responses
+          localStorage.setItem(endpointUrl, JSON.stringify(jsonResponse)); // Cache successful responses
+          localStorage.setItem(`${endpointUrl}_timestamp`, Date.now()); // Store timestamp
           return { response: jsonResponse, ok: true };
         }
 
