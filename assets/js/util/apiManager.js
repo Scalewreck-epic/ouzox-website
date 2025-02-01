@@ -155,12 +155,18 @@ class RequestHandler {
         if (cachedResponse && cachedTimestamp) {
           const cacheExpirationTime = this.cacheExpiration * 1000;
 
-          if (Date.now() - cachedTimestamp < cacheExpirationTime) {
+          // If the cache was recent or the user is offline, use the cached response.
+          if (Date.now() - cachedTimestamp < cacheExpirationTime || !navigator.onLine) {
             return { response: JSON.parse(cachedResponse), ok: true }; // Return the cached response
           } else {
             localStorage.removeItem(endpointUrl); // Delete stale responses
             localStorage.removeItem(`${endpointUrl}_timestamp`);
           }
+        }
+
+        // If the user is offline, do not make a fetch request.
+        if (!navigator.onLine) {
+          return { response: "User is offline", ok: false };
         }
 
         // Fetch request with abort controller
@@ -184,7 +190,6 @@ class RequestHandler {
         }
 
         const error = await this.handleError(response, i);
-
         throw error;
       } catch (error) {
         const errorResponse = { response: error.errorMessage, ok: false };
