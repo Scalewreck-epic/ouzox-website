@@ -140,7 +140,7 @@ export const changeStatusData = async () => {
  */
 export const fetchAlternativeUser = async (userId) => {
   const result = await request(`${endpoints.user.get_data_with_id}${userId}`, { method: "GET", headers: { "Content-Type": "application/json" } }, true);
-  return result.ok ? result.response : null;
+  return result.response;
 };
 
 /**
@@ -148,5 +148,14 @@ export const fetchAlternativeUser = async (userId) => {
  * @returns {Object|null} The user data or null if not logged in.
  */
 export const fetchUser = async () => {
-  return sessionId == null ? null : JSON.parse(localStorage.getItem("cachedUser"));
+  if (sessionId) {
+    const cachedUser = JSON.parse(localStorage.getItem("cachedUser"));
+
+    if (cachedUser) {
+      return cachedUser;
+    } else {
+      const userResult = await request(`${endpoints.user.get_data_with_sess}${sessionId}`, { method: "GET", headers: { "Content-Type": "application/json" } }, true);
+      return userResult.response;
+    }
+  }
 };
