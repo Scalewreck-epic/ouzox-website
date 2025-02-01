@@ -20,13 +20,16 @@ import {
  * - fetchGames() for all other pages
  */
 const pathName = window.location.pathname;
-
-if (pathName.includes("dashboard")) {
-  loadDashboard();
-} else if (pathName.includes("search")) {
-  loadSearchGames();
-} else if (pathName.includes("category")) {
-  loadGenreSearchGames();
-} else {
-  fetchGames();
+switch (true) {
+  case pathName.includes("dashboard"):
+    loadDashboard();
+    break;
+  case pathName.includes("search"):
+    loadSearchGames();
+    break;
+  case pathName.includes("category"):
+    loadGenreSearchGames();
+    break;
+  default:
+    fetchGames();
 }

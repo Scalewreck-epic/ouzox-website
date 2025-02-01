@@ -1,35 +1,39 @@
-// Handles showing blog posts from Ghost. Blog is currently inactive so API doesn't work.
+/**
+ * @file blogManager.js
+ * @description Handles displaying all Ouzox blog posts.
+ * This module manages displaying all the Ouzox blog posts.
+ */
 
 import { request } from "../util/apiManager.js"
 import { endpoints } from "./endpoints.js";
 
-const blog_market = document.getElementById("blog-posts");
+const blogMarket = document.getElementById("blog-posts");
 
 const requestOptions = {
   method: "GET",
   headers: new Headers({ "Content-Type": "application/json" }),
 };
 
-const create_blog_post = (post) => {
-  const blog_card = document.createElement("a");
-  blog_card.className = "blog-card";
-  blog_card.href = post.url;
-  blog_card.target = "_blank";
+const createBlogPost = (post) => {
+  const blogCard = document.createElement("a");
+  blogCard.className = "blog-card";
+  blogCard.href = post.url;
+  blogCard.target = "_blank";
 
-  const blog_image = document.createElement("img");
-  blog_image.className = "blog-image";
-  blog_image.src = post.feature_image;
+  const blogImage = document.createElement("img");
+  blogImage.className = "blog-image";
+  blogImage.src = post.feature_image;
 
-  const blog_column = document.createElement("div");
-  blog_column.className = "blog-column";
+  const blogColumn = document.createElement("div");
+  blogColumn.className = "blog-column";
 
-  const blog_title = document.createElement("div");
-  blog_title.className = "blog-title";
-  blog_title.textContent = post.title;
+  const blogTitle = document.createElement("div");
+  blogTitle.className = "blog-title";
+  blogTitle.textContent = post.title;
 
-  const blog_date = document.createElement("div");
-  blog_date.className = "blog-date";
-  blog_date.textContent = new Date(post.created_at).toLocaleDateString(
+  const blogDate = document.createElement("div");
+  blogDate.className = "blog-date";
+  blogDate.textContent = new Date(post.created_at).toLocaleDateString(
     "en-US",
     {
       year: "2-digit",
@@ -38,15 +42,23 @@ const create_blog_post = (post) => {
     }
   );
 
-  blog_column.append(blog_title, blog_date);
-  blog_card.append(blog_image, blog_column);
-  blog_market.appendChild(blog_card);
+  blogColumn.append(blogTitle, blogDate);
+  blogCard.append(blogImage, blogColumn);
+  blogMarket.appendChild(blogCard);
 };
 
-const result = await request(endpoints.blog.list, requestOptions, false);
-const posts = result.response.response.result.posts;
+const fetchBlogPosts = async () => {
+  try {
+    const result = await request(endpoints.blog.list, requestOptions, false);
+    const posts = result.response.response.result.posts;
 
-posts
-  .filter((post) => post.visibility === "public")
-  .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
-  .forEach(create_blog_post);
+    posts
+      .filter((post) => post.visibility === "public")
+      .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
+      .forEach(createBlogPost);
+  } catch (error) {
+    console.error("Error fetching blog posts:", error);
+  }
+};
+
+fetchBlogPosts();
