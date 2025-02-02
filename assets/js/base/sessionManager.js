@@ -196,6 +196,7 @@ export const fetchUser = async () => {
         { method: "GET", headers: { "Content-Type": "application/json" } },
         true
       );
+      updateUserCache(userResult.response);
       return userResult.response;
     }
   }
