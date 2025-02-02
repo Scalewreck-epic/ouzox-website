@@ -338,7 +338,7 @@ export const loadGenreSearchGames = async () => {
   searchLabel.textContent = `Top '${categoryName}' Games`;
 
   const result = await request(
-    `${endpoints.game.list_genresearch}${categoryName}/${1}`,
+    `${endpoints.game.list_genresearch}${categoryName.toLowerCase()}/${1}`,
     {
       method: "GET",
       headers: myHeaders,

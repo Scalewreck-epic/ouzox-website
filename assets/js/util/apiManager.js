@@ -86,7 +86,7 @@ class RequestHandler {
     this.retries = 3;
     this.timeout = 5; // seconds
     this.retryTimeout = 3; // seconds
-    this.cacheExpiration = 120; // seconds
+    this.cacheExpiration = 60; // seconds
   }
 
   /**
@@ -135,6 +135,34 @@ class RequestHandler {
     }
   }
 
+  getCachedResponse(endpointUrl) {
+    // Check for previous responses in localStorage
+    const cachedResponse = localStorage.getItem(endpointUrl);
+    const cachedTimestamp = localStorage.getItem(`${endpointUrl}_timestamp`);
+
+    if (cachedResponse && cachedTimestamp) {
+      const cacheExpirationTime = this.cacheExpiration * 1000;
+
+      // If the cache was recent or the user is offline, use the cached response.
+      if (
+        Date.now() - cachedTimestamp < cacheExpirationTime ||
+        !navigator.onLine
+      ) {
+        return true, { response: JSON.parse(cachedResponse), ok: true }; // Return the cached response
+      } else {
+        localStorage.removeItem(endpointUrl); // Delete stale responses
+        localStorage.removeItem(`${endpointUrl}_timestamp`);
+      }
+    }
+
+    return false, null;
+  }
+
+  setCachedResponse(endpointUrl) {
+    localStorage.setItem(endpointUrl, JSON.stringify(jsonResponse)); // Cache successful responses
+    localStorage.setItem(`${endpointUrl}_timestamp`, Date.now()); // Store timestamp
+  }
+
   /**
    * Makes the fetch request to the API.
    * @returns {Promise<Object>} The response object or error response.
@@ -148,25 +176,12 @@ class RequestHandler {
 
     for (let i = 0; i < this.retries; i++) {
       try {
-        // Check for previous responses in localStorage
-        const cachedResponse = localStorage.getItem(endpointUrl);
-        const cachedTimestamp = localStorage.getItem(
-          `${endpointUrl}_timestamp`
-        );
+        const [hasCachedResponse, cachedResponse] =
+          this.getCachedResponse(endpointUrl);
 
-        if (cachedResponse && cachedTimestamp) {
-          const cacheExpirationTime = this.cacheExpiration * 1000;
-
-          // If the cache was recent or the user is offline, use the cached response.
-          if (
-            Date.now() - cachedTimestamp < cacheExpirationTime ||
-            !navigator.onLine
-          ) {
-            return { response: JSON.parse(cachedResponse), ok: true }; // Return the cached response
-          } else {
-            localStorage.removeItem(endpointUrl); // Delete stale responses
-            localStorage.removeItem(`${endpointUrl}_timestamp`);
-          }
+        // If there is a cached response, use it.
+        if (hasCachedResponse) {
+          return cachedResponse;
         }
 
         // If the user is offline, do not make a fetch request.
@@ -188,24 +203,25 @@ class RequestHandler {
 
           // Cache successful responses only if method is GET
           if (cacheResponse) {
-            localStorage.setItem(endpointUrl, JSON.stringify(jsonResponse)); // Cache successful responses
-            localStorage.setItem(`${endpointUrl}_timestamp`, Date.now()); // Store timestamp
+            this.setCachedResponse(endpointUrl);
           }
           return { response: jsonResponse, ok: true };
         }
 
-        const error = await this.handleError(response, i);
-        throw error;
+        throw await this.handleError(response, i);
       } catch (error) {
         const errorResponse = { response: error.errorMessage, ok: false };
         const errorMsg = errorMessages[error.errorCode];
-        console.error(error);
+
+        console.error(error); // Log the error in console
 
         if (i == this.retries - 1) {
           return errorResponse;
         } else if (errorMsg !== null && !errorMsg.retry) {
           return errorResponse;
         }
+
+        // If the error is retryable, wait for a short period of time before retrying.
         await new Promise((resolve) =>
           setTimeout(resolve, this.retryTimeout * 1000)
         );
