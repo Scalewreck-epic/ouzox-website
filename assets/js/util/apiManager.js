@@ -123,8 +123,6 @@ class RequestHandler {
     } else {
       // Otherwise, throw the error
       const jsonResponse = await response.json();
-
-      console.log(jsonResponse);
       const newError = new Error(
         `${statusCode}: ${
           !errorMessage ? "Unknown Error" : errorMessage.header
