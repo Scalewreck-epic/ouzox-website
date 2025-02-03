@@ -123,6 +123,8 @@ class RequestHandler {
     } else {
       // Otherwise, throw the error
       const jsonResponse = await response.json();
+
+      console.log(jsonResponse);
       const newError = new Error(
         `${statusCode}: ${
           !errorMessage ? "Unknown Error" : errorMessage.header
@@ -158,7 +160,7 @@ class RequestHandler {
     return [false, null];
   }
 
-  setCachedResponse(endpointUrl) {
+  setCachedResponse(endpointUrl, jsonResponse) {
     localStorage.setItem(endpointUrl, JSON.stringify(jsonResponse)); // Cache successful responses
     localStorage.setItem(`${endpointUrl}_timestamp`, Date.now()); // Store timestamp
   }
@@ -203,8 +205,9 @@ class RequestHandler {
 
           // Cache successful responses only if method is GET
           if (cacheResponse) {
-            this.setCachedResponse(endpointUrl);
+            this.setCachedResponse(endpointUrl, jsonResponse);
           }
+
           return { response: jsonResponse, ok: true };
         }
 
