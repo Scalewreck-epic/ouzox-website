@@ -124,12 +124,12 @@ class RequestHandler {
       // Otherwise, throw the error
       const jsonResponse = await response.json();
       const newError = new Error(
-        `${statusCode}: ${
+        `${statusCode} ${
           !errorMessage ? "Unknown Error" : errorMessage.header
         }: ${jsonResponse.message}`
       );
       newError.errorMessage = jsonResponse.message;
-      newError.errorCode = statusCode;
+      newError.code = statusCode;
 
       return newError;
     }
@@ -213,30 +213,19 @@ class RequestHandler {
       } catch (error) {
         console.error(error); // Log the error in console
 
-        switch (true) {
-          case error instanceof TypeError:
-          case error instanceof ReferenceError:
-          case error instanceof RangeError:
-          case error instanceof SyntaxError:
-          case error instanceof URIError:
-          case error instanceof EvalError:
-          case error instanceof AggregateError:
-            return { response: `${error.name}: ${error.message}`, ok: false };
-          default:
-            const errorResponse = { response: error.errorMessage, ok: false };
-            const errorMsg = errorMessages[error.errorCode];
+        const errorResponse = error.errorMessage || error.message;
+        const errorMsg = errorMessages[error.code];
 
-            if (i == this.retries - 1) {
-              return errorResponse;
-            } else if (errorMsg !== undefined && !errorMsg.retry) {
-              return errorResponse;
-            }
-
-            // If the error is retryable, wait for a short period of time before retrying.
-            await new Promise((resolve) =>
-              setTimeout(resolve, this.retryTimeout * 1000)
-            );
+        if (i == this.retries - 1) {
+          return { response: errorResponse, ok: false };
+        } else if (errorMsg !== undefined && !errorMsg.retry) {
+          return { response: errorResponse, ok: false };
         }
+
+        // If the error is retryable, wait for a short period of time before retrying.
+        await new Promise((resolve) =>
+          setTimeout(resolve, this.retryTimeout * 1000)
+        );
       }
     }
   }
