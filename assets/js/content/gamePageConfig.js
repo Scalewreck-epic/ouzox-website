@@ -40,7 +40,6 @@ class GameData {
       description: rawGameData.description,
       genre: rawGameData.genre,
       summary: rawGameData.summary,
-      artstyle: rawGameData.artstyle,
       agerating: rawGameData.age_rating,
       icon: new URL(rawGameData.icon.url),
       paymentLink: rawGameData.paymentLink
@@ -240,7 +239,6 @@ const gameHandler = async (gameId) => {
     downloadButton: document.getElementById("download-button"),
     gameGenre: document.getElementById("game-genre"),
     gameSummary: document.getElementById("game-summary"),
-    gameArt: document.getElementById("game-art"),
     gameAge: document.getElementById("game-age"),
     gameSize: document.getElementById("game-size"),
     gamePrice: document.getElementById("game-price"),
@@ -277,7 +275,6 @@ const gameHandler = async (gameId) => {
   elements.developerName.textContent = gameData.developer.username;
   elements.gameGenre.textContent = gameData.genre.toUpperCase();
   elements.gameSummary.textContent = gameData.summary;
-  elements.gameArt.textContent = gameData.artstyle.toUpperCase();
   elements.gameAge.textContent = gameData.agerating.toUpperCase();
   elements.gameRefundPercentage.textContent = `${gameData.refundPolicy.percentage}%`;
   elements.gameRefundTimeframe.textContent = `${gameData.refundPolicy.timeframe} Days`;
@@ -421,7 +418,6 @@ const gameHandler = async (gameId) => {
       gameTitleInput: document.getElementById("title-input"),
       gameSummaryInput: document.getElementById("summary-input"),
       gameGenreInput: document.getElementById("genre-input"),
-      gameArtStyleInput: document.getElementById("art-style-input"),
       gameAgeInput: document.getElementById("age-sort"),
       gameThumbnailInput: document.getElementById("thumbnail-input"),
       gameFileInput: document.getElementById("download-file"),
@@ -617,7 +613,6 @@ const gameHandler = async (gameId) => {
     editableElements.gameTitleInput.value = gameData.name;
     editableElements.gameSummaryInput.value = gameData.summary;
     editableElements.gameGenreInput.value = gameData.genre.toUpperCase();
-    editableElements.gameArtStyleInput.value = gameData.artstyle.toUpperCase();
     editableElements.gamePriceInput.value = gameData.pricing.price;
     editableElements.gameIsFreeInput.checked = gameData.pricing.free;
 
@@ -644,11 +639,6 @@ const gameHandler = async (gameId) => {
     editableElements.gameGenreInput.addEventListener("input", () => {
       editableElements.gameGenreInput.value =
         editableElements.gameGenreInput.value.toUpperCase();
-    });
-
-    editableElements.gameArtStyleInput.addEventListener("input", () => {
-      editableElements.gameArtStyleInput.value =
-        editableElements.gameArtStyleInput.value.toUpperCase();
     });
 
     editableElements.gamePriceInput.addEventListener("input", priceChanged);
@@ -851,8 +841,7 @@ const gameHandler = async (gameId) => {
         name: editableElements.gameTitleInput.value,
         description: DOMPurify.sanitize(elements.gameDesc.innerHTML), // Sanitize the description before uploading.
         summary: editableElements.gameSummaryInput.value,
-        genre: editableElements.gameGenreInput.value,
-        artstyle: editableElements.gameArtStyleInput.value,
+        genre: editableElements.gameGenreInput.value.toLowerCase(),
         age_rating: editableElements.gameAgeInput.value,
         icon_upload: imageURI,
         active: isPublic.Enabled ? "true" : "false",

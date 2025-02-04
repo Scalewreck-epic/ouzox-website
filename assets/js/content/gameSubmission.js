@@ -19,7 +19,6 @@ const game_isfree = document.getElementById("isfree");
 const game_refund_timeframe = document.getElementById("refund-timeframe");
 const game_refund_percentage = document.getElementById("refund-percentage");
 const genre_input = document.getElementById("genre-input");
-const game_art = document.getElementById("art-style-input");
 const download_file = document.getElementById("download-file");
 const game_description = document.getElementById("description");
 const gameAgreement = document.getElementById("policy-agreement");
@@ -106,8 +105,7 @@ const onSubmit = async () => {
       isFree: game_isfree.checked,
       refundTimeframe: game_refund_timeframe.value,
       refundPercentage: game_refund_percentage.value,
-      genre: genre_input.value.toUpperCase(),
-      artStyle: game_art.value.toUpperCase(),
+      genre: genre_input.value.toLowerCase(),
       ageRating: document.getElementById("age-sort").value,
       features: [
         "Single1player",
@@ -151,7 +149,6 @@ const onSubmit = async () => {
         description: inputs.description,
         summary: inputs.summary,
         genre: inputs.genre,
-        artstyle: inputs.artStyle,
         age_rating: inputs.ageRating,
         defaultColors: true,
         icon_upload: imageURI,
@@ -287,7 +284,6 @@ const updatePrice = () => {
 };
 
 const updateGenre = () => (genre_input.value = genre_input.value.toUpperCase());
-const updateArt = () => (game_art.value = game_art.value.toUpperCase());
 const updateDescription = () => {
   const text = game_description.innerHTML;
   if (text.length > maxDescriptionCharacters) {
@@ -301,7 +297,6 @@ game_isfree.addEventListener("change", updatePrice);
 game_refund_percentage.addEventListener("input", updateRefund);
 game_refund_timeframe.addEventListener("input", updateRefund);
 genre_input.addEventListener("input", updateGenre);
-game_art.addEventListener("input", updateArt);
 download_file.addEventListener("change", updateFiles);
 game_thumbnail.addEventListener("change", updateThumbnail);
 uploadGameForm.addEventListener("submit", async (event) => {
