@@ -1,8 +1,10 @@
 # Contributing
 
-### Feature requests or improvements
+## Feature requests or improvements
 
-Don't post feature requests in the issue tracker. Join us on [Discord](https://discord.gg/zZV3sQcwzH) and you can request features there.
+- Feature requests should be a small addition to the platform and not change other features.
+- Improvements or enhancements should change features and not add anything to the platform.
+- Feature requests or improvements should be well-documented and include a clear description of the change and how it benefits the platform.
 
 ## Finding a Bug
 
