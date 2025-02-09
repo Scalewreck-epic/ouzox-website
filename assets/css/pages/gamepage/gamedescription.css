@@ -21,7 +21,7 @@
 
 .game-description, .ql-editor {
   font-size: 1.125rem;
-  font-family: "Secular One", sans-serif;
+  font-family: inherit;
 }
 
 .game-description, .ql-editor h1,
@@ -35,4 +35,8 @@
 .game-description, .ql-editor ul,
 .game-description, .ql-editor ol {
   margin: 0.5rem 0;
+}
+
+.ql-container {
+  font-family: inherit;
 }
