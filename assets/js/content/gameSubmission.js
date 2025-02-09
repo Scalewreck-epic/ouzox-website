@@ -23,6 +23,16 @@ const download_file = document.getElementById("download-file");
 const game_description = document.getElementById("description");
 const gameAgreement = document.getElementById("policy-agreement");
 
+const options = {
+    modules: {
+        toolbar: true,
+    },
+    placeholder: 'Your game',
+    theme: 'snow',
+}
+
+new Quill(game_description, options);
+
 const maxDescriptionCharacters = 4000;
 const minPrice = 1;
 const maxPrice = 5000;
@@ -97,7 +107,7 @@ const onSubmit = async () => {
   if (canUpload) {
     const inputs = {
       title: document.getElementById("title").value,
-      description: DOMPurify.sanitize(game_description.innerHTML), // Sanitize the description before upload.
+      description: DOMPurify.sanitize(game_description.getElementsByClassName("ql-editor")[0].innerHTML), // Sanitize the description before upload.
       summary: document.getElementById("summary").value,
       thumbnail: game_thumbnail.files[0],
       price: game_price.value,

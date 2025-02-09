@@ -11,8 +11,7 @@
   transition: transform 0.3s ease;
 }
 
-.game-stats:hover,
-.game-description:hover {
+.game-stats:hover {
   transform: scale(1.015);
 }
 

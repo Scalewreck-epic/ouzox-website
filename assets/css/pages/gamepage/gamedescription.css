@@ -1,7 +1,10 @@
-.game-description {
+.game-description, .game-description-holder {
   display: block;
+  min-height: 10rem;
+}
+
+.game-description-holder {
   padding: 1rem;
-  font-size: 1.125rem;
   border-radius: 1rem;
   min-height: 10rem;
   background-color: #0e0e0e;
@@ -12,19 +15,24 @@
   transition: transform 0.3s ease;
 }
 
-.game-description h1,
-.game-description h2,
-.game-description h3,
-.game-description h4 {
+.game-description-holder:hover {
+  transform: scale(1.015);
+}
+
+.game-description, .ql-editor {
+  font-size: 1.125rem;
+  font-family: "Secular One", sans-serif;
+}
+
+.game-description, .ql-editor h1,
+.game-description, .ql-editor h2,
+.game-description, .ql-editor h3,
+.game-description, .ql-editor h4 {
   text-align: left;
   margin: 0.3rem 0;
 }
 
-.game-description div {
-  margin: 0;
-}
-
-.game-description ul,
-.game-description ol {
+.game-description, .ql-editor ul,
+.game-description, .ql-editor ol {
   margin: 0.5rem 0;
 }

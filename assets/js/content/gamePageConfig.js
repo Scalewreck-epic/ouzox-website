@@ -412,6 +412,7 @@ const gameHandler = async (gameId) => {
     }
   }
 
+  //if (true) {
   if (user && user.id === gameData.developer.id) {
     // If the user is the game developer, allow access to editing the game
     const editableElements = {
@@ -598,7 +599,16 @@ const gameHandler = async (gameId) => {
       );
     };
 
-    elements.gameDesc.contentEditable = true;
+    const options = {
+        modules: {
+            toolbar: true,
+        },
+        placeholder: 'Your game',
+        theme: 'snow',
+    }
+    
+    const description = document.getElementById("description");
+    new Quill(description, options);
 
     editableElements.commitChangesButton.setAttribute(
       "class",
@@ -839,7 +849,7 @@ const gameHandler = async (gameId) => {
 
       const updateGameOptionsBody = {
         name: editableElements.gameTitleInput.value,
-        description: DOMPurify.sanitize(elements.gameDesc.innerHTML), // Sanitize the description before uploading.
+        description: DOMPurify.sanitize(elements.gameDesc.getElementsByClassName("ql-editor")[0].innerHTML), // Sanitize the description before uploading.
         summary: editableElements.gameSummaryInput.value,
         genre: editableElements.gameGenreInput.value.toLowerCase(),
         age_rating: editableElements.gameAgeInput.value,

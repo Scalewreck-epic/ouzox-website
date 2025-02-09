@@ -22,10 +22,11 @@
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 		<link href="https://fonts.googleapis.com/css2?family=Secular+One&display=swap" rel="stylesheet"/>
 		<link href="https://fonts.googleapis.com/css2?family=Alata&display=swap" rel="stylesheet"/>
+		<link href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css" rel="stylesheet">
 	</head>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/2.3.9/purify.min.js" integrity="sha384-g7vCbO2Ytg36Hw2MBFxOLGYC15TWbz+c+c89vNfmkMkDR45hGgMcEXHtp2Sz3EAr" crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/2.3.9/purify.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js"></script>
 	<script type="module" src="assets/js/base/userManager.js"></script>
-	<script type="module" src="assets/js/util/textEditor.js"></script>
 	<script type="module" src="assets/js/content/gamePageConfig.js"></script>
 	<script async src="https://www.googletagmanager.com/gtag/js?id=G-R06LM9HJ7E"></script>
 	<script>
@@ -77,8 +78,8 @@
 			</div>
 			<div class="columns">
 				<div class="left-column">
-					<div class="game-description" id="game-description">
-						<div class="game-about" id="description">
+					<div class="game-description-holder" id="game-description">
+						<div class="game-description" id="description">
 							Test Description
 						</div>
 					</div>

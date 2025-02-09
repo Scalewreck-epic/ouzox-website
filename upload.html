@@ -20,11 +20,12 @@
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 		<link href="https://fonts.googleapis.com/css2?family=Secular+One&display=swap" rel="stylesheet">
 		<link href="https://fonts.googleapis.com/css2?family=Alata&display=swap" rel="stylesheet">
+		<link href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css" rel="stylesheet">
 	</head>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/2.3.9/purify.min.js" integrity="sha384-g7vCbO2Ytg36Hw2MBFxOLGYC15TWbz+c+c89vNfmkMkDR45hGgMcEXHtp2Sz3EAr" crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/2.3.9/purify.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js"></script>
 	<script type="module" src="assets/js/base/userManager.js"></script>
 	<script type="module" src="assets/js/content/gameSubmission.js"></script>
-	<script type="module" src="assets/js/util/textEditor.js"></script>
 	<script async src="https://www.googletagmanager.com/gtag/js?id=G-R06LM9HJ7E"></script>
 	<script>
 	window.dataLayer = window.dataLayer || [];
@@ -315,38 +316,14 @@
 					</div>
 					<div class="upload-game-conclusion">
 						<h1>Description</h1>
-						<div class="game-setting">
-							<div class="title-label">Text:</div>
-							<div class="text-options">
-								<button class="bold-button" id="bold" type="button">B</button>
-								<button class="italic-button" id="italic" type="button">I</button>
-								<button class="underline-button" id="underline" type="button">U</button>
-								<button class="link-button" id="link" type="button">L</button>
-								<button class="strike-through-button" id="strikethrough" type="button">ST</button>
-								<button class="order-list-button" id="insertUnorderedList" type="button">OL</button>
-								<button class="number-list-button" id="insertOrderedList" type="button">1L</button>
-							</div>
-						</div>
-						<div class="game-setting">
-							<div class="title-label">Align:</div>
-							<div class="align-options">
-								<button class="description-button" id="Left" type="button">L</button>
-								<button class="description-button" id="Right" type="button">R</button>
-								<button class="description-button" id="Center" type="button">C</button>
-							</div>
-						</div>
-						<div class="game-setting">
-							<div class="title-label">Header:</div>
-							<div class="header-options">
-								<button class="description-button" id="1" type="button">1</button>
-								<button class="description-button" id="2" type="button">2</button>
-								<button class="description-button" id="3" type="button">3</button>
-								<button class="description-button" id="4" type="button">4</button>
-							</div>
-						</div>
 						<div class="columns">
 							<div class="left-column">
-								<div contenteditable="true" class="game-description" id="description"></div>
+								<div class="game-description-holder">
+									<div class="game-description" id="description">
+										<h1>Your game</h1>
+										<p>Your game description</p>
+									</div>
+								</div>
 							</div>
 						</div>
 						<p class="policy-nag">
