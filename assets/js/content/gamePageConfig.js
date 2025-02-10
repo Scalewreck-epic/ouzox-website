@@ -62,12 +62,6 @@ class GameData {
   }
 }
 
-String.prototype.convertToHex = function () {
-  if (/^#[0-9a-fA-F]{6}$/.test(this)) return this;
-  const [r, g, b] = this.match(/\d+/g).map(Number);
-  return `#${[r, g, b].map((v) => v.toString(16).padStart(2, "0")).join("")}`;
-};
-
 /**
  * Updates the background color and alpha of an element.
  * @param {number} alphaInput - Transparency of the element.
@@ -422,8 +416,7 @@ const gameHandler = async (gameId) => {
     }
   }
 
-  if (true) {
-  //if (user && user.id === gameData.developer.id) {
+  if (user && user.id === gameData.developer.id) {
     // If the user is the game developer, allow access to editing the game
     const editableElements = {
       gameTitleInput: document.getElementById("title-input"),
@@ -791,8 +784,6 @@ const gameHandler = async (gameId) => {
     colorInputs.forEach((colorInput) => {
       colorInput.Element.value = getComputedStyle(colorInput.ElementChanging)
         .getPropertyValue("color")
-        .toString()
-        .convertToHex();
       colorInput.Element.addEventListener("input", function () {
         colorInput.ElementChanging.style.setProperty(
           colorInput.Property,
