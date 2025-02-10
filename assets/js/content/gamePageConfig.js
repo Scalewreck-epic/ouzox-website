@@ -397,6 +397,7 @@ const gameHandler = async (gameId) => {
   if (!gameData.page.default_colors) {
     // If the page doesn't use the default colors, use the modified ones
     const colors = gameData.page.colors;
+
     document.body.style.backgroundColor = colors.bg_color;
     elements.gameColumn.style.backgroundColor = colors.bg2_color;
     elements.gameTitleColumn.style.color = colors.title_color;
@@ -407,13 +408,22 @@ const gameHandler = async (gameId) => {
     elements.gameStats.style.backgroundColor = colors.stats_bg_color;
     elements.gameStats.style.color = colors.stats_text_color;
 
+    const linkStyleTag = document.createElement('style');
+    linkStyleTag.id = `style-${elements.gameDesc.id}`;
+    elements.gameDescBackground.appendChild(linkStyleTag);
+
+    const linkRule = `#${elements.gameDesc.id} a { color: ${colors.link_color};} #${elements.gameDesc.id} a:hover { color: ${colors.link_hover_color}; }`;
+
+    linkStyleTag.textContent = linkRule;
+
+    elements.linkRule = linkRule;
     if (gameData.page.font_family) {
       elements.gameColumn.style.fontFamily = gameData.page.font_family;
     }
   }
 
-  //if (true) {
-  if (user && user.id === gameData.developer.id) {
+  if (true) {
+  //if (user && user.id === gameData.developer.id) {
     // If the user is the game developer, allow access to editing the game
     const editableElements = {
       gameTitleInput: document.getElementById("title-input"),
@@ -791,6 +801,18 @@ const gameHandler = async (gameId) => {
       });
     });
 
+    const linkColorInput = document.getElementById("link-text-color");
+    const linkHoverColorInput = document.getElementById("link-hover-color");
+    const styleDescription = document.getElementById("style-description");
+
+    const changeLinkRule = () => {
+      const linkRule = `#${elements.gameDesc.id} a { color: ${linkColorInput.value};} #${elements.gameDesc.id} a:hover { color: ${linkHoverColorInput.value}; }`;
+      styleDescription.textContent = linkRule;
+    };
+
+    linkColorInput.addEventListener("input", changeLinkRule);
+    linkHoverColorInput.addEventListener("input", changeLinkRule);
+
     alphaInputs.forEach((alphaInput) => {
       alphaInput.Element.value = alphaInput.Amount * 100;
       alphaInput.Element.addEventListener("input", function () {
@@ -834,6 +856,21 @@ const gameHandler = async (gameId) => {
           Name: checkbox.Name,
           Enabled: checkbox.Enabled ? "true" : "false",
         })),
+      ];
+
+      const combinedColors = [
+        ...colorInputs.map((c) => ({
+          Name: c.Name,
+          Color: getComputedStyle(c.ElementChanging).getPropertyValue(c.Property),
+        })),
+        {
+          Name: "link_color",
+          Color: linkColorInput.value,
+        },
+        {
+          Name: "link_hover_color",
+          Color: linkHoverColorInput.value,
+        },
       ];
 
       const imageURI =
@@ -885,10 +922,7 @@ const gameHandler = async (gameId) => {
             alphaInputs.map((a) => [a.Name, a.Amount])
           ),
           colors: Object.fromEntries(
-            colorInputs.map((c) => [
-              c.Name,
-              getComputedStyle(c.ElementChanging).getPropertyValue(c.Property),
-            ])
+            combinedColors.map((c) => [c.Name, c.Color])
           ),
         },
       };

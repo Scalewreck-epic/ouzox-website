@@ -37,6 +37,11 @@
   margin: 0.5rem 0;
 }
 
+.ql-snow, .ql-editor, .game-description a {
+  color: #4D0101;
+  text-decoration: none;
+}
+
 .ql-container {
   font-family: inherit;
 }
