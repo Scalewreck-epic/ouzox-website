@@ -177,7 +177,7 @@ export const fetchAlternativeUser = async (userId) => {
     { method: "GET", headers: { "Content-Type": "application/json" } },
     true
   );
-  return result.response;
+  return result.response.user;
 };
 
 /**

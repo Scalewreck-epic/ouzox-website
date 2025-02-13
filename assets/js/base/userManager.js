@@ -198,17 +198,20 @@ const logout = () => {
 const setupProfilePage = async () => {
   const userId = new URLSearchParams(window.location.search).get("id");
   const otherUser = await session.fetchAlternativeUser(userId);
-  const formattedDate = new Date(otherUser.created_at).toLocaleDateString(
-    "en-US",
-    { year: "2-digit", month: "2-digit", day: "2-digit" }
-  );
 
-  document.getElementById("user-username").textContent = otherUser.name;
-  document.getElementById("user-status").textContent = otherUser.status;
-  document.getElementById("join-date").textContent = formattedDate;
-  document.getElementById("title").textContent = `Ouzox | ${otherUser.name}`;
+  if (otherUser !== undefined) {
+    const formattedDate = new Date(otherUser.created_at).toLocaleDateString(
+      "en-US",
+      { year: "2-digit", month: "2-digit", day: "2-digit" }
+    );
 
-  loadUserGames(otherUser);
+    document.getElementById("user-username").textContent = otherUser.name;
+    document.getElementById("user-status").textContent = otherUser.status;
+    document.getElementById("join-date").textContent = formattedDate;
+    document.getElementById("title").textContent = `Ouzox | ${otherUser.name}`;
+  
+    loadUserGames(otherUser);
+  }
 };
 
 // Setup the settings page of the current user
