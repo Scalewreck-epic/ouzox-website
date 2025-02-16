@@ -402,7 +402,7 @@ const gameHandler = async (gameId) => {
     elements.gameStats.style.backgroundColor = colors.stats_bg_color;
     elements.gameStats.style.color = colors.stats_text_color;
 
-    const linkStyleTag = document.createElement('style');
+    const linkStyleTag = document.createElement("style");
     linkStyleTag.id = `style-${elements.gameDesc.id}`;
     elements.gameDescBackground.appendChild(linkStyleTag);
 
@@ -603,13 +603,13 @@ const gameHandler = async (gameId) => {
     };
 
     const options = {
-        modules: {
-            toolbar: true,
-        },
-        placeholder: 'Your game',
-        theme: 'snow',
-    }
-    
+      modules: {
+        toolbar: true,
+      },
+      placeholder: "Your game",
+      theme: "snow",
+    };
+
     const description = document.getElementById("description");
     new Quill(description, options);
 
@@ -782,8 +782,9 @@ const gameHandler = async (gameId) => {
     });
 
     colorInputs.forEach((colorInput) => {
-      colorInput.Element.value = getComputedStyle(colorInput.ElementChanging)
-        .getPropertyValue("color")
+      colorInput.Element.value = getComputedStyle(
+        colorInput.ElementChanging
+      ).getPropertyValue("color");
       colorInput.Element.addEventListener("input", function () {
         colorInput.ElementChanging.style.setProperty(
           colorInput.Property,
@@ -836,98 +837,109 @@ const gameHandler = async (gameId) => {
      * Commits changes to the game.
      */
     const commitChanges = async () => {
-      editableElements.commitChangesButton.disabled = true;
-
-      const combinedCheckboxes = [
-        ...outlineCheckboxes.map((checkbox) => ({
-          Name: checkbox.Name,
-          Enabled: checkbox.Enabled ? "true" : "false",
-        })),
-        ...shadowCheckboxes.map((checkbox) => ({
-          Name: checkbox.Name,
-          Enabled: checkbox.Enabled ? "true" : "false",
-        })),
-      ];
-
-      const combinedColors = [
-        ...colorInputs.map((c) => ({
-          Name: c.Name,
-          Color: getComputedStyle(c.ElementChanging).getPropertyValue(c.Property),
-        })),
-        {
-          Name: "link_color",
-          Color: linkColorInput.value,
-        },
-        {
-          Name: "link_hover_color",
-          Color: linkHoverColorInput.value,
-        },
-      ];
-
-      const imageURI =
-        editableElements.gameThumbnailInput.files.length > 0
-          ? await new Promise((resolve) => {
-              const reader = new FileReader();
-              reader.onloadend = () => resolve(reader.result);
-              reader.readAsDataURL(
-                editableElements.gameThumbnailInput.files[0]
-              );
-            })
-          : null;
-
-      const updateGameOptionsBody = {
-        name: editableElements.gameTitleInput.value,
-        description: DOMPurify.sanitize(elements.gameDesc.getElementsByClassName("ql-editor")[0].innerHTML), // Sanitize the description before uploading.
-        summary: editableElements.gameSummaryInput.value,
-        genre: editableElements.gameGenreInput.value.toLowerCase(),
-        age_rating: editableElements.gameAgeInput.value,
-        icon_upload: imageURI,
-        active: isPublic.Enabled ? "true" : "false",
-        pricing: {
-          price: editableElements.gamePriceInput.value,
-          free: editableElements.gameIsFreeInput.checked ? "true" : "false",
-          currency: editableElements.gameCurrencyInput.value.toUpperCase(),
-        },
-        refund_policy: {
-          timeframe: editableElements.gameRefundTimeframeInput.value,
-          percentage: editableElements.gameRefundPercentageInput.value,
-        },
-        platforms: Object.fromEntries(
-          gamePlatforms.map((p) => [
-            p.Name.toLowerCase(),
-            p.Enabled ? "true" : "false",
-          ])
-        ),
-        features: Object.fromEntries(
-          gameFeatures.map((f) => [f.Name, f.Enabled ? "true" : "false"])
-        ),
-        page: {
-          font_family: getComputedStyle(elements.gameColumn).getPropertyValue(
-            "font-family"
-          ),
-          defaultColors: false,
-          outlines: Object.fromEntries(
-            combinedCheckboxes.map((o) => [o.Name, o.Enabled])
-          ),
-          alphas: Object.fromEntries(
-            alphaInputs.map((a) => [a.Name, a.Amount])
-          ),
-          colors: Object.fromEntries(
-            combinedColors.map((c) => [c.Name, c.Color])
-          ),
-        },
-      };
-
-      await updateGame(
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(updateGameOptionsBody),
-        },
-        gameData.id,
-        editableElements.commitChangesButton
+      const confirmCommit = confirm(
+        `Are you sure you want to overwrite ${gameData.name}?`
       );
-      editableElements.commitChangesButton.disabled = false;
+
+      if (confirmCommit) {
+        editableElements.commitChangesButton.disabled = true;
+
+        const combinedCheckboxes = [
+          ...outlineCheckboxes.map((checkbox) => ({
+            Name: checkbox.Name,
+            Enabled: checkbox.Enabled ? "true" : "false",
+          })),
+          ...shadowCheckboxes.map((checkbox) => ({
+            Name: checkbox.Name,
+            Enabled: checkbox.Enabled ? "true" : "false",
+          })),
+        ];
+
+        const combinedColors = [
+          ...colorInputs.map((c) => ({
+            Name: c.Name,
+            Color: getComputedStyle(c.ElementChanging).getPropertyValue(
+              c.Property
+            ),
+          })),
+          {
+            Name: "link_color",
+            Color: linkColorInput.value,
+          },
+          {
+            Name: "link_hover_color",
+            Color: linkHoverColorInput.value,
+          },
+        ];
+
+        const imageURI =
+          editableElements.gameThumbnailInput.files.length > 0
+            ? await new Promise((resolve) => {
+                const reader = new FileReader();
+                reader.onloadend = () => resolve(reader.result);
+                reader.readAsDataURL(
+                  editableElements.gameThumbnailInput.files[0]
+                );
+              })
+            : null;
+
+        const updateGameOptionsBody = {
+          name: editableElements.gameTitleInput.value,
+          description: DOMPurify.sanitize(
+            elements.gameDesc.getElementsByClassName("ql-editor")[0].innerHTML
+          ), // Sanitize the description before uploading.
+          summary: editableElements.gameSummaryInput.value,
+          genre: editableElements.gameGenreInput.value.toLowerCase(),
+          age_rating: editableElements.gameAgeInput.value,
+          icon_upload: imageURI,
+          active: isPublic.Enabled ? "true" : "false",
+          pricing: {
+            price: editableElements.gamePriceInput.value,
+            free: editableElements.gameIsFreeInput.checked ? "true" : "false",
+            currency: editableElements.gameCurrencyInput.value.toUpperCase(),
+          },
+          refund_policy: {
+            timeframe: editableElements.gameRefundTimeframeInput.value,
+            percentage: editableElements.gameRefundPercentageInput.value,
+          },
+          platforms: Object.fromEntries(
+            gamePlatforms.map((p) => [
+              p.Name.toLowerCase(),
+              p.Enabled ? "true" : "false",
+            ])
+          ),
+          features: Object.fromEntries(
+            gameFeatures.map((f) => [f.Name, f.Enabled ? "true" : "false"])
+          ),
+          page: {
+            font_family: getComputedStyle(elements.gameColumn).getPropertyValue(
+              "font-family"
+            ),
+            defaultColors: false,
+            outlines: Object.fromEntries(
+              combinedCheckboxes.map((o) => [o.Name, o.Enabled])
+            ),
+            alphas: Object.fromEntries(
+              alphaInputs.map((a) => [a.Name, a.Amount])
+            ),
+            colors: Object.fromEntries(
+              combinedColors.map((c) => [c.Name, c.Color])
+            ),
+          },
+        };
+
+        await updateGame(
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(updateGameOptionsBody),
+          },
+          gameData.id,
+          editableElements.commitChangesButton
+        );
+
+        editableElements.commitChangesButton.disabled = false;
+      }
     };
 
     /**
