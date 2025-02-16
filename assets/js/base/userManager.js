@@ -4,8 +4,8 @@
  * It manages user sessions, login, signup, and updates user information on the UI.
  */
 
-const restrictedPaths = ["/settings", "/upload", "/dashboard"];
-const loginPaths = ["/login", "/signup"];
+const userPaths = ["settings", "upload", "dashboard"];
+const loginPaths = ["login", "signup"];
 import * as session from "./sessionManager.js";
 import { request } from "../util/apiManager.js";
 import { endpoints } from "../util/endpoints.js";
@@ -42,7 +42,7 @@ const updateUsername = () => {
   if (isValidCookie) {
     // If there is a session cookie, there is no need to use the login and signup page
     if (loginPaths.some((path) => window.location.pathname.includes(path)))
-      window.location.assign(restrictedPaths[0]);
+      window.location.assign(userPaths[0]);
     loginBtn.remove();
     signupBtn.remove();
     username.textContent = user.name || "error";
