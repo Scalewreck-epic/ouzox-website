@@ -48,7 +48,7 @@ const updateUsername = () => {
     username.textContent = user.name || "error";
   } else {
     // If there isn't a session cookie, there is no need to use the dashboard and upload page.
-    if (restrictedPaths.some((path) => window.location.pathname.includes(path)))
+    if (userPaths.some((path) => window.location.pathname.includes(path)))
       window.location.assign(loginPaths[0]);
     dashboardBtn.remove();
     uploadBtn.remove();
