@@ -46,14 +46,8 @@
 						<a href="index">
 							<img src="assets/images/icon.png" class="web-icon">
 						</a>
-						<a href="dashboard" id="dashboard-btn">Dashboard</a>
-						<a href="upload" id="upload-btn">Upload</a>
 					</div>
-					<div class="push-right">
-						<a href="login" id="login-btn" class="login-navbar">Login</a>
-						<a href="signup" id="signup-btn" class="signup-navbar">Signup</a>
-						<a class="username" href="settings" id="username">username</a>
-					</div>
+					<div class="push-right" id="login-buttons"></div>
 				</div>
 			</div>
 		</nav>
@@ -156,19 +150,19 @@
 						<div class="game-features-form">
 							<h1>Available Features</h1>
 							<div class="game-setting">
-								<div class="title-label">Single-player:</div>
+								<div class="title-label">Singleplayer:</div>
 								<div class="game-setting-feature">
 									<label class="cl-checkbox">
-										<input type="checkbox" value="1" id="singleplayer">
+										<input type="checkbox" value="1" id="singleplayer" data-feature-key="Singleplayer">
 										<span class="cl-checkbox-box"></span>
 									</label>
 								</div>
 							</div>
 							<div class="game-setting">
-								<div class="title-label">Multi-player:</div>
+								<div class="title-label">Multiplayer:</div>
 								<div class="game-setting-feature">
 									<label class="cl-checkbox">
-										<input type="checkbox" value="1" id="multiplayer">
+										<input type="checkbox" value="1" id="multiplayer" data-feature-key="Multiplayer">
 										<span class="cl-checkbox-box"></span>
 									</label>
 								</div>
@@ -177,7 +171,7 @@
 								<div class="title-label">Co-op:</div>
 								<div class="game-setting-feature">
 									<label class="cl-checkbox">
-										<input type="checkbox" value="1" id="coop">
+										<input type="checkbox" value="1" id="coop" data-feature-key="Co1op">
 										<span class="cl-checkbox-box"></span>
 									</label>
 								</div>
@@ -186,7 +180,7 @@
 								<div class="title-label">Achievements:</div>
 								<div class="game-setting-feature">
 									<label class="cl-checkbox">
-										<input type="checkbox" value="1" id="achievements">
+										<input type="checkbox" value="1" id="achievements" data-feature-key="Achievements">
 										<span class="cl-checkbox-box"></span>
 									</label>
 								</div>
@@ -195,7 +189,7 @@
 								<div class="title-label">Controller Support:</div>
 								<div class="game-setting-feature">
 									<label class="cl-checkbox">
-										<input type="checkbox" value="1" id="controllersupport">
+										<input type="checkbox" value="1" id="controllersupport" data-feature-key="Controller_Support">
 										<span class="cl-checkbox-box"></span>
 									</label>
 								</div>
@@ -204,7 +198,7 @@
 								<div class="title-label">VR Support:</div>
 								<div class="game-setting-feature">
 									<label class="cl-checkbox">
-										<input type="checkbox" value="1" id="vrsupport">
+										<input type="checkbox" value="1" id="vrsupport" data-feature-key="VR_Support">
 										<span class="cl-checkbox-box"></span>
 									</label>
 								</div>
@@ -213,7 +207,7 @@
 								<div class="title-label">Saves:</div>
 								<div class="game-setting-feature">
 									<label class="cl-checkbox">
-										<input type="checkbox" value="1" id="saves">
+										<input type="checkbox" value="1" id="saves" data-feature-key="Saves">
 										<span class="cl-checkbox-box"></span>
 									</label>
 								</div>
@@ -225,7 +219,7 @@
 								<div class="title-label">Windows:</div>
 								<div class="game-setting-feature">
 									<label class="cl-checkbox">
-										<input type="checkbox" value="1" id="windows">
+										<input type="checkbox" value="1" id="windows" data-platform-key="windows">
 										<span class="cl-checkbox-box"></span>
 									</label>
 								</div>
@@ -234,7 +228,7 @@
 								<div class="title-label">Mac:</div>
 								<div class="game-setting-feature">
 									<label class="cl-checkbox">
-										<input type="checkbox" value="1" id="mac">
+										<input type="checkbox" value="1" id="mac" data-platform-key="mac">
 										<span class="cl-checkbox-box"></span>
 									</label>
 								</div>
@@ -243,7 +237,7 @@
 								<div class="title-label">Linux:</div>
 								<div class="game-setting-feature">
 									<label class="cl-checkbox">
-										<input type="checkbox" value="1" id="linux">
+										<input type="checkbox" value="1" id="linux" data-platform-key="linux">
 										<span class="cl-checkbox-box"></span>
 									</label>
 								</div>
@@ -252,7 +246,7 @@
 								<div class="title-label">Android:</div>
 								<div class="game-setting-feature">
 									<label class="cl-checkbox">
-										<input type="checkbox" value="1" id="android">
+										<input type="checkbox" value="1" id="android" data-platform-key="android">
 										<span class="cl-checkbox-box"></span>
 									</label>
 								</div>
@@ -261,7 +255,7 @@
 								<div class="title-label">IOS:</div>
 								<div class="game-setting-feature">
 									<label class="cl-checkbox">
-										<input type="checkbox" value="1" id="ios">
+										<input type="checkbox" value="1" id="ios" data-platform-key="ios">
 										<span class="cl-checkbox-box"></span>
 									</label>
 								</div>
@@ -270,7 +264,7 @@
 								<div class="title-label">XBOX:</div>
 								<div class="game-setting-feature">
 									<label class="cl-checkbox">
-										<input type="checkbox" value="1" id="xbox">
+										<input type="checkbox" value="1" id="xbox" data-platform-key="xbox">
 										<span class="cl-checkbox-box"></span>
 									</label>
 								</div>
@@ -279,7 +273,7 @@
 								<div class="title-label">PlayStation:</div>
 								<div class="game-setting-feature">
 									<label class="cl-checkbox">
-										<input type="checkbox" value="1" id="playstation">
+										<input type="checkbox" value="1" id="playstation" data-platform-key="playstation">
 										<span class="cl-checkbox-box"></span>
 									</label>
 								</div>
@@ -288,7 +282,7 @@
 								<div class="title-label">Oculus:</div>
 								<div class="game-setting-feature">
 									<label class="cl-checkbox">
-										<input type="checkbox" value="1" id="oculus">
+										<input type="checkbox" value="1" id="oculus" data-platform-key="oculus">
 										<span class="cl-checkbox-box"></span>
 									</label>
 								</div>

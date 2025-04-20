@@ -43,16 +43,6 @@ export const createCookie = (cookieName, token) => {
  * Updates the stored user cache or creates a new one.
  * @param {object} user
  */
-export const updateUserCache = (user) => {
-  localStorage.setItem("cachedUser", JSON.stringify(user));
-};
-
-/**
- * Removes all user cache.
- */
-export const removeUserCache = () => {
-  localStorage.removeItem("cachedUser");
-};
 
 /**
  * Clears all cookies by deleting each one.
@@ -89,7 +79,6 @@ const sessionId = fetchCookie("session_id").data; // Fetches session ID
 const changeSessionData = async (headers, endpoint, errorLabel) => {
   errorLabel.textContent = "Changing settings...";
   const result = await request(endpoint, headers, false);
-  updateUserCache(result.response.user);
   errorLabel.textContent = result.ok
     ? result.response.message
     : result.response;
@@ -186,18 +175,16 @@ export const fetchAlternativeUser = async (userId) => {
  */
 export const fetchUser = async () => {
   if (sessionId) {
-    const cachedUser = JSON.parse(localStorage.getItem("cachedUser"));
-
-    if (cachedUser) {
-      return cachedUser;
-    } else {
-      const userResult = await request(
-        `${endpoints.user.get_data_with_sess}${sessionId}`,
-        { method: "GET", headers: { "Content-Type": "application/json" } },
-        true
-      );
-      updateUserCache(userResult.response);
+    const userResult = await request(
+      `${endpoints.user.get_data_with_sess}${sessionId}`,
+      { method: "GET", headers: { "Content-Type": "application/json" } },
+      true
+    );
+    if (userResult.ok) {
       return userResult.response;
+    } else {
+      deleteCookie("session_id");
+      window.location.assign("login");
     }
   }
 };

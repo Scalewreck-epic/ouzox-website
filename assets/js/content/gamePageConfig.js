@@ -247,7 +247,7 @@ const gameHandler = async (gameId) => {
   };
 
   elements.gameTitle.textContent = gameData.name;
-  elements.gameDesc.innerHTML = gameData.description;
+  elements.gameDesc.innerHTML = DOMPurify.sanitize(gameData.description);
   elements.gamePrice.textContent = gameData.pricing.free
     ? "FREE"
     : `${gameData.pricing.price} ${gameData.pricing.currency}`;
@@ -284,8 +284,8 @@ const gameHandler = async (gameId) => {
   );
 
   const features = [
-    "Single1player",
-    "Multi1player",
+    "Singleplayer",
+    "Multiplayer",
     "Co1op",
     "Achievements",
     "Controller_Support",
@@ -737,8 +737,8 @@ const gameHandler = async (gameId) => {
     });
 
     const gameFeatures = [
-      "Single1player",
-      "Multi1player",
+      "Singleplayer",
+      "Multiplayer",
       "Co1op",
       "Achievements",
       "Controller_Support",
@@ -847,11 +847,11 @@ const gameHandler = async (gameId) => {
         const combinedCheckboxes = [
           ...outlineCheckboxes.map((checkbox) => ({
             Name: checkbox.Name,
-            Enabled: checkbox.Enabled ? "true" : "false",
+            Enabled: checkbox.Enabled,
           })),
           ...shadowCheckboxes.map((checkbox) => ({
             Name: checkbox.Name,
-            Enabled: checkbox.Enabled ? "true" : "false",
+            Enabled: checkbox.Enabled,
           })),
         ];
 
@@ -892,10 +892,10 @@ const gameHandler = async (gameId) => {
           genre: editableElements.gameGenreInput.value.toLowerCase(),
           age_rating: editableElements.gameAgeInput.value,
           icon_upload: imageURI,
-          active: isPublic.Enabled ? "true" : "false",
+          active: isPublic.Enabled,
           pricing: {
             price: editableElements.gamePriceInput.value,
-            free: editableElements.gameIsFreeInput.checked ? "true" : "false",
+            free: editableElements.gameIsFreeInput.checked,
             currency: editableElements.gameCurrencyInput.value.toUpperCase(),
           },
           refund_policy: {
@@ -905,11 +905,11 @@ const gameHandler = async (gameId) => {
           platforms: Object.fromEntries(
             gamePlatforms.map((p) => [
               p.Name.toLowerCase(),
-              p.Enabled ? "true" : "false",
+              p.Enabled,
             ])
           ),
           features: Object.fromEntries(
-            gameFeatures.map((f) => [f.Name, f.Enabled ? "true" : "false"])
+            gameFeatures.map((f) => [f.Name, f.Enabled])
           ),
           page: {
             font_family: getComputedStyle(elements.gameColumn).getPropertyValue(

@@ -23,6 +23,9 @@ const download_file = document.getElementById("download-file");
 const game_description = document.getElementById("description");
 const gameAgreement = document.getElementById("policy-agreement");
 
+const platformIds = ["windows", "mac", "linux", "android", "ios", "xbox", "playstation", "oculus"];
+const featureIds = ["Singleplayer", "Multiplayer", "Co1op", "Achievements", "Controller_Support", "VR_Support", "Saves"];
+
 const options = {
     modules: {
         toolbar: true,
@@ -49,16 +52,19 @@ const files = [];
  * @returns {string} - The readable file size
  */
 const formatFileSize = (fileSizeInBytes) => {
-  const units = ["KB", "MB", "GB"];
-  const size =
-    fileSizeInBytes < 1024
-      ? fileSizeInBytes
-      : fileSizeInBytes < Math.pow(1024, 2)
-      ? fileSizeInBytes / 1024
-      : fileSizeInBytes / Math.pow(1024, 2);
-  return `${size.toFixed(2)} ${
-    units[Math.floor(Math.log(size) / Math.log(1024))]
-  }`;
+  if (fileSizeInBytes < 1024) {
+      return `${fileSizeInBytes} Bytes`;
+  }
+  const kb = fileSizeInBytes / 1024;
+  if (kb < 1024) {
+      return `${kb.toFixed(2)} KB`;
+  }
+  const mb = kb / 1024;
+  if (mb < 1024) {
+      return `${mb.toFixed(2)} MB`;
+  }
+  const gb = mb / 1024;
+  return `${gb.toFixed(2)} GB`;
 };
 
 /**
@@ -75,123 +81,101 @@ const uploadGame = async (gameRequestOptions) => {
   return result;
 };
 
+const validateSubmit = () => {
+  if (!gameAgreement.checked) {
+      error_label.textContent = "You did not agree to the Quality Guidelines and Content Policy";
+      return false;
+  }
+  if (files.length === 0) {
+      error_label.textContent = "No game file detected";
+      return false;
+  }
+  // Use .textContent or check Quill's API for length
+  const descriptionContent = game_description.querySelector('.ql-editor')?.textContent.trim() || '';
+  if (descriptionContent.length === 0) {
+      error_label.textContent = "No description detected";
+      return false;
+  }
+  // Add other checks (thumbnail, etc.)
+  error_label.textContent = ""; // Clear errors if all pass
+  return true;
+}
+
 /**
  * Handles submitting the game.
  */
 const onSubmit = async () => {
   uploadButton.disabled = true; // Prevent spamming the button
 
-  let canUpload = true;
-
-  if (!gameAgreement.checked) {
-    error_label.textContent =
-      "You did not agree to the Quality Guidelines and Content Policy";
-    canUpload = false;
-  }
-
-  if (files.length == 0) {
-    error_label.textContent = "No game file detected";
-    canUpload = false;
-  }
-
-  if (game_description.innerHTML.length == 0) {
-    error_label.textContent = "No description detected";
-    canUpload = false;
-  }
-
   // Make sure everything is up to date.
-  updateThumbnail();
   updatePrice();
   updateRefund();
+  updateThumbnail();
 
-  if (canUpload) {
-    const inputs = {
-      title: document.getElementById("title").value,
-      description: DOMPurify.sanitize(game_description.getElementsByClassName("ql-editor")[0].innerHTML), // Sanitize the description before upload.
-      summary: document.getElementById("summary").value,
-      thumbnail: game_thumbnail.files[0],
-      price: game_price.value,
-      currency: document.getElementById("currency-sort").value.toUpperCase(),
-      isFree: game_isfree.checked,
-      refundTimeframe: game_refund_timeframe.value,
-      refundPercentage: game_refund_percentage.value,
-      genre: genre_input.value.toLowerCase(),
-      ageRating: document.getElementById("age-sort").value,
-      features: [
-        "Single1player",
-        "Multi1player",
-        "Co1op",
-        "Achievements",
-        "Controller_Support",
-        "VR_Support",
-        "Saves",
-      ].map(
-        (id) =>
-          document.getElementById(
-            id.toLowerCase().replace(/1/g, "").replace(/_/g, "")
-          ).checked
-      ),
-      platforms: [
-        "windows",
-        "mac",
-        "linux",
-        "android",
-        "ios",
-        "xbox",
-        "playstation",
-        "oculus",
-      ].map((id) => document.getElementById(id).checked),
-    };
+  if (!validateSubmit()) {
+    uploadButton.disabled = false;
+    return;
+  };
 
-    // Wait for the image to load.
-    const imageURI = await new Promise((resolve) => {
-      const reader = new FileReader();
-      reader.onloadend = () => resolve(reader.result);
-      reader.readAsDataURL(inputs.thumbnail);
-    });
+  const inputs = {
+    title: document.getElementById("title").value,
+    description: DOMPurify.sanitize(game_description.getElementsByClassName("ql-editor")[0].innerHTML), // Sanitize the description before upload.
+    summary: document.getElementById("summary").value,
+    thumbnail: game_thumbnail.files[0],
+    price: game_price.value,
+    currency: document.getElementById("currency-sort").value.toUpperCase(),
+    isFree: game_isfree.checked,
+    refundTimeframe: game_refund_timeframe.value,
+    refundPercentage: game_refund_percentage.value,
+    genre: genre_input.value.toLowerCase(),
+    ageRating: document.getElementById("age-sort").value,
+    features: Object.fromEntries(
+      featureIds.map((id, index) => [id, inputs.features[index]])
+    ),
+    platforms: Object.fromEntries(
+      platformIds.map((id, index) => [id, inputs.platforms[index]])
+    ),
+  };
 
-    error_label.textContent = "Creating game page...";
-    const gameRequestOptions = {
-      method: "POST",
-      headers: myHeaders,
-      body: JSON.stringify({
-        name: inputs.title,
-        description: inputs.description,
-        summary: inputs.summary,
-        genre: inputs.genre,
-        age_rating: inputs.ageRating,
-        defaultColors: true,
-        icon_upload: imageURI,
-        pricing: {
-          price: inputs.price,
-          free: inputs.isFree,
-          currency: inputs.currency,
-        },
-        refund_policy: {
-          timeframe: inputs.refundTimeframe,
-          percentage: inputs.refundPercentage,
-        },
-        platforms: Object.fromEntries(
-          inputs.platforms.map((enabled, index) => [
-            inputs.platforms[index],
-            enabled,
-          ])
-        ),
-        features: Object.fromEntries(
-          inputs.features.map((enabled, index) => [
-            inputs.features[index],
-            enabled,
-          ])
-        ),
-      }),
-    };
+  // Wait for the image to load.
+  const imageURI = await new Promise((resolve) => {
+    const reader = new FileReader();
+    reader.onloadend = () => resolve(reader.result);
+    reader.readAsDataURL(inputs.thumbnail);
+  });
 
-    const game = await uploadGame(gameRequestOptions);
-    if (game.ok) {
-      window.location.assign("dashboard");
-    } else {
-      error_label.textContent = game.response;
-    }
+  error_label.textContent = "Creating game page...";
+  const gameRequestOptions = {
+    method: "POST",
+    headers: myHeaders,
+    body: JSON.stringify({
+      name: inputs.title,
+      description: inputs.description,
+      summary: inputs.summary,
+      genre: inputs.genre,
+      age_rating: inputs.ageRating,
+      defaultColors: true,
+      icon_upload: imageURI,
+      pricing: {
+        price: inputs.price,
+        free: inputs.isFree,
+        currency: inputs.currency,
+      },
+      refund_policy: {
+        timeframe: inputs.refundTimeframe,
+        percentage: inputs.refundPercentage,
+      },
+      platforms: inputs.platforms,
+      features: inputs.features,
+    }),
+  };
+
+  const game = await uploadGame(gameRequestOptions);
+
+  if (game.ok) {
+    window.location.assign("dashboard");
+  } else {
+    error_label.textContent = game.response;
   }
 
   uploadButton.disabled = false;

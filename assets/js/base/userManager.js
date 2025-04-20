@@ -29,12 +29,17 @@ const isValidCookie = cookieData.valid;
  * Redirects to login or restricted pages as necessary.
  */
 const updateUsername = () => {
-  const username = document.getElementById("username");
   const copyrightYear = document.getElementById("copyright-year");
-  const loginBtn = document.getElementById("login-btn");
-  const signupBtn = document.getElementById("signup-btn");
-  const dashboardBtn = document.getElementById("dashboard-btn");
-  const uploadBtn = document.getElementById("upload-btn");
+  const loginButtons = document.getElementById("login-buttons");
+
+  const createButton = (text, id, href, className) => {
+    const button = document.createElement("a");
+    button.textContent = text;
+    button.id = id;
+    button.href = href;
+    button.classList.add(className);
+    return button;
+  };
 
   copyrightYear &&
     (copyrightYear.textContent = new Date().getFullYear().toString());
@@ -43,16 +48,28 @@ const updateUsername = () => {
     // If there is a session cookie, there is no need to use the login and signup page
     if (loginPaths.some((path) => window.location.pathname.includes(path)))
       window.location.assign(userPaths[0]);
-    loginBtn.remove();
-    signupBtn.remove();
-    username.textContent = user.name || "error";
+
+    const username = createButton(
+      user.name || "error",
+      "username",
+      "settings",
+      "username"
+    );
+    const dashboardBtn = createButton("Dashboard", "dashboard-btn", "dashboard", "");
+    const uploadBtn = createButton("Upload", "upload-btn", "upload", "");
+
+    loginButtons.appendChild(username);
+    loginButtons.appendChild(dashboardBtn);
+    loginButtons.appendChild(uploadBtn);
   } else {
     // If there isn't a session cookie, there is no need to use the dashboard and upload page.
     if (userPaths.some((path) => window.location.pathname.includes(path)))
       window.location.assign(loginPaths[0]);
-    dashboardBtn.remove();
-    uploadBtn.remove();
-    username.remove();
+    const loginBtn = createButton("Login", "login-btn", "login", "login-navbar");
+    const signupBtn = createButton("Signup", "signup-btn", "signup", "signup-navbar");
+
+    loginButtons.appendChild(loginBtn);
+    loginButtons.appendChild(signupBtn);
   }
 };
 
@@ -136,7 +153,6 @@ const createSessionData = async () => {
         : result.response;
       if (result.ok) {
         session.createCookie("session_id", result.response.user.session_id);
-        session.updateUserCache(result.response.user);
         window.location.assign("index");
       }
     } else {
@@ -169,7 +185,6 @@ const fetchSessionData = async () => {
         : result.response;
       if (result.ok) {
         session.createCookie("session_id", result.response.user.session_id);
-        session.updateUserCache(result.response.user);
         window.location.assign("index");
       }
     }
@@ -191,7 +206,6 @@ const togglePasswordVisibility = (passwordInput, icon) => {
 // Clear cookies on logout
 const logout = () => {
   if (isValidCookie) session.clearCookie();
-  session.removeUserCache();
   window.location.assign("login");
 };
 
@@ -210,7 +224,7 @@ const setupProfilePage = async () => {
     document.getElementById("user-status").textContent = otherUser.status;
     document.getElementById("join-date").textContent = formattedDate;
     document.getElementById("title").textContent = `Ouzox | ${otherUser.name}`;
-  
+
     loadUserGames(otherUser);
   }
 };

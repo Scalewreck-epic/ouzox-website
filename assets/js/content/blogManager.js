@@ -5,7 +5,7 @@
  */
 
 import { request } from "../util/apiManager.js";
-import { endpoints } from "./endpoints.js";
+import endpoints from "../util/endpoints.js";
 
 const blogMarket = document.getElementById("blog-posts");
 
