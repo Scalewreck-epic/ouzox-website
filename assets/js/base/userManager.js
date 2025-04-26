@@ -31,6 +31,7 @@ const isValidCookie = cookieData.valid;
 const updateUsername = () => {
   const copyrightYear = document.getElementById("copyright-year");
   const loginButtons = document.getElementById("login-buttons");
+  const navButtons = document.getElementById("nav-buttons");
 
   const createButton = (text, id, href, className) => {
     const button = document.createElement("a");
@@ -59,8 +60,8 @@ const updateUsername = () => {
     const uploadBtn = createButton("Upload", "upload-btn", "upload", "upload-btn");
 
     loginButtons.appendChild(username);
-    loginButtons.appendChild(dashboardBtn);
-    loginButtons.appendChild(uploadBtn);
+    navButtons.appendChild(dashboardBtn);
+    navButtons.appendChild(uploadBtn);
   } else {
     // If there isn't a session cookie, there is no need to use the dashboard and upload page.
     if (userPaths.some((path) => window.location.pathname.includes(path)))
