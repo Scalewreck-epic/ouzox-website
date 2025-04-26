@@ -55,8 +55,8 @@ const updateUsername = () => {
       "settings",
       "username"
     );
-    const dashboardBtn = createButton("Dashboard", "dashboard-btn", "dashboard", "");
-    const uploadBtn = createButton("Upload", "upload-btn", "upload", "");
+    const dashboardBtn = createButton("Dashboard", "dashboard-btn", "dashboard", "dashboard-btn");
+    const uploadBtn = createButton("Upload", "upload-btn", "upload", "upload-btn");
 
     loginButtons.appendChild(username);
     loginButtons.appendChild(dashboardBtn);
